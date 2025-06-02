@@ -1,0 +1,369 @@
+{
+  "name": "postgres",
+  "title": "PostgreSQL",
+  "pub_date": "2025-03-17T00:00:00Z",
+  "description": "Crunchy PostgreSQL is a scalable, production-grade relational database service designed for high availability, performance, and flexibility.\nThis managed application includes built-in support for automated backups, replication, and failover to ensure data resilience and minimal downtime.\nIt comes preconfigured with popular extensions like pgvector for AI and machine learning workloads, as well as enhanced observability, tuning options, and robust security features—making it ideal for modern, data-intensive applications.",
+  "short_description": "Deploy PostgreSQL cluster on Apolo platform",
+  "schema_version": 1,
+  "version": "apolo",
+  "input": {
+    "$defs": {
+      "PGBackupConfig": {
+        "properties": {
+          "enable": {
+            "default": true,
+            "description": "Enable backups for the Postgres cluster. We automatically create and configure the corresponding backup bucket for you. Note: this bucket will not be automatically removed when you remove the app.",
+            "title": "Enable backups",
+            "type": "boolean"
+          }
+        },
+        "title": "PGBackupConfig",
+        "type": "object",
+        "x-description": "Set up backup configuration for your Postgres cluster.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Backup configuration"
+      },
+      "PGBouncer": {
+        "properties": {
+          "preset": {
+            "$ref": "#/$defs/Preset",
+            "description": "Preset to use for the PGBouncer instance."
+          },
+          "replicas": {
+            "default": 2,
+            "description": "Number of replicas for the PGBouncer instance.",
+            "title": "PGBouncer replicas",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "preset"
+        ],
+        "title": "PGBouncer",
+        "type": "object",
+        "x-description": "Configuration for PG Bouncer.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "PG Bouncer"
+      },
+      "PostgresConfig": {
+        "properties": {
+          "postgres_version": {
+            "$ref": "#/$defs/PostgresSupportedVersions",
+            "default": "16",
+            "description": "Set version of the Postgres server to use.",
+            "title": "Postgres version"
+          },
+          "instance_replicas": {
+            "default": 3,
+            "description": "Set number of replicas for the Postgres instance.",
+            "title": "Postgres instance replicas",
+            "type": "integer"
+          },
+          "instance_size": {
+            "default": 1,
+            "description": "Set size of the Postgres instance disk (in GB).",
+            "title": "Postgres instance disk size",
+            "type": "integer"
+          },
+          "db_users": {
+            "description": "Configure list of users and databases they have access to. Multiple users could have access to the same database.",
+            "items": {
+              "$ref": "#/$defs/PostgresDBUser"
+            },
+            "title": "Database users",
+            "type": "array"
+          }
+        },
+        "title": "PostgresConfig",
+        "type": "object",
+        "x-description": "Configuration for Postgres.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Postgres"
+      },
+      "PostgresDBUser": {
+        "properties": {
+          "name": {
+            "description": "Name of the database user.",
+            "title": "Database user name",
+            "type": "string"
+          },
+          "db_names": {
+            "description": "Name of the database.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Database name",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "PostgresDBUser",
+        "type": "object",
+        "x-description": "",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": ""
+      },
+      "PostgresSupportedVersions": {
+        "enum": [
+          "12",
+          "13",
+          "14",
+          "15",
+          "16"
+        ],
+        "title": "PostgresSupportedVersions",
+        "type": "string"
+      },
+      "Preset": {
+        "properties": {
+          "name": {
+            "description": "The name of the preset.",
+            "title": "Preset name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Preset",
+        "type": "object",
+        "x-description": "Select the resource preset used per service replica.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Resource Preset"
+      }
+    },
+    "properties": {
+      "preset": {
+        "$ref": "#/$defs/Preset"
+      },
+      "postgres_config": {
+        "$ref": "#/$defs/PostgresConfig"
+      },
+      "pg_bouncer": {
+        "$ref": "#/$defs/PGBouncer"
+      },
+      "backup": {
+        "$ref": "#/$defs/PGBackupConfig"
+      }
+    },
+    "required": [
+      "preset",
+      "postgres_config",
+      "pg_bouncer",
+      "backup"
+    ],
+    "title": "PostgresInputs",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "CrunchyPostgresUserCredentials": {
+        "properties": {
+          "user": {
+            "title": "User",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "host": {
+            "title": "Host",
+            "type": "string"
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer"
+          },
+          "pgbouncer_host": {
+            "title": "Pgbouncer Host",
+            "type": "string"
+          },
+          "pgbouncer_port": {
+            "title": "Pgbouncer Port",
+            "type": "integer"
+          },
+          "dbname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Dbname"
+          },
+          "jdbc_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Jdbc Uri"
+          },
+          "pgbouncer_jdbc_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pgbouncer Jdbc Uri"
+          },
+          "pgbouncer_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pgbouncer Uri"
+          },
+          "uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Uri"
+          },
+          "postgres_uri": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/PostgresURI"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "user",
+          "password",
+          "host",
+          "port",
+          "pgbouncer_host",
+          "pgbouncer_port"
+        ],
+        "title": "CrunchyPostgresUserCredentials",
+        "type": "object",
+        "x-description": "Configuration for Crunchy Postgres user credentials.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Postgres User Credentials"
+      },
+      "PostgresURI": {
+        "description": "Configuration for the Postgres connection URI.",
+        "properties": {
+          "uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Uri",
+            "x-description": "Specify full Postgres connection URI. E.g. 'postgresql://user:pass@host:5432/db'",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "URI"
+          }
+        },
+        "title": "PostgresURI",
+        "type": "object",
+        "x-description": "Full Postgres connection URI configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Postgres URI"
+      },
+      "PostgresUsers": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/$defs/CrunchyPostgresUserCredentials"
+            },
+            "title": "Users",
+            "type": "array"
+          }
+        },
+        "required": [
+          "users"
+        ],
+        "title": "PostgresUsers",
+        "type": "object",
+        "x-description": "",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": ""
+      }
+    },
+    "properties": {
+      "postgres_users": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/PostgresUsers"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "title": "PostgresOutputs",
+    "type": "object"
+  },
+  "tags": [
+    "apolo",
+    "apolo postgres",
+    "postgres",
+    "postgresql"
+  ],
+  "git_url": "https://github.com/neuro-inc/app-crunchy-postgres",
+  "helm_path": "helm/postgres",
+  "type": "mlops",
+  "logo": "https://www.postgresql.org/media/img/about/press/elephant.png",
+  "assets": [],
+  "documentation_urls": [
+    {
+      "text": "Apolo Postgres",
+      "url": "https://docs.apolo.us/index/apolo-console/apps/available-apps/postgre-sql"
+    },
+    {
+      "text": "Crunchy PostgreSQL for Kubernetes documentation",
+      "url": "https://access.crunchydata.com/documentation/postgres-operator/latest/overview"
+    }
+  ],
+  "external_urls": [],
+  "mlops_app_type": "postgresql",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}
