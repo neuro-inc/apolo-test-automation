@@ -44,7 +44,6 @@ class JobData:
 
     @job_id.setter
     def job_id(self, value):
-        # Optional: Add validation
         if not isinstance(value, str) and value is not None:
             raise ValueError("job_id must be a string or None.")
         self.__job_id = value

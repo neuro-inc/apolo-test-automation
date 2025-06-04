@@ -2,6 +2,7 @@ import random
 import string
 from tests.utils.test_data_management.job_data import JobData
 
+
 class ProjectData:
     def __init__(self, gherkin_name, project_name=None):
         self.__gherkin_name = gherkin_name

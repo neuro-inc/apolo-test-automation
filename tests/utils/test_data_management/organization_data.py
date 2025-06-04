@@ -2,6 +2,7 @@ import random
 import string
 from tests.utils.test_data_management.project_data import ProjectData
 
+
 class OrganizationData:
     def __init__(self, gherkin_name, org_name=None):
         self.__gherkin_name = gherkin_name

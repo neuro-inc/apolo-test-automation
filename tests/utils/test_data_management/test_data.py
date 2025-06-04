@@ -1,5 +1,6 @@
 from tests.utils.test_data_management.organization_data import OrganizationData
 
+
 class DataManager:
     def __init__(self):
         self.__organizations: dict[str, OrganizationData] = {}

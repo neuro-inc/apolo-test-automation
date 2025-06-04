@@ -1,20 +1,22 @@
-import requests
+import aiohttp
+import asyncio
 
 
 class APIHelper:
     """
-    Stateless API client using requests, with optional per-request bearer token.
+    Stateless API client using aiohttp, with optional per-request bearer token.
     """
 
     def __init__(self, timeout=10):
         """
-        Initialize the API client.
+        Initialize the API client and aiohttp session.
         Args:
             timeout (int): Timeout in seconds for all requests.
         """
-        self.timeout = timeout
+        self.__timeout = timeout
+        self.__session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.__timeout))
 
-    def _headers(self, token=None):
+    def __headers(self, token=None):
         """
         Construct request headers.
         Args:
@@ -30,68 +32,24 @@ class APIHelper:
             headers["Authorization"] = f"Bearer {token}"
         return headers
 
-    def get(self, endpoint, params=None, token=None):
-        """
-        Send a GET request.
-        Args:
-            endpoint (str): Request endpoint.
-            params (dict, optional): URL query parameters.
-            token (str, optional): Authorization bearer token.
-        Returns:
-            Response: The HTTP response.
-        """
-        return requests.get(
-            endpoint,
-            headers=self._headers(token),
-            params=params,
-            timeout=self.timeout
-        )
+    async def get(self, endpoint, params=None, token=None):
+        async with self.__session.get(endpoint, headers=self.__headers(token), params=params) as response:
+            return await response.json()
 
-    def post(self, endpoint, data=None, token=None):
-        """
-        Send a POST request.
-        Args:
-            endpoint (str): Request endpoint.
-            data (dict, optional): JSON payload.
-            token (str, optional): Authorization bearer token.
-        Returns:
-            Response: The HTTP response.
-        """
-        return requests.post(
-            endpoint,
-            headers=self._headers(token),
-            json=data,
-            timeout=self.timeout
-        )
+    async def post(self, endpoint, data=None, token=None):
+        async with self.__session.post(endpoint, headers=self.__headers(token), json=data) as response:
+            return await response.json()
 
-    def put(self, endpoint, data=None, token=None):
-        """
-        Send a PUT request.
-        Args:
-            endpoint (str): Request endpoint.
-            data (dict, optional): JSON payload.
-            token (str, optional): Authorization bearer token.
-        Returns:
-            Response: The HTTP response.
-        """
-        return requests.put(
-            endpoint,
-            headers=self._headers(token),
-            json=data,
-            timeout=self.timeout
-        )
+    async def put(self, endpoint, data=None, token=None):
+        async with self.__session.put(endpoint, headers=self.__headers(token), json=data) as response:
+            return await response.json()
 
-    def delete(self, endpoint, token=None):
+    async def delete(self, endpoint, token=None):
+        async with self.__session.delete(endpoint, headers=self.__headers(token)) as response:
+            return await response.json()
+
+    async def close(self):
         """
-        Send a DELETE request.
-        Args:
-            endpoint (str): Request endpoint.
-            token (str, optional): Authorization bearer token.
-        Returns:
-            Response: The HTTP response.
+        Close the aiohttp session.
         """
-        return requests.delete(
-            endpoint,
-            headers=self._headers(token),
-            timeout=self.timeout
-        )
+        await self.__session.close()
