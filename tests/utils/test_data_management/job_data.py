@@ -1,8 +1,8 @@
 import string
 import random
 
-class JobData:
 
+class JobData:
     def __init__(self, gherkin_name, job_name=None, image_name="ubuntu", command=""):
         self.__gherkin_name = gherkin_name
         self.__job_name = job_name or self.generate_random_name()
@@ -11,11 +11,13 @@ class JobData:
         self.__job_id = None  # Initialize as None
 
     def __repr__(self):
-        return (f"JobData(gherkin_name={self.__gherkin_name}, "
-                f"job_name={self.__job_name}, "
-                f"job_id={self.__job_id}, "
-                f"image_name={self.__image_name}, "
-                f"command={self.__command})")
+        return (
+            f"JobData(gherkin_name={self.__gherkin_name}, "
+            f"job_name={self.__job_name}, "
+            f"job_id={self.__job_id}, "
+            f"image_name={self.__image_name}, "
+            f"command={self.__command})"
+        )
 
     @staticmethod
     def generate_random_name(prefix="regression-job-", length=10):

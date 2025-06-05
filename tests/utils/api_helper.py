@@ -1,5 +1,4 @@
 import aiohttp
-import asyncio
 
 
 class APIHelper:
@@ -14,7 +13,9 @@ class APIHelper:
             timeout (int): Timeout in seconds for all requests.
         """
         self.__timeout = timeout
-        self.__session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.__timeout))
+        self.__session = aiohttp.ClientSession(
+            timeout=aiohttp.ClientTimeout(total=self.__timeout)
+        )
 
     def __headers(self, token=None):
         """
@@ -24,28 +25,33 @@ class APIHelper:
         Returns:
             dict: Headers for the HTTP request.
         """
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        }
+        headers = {"Accept": "application/json", "Content-Type": "application/json"}
         if token:
             headers["Authorization"] = f"Bearer {token}"
         return headers
 
     async def get(self, endpoint, params=None, token=None):
-        async with self.__session.get(endpoint, headers=self.__headers(token), params=params) as response:
+        async with self.__session.get(
+            endpoint, headers=self.__headers(token), params=params
+        ) as response:
             return await response.json()
 
     async def post(self, endpoint, data=None, token=None):
-        async with self.__session.post(endpoint, headers=self.__headers(token), json=data) as response:
+        async with self.__session.post(
+            endpoint, headers=self.__headers(token), json=data
+        ) as response:
             return await response.json()
 
     async def put(self, endpoint, data=None, token=None):
-        async with self.__session.put(endpoint, headers=self.__headers(token), json=data) as response:
+        async with self.__session.put(
+            endpoint, headers=self.__headers(token), json=data
+        ) as response:
             return await response.json()
 
     async def delete(self, endpoint, token=None):
-        async with self.__session.delete(endpoint, headers=self.__headers(token)) as response:
+        async with self.__session.delete(
+            endpoint, headers=self.__headers(token)
+        ) as response:
             return await response.json()
 
     async def close(self):

@@ -1,5 +1,6 @@
 from playwright.async_api import expect
 
+
 class BaseElement:
     def __init__(self, page, selector, **kwargs):
         self.page = page

@@ -1,6 +1,10 @@
 # 🧪 Apolo Test Automation
 
-All test execution and reporting is managed automatically.
+All test execution and reporting is managed automatically using:
+
+- [pytest](https://docs.pytest.org/)
+- [allure-pytest](https://docs.qameta.io/allure/)
+- [uv](https://github.com/astral-sh/uv) — fast dependency and virtual environment manager
 
 ---
 
@@ -10,7 +14,7 @@ All test execution and reporting is managed automatically.
 
 ```bash
 git clone git@github.com:neuro-inc/apolo_test_automation.git
-cd apolo
+cd apolo_test_automation
 ```
 
 ### 2. Run the setup script
@@ -22,7 +26,7 @@ cd apolo
 This will:
 - Install `uv` if it's not already installed
 - Create a `.venv` virtual environment
-- Install project dependencies from `requirements.txt`
+- Install project dependencies from `pyproject.toml`
 - Install Allure CLI (via Homebrew if available)
 
 ---
@@ -52,6 +56,7 @@ And log file at:
 ```
 reports/logs/test_run.log
 ```
+
 ---
 
 ## 📊 Viewing the Allure Report
@@ -70,20 +75,28 @@ xdg-open reports/allure-report/index.html
 
 ---
 
-## 🔧 Dependencies
+## 📦 Dependency Management with `uv`
 
-Dependencies are listed in `requirements.txt`. To manually install them:
+This project uses `uv` with `pyproject.toml` and `uv.lock`.
+
+### Common commands:
 
 ```bash
-uv pip install -r requirements.txt
+uv sync                       # Install all project dependencies
+uv add pytest                 # Add a new dependency
+uv remove <package>           # Remove a dependency
+uv pip list                   # Show installed packages
 ```
+
+> Do not use `pip install` or `requirements.txt`.
 
 ---
 
 ## 🧼 Cleanup
 
 All generated log and report files are deleted automatically before each test run.
-To remove the virtual environment and Allure reports:
+
+To fully clean your local environment:
 
 ```bash
 rm -rf .venv reports/
@@ -96,12 +109,13 @@ rm -rf .venv reports/
 ```
 .
 ├── .venv/                     # Virtual environment (created automatically)
-├── tests/                     # Your test cases
-├── reports/                   # Allure results and report output
+├── tests/                     # Test cases and steps
+├── reports/                   # Allure results and logs
 │   ├── allure-report/
 │   ├── allure-results/
 │   └── logs/
-├── requirements.txt           # Dependencies
-├── setup.sh                   # Project setup script
+├── pyproject.toml             # Dependency + project config
+├── uv.lock                    # Locked dependency versions
+├── setup.sh                   # Setup script
 └── README.md
 ```

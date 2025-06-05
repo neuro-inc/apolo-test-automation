@@ -32,7 +32,9 @@ class OrganizationData:
 
     def add_project(self, gherkin_name, project_name=None):
         if gherkin_name in [proj.gherkin_name for proj in self.__projects.values()]:
-            raise ValueError(f"Project with gherkin_name '{gherkin_name}' already exists in organization '{self.__org_name}'")
+            raise ValueError(
+                f"Project with gherkin_name '{gherkin_name}' already exists in organization '{self.__org_name}'"
+            )
         project = ProjectData(gherkin_name, project_name)
         self.__projects[project.project_name] = project
         if self.__default_project is None:
@@ -43,10 +45,24 @@ class OrganizationData:
         return self.__projects.get(project_name)
 
     def get_project_by_name(self, project_name):
-        return next((proj for proj in self.__projects.values() if proj.project_name == project_name), None)
+        return next(
+            (
+                proj
+                for proj in self.__projects.values()
+                if proj.project_name == project_name
+            ),
+            None,
+        )
 
     def get_project_by_gherkin_name(self, gherkin_name):
-        return next((proj for proj in self.__projects.values() if proj.gherkin_name == gherkin_name), None)
+        return next(
+            (
+                proj
+                for proj in self.__projects.values()
+                if proj.gherkin_name == gherkin_name
+            ),
+            None,
+        )
 
     def get_all_projects(self):
         return list(self.__projects.values())

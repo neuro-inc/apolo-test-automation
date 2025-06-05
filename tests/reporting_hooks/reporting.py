@@ -1,16 +1,13 @@
 import inspect
 import logging
-from collections import defaultdict
+import allure
 from functools import wraps
 
 from tests.utils.exception_handling.exception_manager import ExceptionManager
 
 logger = logging.getLogger("[📘TEST_INFO]")
 exception_manager = ExceptionManager(logger=logger)
-_SUITE_OUTCOMES = defaultdict(lambda: {"passed": 0, "failed": 0, "skipped": 0})
 
-
-import allure
 
 def async_step(step_name):
     def decorator(func):
@@ -73,8 +70,11 @@ def async_suite(suite_name: str):
                 continue
 
             if inspect.iscoroutinefunction(method):
+
                 @wraps(method)
-                async def wrapped(self, *args, _method=method, _name=attr_name, **kwargs):
+                async def wrapped(
+                    self, *args, _method=method, _name=attr_name, **kwargs
+                ):
                     if not suite_logged["started"]:
                         logger.info("=" * 60)
                         logger.info(f"📁 SUITE STARTED: {suite_name}")

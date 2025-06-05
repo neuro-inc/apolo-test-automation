@@ -1,22 +1,27 @@
 from tests.components.ui.pages.base_element import BaseElement
 from tests.components.ui.pages.base_page import BasePage
 
+
 class JobsPage(BasePage):
     def __init__(self, page):
         super().__init__(page)
-        self.__create_new_job_button = BaseElement(self.page, 'a:has-text("Create new job")')
-        self.__show_all_jobs_button = BaseElement(self.page, 'button:has-text("Show all jobs")')
+        self._create_new_job_button = BaseElement(
+            self.page, 'a:has-text("Create new job")'
+        )
+        self._show_all_jobs_button = BaseElement(
+            self.page, 'button:has-text("Show all jobs")'
+        )
 
     async def is_loaded(self):
         """
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page is loaded")
-        return await self.__create_new_job_button.expect_to_be_loaded()
+        return await self._create_new_job_button.expect_to_be_loaded()
 
     async def click_show_all_jobs_button(self):
         self.log("Click show all jobs button")
-        await self.__show_all_jobs_button.click()
+        await self._show_all_jobs_button.click()
         await self.page.wait_for_timeout(2000)
 
     def _get_job_button(self, job_name):

@@ -16,9 +16,10 @@ class CLICommandManager:
     async def run_async(self, *args):
         """Start CLI command asynchronously (non-blocking)."""
         self._process = await asyncio.create_subprocess_exec(
-            self.binary, *args,
+            self.binary,
+            *args,
             stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE
+            stderr=asyncio.subprocess.PIPE,
         )
         await self._capture_output()
 
@@ -38,12 +39,6 @@ class CLICommandManager:
             self._stderr = stderr_text
         else:
             self._stderr = ""
-        #     # Filter known warnings if returncode is 0
-        #     self._stderr = "\n".join([
-        #         line for line in stderr_text.splitlines()
-        #         if not line.startswith("You are using Apolo Platform Client")
-        #            and not line.strip().startswith("python -m pip install --upgrade")
-        #     ]).strip()
 
     async def is_running(self) -> bool:
         return self._process is not None and self._process.returncode is None

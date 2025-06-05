@@ -1,10 +1,6 @@
 import logging
 from abc import ABC, abstractmethod
 
-class PageLoggerAdapter(logging.LoggerAdapter):
-    def process(self, msg, kwargs):
-        class_name = self.extra.get("class_name", "UnknownPage")
-        return f"{class_name}: {msg}", kwargs
 
 class BasePage(ABC):
     def __init__(self, page):

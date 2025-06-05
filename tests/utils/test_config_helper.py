@@ -13,10 +13,12 @@ class ConfigManager:
             path_to_config (str): Path to the YAML config file.
         """
         self._config = OmegaConf.load(path_to_config)
-        self.__context = None
+        self._context = None
 
         if not isinstance(self._config, (DictConfig, ListConfig)):
-            raise ValueError("Unsupported YAML root type: expected DictConfig or ListConfig")
+            raise ValueError(
+                "Unsupported YAML root type: expected DictConfig or ListConfig"
+            )
 
     async def read_config(self, path_to_config):
         async with aiofiles.open(path_to_config, "r") as f:
@@ -33,7 +35,7 @@ class ConfigManager:
             It allows shared access to Playwright's `BrowserContext` object across different
             parts of the test framework, such as for page creation, cookie handling, or storage state.
         """
-        return self.__context
+        return self._context
 
     @context.setter
     def context(self, value: BrowserContext):
@@ -43,7 +45,7 @@ class ConfigManager:
         Args:
             value (BrowserContext): The browser context instance to store.
         """
-        self.__context = value
+        self._context = value
 
     @property
     def env(self):
@@ -70,9 +72,10 @@ class ConfigManager:
         return self._config.endpoints
 
     def get_template_url(self, organization=None, project_name=None):
-        organization = organization if organization else self._config.project.organization
+        organization = (
+            organization if organization else self._config.project.organization
+        )
         project_name = project_name if project_name else self._config.project.name
         return self.endpoints.templates.format(
-            organization=organization,
-            project=project_name
+            organization=organization, project=project_name
         )

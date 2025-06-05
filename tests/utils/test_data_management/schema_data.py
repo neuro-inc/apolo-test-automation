@@ -47,10 +47,14 @@ class SchemaData:
             self._saved_schema = json.loads(content)
 
     def parse_live_schema(self, full_schema, app_name: str):
-        if not isinstance(full_schema, list) or not all(isinstance(item, dict) for item in full_schema):
+        if not isinstance(full_schema, list) or not all(
+            isinstance(item, dict) for item in full_schema
+        ):
             raise ValueError("Invalid schema format: expected a list of dictionaries")
 
-        match = next((item for item in full_schema if item.get("name") == app_name), None)
+        match = next(
+            (item for item in full_schema if item.get("name") == app_name), None
+        )
 
         if not match:
             raise ValueError(f"App with name '{app_name}' not found in response")

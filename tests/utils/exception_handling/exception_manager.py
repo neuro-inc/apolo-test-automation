@@ -2,12 +2,16 @@ import traceback
 import logging
 import os
 
-from tests.utils.exception_handling.playwright_formatter import PlaywrightExceptionFormatter
+from tests.utils.exception_handling.playwright_formatter import (
+    PlaywrightExceptionFormatter,
+)
 from tests.utils.exception_handling.schema_formatter import JsonSchemaFormatter
 
 
 class ExceptionManager:
-    def __init__(self, logger: logging.Logger = None, log_file: str = "test_errors.log"):
+    def __init__(
+        self, logger: logging.Logger = None, log_file: str = "test_errors.log"
+    ):
         self.logger = logger or self._create_default_logger(log_file)
         self.formatters = [
             PlaywrightExceptionFormatter(),
@@ -27,7 +31,11 @@ class ExceptionManager:
 
     def _output(self, message: str, exception: Exception, debug: bool) -> str:
         if debug:
-            tb = "".join(traceback.format_exception(type(exception), exception, exception.__traceback__))
+            tb = "".join(
+                traceback.format_exception(
+                    type(exception), exception, exception.__traceback__
+                )
+            )
             message += "\n\nTraceback:\n" + tb
 
         return message
@@ -41,11 +49,13 @@ class ExceptionManager:
 
             file_handler = logging.FileHandler(log_file)
             file_handler.setLevel(logging.DEBUG)
-            file_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
+            file_handler.setFormatter(
+                logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+            )
 
             stream_handler = logging.StreamHandler()
             stream_handler.setLevel(logging.INFO)
-            stream_handler.setFormatter(logging.Formatter('%(levelname)s: %(message)s'))
+            stream_handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
 
             logger.addHandler(file_handler)
             logger.addHandler(stream_handler)

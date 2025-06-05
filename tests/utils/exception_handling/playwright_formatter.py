@@ -1,5 +1,8 @@
 import re
-from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, Error as PlaywrightError
+from playwright.sync_api import (
+    TimeoutError as PlaywrightTimeoutError,
+    Error as PlaywrightError,
+)
 
 from tests.utils.exception_handling.base_formatter import ExceptionFormatter
 
@@ -19,7 +22,9 @@ class PlaywrightExceptionFormatter(ExceptionFormatter):
                 message += "\nURL at error: (unavailable)"
 
         if isinstance(exception, PlaywrightTimeoutError):
-            message += "\nNote: Playwright Timeout. Element not found or action took too long."
+            message += (
+                "\nNote: Playwright Timeout. Element not found or action took too long."
+            )
             match = re.search(r'waiting for selector "([^"]+)"', str(exception))
             if match:
                 message += f"\nFailed Selector: `{match.group(1)}`"

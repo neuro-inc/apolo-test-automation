@@ -27,7 +27,9 @@ class ProjectData:
 
     def add_job(self, gherkin_name, job_name=None, image_name="ubuntu", command=""):
         if gherkin_name in [job.gherkin_name for job in self.__jobs.values()]:
-            raise ValueError(f"Job with gherkin_name '{gherkin_name}' already exists in project '{self.__project_name}'")
+            raise ValueError(
+                f"Job with gherkin_name '{gherkin_name}' already exists in project '{self.__project_name}'"
+            )
         job = JobData(gherkin_name, job_name, image_name, command)
         self.__jobs[job.job_name] = job
         return job
@@ -36,10 +38,15 @@ class ProjectData:
         return self.__jobs.get(job_name)
 
     def get_job_by_name(self, job_name):
-        return next((job for job in self.__jobs.values() if job.job_name == job_name), None)
+        return next(
+            (job for job in self.__jobs.values() if job.job_name == job_name), None
+        )
 
     def get_job_by_gherkin_name(self, gherkin_name):
-        return next((job for job in self.__jobs.values() if job.gherkin_name == gherkin_name), None)
+        return next(
+            (job for job in self.__jobs.values() if job.gherkin_name == gherkin_name),
+            None,
+        )
 
     def get_all_jobs(self):
         return list(self.__jobs.values())

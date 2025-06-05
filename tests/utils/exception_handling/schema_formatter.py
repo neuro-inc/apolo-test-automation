@@ -2,6 +2,7 @@ import re
 from jsonschema.exceptions import SchemaError
 from .base_formatter import ExceptionFormatter
 
+
 class JsonSchemaFormatter(ExceptionFormatter):
     VALID_TYPES = ["string", "number", "integer", "boolean", "object", "array", "null"]
 
@@ -12,7 +13,9 @@ class JsonSchemaFormatter(ExceptionFormatter):
         message = f"[SchemaError] during step: {context}\nMessage: {str(exception)}"
         message += "\nNote: JSON Schema is invalid."
 
-        if "'type'" in str(exception) and "not valid under any of the given schemas" in str(exception):
+        if "'type'" in str(
+            exception
+        ) and "not valid under any of the given schemas" in str(exception):
             message += (
                 "\n→ The 'type' field likely contains an invalid value. "
                 "Valid types are: 'string', 'number', 'integer', 'boolean', 'object', 'array', or 'null'."

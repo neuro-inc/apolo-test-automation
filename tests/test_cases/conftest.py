@@ -16,6 +16,7 @@ logger = logging.getLogger("[🛠️TEST CONFIG]")
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
+
 @pytest.fixture(scope="function")
 async def browser():
     async with async_playwright() as p:
@@ -24,6 +25,7 @@ async def browser():
         yield browser
         await browser.close()
         logger.info("Browser closed")
+
 
 @pytest.fixture(scope="function")
 async def page_manager(browser, test_config, data_manager, request):
@@ -39,30 +41,36 @@ async def page_manager(browser, test_config, data_manager, request):
     await context.close()
     logger.info("Browser context closed")
 
+
 @pytest.fixture
 def test_config():
     logger.info("Loading test configuration")
     return ConfigManager(CONFIG_PATH)
+
 
 @pytest.fixture
 def data_manager():
     logger.info("Creating data manager")
     return DataManager()
 
+
 @pytest.fixture
 def schema_data():
     logger.info("Creating schema data manager")
     return SchemaData("components/json_schema/saved_schemas")
+
 
 @pytest.fixture
 def api_helper():
     logger.info("Creating API helper")
     return APIHelper()
 
+
 @pytest.fixture
 def apolo_cli():
     logger.info("Creating Apolo CLI instance")
     return ApoloCLI()
+
 
 @pytest.fixture(autouse=True)
 async def clean_up(test_config, data_manager, apolo_cli):
