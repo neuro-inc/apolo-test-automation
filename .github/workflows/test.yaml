@@ -21,11 +21,9 @@ jobs:
     - name: Sync
       run: uv sync
     - name: Run pre-commit
-      run: pre-commit run --all-files
-    - name: Lint
       run: |
         echo "::add-matcher::.github/actionlint-matcher.json"
-        pre-commit run --all-files
+        uv run pre-commit run --all-files
 
   mypy:
     name: Mypy
@@ -44,9 +42,10 @@ jobs:
         enable-cache: true
     - name: Sync
       run: uv sync
+    # TODO: update the next step when tests will be added
     - name: Mypy
       run: |
-        mypy
+        uv run mypy main.py
 
   check:
     name: Check
