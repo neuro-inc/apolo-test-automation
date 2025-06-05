@@ -1,0 +1,43 @@
+name: Lint & Type Check
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+  lint-and-typecheck:
+    name: Ruff & Mypy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Set up virtual environment and dependencies
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv sync
+          uv pip install ruff mypy
+
+      - name: Run Ruff (linter and formatter)
+        run: |
+          source .venv/bin/activate
+          ruff .
+
+      - name: Run Mypy (strict type checking)
+        run: |
+          source .venv/bin/activate
+          mypy --strict .
