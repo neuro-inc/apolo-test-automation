@@ -1,0 +1,354 @@
+{
+  "name": "stable-diffusion",
+  "title": "Stable Diffusion",
+  "pub_date": "2025-01-01T00:00:00Z",
+  "description": "Stable Diffusion is a latent text-to-image diffusion model. Thanks to a generous compute donation from Stability AI and support from LAION, we were able to train a Latent Diffusion Model on 512x512 images from a subset of the LAION-5B database. Similar to Google's Imagen, this model uses a frozen CLIP ViT-L/14 text encoder to condition the model on text prompts. With its 860M UNet and 123M text encoder, the model is relatively lightweight and runs on a GPU with at least 10GB VRAM. See this section below and the model card.",
+  "short_description": "A web interface for Stable Diffusion, implemented using Gradio library.",
+  "schema_version": 1,
+  "version": "master",
+  "input": {
+    "$defs": {
+      "ApoloSecret": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "title": "ApoloSecret",
+        "type": "object",
+        "x-description": "Apolo Secret Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Secret"
+      },
+      "HuggingFaceModel": {
+        "properties": {
+          "model_hf_name": {
+            "title": "Model Hf Name",
+            "type": "string",
+            "x-description": "The name of the Hugging Face model.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hugging Face Model Name"
+          },
+          "hf_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/ApoloSecret"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Hf Token",
+            "x-description": "The Hugging Face API token.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hugging Face Token"
+          }
+        },
+        "required": [
+          "model_hf_name"
+        ],
+        "title": "HuggingFaceModel",
+        "type": "object",
+        "x-description": "Hugging Face Model Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Hugging Face Model"
+      },
+      "IngressHttp": {
+        "properties": {
+          "auth": {
+            "default": true,
+            "title": "Auth",
+            "type": "boolean",
+            "x-description": "Require authenticated user credentials with appropriate permissions for all incoming HTTPS requests to the application.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Enable Authentication and Authorization"
+          }
+        },
+        "title": "IngressHttp",
+        "type": "object",
+        "x-description": "Enable access to your application over the internet using HTTPS.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Enable HTTP Ingress"
+      },
+      "Preset": {
+        "properties": {
+          "name": {
+            "description": "The name of the preset.",
+            "title": "Preset name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Preset",
+        "type": "object",
+        "x-description": "Select the resource preset used per service replica.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Resource Preset"
+      },
+      "StableDiffusionParams": {
+        "properties": {
+          "replica_count": {
+            "default": 1,
+            "title": "Replica Count",
+            "type": "integer",
+            "x-description": "Set the number of replicas to deploy for handling concurrent image generation requests.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Replica Count"
+          },
+          "hugging_face_model": {
+            "$ref": "#/$defs/HuggingFaceModel"
+          }
+        },
+        "required": [
+          "hugging_face_model"
+        ],
+        "title": "StableDiffusionParams",
+        "type": "object",
+        "x-description": "Configure the deployment settings and model selection for Stable Diffusion.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Stable Diffusion"
+      }
+    },
+    "properties": {
+      "ingress_http": {
+        "$ref": "#/$defs/IngressHttp"
+      },
+      "preset": {
+        "$ref": "#/$defs/Preset"
+      },
+      "stable_diffusion": {
+        "$ref": "#/$defs/StableDiffusionParams"
+      }
+    },
+    "required": [
+      "ingress_http",
+      "preset",
+      "stable_diffusion"
+    ],
+    "title": "StableDiffusionInputs",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "ApoloSecret": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "title": "ApoloSecret",
+        "type": "object",
+        "x-description": "Apolo Secret Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Secret"
+      },
+      "HuggingFaceModel": {
+        "properties": {
+          "model_hf_name": {
+            "title": "Model Hf Name",
+            "type": "string",
+            "x-description": "The name of the Hugging Face model.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hugging Face Model Name"
+          },
+          "hf_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/ApoloSecret"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Hf Token",
+            "x-description": "The Hugging Face API token.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hugging Face Token"
+          }
+        },
+        "required": [
+          "model_hf_name"
+        ],
+        "title": "HuggingFaceModel",
+        "type": "object",
+        "x-description": "Hugging Face Model Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Hugging Face Model"
+      },
+      "RestAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "RestAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      }
+    },
+    "properties": {
+      "internal_api": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "external_api": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "hf_model": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/HuggingFaceModel"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Hugging Face Model Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Hugging Face Model"
+      }
+    },
+    "title": "StableDiffusionOutputs",
+    "type": "object"
+  },
+  "tags": [
+    "stable diffusion",
+    "ai",
+    "image generation",
+    "mlops",
+    "hugging face"
+  ],
+  "git_url": "https://github.com/neuro-inc/app-stable-diffusion",
+  "helm_path": "charts/app-stable-diffusion",
+  "type": "mlops",
+  "logo": "https://stabledifffusion.com/logo.svg",
+  "assets": [
+    {
+      "type": "image",
+      "url": "https://cdn.jsdelivr.net/gh/boringcdn/sd/sd-banner.jpeg"
+    },
+    {
+      "type": "video",
+      "url": "https://www.youtube.com/watch?v=DHaL56P6f5M"
+    }
+  ],
+  "documentation_urls": [
+    {
+      "text": "Stable Diffusion Github",
+      "url": "https://github.com/CompVis/stable-diffusion"
+    }
+  ],
+  "external_urls": [
+    {
+      "text": "Stable Diffusion Official",
+      "url": "https://stabledifffusion.com/"
+    }
+  ],
+  "mlops_app_type": "stable-diffusion",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}

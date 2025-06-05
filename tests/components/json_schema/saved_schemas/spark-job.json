@@ -1,0 +1,659 @@
+{
+  "name": "spark-job",
+  "title": "Spark Application",
+  "pub_date": "2025-01-01T00:00:00Z",
+  "description": "Start scalable Spark application easily",
+  "short_description": "",
+  "schema_version": 1,
+  "version": "MLO-178",
+  "input": {
+    "$defs": {
+      "ApoloFilesFile": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Storage Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "ApoloFilesFile",
+        "type": "object",
+        "x-description": "Specify the path within the Apolo Files application to read from or write to.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Apolo Files Path"
+      },
+      "ApoloFilesMount": {
+        "properties": {
+          "storage_uri": {
+            "$ref": "#/$defs/ApoloFilesPath"
+          },
+          "mount_path": {
+            "$ref": "#/$defs/MountPath"
+          },
+          "mode": {
+            "$ref": "#/$defs/ApoloMountMode",
+            "default": {
+              "mode": "rw"
+            }
+          }
+        },
+        "required": [
+          "storage_uri",
+          "mount_path"
+        ],
+        "title": "ApoloFilesMount",
+        "type": "object",
+        "x-description": "Configure Apolo Files mount within the application workloads.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Apolo Files Mount"
+      },
+      "ApoloFilesPath": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Storage Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "ApoloFilesPath",
+        "type": "object",
+        "x-description": "Specify the path within the Apolo Files application to read from or write to.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Apolo Files Path"
+      },
+      "ApoloMountMode": {
+        "properties": {
+          "mode": {
+            "$ref": "#/$defs/ApoloMountModes",
+            "default": "rw",
+            "x-description": "Select the access mode for the mount, such as read-only or read-write.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Mount Mode"
+          }
+        },
+        "title": "ApoloMountMode",
+        "type": "object",
+        "x-description": "Configure how Apolo Files should be mounted into the application’s workload environment.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Apolo Files Mount"
+      },
+      "ApoloMountModes": {
+        "enum": [
+          "r",
+          "rw"
+        ],
+        "title": "ApoloMountModes",
+        "type": "string"
+      },
+      "ContainerImage": {
+        "properties": {
+          "repository": {
+            "title": "Repository",
+            "type": "string",
+            "x-description": "Choose a repository for the container image.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Container Image Repository"
+          },
+          "tag": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tag",
+            "x-description": "Choose a tag for the container image.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Container Image Tag"
+          },
+          "dockerconfigjson": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DockerConfigModel"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "x-description": "ImagePullSecrets for DockerHub",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "ImagePullSecrets for DockerHub"
+          }
+        },
+        "required": [
+          "repository"
+        ],
+        "title": "ContainerImage",
+        "type": "object",
+        "x-description": "Container image to be used in application",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Container Image"
+      },
+      "DockerConfigModel": {
+        "properties": {
+          "filecontents": {
+            "title": "Filecontents",
+            "type": "string",
+            "x-description": "The contents of the Docker config file.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Docker Config File Contents"
+          }
+        },
+        "required": [
+          "filecontents"
+        ],
+        "title": "DockerConfigModel",
+        "type": "object",
+        "x-description": "Docker configuration content.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Docker Config"
+      },
+      "DriverConfig": {
+        "properties": {
+          "preset": {
+            "$ref": "#/$defs/Preset",
+            "x-description": "Specify preset configuration to be used by the driver",
+            "x-meta-type": "inline",
+            "x-title": "Driver Preset"
+          }
+        },
+        "required": [
+          "preset"
+        ],
+        "title": "DriverConfig",
+        "type": "object",
+        "x-description": "Configure resources and environment for the Spark driver.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Driver Configuration"
+      },
+      "ExecutorConfig": {
+        "properties": {
+          "instances": {
+            "default": 1,
+            "title": "Instances",
+            "type": "integer",
+            "x-description": "Specify number of instances",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Instances"
+          },
+          "preset": {
+            "$ref": "#/$defs/Preset",
+            "x-description": "Specify preset configuration to be used by the executor.",
+            "x-meta-type": "inline",
+            "x-title": "Executor Preset"
+          }
+        },
+        "required": [
+          "preset"
+        ],
+        "title": "ExecutorConfig",
+        "type": "object",
+        "x-description": "Define the compute resources and behavior for Spark executors.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Executor Configuration"
+      },
+      "MountPath": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Specify the absolute path inside the container where the volume should be mounted.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "MountPath",
+        "type": "object",
+        "x-description": "Specify the absolute path.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Mount Path"
+      },
+      "Preset": {
+        "properties": {
+          "name": {
+            "description": "The name of the preset.",
+            "title": "Preset name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Preset",
+        "type": "object",
+        "x-description": "Select the resource preset used per service replica.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Resource Preset"
+      },
+      "SparkApplicationConfig": {
+        "properties": {
+          "type": {
+            "$ref": "#/$defs/SparkApplicationType",
+            "x-description": "Select the type of Spark application, such as Python, Java, or Scala.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Spark Application Type"
+          },
+          "main_application_file": {
+            "$ref": "#/$defs/ApoloFilesFile",
+            "x-description": "Provide the main application file to be executed by Spark (e.g., .py, .jar).",
+            "x-title": "Main Application File"
+          },
+          "arguments": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Arguments",
+            "x-description": "Pass command-line arguments to your Spark application at runtime.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Application Arguments"
+          },
+          "main_class": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Main Class",
+            "x-description": "Specify the main class to run if your Spark application is written in Java.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Main Class for Java Apps"
+          },
+          "dependencies": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/SparkDependencies"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "x-description": "Configure files, libraries, and packages required to run your Spark job.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Dependencies"
+          },
+          "volumes": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/ApoloFilesMount"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Volumes",
+            "x-description": "Attach external storage volumes needed by your Spark application.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Mounted Volumes"
+          }
+        },
+        "required": [
+          "type",
+          "main_application_file"
+        ],
+        "title": "SparkApplicationConfig",
+        "type": "object",
+        "x-description": "Configure the main application file, type, and arguments.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Spark App Settings"
+      },
+      "SparkApplicationType": {
+        "enum": [
+          "Python",
+          "Scala",
+          "Java",
+          "R"
+        ],
+        "title": "SparkApplicationType",
+        "type": "string"
+      },
+      "SparkAutoScalingConfig": {
+        "properties": {
+          "initial_executors": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Initial Executors",
+            "x-description": "Set the initial number of Spark executors to launch at application start.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Initial Executors"
+          },
+          "min_executors": {
+            "default": 1,
+            "title": "Min Executors",
+            "type": "integer",
+            "x-description": "Define the minimum number of executors to maintain during runtime.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Minimum Executors"
+          },
+          "max_executors": {
+            "default": 1,
+            "title": "Max Executors",
+            "type": "integer",
+            "x-description": "Set the upper limit on the number of executors that can be scaled up.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Maximum Executors"
+          },
+          "shuffle_tracking_timeout": {
+            "title": "Shuffle Tracking Timeout",
+            "type": "integer",
+            "x-description": "Set the timeout (in seconds) for shuffle tracking during executor deallocation.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Shuffle Tracking Timeout"
+          }
+        },
+        "required": [
+          "shuffle_tracking_timeout"
+        ],
+        "title": "SparkAutoScalingConfig",
+        "type": "object",
+        "x-description": "Configure dynamic executor scaling for your Spark application based on workload demand.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Spark Auto Scaling Configuration"
+      },
+      "SparkDependencies": {
+        "properties": {
+          "jars": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Jars",
+            "x-description": "Specify a list of JAR files to include as Spark dependencies.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "JARs"
+          },
+          "py_files": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Py Files",
+            "x-description": "Include additional Python files (e.g., .py or .zip) to be distributed with your Spark job.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Python Files"
+          },
+          "files": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Files",
+            "x-description": "Attach additional files needed by your Spark job at runtime.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Files"
+          },
+          "packages": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Packages",
+            "x-description": "Specify Maven coordinates of packages to include as Spark dependencies.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Packages"
+          },
+          "exclude_packages": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Exclude Packages",
+            "x-description": "List any packages to exclude from the Spark dependency resolution.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Exclude Packages"
+          },
+          "repositories": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Repositories",
+            "x-description": "Define custom Maven repositories for resolving packages.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Repositories"
+          },
+          "archives": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Archives",
+            "x-description": "Provide archive files (e.g., .zip, .tar.gz) to be extracted on worker nodes.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Archives"
+          },
+          "pypi_packages": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "$ref": "#/$defs/ApoloFilesFile"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pypi Packages",
+            "x-description": "List PyPI packages or a requirements file to install on all Spark nodes.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "PyPI Packages"
+          }
+        },
+        "title": "SparkDependencies",
+        "type": "object",
+        "x-description": "Define libraries, files, and packages required to run your Spark application.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Spark Dependencies"
+      }
+    },
+    "properties": {
+      "spark_application_config": {
+        "$ref": "#/$defs/SparkApplicationConfig",
+        "x-description": "Define the main Spark application file, type, arguments, and dependencies.",
+        "x-title": "Application Configuration"
+      },
+      "spark_auto_scaling_config": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/SparkAutoScalingConfig"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "x-description": "Enable and configure dynamic scaling of Spark executors based on workload.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Auto Scaling Configuration"
+      },
+      "image": {
+        "$ref": "#/$defs/ContainerImage",
+        "default": {
+          "repository": "spark",
+          "tag": "3.5.3",
+          "dockerconfigjson": null
+        },
+        "x-description": "Modify this to select the container image used to run your Spark job. Defaults to {_SPARK_DEFAULT_IMAGE[0]}:{_SPARK_DEFAULT_IMAGE[1]}.",
+        "x-is-advanced-field": true,
+        "x-title": "Spark Container Image"
+      },
+      "driver_config": {
+        "$ref": "#/$defs/DriverConfig",
+        "x-is-advanced-field": true
+      },
+      "executor_config": {
+        "$ref": "#/$defs/ExecutorConfig",
+        "x-is-advanced-field": true
+      }
+    },
+    "required": [
+      "spark_application_config",
+      "spark_auto_scaling_config",
+      "driver_config",
+      "executor_config"
+    ],
+    "title": "SparkJobInputs",
+    "type": "object",
+    "x-description": "Run scalable Apache Spark applications using configurable drivers, executors, and auto-scaling.",
+    "x-is-advanced-field": false,
+    "x-meta-type": "inline",
+    "x-title": "Spark Application"
+  },
+  "output": {
+    "properties": {},
+    "title": "SparkJobOutputs",
+    "type": "object"
+  },
+  "tags": [],
+  "git_url": "https://github.com/neuro-inc/app-spark-job",
+  "helm_path": "charts/spark-job",
+  "type": "mlops",
+  "logo": "",
+  "assets": [],
+  "documentation_urls": [],
+  "external_urls": [],
+  "mlops_app_type": "spark-job",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}
