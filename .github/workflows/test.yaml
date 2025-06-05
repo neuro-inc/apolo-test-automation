@@ -1,0 +1,62 @@
+on:
+  workflow_call: {}
+
+jobs:
+
+  pre-commit:
+    name: Pre-commit checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - name: Checkout commit
+      uses: actions/checkout@v4
+    - name: Install Python
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: .python-version
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+    - name: Sync
+      run: uv sync
+    - name: Run pre-commit
+      run: make setup
+    - name: Lint
+      run: |
+        echo "::add-matcher::.github/actionlint-matcher.json"
+        pre-commit run --all-files
+
+  mypy:
+    name: Mypy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - name: Checkout commit
+      uses: actions/checkout@v4
+    - name: Install Python
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: .python-version
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+    - name: Sync
+      run: uv sync
+    - name: Mypy
+      run: |
+        mypy
+
+  check:
+    name: Check
+    needs:
+    - pre-commit
+    - mypy
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Decide whether the needed jobs succeeded or failed
+      uses: re-actors/alls-green@release/v1
+      with:
+        jobs: ${{ toJSON(needs) }}
