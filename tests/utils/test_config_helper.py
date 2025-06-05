@@ -1,7 +1,6 @@
-import yaml
 import aiofiles
-from omegaconf import OmegaConf, DictConfig, ListConfig
-
+import yaml
+from omegaconf import DictConfig, ListConfig, OmegaConf
 from playwright.async_api import BrowserContext
 
 
@@ -21,7 +20,7 @@ class ConfigManager:
             )
 
     async def read_config(self, path_to_config):
-        async with aiofiles.open(path_to_config, "r") as f:
+        async with aiofiles.open(path_to_config) as f:
             content = await f.read()
             return yaml.safe_load(content)
 

@@ -1,5 +1,7 @@
 import re
+
 from jsonschema.exceptions import SchemaError
+
 from .base_formatter import ExceptionFormatter
 
 

@@ -1,7 +1,8 @@
 import re
+
 from playwright.sync_api import (
-    TimeoutError as PlaywrightTimeoutError,
     Error as PlaywrightError,
+    TimeoutError as PlaywrightTimeoutError,
 )
 
 from tests.utils.exception_handling.base_formatter import ExceptionFormatter

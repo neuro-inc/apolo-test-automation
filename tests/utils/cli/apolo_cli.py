@@ -1,5 +1,6 @@
 import logging
 import re
+
 from tests.utils.cli.cli_command_manager import CLICommandManager
 
 logger = logging.getLogger("[🖥apolo_CLI]")

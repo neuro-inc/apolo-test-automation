@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 import aiofiles
 from jsonschema.exceptions import ValidationError
 from jsonschema.validators import validate
@@ -42,7 +43,7 @@ class SchemaData:
         if not schema_path.exists():
             raise ValueError(f"Schema file not found: {schema_path}")
 
-        async with aiofiles.open(schema_path, "r") as f:
+        async with aiofiles.open(schema_path) as f:
             content = await f.read()
             self._saved_schema = json.loads(content)
 

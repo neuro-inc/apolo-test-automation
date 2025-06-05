@@ -1,5 +1,6 @@
 import random
 import string
+
 from tests.utils.test_data_management.job_data import JobData
 
 

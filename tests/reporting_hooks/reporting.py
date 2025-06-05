@@ -1,7 +1,8 @@
 import inspect
 import logging
-import allure
 from functools import wraps
+
+import allure
 
 from tests.utils.exception_handling.exception_manager import ExceptionManager
 

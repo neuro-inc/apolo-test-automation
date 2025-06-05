@@ -2,9 +2,9 @@ import asyncio
 
 import pytest
 
+from tests.reporting_hooks.reporting import async_step, async_suite, async_title
 from tests.test_cases.common_steps.cli_steps.cli_common_steps import CLICommonSteps
 from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
-from tests.reporting_hooks.reporting import async_step, async_title, async_suite
 
 
 @async_suite("Apolo CLI Hello World Job Verification")

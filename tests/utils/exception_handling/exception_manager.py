@@ -1,6 +1,6 @@
-import traceback
 import logging
 import os
+import traceback
 
 from tests.utils.exception_handling.playwright_formatter import (
     PlaywrightExceptionFormatter,

@@ -1,10 +1,10 @@
 from tests.components.ui.pages.auth_page import AuthPage
 from tests.components.ui.pages.jobs_page import JobsPage
+from tests.components.ui.pages.login_page import LoginPage
+from tests.components.ui.pages.main_page import MainPage
 from tests.components.ui.pages.onboarding_pages.join_organization_page import (
     JoinOrganizationPage,
 )
-from tests.components.ui.pages.login_page import LoginPage
-from tests.components.ui.pages.main_page import MainPage
 from tests.components.ui.pages.onboarding_pages.name_new_organization_page import (
     NameNewOrganizationPage,
 )

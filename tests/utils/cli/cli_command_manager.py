@@ -1,6 +1,5 @@
-import logging
 import asyncio
-from typing import Optional
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -8,7 +7,7 @@ logger = logging.getLogger(__name__)
 class CLICommandManager:
     def __init__(self, binary: str = "apolo"):
         self.binary = binary
-        self._process: Optional[asyncio.subprocess.Process] = None
+        self._process: asyncio.subprocess.Process | None = None
         self._stdout = ""
         self._stderr = ""
         self._raw_stderr = ""
@@ -43,11 +42,11 @@ class CLICommandManager:
     async def is_running(self) -> bool:
         return self._process is not None and self._process.returncode is None
 
-    async def wait(self, timeout: Optional[int] = None):
+    async def wait(self, timeout: int | None = None):
         if self._process:
             try:
                 await asyncio.wait_for(self._process.wait(), timeout=timeout)
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 self._process.kill()
                 raise TimeoutError("CLI command timed out")
 
