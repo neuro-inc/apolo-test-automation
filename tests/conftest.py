@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import os
 import subprocess
@@ -45,7 +47,9 @@ logger = logging.getLogger("[🛠️TEST CONFIG]")
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
 # --- Test Summary Tracking ---
-_SUITE_OUTCOMES = defaultdict(lambda: {"passed": 0, "failed": 0, "skipped": 0})
+_SUITE_OUTCOMES: dict[str, dict[str, int]] = defaultdict(
+    lambda: {"passed": 0, "failed": 0, "skipped": 0}
+)
 
 
 def pytest_configure(config):

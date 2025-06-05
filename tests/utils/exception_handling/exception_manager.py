@@ -9,9 +9,7 @@ from tests.utils.exception_handling.schema_formatter import JsonSchemaFormatter
 
 
 class ExceptionManager:
-    def __init__(
-        self, logger: logging.Logger = None, log_file: str = "test_errors.log"
-    ):
+    def __init__(self, logger: logging.Logger, log_file: str = "test_errors.log"):
         self.logger = logger or self._create_default_logger(log_file)
         self.formatters = [
             PlaywrightExceptionFormatter(),
