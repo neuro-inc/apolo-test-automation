@@ -1,0 +1,144 @@
+{
+  "name": "hugging-face-cache",
+  "title": "Hugging Face Cache",
+  "pub_date": "2025-03-13T00:00:00Z",
+  "description": "We mount Apolo Files, which function like the `~/.cache/huggingface` directory on your local machine. This enables you to cache Hugging Face Hub assets within the cluster, avoiding the need to reload them each time you run or scale your workloads.",
+  "short_description": "Cache your Hugging Face assets on Apolo Files",
+  "schema_version": 1,
+  "version": "HEAD",
+  "input": {
+    "$defs": {
+      "ApoloFilesPath": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Storage Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "ApoloFilesPath",
+        "type": "object",
+        "x-description": "Specify the path within the Apolo Files application to read from or write to.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Apolo Files Path"
+      },
+      "HuggingFaceCache": {
+        "properties": {
+          "files_path": {
+            "$ref": "#/$defs/ApoloFilesPath",
+            "x-description": "The path to the Apolo Files directory where Hugging Face artifacts are cached.",
+            "x-title": "Files Path"
+          }
+        },
+        "required": [
+          "files_path"
+        ],
+        "title": "HuggingFaceCache",
+        "type": "object",
+        "x-description": "Configuration for the Hugging Face cache.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Hugging Face Cache"
+      }
+    },
+    "properties": {
+      "cache_config": {
+        "$ref": "#/$defs/HuggingFaceCache"
+      }
+    },
+    "required": [
+      "cache_config"
+    ],
+    "title": "HuggingFaceCacheInputs",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "ApoloFilesPath": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Storage Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "ApoloFilesPath",
+        "type": "object",
+        "x-description": "Specify the path within the Apolo Files application to read from or write to.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Apolo Files Path"
+      },
+      "HuggingFaceCache": {
+        "properties": {
+          "files_path": {
+            "$ref": "#/$defs/ApoloFilesPath",
+            "x-description": "The path to the Apolo Files directory where Hugging Face artifacts are cached.",
+            "x-title": "Files Path"
+          }
+        },
+        "required": [
+          "files_path"
+        ],
+        "title": "HuggingFaceCache",
+        "type": "object",
+        "x-description": "Configuration for the Hugging Face cache.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Hugging Face Cache"
+      }
+    },
+    "properties": {
+      "cache_config": {
+        "$ref": "#/$defs/HuggingFaceCache"
+      }
+    },
+    "required": [
+      "cache_config"
+    ],
+    "title": "HuggingFaceCacheOutputs",
+    "type": "object"
+  },
+  "tags": [
+    "apolo",
+    "apolo files",
+    "hugging face"
+  ],
+  "git_url": "",
+  "helm_path": "helm",
+  "type": "appless",
+  "logo": "https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
+  "assets": [],
+  "documentation_urls": [
+    {
+      "text": "Apolo Files",
+      "url": "https://docs.apolo.us/index/apolo-console/apps/pre-installed/files"
+    },
+    {
+      "text": "Hugging Face cache",
+      "url": "https://huggingface.co/docs/datasets/en/cache"
+    }
+  ],
+  "external_urls": [
+    {
+      "text": "Hugging Face",
+      "url": "https://huggingface.co/"
+    }
+  ],
+  "mlops_app_type": "huggingface-cache",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}
