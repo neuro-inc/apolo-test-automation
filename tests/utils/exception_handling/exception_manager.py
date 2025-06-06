@@ -1,6 +1,7 @@
 import logging
 import os
 import traceback
+from typing import Any
 
 from tests.utils.exception_handling.playwright_formatter import (
     PlaywrightExceptionFormatter,
@@ -16,7 +17,7 @@ class ExceptionManager:
             JsonSchemaFormatter(),
         ]
 
-    def handle(self, exception: Exception, context: str = "", **kwargs) -> str:
+    def handle(self, exception: Exception, context: str = "", **kwargs: Any) -> str:
         debug = self.logger.isEnabledFor(logging.DEBUG)
 
         for formatter in self.formatters:

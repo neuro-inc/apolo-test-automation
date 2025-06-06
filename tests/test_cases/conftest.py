@@ -1,8 +1,11 @@
+from __future__ import annotations
+
+from collections.abc import AsyncGenerator
 import logging
 import os
 
 import pytest
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, Browser, BrowserContext, Page
 
 from tests.components.ui.page_manager import PageManager
 from tests.utils.api_helper import APIHelper
@@ -18,7 +21,7 @@ CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
 
 @pytest.fixture(scope="function")
-async def browser():
+async def browser() -> AsyncGenerator[Browser, None]:
     async with async_playwright() as p:
         logger.info("Launching browser")
         browser = await p.chromium.launch(headless=False, args=["--start-maximized"])
@@ -28,9 +31,14 @@ async def browser():
 
 
 @pytest.fixture(scope="function")
-async def page_manager(browser, test_config, data_manager, request):
-    context = await browser.new_context(no_viewport=True)
-    page = await context.new_page()
+async def page_manager(
+    browser: Browser,
+    test_config: ConfigManager,
+    data_manager: DataManager,
+    request: pytest.FixtureRequest,
+) -> AsyncGenerator[PageManager, None]:
+    context: BrowserContext = await browser.new_context(no_viewport=True)
+    page: Page = await context.new_page()
     logger.info(f"Navigating to: {test_config.base_url}")
     await page.goto(test_config.base_url)
 
@@ -43,48 +51,51 @@ async def page_manager(browser, test_config, data_manager, request):
 
 
 @pytest.fixture
-def test_config():
+def test_config() -> ConfigManager:
     logger.info("Loading test configuration")
     return ConfigManager(CONFIG_PATH)
 
 
 @pytest.fixture
-def data_manager():
+def data_manager() -> DataManager:
     logger.info("Creating data manager")
     return DataManager()
 
 
 @pytest.fixture
-def schema_data():
+def schema_data() -> SchemaData:
     logger.info("Creating schema data manager")
     return SchemaData("components/json_schema/saved_schemas")
 
 
 @pytest.fixture
-def api_helper():
+def api_helper() -> APIHelper:
     logger.info("Creating API helper")
     return APIHelper()
 
 
 @pytest.fixture
-def apolo_cli():
+def apolo_cli() -> ApoloCLI:
     logger.info("Creating Apolo CLI instance")
     return ApoloCLI()
 
 
 @pytest.fixture(autouse=True)
-async def clean_up(test_config, data_manager, apolo_cli):
+async def clean_up(
+    test_config: ConfigManager,
+    data_manager: DataManager,
+    apolo_cli: ApoloCLI,
+) -> AsyncGenerator[None, None]:
     yield
     logger.info("Running post-test cleanup")
 
-    if test_config.auth.token:
-        logger.info("Logging in to Apolo CLI for cleanup")
-        token = test_config.auth.token
-        url = test_config.cli_login_url
-        await apolo_cli.login_with_token(token, url)
-
     organizations = data_manager.get_all_organizations()
     logger.info(f"Cleaning up {len(organizations)} organizations")
-    for organization in organizations:
-        await apolo_cli.remove_organization(organization.org_name)
-        logger.info(f"Removed organization: {organization.org_name}")
+    if organizations:
+        logger.info("Logging in to Apolo CLI for cleanup")
+        token = test_config.token
+        url = test_config.cli_login_url
+        await apolo_cli.login_with_token(token, url)
+        for organization in organizations:
+            await apolo_cli.remove_organization(organization.org_name)
+            logger.info(f"Removed organization: {organization.org_name}")

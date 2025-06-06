@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Optional, Any
 
 import aiofiles
 from jsonschema.exceptions import ValidationError
@@ -11,30 +12,30 @@ class SchemaData:
     Manages expected and actual schemas, performs comparison, and tracks errors.
     """
 
-    def __init__(self, schemas_path):
-        self._saved_schemas_path = schemas_path
-        self._saved_schema = None
-        self._live_schema = None
-        self._error = False
-        self._error_message = None
+    def __init__(self, schemas_path: str) -> None:
+        self._saved_schemas_path: str = schemas_path
+        self._saved_schema: Optional[dict[str, Any]] = None
+        self._live_schema: Optional[dict[str, Any]] = None
+        self._error: bool = False
+        self._error_message: Optional[str] = None
 
     @property
-    def saved_schema(self):
+    def saved_schema(self) -> Optional[dict[str, Any]]:
         return self._saved_schema
 
     @property
-    def live_schema(self):
+    def live_schema(self) -> Optional[dict[str, Any]]:
         return self._live_schema
 
     @property
-    def error(self):
+    def error(self) -> bool:
         return self._error
 
     @property
-    def error_message(self):
+    def error_message(self) -> Optional[str]:
         return self._error_message
 
-    async def load_saved_schema(self, app_name):
+    async def load_saved_schema(self, app_name: str) -> None:
         """
         Asynchronously loads a saved JSON schema for a given app name from disk.
         """
@@ -43,11 +44,13 @@ class SchemaData:
         if not schema_path.exists():
             raise ValueError(f"Schema file not found: {schema_path}")
 
-        async with aiofiles.open(schema_path) as f:
+        async with aiofiles.open(schema_path, mode="r") as f:
             content = await f.read()
             self._saved_schema = json.loads(content)
 
-    def parse_live_schema(self, full_schema, app_name: str):
+    def parse_live_schema(
+        self, full_schema: list[dict[str, Any]], app_name: str
+    ) -> None:
         if not isinstance(full_schema, list) or not all(
             isinstance(item, dict) for item in full_schema
         ):
@@ -62,7 +65,7 @@ class SchemaData:
 
         self._live_schema = match
 
-    def validate(self):
+    def validate(self) -> bool:
         if self._saved_schema is None:
             self._error = True
             self._error_message = "Saved schema is not set."

@@ -1,4 +1,5 @@
 import re
+from typing import Any
 
 from jsonschema.exceptions import SchemaError
 
@@ -6,12 +7,20 @@ from .base_formatter import ExceptionFormatter
 
 
 class JsonSchemaFormatter(ExceptionFormatter):
-    VALID_TYPES = ["string", "number", "integer", "boolean", "object", "array", "null"]
+    VALID_TYPES: list[str] = [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null",
+    ]
 
     def can_handle(self, exception: Exception) -> bool:
         return isinstance(exception, SchemaError)
 
-    def format(self, exception: Exception, context: str, **kwargs) -> str:
+    def format(self, exception: Exception, context: str, **kwargs: Any) -> str:
         message = f"[SchemaError] during step: {context}\nMessage: {str(exception)}"
         message += "\nNote: JSON Schema is invalid."
 
@@ -25,4 +34,5 @@ class JsonSchemaFormatter(ExceptionFormatter):
             match = re.search(r"On schema\['type'\]:\s+'([^']+)'", str(exception))
             if match:
                 message += f"\nInvalid 'type' value: `{match.group(1)}`"
+
         return message

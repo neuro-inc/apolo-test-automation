@@ -1,11 +1,13 @@
+from typing import Any
+from playwright.async_api import Page
 from tests.components.ui.pages.base_element import BaseElement
 from tests.components.ui.pages.base_page import BasePage
 
 
 class WelcomeNewUserPage(BasePage):
-    def __init__(self, page, email):
+    def __init__(self, page: Page, email: str) -> None:
         super().__init__(page)
-        self._email = email
+        self._email: str = email
         self._journey_text_field = BaseElement(
             self.page, "p:has-text('Ready to begin your journey?')"
         )
@@ -13,7 +15,7 @@ class WelcomeNewUserPage(BasePage):
             self.page, 'button:has-text("Let\'s do it!")'
         )
 
-    async def is_loaded(self):
+    async def is_loaded(self, **kwargs: Any) -> bool:
         """
         Returns True if the page is considered loaded (key elements are visible).
         """
@@ -24,11 +26,11 @@ class WelcomeNewUserPage(BasePage):
             and await self._lets_do_it_button.expect_to_be_loaded()
         )
 
-    def _get_welcome_user_message(self):
+    def _get_welcome_user_message(self) -> BaseElement:
         return BaseElement(
             self.page, "h3.truncate.text-h3", has_text=f"Welcome, {self._email}"
         )
 
-    async def click_lets_do_it_button(self):
+    async def click_lets_do_it_button(self) -> None:
         self.log("Click lets do it button")
         await self._lets_do_it_button.click()

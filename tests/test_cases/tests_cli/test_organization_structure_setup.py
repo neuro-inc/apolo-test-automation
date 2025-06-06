@@ -3,12 +3,22 @@ import pytest
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.common_steps.cli_steps.cli_common_steps import CLICommonSteps
 from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.components.ui.page_manager import PageManager
+from tests.utils.test_data_management.test_data import DataManager
+from tests.utils.cli.apolo_cli import ApoloCLI
+from tests.utils.test_config_helper import ConfigManager
 
 
 @async_suite("CLI Organization Structure Setup")
 class TestCLIOrganizationStructureSetup:
     @pytest.fixture(autouse=True)
-    async def setup(self, page_manager, data_manager, apolo_cli, test_config):
+    async def setup(
+        self,
+        page_manager: PageManager,
+        data_manager: DataManager,
+        apolo_cli: ApoloCLI,
+        test_config: ConfigManager,
+    ) -> None:
         """
         Initialize shared resources for the test methods.
         """
@@ -30,7 +40,7 @@ class TestCLIOrganizationStructureSetup:
 
     @async_title("User creates a first organization via CLI")
     @pytest.mark.xfail(reason="BUG-ENG-747", strict=True)
-    async def test_create_first_organization_cli(self):
+    async def test_create_first_organization_cli(self) -> None:
         await self.cli_common_steps.cli_login_with_token()
         await self.cli_common_steps.verify_cli_organization_count(0)
         await self.cli_common_steps.cli_add_new_organization("My-organization")

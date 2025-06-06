@@ -1,5 +1,6 @@
 import re
 
+from playwright.async_api import Page
 from playwright.sync_api import (
     Error as PlaywrightError,
     TimeoutError as PlaywrightTimeoutError,
@@ -12,11 +13,11 @@ class PlaywrightExceptionFormatter(ExceptionFormatter):
     def can_handle(self, exception: Exception) -> bool:
         return isinstance(exception, (PlaywrightTimeoutError, PlaywrightError))
 
-    def format(self, exception: Exception, context: str, **kwargs) -> str:
+    def format(self, exception: Exception, context: str, **kwargs: object) -> str:
         message = f"[{type(exception).__name__}] during step: {context}\nMessage: {str(exception)}"
 
         page = kwargs.get("page")
-        if page:
+        if isinstance(page, Page):
             try:
                 message += f"\nURL at error: {page.url}"
             except Exception:

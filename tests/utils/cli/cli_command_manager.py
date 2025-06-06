@@ -1,18 +1,19 @@
 import asyncio
 import logging
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 
 class CLICommandManager:
-    def __init__(self, binary: str = "apolo"):
-        self.binary = binary
-        self._process: asyncio.subprocess.Process | None = None
-        self._stdout = ""
-        self._stderr = ""
-        self._raw_stderr = ""
+    def __init__(self, binary: str = "apolo") -> None:
+        self.binary: str = binary
+        self._process: Optional[asyncio.subprocess.Process] = None
+        self._stdout: str = ""
+        self._stderr: str = ""
+        self._raw_stderr: str = ""
 
-    async def run_async(self, *args):
+    async def run_async(self, *args: str) -> None:
         """Start CLI command asynchronously (non-blocking)."""
         self._process = await asyncio.create_subprocess_exec(
             self.binary,
@@ -22,7 +23,7 @@ class CLICommandManager:
         )
         await self._capture_output()
 
-    async def _capture_output(self):
+    async def _capture_output(self) -> None:
         if not self._process:
             return
 
@@ -34,7 +35,6 @@ class CLICommandManager:
 
         returncode = self._process.returncode
         if returncode and returncode != 0:
-            # Only capture stderr if it's an actual error
             self._stderr = stderr_text
         else:
             self._stderr = ""
@@ -42,7 +42,7 @@ class CLICommandManager:
     async def is_running(self) -> bool:
         return self._process is not None and self._process.returncode is None
 
-    async def wait(self, timeout: int | None = None):
+    async def wait(self, timeout: Optional[int] = None) -> None:
         if self._process:
             try:
                 await asyncio.wait_for(self._process.wait(), timeout=timeout)
@@ -56,6 +56,6 @@ class CLICommandManager:
     async def get_error(self) -> str:
         return self._stderr
 
-    async def stop(self):
+    async def stop(self) -> None:
         if self._process and await self.is_running():
             self._process.terminate()

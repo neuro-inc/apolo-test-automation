@@ -1,80 +1,83 @@
 import aiofiles
 import yaml
+from typing import Any, Optional
+
 from omegaconf import DictConfig, ListConfig, OmegaConf
 from playwright.async_api import BrowserContext
 
 
 class ConfigManager:
-    def __init__(self, path_to_config):
+    def __init__(self, path_to_config: str) -> None:
         """
         Initialize the ConfigManager.
         Args:
             path_to_config (str): Path to the YAML config file.
         """
-        self._config = OmegaConf.load(path_to_config)
-        self._context = None
-
-        if not isinstance(self._config, (DictConfig, ListConfig)):
+        config = OmegaConf.load(path_to_config)
+        if not isinstance(config, (DictConfig, ListConfig)):
             raise ValueError(
                 "Unsupported YAML root type: expected DictConfig or ListConfig"
             )
+        self._config: DictConfig | ListConfig = config
+        self._context: Optional[BrowserContext] = None
+        self._token: Optional[str] = None
 
-    async def read_config(self, path_to_config):
+    async def read_config(self, path_to_config: str) -> dict[str, Any]:
         async with aiofiles.open(path_to_config) as f:
             content = await f.read()
-            return yaml.safe_load(content)
+            loaded = yaml.safe_load(content)
+            return dict(loaded) if isinstance(loaded, dict) else {}
 
     @property
     def context(self) -> BrowserContext:
-        """
-        Returns:
-            BrowserContext: The current Playwright browser context instance.
-        Notes:
-            This property is intended to store the browser context used in automation tests.
-            It allows shared access to Playwright's `BrowserContext` object across different
-            parts of the test framework, such as for page creation, cookie handling, or storage state.
-        """
+        if self._context is None:
+            raise ValueError("Browser context has not been set.")
         return self._context
 
     @context.setter
-    def context(self, value: BrowserContext):
-        """
-        Sets the Playwright browser context for reuse across test modules.
-
-        Args:
-            value (BrowserContext): The browser context instance to store.
-        """
+    def context(self, value: BrowserContext) -> None:
         self._context = value
 
     @property
-    def env(self):
-        return self._config.env
+    def token(self) -> str:
+        if self._token is None:
+            raise ValueError("Token has not been set.")
+        return self._token
+
+    @token.setter
+    def token(self, value: str) -> None:
+        self._token = value
 
     @property
-    def base_url(self):
-        return self._config.base_url
+    def env(self) -> str:
+        return str(self._config.env)
 
     @property
-    def cli_login_url(self):
-        return self._config.cli_login_url
+    def base_url(self) -> str:
+        return str(self._config.base_url)
 
     @property
-    def auth(self):
-        return self._config.auth
+    def cli_login_url(self) -> str:
+        return str(self._config.cli_login_url)
 
     @property
-    def project(self):
-        return self._config.project
+    def auth(self) -> DictConfig:
+        return DictConfig(self._config.auth)
 
     @property
-    def endpoints(self):
-        return self._config.endpoints
+    def project(self) -> DictConfig:
+        return DictConfig(self._config.project)
 
-    def get_template_url(self, organization=None, project_name=None):
-        organization = (
-            organization if organization else self._config.project.organization
-        )
-        project_name = project_name if project_name else self._config.project.name
-        return self.endpoints.templates.format(
+    @property
+    def endpoints(self) -> DictConfig:
+        return DictConfig(self._config.endpoints)
+
+    def get_template_url(
+        self, organization: Optional[str] = None, project_name: Optional[str] = None
+    ) -> str:
+        project_cfg = DictConfig(self._config.project)
+        organization = organization if organization else str(project_cfg.organization)
+        project_name = project_name if project_name else str(project_cfg.name)
+        return str(self.endpoints.templates).format(
             organization=organization, project=project_name
         )

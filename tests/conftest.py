@@ -1,11 +1,16 @@
-from __future__ import annotations
+from collections.abc import Generator
 
 import logging
 import os
 import subprocess
 from collections import defaultdict
+from typing import Any, cast
 
 import pytest
+from _pytest.config import Config
+from _pytest.reports import TestReport
+from _pytest.nodes import Item
+from _pytest.runner import CallInfo
 
 # --- Paths and Directories ---
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -21,7 +26,6 @@ LOG_FILE_PATH = os.path.join(LOGS_DIR, "test_run.log")
 for path in [LOGS_DIR, SCREENSHOTS_DIR, ALLURE_RESULTS_DIR, ALLURE_REPORT_DIR]:
     os.makedirs(path, exist_ok=True)
 
-# Remove previous reports but preserve folder structure
 if os.path.exists(BASE_REPORT_DIR):
     for root, dirs, files in os.walk(BASE_REPORT_DIR):
         for f in files:
@@ -31,7 +35,6 @@ if os.path.exists(BASE_REPORT_DIR):
 root_logger = logging.getLogger()
 root_logger.setLevel(logging.INFO)
 
-# Remove existing handlers to avoid duplicates
 while root_logger.hasHandlers():
     root_logger.removeHandler(root_logger.handlers[0])
 
@@ -43,28 +46,25 @@ root_logger.addHandler(file_handler)
 
 logger = logging.getLogger("[🛠️TEST CONFIG]")
 
-# --- Configuration ---
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
-# --- Test Summary Tracking ---
 _SUITE_OUTCOMES: dict[str, dict[str, int]] = defaultdict(
     lambda: {"passed": 0, "failed": 0, "skipped": 0}
 )
 
 
-def pytest_configure(config):
+def pytest_configure(config: Config) -> None:
     config.option.allure_report_dir = ALLURE_RESULTS_DIR
-    config.option.allure_report = ALLURE_RESULTS_DIR  # Compatibility with some plugins
-    config.option.alluredir = ALLURE_RESULTS_DIR  # ← main one used by allure-pytest
+    config.option.allure_report = ALLURE_RESULTS_DIR
+    config.option.alluredir = ALLURE_RESULTS_DIR
 
 
 @pytest.hookimpl(hookwrapper=True)
-def pytest_runtest_makereport(item, call):
-    """
-    Track test outcome per suite.
-    """
+def pytest_runtest_makereport(
+    item: Item, call: CallInfo[Any]
+) -> Generator[None, None, None]:
     outcome = yield
-    report = outcome.get_result()
+    report = cast(TestReport, outcome.get_result())  # type: ignore[attr-defined]
 
     if call.when == "call":
         cls = getattr(item, "cls", None)
@@ -73,10 +73,7 @@ def pytest_runtest_makereport(item, call):
             _SUITE_OUTCOMES[suite][report.outcome] += 1
 
 
-def pytest_sessionfinish(session, exitstatus):
-    """
-    Final test summary and Allure report generation.
-    """
+def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     logger.info("=" * 60)
     passed = failed = skipped = 0
     logger.info("📊 TEST SUITE SUMMARY")

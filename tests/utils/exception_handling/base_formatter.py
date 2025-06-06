@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class ExceptionFormatter(ABC):
@@ -7,5 +8,5 @@ class ExceptionFormatter(ABC):
         pass
 
     @abstractmethod
-    def format(self, exception: Exception, context: str, **kwargs) -> str:
+    def format(self, exception: Exception, context: str, **kwargs: Any) -> str:
         pass

@@ -1,6 +1,11 @@
+from __future__ import annotations
+
+from collections.abc import Awaitable
+from collections.abc import Callable
 import inspect
 import logging
 from functools import wraps
+from typing import Any, TypeVar
 
 import allure
 
@@ -9,11 +14,13 @@ from tests.utils.exception_handling.exception_manager import ExceptionManager
 logger = logging.getLogger("[📘TEST_INFO]")
 exception_manager = ExceptionManager(logger=logger)
 
+ReportFunc = TypeVar("ReportFunc", bound=Callable[..., Awaitable[Any]])
 
-def async_step(step_name):
-    def decorator(func):
+
+def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
+    def decorator(func: ReportFunc) -> Any:
         @wraps(func)
-        async def wrapper(*args, **kwargs):
+        async def wrapper(*args: Any, **kwargs: Any) -> Any:
             logger.info(f"▶️ STEP started: {step_name}")
             with allure.step(step_name):
                 try:
@@ -30,11 +37,11 @@ def async_step(step_name):
     return decorator
 
 
-def async_title(title_name):
-    def decorator(func):
-        @allure.title(title_name)
+def async_title(title_name: str) -> Callable[[ReportFunc], ReportFunc]:
+    def decorator(func: ReportFunc) -> Any:
+        @allure.title(title_name)  # type: ignore[misc, no-untyped-call]
         @wraps(func)
-        async def wrapper(*args, **kwargs):
+        async def wrapper(*args: Any, **kwargs: Any) -> Any:
             logger.info("-" * 60)
             logger.info(f"📝 TEST started: {title_name}")
             logger.info("-" * 60)
@@ -53,11 +60,11 @@ def async_title(title_name):
     return decorator
 
 
-def async_suite(suite_name: str):
-    def decorator(cls):
+def async_suite(suite_name: str) -> Callable[[type[Any]], type[Any]]:
+    def decorator(cls: type[Any]) -> type[Any]:
         cls.__allure_suite__ = suite_name
         setattr(cls, "__suite_name__", suite_name)
-        cls = allure.suite(suite_name)(cls)
+        cls = allure.suite(suite_name)(cls)  # type: ignore[no-untyped-call]
         suite_logged = {"started": False}
         test_count = sum(1 for a in dir(cls) if a.startswith("test_"))
         results = {"ran": 0, "passed": 0, "failed": 0}
@@ -74,8 +81,12 @@ def async_suite(suite_name: str):
 
                 @wraps(method)
                 async def wrapped(
-                    self, *args, _method=method, _name=attr_name, **kwargs
-                ):
+                    self: Any,
+                    *args: Any,
+                    _method: Callable[..., Awaitable[Any]] = method,
+                    _name: str = attr_name,
+                    **kwargs: Any,
+                ) -> Any:
                     if not suite_logged["started"]:
                         logger.info("=" * 60)
                         logger.info(f"📁 SUITE STARTED: {suite_name}")

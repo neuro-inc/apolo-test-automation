@@ -1,9 +1,10 @@
 import json
+from typing import Any
 
 from playwright.async_api import Page
 
 
-async def extract_access_token_from_local_storage(page: Page):
+async def extract_access_token_from_local_storage(page: Page) -> Any:
     keys = await page.evaluate("Object.keys(window.localStorage)")
     for key in keys:
         if "auth0spajs" in key:

@@ -1,3 +1,5 @@
+from playwright.async_api import Page
+
 from tests.components.ui.pages.auth_page import AuthPage
 from tests.components.ui.pages.jobs_page import JobsPage
 from tests.components.ui.pages.login_page import LoginPage
@@ -15,7 +17,7 @@ from tests.components.ui.pages.onboarding_pages.welcome_new_user_page import (
 
 
 class PageManager:
-    def __init__(self, page, email, username):
+    def __init__(self, page: Page, email: str, username: str):
         self.page = page
 
         self.auth_page = AuthPage(page)

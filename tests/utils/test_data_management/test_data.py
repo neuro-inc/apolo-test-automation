@@ -1,19 +1,27 @@
+from typing import Optional
+
 from tests.utils.test_data_management.organization_data import OrganizationData
+from tests.utils.test_data_management.job_data import JobData
 
 
 class DataManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.__organizations: dict[str, OrganizationData] = {}
-        self.__default_organization = None
+        self.__default_organization: Optional[OrganizationData] = None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"DataManager(organizations={list(self.__organizations.keys())})"
 
     @property
-    def default_organization(self):
-        return self.__default_organization
+    def default_organization(self) -> OrganizationData:
+        if self.__default_organization:
+            return self.__default_organization
+        else:
+            raise ValueError("Default organization not set")
 
-    def add_organization(self, gherkin_name, org_name=None):
+    def add_organization(
+        self, gherkin_name: str, org_name: Optional[str] = None
+    ) -> OrganizationData:
         if gherkin_name in [org.gherkin_name for org in self.__organizations.values()]:
             raise ValueError(
                 f"Organization with gherkin_name '{gherkin_name}' already exists."
@@ -24,16 +32,18 @@ class DataManager:
             self.__default_organization = org
         return org
 
-    def get_organization(self, org_name):
+    def get_organization(self, org_name: str) -> Optional[OrganizationData]:
         return self.__organizations.get(org_name)
 
-    def get_organization_by_name(self, org_name):
+    def get_organization_by_name(self, org_name: str) -> Optional[OrganizationData]:
         return next(
             (org for org in self.__organizations.values() if org.org_name == org_name),
             None,
         )
 
-    def get_organization_by_gherkin_name(self, gherkin_name):
+    def get_organization_by_gherkin_name(
+        self, gherkin_name: str
+    ) -> Optional[OrganizationData]:
         return next(
             (
                 org
@@ -43,19 +53,14 @@ class DataManager:
             None,
         )
 
-    def get_all_organizations(self):
+    def get_all_organizations(self) -> list[OrganizationData]:
         return list(self.__organizations.values())
 
-    def remove_organization(self, org_name):
+    def remove_organization(self, org_name: str) -> None:
         if org_name in self.__organizations:
             del self.__organizations[org_name]
 
-    def get_job_from_default_project(self, gherkin_name):
-        if self.__default_organization is None:
-            raise AssertionError("No default organization created!!!")
-        elif self.__default_organization.default_project is None:
-            raise AssertionError("No default project created!!!")
-        else:
-            return self.__default_organization.default_project.get_job_by_gherkin_name(
-                gherkin_name
-            )
+    def get_job_from_default_project(self, gherkin_name: str) -> JobData:
+        return self.default_organization.default_project.get_job_by_gherkin_name(
+            gherkin_name
+        )
