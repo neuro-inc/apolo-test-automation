@@ -15,20 +15,11 @@ else
   echo "✅ uv is already installed."
 fi
 
-# --- 2. Create virtual environment ---
-echo "📁 Creating virtual environment in ${VENV_DIR}"
-uv venv "${VENV_DIR}"
-
-# --- 3. Activate virtual environment ---
-echo "🔁 Activating virtual environment..."
-# shellcheck disable=SC1090
-source "${VENV_DIR}/bin/activate"
-
-# --- 4. Install project dependencies ---
+# --- 2. Install project dependencies ---
 echo "📦 Installing dependencies from pyproject.toml"
 uv sync
 
-# --- 5. Install Allure CLI if not present ---
+# --- 3. Install Allure CLI if not present ---
 if ! command -v allure &> /dev/null; then
   echo "📦 Installing Allure CLI via Homebrew..."
   if command -v brew &> /dev/null; then
@@ -41,9 +32,9 @@ else
   echo "✅ Allure CLI is already installed."
 fi
 
-# --- 6. Done ---
+# --- 4. Done ---
 echo ""
 echo "✅ Setup complete!"
 echo "👉 To activate the environment: source ${VENV_DIR}/bin/activate"
-echo "👉 To run tests:                pytest tests"
+echo "👉 To run tests:                uv run pytest tests"
 echo "👉 To view report:              open reports/allure-report/index.html"

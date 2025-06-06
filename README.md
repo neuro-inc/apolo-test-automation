@@ -42,7 +42,7 @@ source .venv/bin/activate
 ### 2. Run the tests
 
 ```bash
-pytest tests/
+uv run pytest tests/
 ```
 
 Tests will automatically generate Allure results and produce a report at:
