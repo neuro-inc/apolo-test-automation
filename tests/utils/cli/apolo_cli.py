@@ -24,10 +24,10 @@ class ApoloCLI:
         return self._login_success
 
     async def is_cli_installed(self) -> bool:
-        return await self.__run_command("--version", action="check CLI version")
+        return await self._run_command("--version", action="check CLI version")
 
     async def login_with_token(self, token: str, api_url: str) -> bool:
-        success = await self.__run_command(
+        success = await self._run_command(
             "config", "login-with-token", token, api_url, action="login-with-token"
         )
         self._login_success = success
@@ -44,7 +44,7 @@ class ApoloCLI:
         command_parts = command.strip().split()
         cli_args = base_command + command_parts
 
-        await self.__run_command(
+        await self._run_command(
             *cli_args, action=f"run job '{job_name}'", timeout=wait_for_output_timeout
         )
 
@@ -63,7 +63,7 @@ class ApoloCLI:
         return job_id
 
     async def create_organization(self, org_name: str) -> bool:
-        return await self.__run_command(
+        return await self._run_command(
             "admin", "add-org", org_name, action=f"create organization '{org_name}'"
         )
 
@@ -72,12 +72,12 @@ class ApoloCLI:
         args = ["admin", "remove-org", org_name]
         if force:
             args.append("--force")
-        return await self.__run_command(
+        return await self._run_command(
             *args, action=f"remove organization '{org_name}'"
         )
 
     async def get_organizations(self) -> list[str]:
-        await self.__run_command("admin", "get-orgs", action="get organizations")
+        await self._run_command("admin", "get-orgs", action="get organizations")
         organizations: list[str] = []
         lines = (self._last_command_output or "").splitlines()
         header_index: Optional[int] = None
@@ -97,7 +97,7 @@ class ApoloCLI:
     async def create_project(
         self, project_name: str, cluster_name: str = "default"
     ) -> bool:
-        return await self.__run_command(
+        return await self._run_command(
             "admin",
             "add-project",
             cluster_name,
@@ -111,12 +111,12 @@ class ApoloCLI:
         args = ["admin", "remove-project", cluster_name, project_name]
         if force:
             args.append("--force")
-        return await self.__run_command(
+        return await self._run_command(
             *args,
             action=f"remove project '{project_name}' from cluster '{cluster_name}'",
         )
 
-    async def __run_command(
+    async def _run_command(
         self, *args: str, action: str, timeout: Optional[int] = None
     ) -> bool:
         default_timeout: int = timeout if timeout else 60

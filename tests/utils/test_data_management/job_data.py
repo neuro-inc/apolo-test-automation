@@ -11,19 +11,19 @@ class JobData:
         image_name: str = "ubuntu",
         command: str = "",
     ) -> None:
-        self.__gherkin_name: str = gherkin_name
-        self.__job_name: str = job_name or self.generate_random_name()
-        self.__image_name: str = image_name
-        self.__command: str = command
-        self.__job_id: Optional[str] = None
+        self._gherkin_name: str = gherkin_name
+        self._job_name: str = job_name or self.generate_random_name()
+        self._image_name: str = image_name
+        self._command: str = command
+        self._job_id: Optional[str] = None
 
     def __repr__(self) -> str:
         return (
-            f"JobData(gherkin_name={self.__gherkin_name}, "
-            f"job_name={self.__job_name}, "
-            f"job_id={self.__job_id}, "
-            f"image_name={self.__image_name}, "
-            f"command={self.__command})"
+            f"JobData(gherkin_name={self._gherkin_name}, "
+            f"job_name={self._job_name}, "
+            f"job_id={self._job_id}, "
+            f"image_name={self._image_name}, "
+            f"command={self._command})"
         )
 
     @staticmethod
@@ -33,26 +33,26 @@ class JobData:
 
     @property
     def job_name(self) -> str:
-        return self.__job_name
+        return self._job_name
 
     @property
     def gherkin_name(self) -> str:
-        return self.__gherkin_name
+        return self._gherkin_name
 
     @property
     def image_name(self) -> str:
-        return self.__image_name
+        return self._image_name
 
     @property
     def command(self) -> str:
-        return self.__command
+        return self._command
 
     @property
     def job_id(self) -> Optional[str]:
-        return self.__job_id
+        return self._job_id
 
     @job_id.setter
     def job_id(self, value: Optional[str]) -> None:
         if not isinstance(value, str) and value is not None:
             raise ValueError("job_id must be a string or None.")
-        self.__job_id = value
+        self._job_id = value

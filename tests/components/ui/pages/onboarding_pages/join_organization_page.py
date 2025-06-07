@@ -31,12 +31,12 @@ class JoinOrganizationPage(BasePage):
         return (
             await self._join_organization_title.expect_to_be_loaded()
             and await self._pass_username_text_field.expect_to_be_loaded()
-            and await self.__get_username_input().expect_to_be_loaded()
+            and await self._get_username_input().expect_to_be_loaded()
             and await self._establish_new_organization_text_field.expect_to_be_loaded()
             and await self._create_organization_button.expect_to_be_loaded()
         )
 
-    def __get_username_input(self) -> BaseElement:
+    def _get_username_input(self) -> BaseElement:
         return BaseElement(
             self.page, f'div:has(span:text("{self._username}")) > button'
         )
