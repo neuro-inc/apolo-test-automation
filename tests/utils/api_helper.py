@@ -13,12 +13,12 @@ class APIHelper:
         Args:
             timeout (int): Timeout in seconds for all requests.
         """
-        self.__timeout = timeout
-        self.__session = aiohttp.ClientSession(
-            timeout=aiohttp.ClientTimeout(total=self.__timeout)
+        self._timeout = timeout
+        self._session = aiohttp.ClientSession(
+            timeout=aiohttp.ClientTimeout(total=self._timeout)
         )
 
-    def __headers(self, token: Optional[str] = None) -> dict[str, str]:
+    def _headers(self, token: Optional[str] = None) -> dict[str, str]:
         """
         Construct request headers.
         Args:
@@ -37,8 +37,8 @@ class APIHelper:
         params: Optional[dict[str, Any]] = None,
         token: Optional[str] = None,
     ) -> Any:
-        async with self.__session.get(
-            endpoint, headers=self.__headers(token), params=params
+        async with self._session.get(
+            endpoint, headers=self._headers(token), params=params
         ) as response:
             return await response.json()
 
@@ -48,8 +48,8 @@ class APIHelper:
         data: Optional[Union[dict[str, Any], list[Any]]] = None,
         token: Optional[str] = None,
     ) -> Any:
-        async with self.__session.post(
-            endpoint, headers=self.__headers(token), json=data
+        async with self._session.post(
+            endpoint, headers=self._headers(token), json=data
         ) as response:
             return await response.json()
 
@@ -59,14 +59,14 @@ class APIHelper:
         data: Optional[Union[dict[str, Any], list[Any]]] = None,
         token: Optional[str] = None,
     ) -> Any:
-        async with self.__session.put(
-            endpoint, headers=self.__headers(token), json=data
+        async with self._session.put(
+            endpoint, headers=self._headers(token), json=data
         ) as response:
             return await response.json()
 
     async def delete(self, endpoint: str, token: Optional[str] = None) -> Any:
-        async with self.__session.delete(
-            endpoint, headers=self.__headers(token)
+        async with self._session.delete(
+            endpoint, headers=self._headers(token)
         ) as response:
             return await response.json()
 
@@ -74,4 +74,4 @@ class APIHelper:
         """
         Close the aiohttp session.
         """
-        await self.__session.close()
+        await self._session.close()
