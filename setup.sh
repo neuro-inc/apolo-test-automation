@@ -25,8 +25,13 @@ if ! command -v allure &> /dev/null; then
   if command -v brew &> /dev/null; then
     brew install allure
   else
-    echo "❌ Homebrew not found. Please install Allure CLI manually:"
-    echo "👉 https://docs.qameta.io/allure/#_installing_a_commandline"
+    echo "❌ Homebrew not found. Installing Allure CLI manually:"
+    mkdir -p allure-bin
+    curl -sLo allure.zip https://github.com/allure-framework/allure2/releases/latest/download/allure-2.27.0.zip
+    unzip -q allure.zip -d allure-bin
+    echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
+
+    allure --version
   fi
 else
   echo "✅ Allure CLI is already installed."

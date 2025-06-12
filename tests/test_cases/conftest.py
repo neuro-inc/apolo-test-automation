@@ -25,7 +25,16 @@ CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 async def browser() -> AsyncGenerator[Browser, None]:
     async with async_playwright() as p:
         logger.info("Launching browser")
-        browser = await p.chromium.launch(headless=False, args=["--start-maximized"])
+        if os.getenv("CI") == "true":
+            logger.info("Starting browser in a headless mode...")
+            browser = await p.chromium.launch(
+                headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"]
+            )
+        else:
+            logger.info("Starting browser in a headed (visible) mode...")
+            browser = await p.chromium.launch(
+                headless=False, args=["--start-maximized"]
+            )
         yield browser
         await browser.close()
         logger.info("Browser closed")
