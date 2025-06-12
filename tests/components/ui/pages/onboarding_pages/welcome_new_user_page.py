@@ -20,15 +20,18 @@ class WelcomeNewUserPage(BasePage):
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page loaded")
+        email = kwargs.get("email")
+        if not isinstance(email, str):
+            raise ValueError("Expected 'email' to be a non-empty string in kwargs")
         return (
-            await self._get_welcome_user_message().expect_to_be_loaded()
+            await self._get_welcome_user_message(email).expect_to_be_loaded()
             and await self._journey_text_field.expect_to_be_loaded()
             and await self._lets_do_it_button.expect_to_be_loaded()
         )
 
-    def _get_welcome_user_message(self) -> BaseElement:
+    def _get_welcome_user_message(self, email: str) -> BaseElement:
         return BaseElement(
-            self.page, "h3.truncate.text-h3", has_text=f"Welcome, {self._email}"
+            self.page, "h3.truncate.text-h3", has_text=f"Welcome, {email}"
         )
 
     async def click_lets_do_it_button(self) -> None:

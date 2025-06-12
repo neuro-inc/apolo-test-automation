@@ -14,6 +14,8 @@ from tests.components.ui.pages.onboarding_pages.thats_it_page import ThatsItPage
 from tests.components.ui.pages.onboarding_pages.welcome_new_user_page import (
     WelcomeNewUserPage,
 )
+from tests.components.ui.pages.signup_page import SignupPage
+from tests.components.ui.pages.signup_username_page import SignupUsernamePage
 
 
 class PageManager:
@@ -22,6 +24,8 @@ class PageManager:
 
         self.auth_page = AuthPage(page)
         self.login_page = LoginPage(page)
+        self.signup_page = SignupPage(page)
+        self.signup_username_page = SignupUsernamePage(page)
         self.main_page = MainPage(page)
         self.jobs_page = JobsPage(page)
         self.welcome_new_user_page = WelcomeNewUserPage(page, email)

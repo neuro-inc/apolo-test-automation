@@ -26,6 +26,8 @@ class TestUILogin:
             self._page_manager, self._test_config, self._data_manager
         )
 
+        self._email = self._test_config.auth.email
+
     @async_title("New user successful login")
     async def test_new_user_login(self) -> None:
         await self.ui_click_login_button()
@@ -50,4 +52,4 @@ class TestUILogin:
 
     @async_step("Verify that Welcome new user page displayed")
     async def verify_ui_welcome_page_displayed(self) -> None:
-        await self._page_manager.welcome_new_user_page.is_loaded()
+        await self._page_manager.welcome_new_user_page.is_loaded(email=self._email)

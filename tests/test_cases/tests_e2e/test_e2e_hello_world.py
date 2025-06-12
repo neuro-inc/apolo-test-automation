@@ -33,13 +33,17 @@ class TestHelloWorldJob:
         self.cli_common_steps = CLICommonSteps(
             self._test_config, self._apolo_cli, self._data_manager
         )
+        self._email = self._test_config.auth.email
+        self._password = self._test_config.auth.password
 
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
-        await self.ui_common_steps.ui_pass_new_user_onboarding("default")
+        await self.ui_common_steps.ui_pass_new_user_onboarding(
+            self._email, self._password, "default"
+        )
         await self.cli_common_steps.cli_login_with_token()
         await asyncio.sleep(2)
         await self.create_project("my-project")
@@ -50,7 +54,7 @@ class TestHelloWorldJob:
     @async_step("Log in via UI")
     async def login(self) -> None:
         await self._page_manager.auth_page.click_log_in_button()
-        await self._page_manager.login_page.login(self._test_config)
+        await self._page_manager.login_page.login(self._email, self._password)
 
     @async_step("Create default organization")
     async def create_organization(self) -> None:
