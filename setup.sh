@@ -21,7 +21,8 @@ uv sync
 
 # --- 3. Install Playwright browsers ---
 echo "Installing Playwright browsers"
-uv venv exec python -m playwright install --with-deps
+source ${VENV_DIR}/bin/activate
+python -m playwright install --with-deps
 
 # --- 4. Install Allure CLI if not present ---
 if ! command -v allure &> /dev/null; then
