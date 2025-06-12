@@ -27,7 +27,7 @@ if ! command -v allure &> /dev/null; then
   else
     echo "❌ Homebrew not found. Installing Allure CLI manually:"
     mkdir -p allure-bin
-    curl -sLo allure.zip https://github.com/allure-framework/allure2/releases/latest/download/allure-2.27.0.zip
+    curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
     unzip -q allure.zip -d allure-bin
     echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
 
