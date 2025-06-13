@@ -69,11 +69,25 @@ jobs:
               pipx install apolo-all
               pipx upgrade apolo-all
 
-      - name: Make setup.sh executable
-        run: chmod +x ./setup.sh
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Run setup.sh
-        run: ./setup.sh
+      - name: Install dependencies from pyproject.toml
+        run: uv sync
+
+      - name: Install Playwright browsers
+        run: |
+              source .venv/bin/activate
+              python -m playwright install --with-deps
+
+      - name: Install Allure
+        run: |
+              mkdir -p allure-bin
+              curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+              unzip -q allure.zip -d allure-bin
+              export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
+              echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
+              allure --version
 
       - name: Run tests
         run: uv run pytest tests

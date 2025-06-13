@@ -14,32 +14,50 @@ All test execution and reporting is managed automatically using:
 
 ```bash
 git clone git@github.com:neuro-inc/apolo_test_automation.git
-cd apolo_test_automation
+cd apolo
 ```
 
-### 2. Run the setup script
+### 2. Install uv
 
 ```bash
-./setup.sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-This will:
-- Install `uv` if it's not already installed
-- Create a `.venv` virtual environment
-- Install project dependencies from `pyproject.toml`
-- Install Allure CLI (via Homebrew if available)
+### 3. Install dependencies from pyproject.toml
 
----
+```bash
+uv sync
+```
 
-## ✅ Running Tests
-
-### 1. Activate the virtual environment
+### 4. Install Playwright browsers
 
 ```bash
 source .venv/bin/activate
+python -m playwright install --with-deps
 ```
 
-### 2. Run the tests
+### 5. Install Allure
+
+With brew:
+```bash
+brew install allure
+```
+
+Without brew:
+```bash
+mkdir -p allure-bin
+curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+unzip -q allure.zip -d allure-bin
+export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
+```
+
+Check with:
+```bash
+allure --version
+```
+
+
+## ✅ Running Tests
 
 ```bash
 uv run pytest tests/
