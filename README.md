@@ -32,8 +32,7 @@ uv sync
 ### 4. Install Playwright browsers
 
 ```bash
-source .venv/bin/activate
-python -m playwright install --with-deps
+uv run python -m playwright install --with-deps
 ```
 
 ### 5. Install Allure
