@@ -25,9 +25,10 @@ class TestUICreateFirstOrganization:
         self.ui_common_steps = UICommonSteps(
             self._page_manager, self._test_config, self._data_manager
         )
-
         # Login via UI
-        await self.ui_common_steps.ui_login()
+        email = self._test_config.auth.email
+        password = self._test_config.auth.password
+        await self.ui_common_steps.ui_login(email, password)
 
     @async_title("Create First Organization via UI")
     async def test_new_user_login(self) -> None:

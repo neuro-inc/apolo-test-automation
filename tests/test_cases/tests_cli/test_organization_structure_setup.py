@@ -33,8 +33,10 @@ class TestCLIOrganizationStructureSetup:
             self._test_config, self._apolo_cli, self._data_manager
         )
 
+        email = self._test_config.auth.email
+        password = self._test_config.auth.password
         # Login via UI to get access token
-        await self.ui_common_steps.ui_login()
+        await self.ui_common_steps.ui_login(email, password)
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 

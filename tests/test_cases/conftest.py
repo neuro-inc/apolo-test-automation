@@ -13,6 +13,7 @@ from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.schema_data import SchemaData
 from tests.utils.test_data_management.test_data import DataManager
+from tests.utils.test_data_management.users_manager import UsersManager
 
 logger = logging.getLogger("[🛠️TEST CONFIG]")
 
@@ -77,15 +78,23 @@ def schema_data() -> SchemaData:
 
 
 @pytest.fixture
-def api_helper() -> APIHelper:
+async def api_helper(test_config: ConfigManager) -> AsyncGenerator[APIHelper, None]:
     logger.info("Creating API helper")
-    return APIHelper()
+    helper = await APIHelper(config=test_config).init()
+    yield helper
+    await helper._close()
 
 
 @pytest.fixture
 def apolo_cli() -> ApoloCLI:
     logger.info("Creating Apolo CLI instance")
     return ApoloCLI()
+
+
+@pytest.fixture
+def users_manager() -> UsersManager:
+    logger.info("Creating users manager")
+    return UsersManager()
 
 
 @pytest.fixture(autouse=True)

@@ -18,6 +18,9 @@ class BaseElement:
     async def click(self) -> None:
         await self.locator.click()
 
+    async def check(self) -> None:
+        await self.locator.check()
+
     async def fill(self, value: str) -> None:
         await self.locator.fill(value)
 
