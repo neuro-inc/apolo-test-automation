@@ -70,15 +70,11 @@ jobs:
               pipx upgrade apolo-all
 
       - name: Install uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-
-      - name: Install dependencies from pyproject.toml
-        run: uv sync
+        uses: astral-sh/setup-uv@v6
 
       - name: Install Playwright browsers
         run: |
-              source .venv/bin/activate
-              python -m playwright install --with-deps
+              uv run python -m playwright install --with-deps
 
       - name: Install Allure
         run: |
