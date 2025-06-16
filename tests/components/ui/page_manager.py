@@ -19,7 +19,7 @@ from tests.components.ui.pages.signup_username_page import SignupUsernamePage
 
 
 class PageManager:
-    def __init__(self, page: Page, email: str, username: str):
+    def __init__(self, page: Page):
         self.page = page
 
         self.auth_page = AuthPage(page)
@@ -28,7 +28,7 @@ class PageManager:
         self.signup_username_page = SignupUsernamePage(page)
         self.main_page = MainPage(page)
         self.jobs_page = JobsPage(page)
-        self.welcome_new_user_page = WelcomeNewUserPage(page, email)
-        self.join_organization_page = JoinOrganizationPage(page, username)
+        self.welcome_new_user_page = WelcomeNewUserPage(page)
+        self.join_organization_page = JoinOrganizationPage(page)
         self.name_your_organization_page = NameNewOrganizationPage(page)
         self.thats_it_page = ThatsItPage(page)
