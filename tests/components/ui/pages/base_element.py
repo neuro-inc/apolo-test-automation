@@ -28,7 +28,7 @@ class BaseElement:
 
     async def is_visible(self) -> bool:
         try:
-            await self.locator.wait_for(state="visible", timeout=3000)
+            await expect(self.locator).to_be_visible(timeout=3000)
             return True
         except PlaywrightTimeoutError:
             return False
