@@ -77,6 +77,17 @@ class UICommonSteps:
 
         await self._page_manager.page.goto(url)
 
+        (
+            needs_verification,
+            response,
+        ) = await self._api_helper.check_user_needs_verification(
+            user.email,
+        )
+        assert not needs_verification, f"User {user.email} still needs verification!!!!"
+        assert response == "Email already verified", (
+            f"User {user.email} still needs verification!!!!"
+        )
+
         base_url = self._test_config.base_url
         await self._page_manager.page.goto(base_url)
         assert await self._page_manager.auth_page.is_loaded()

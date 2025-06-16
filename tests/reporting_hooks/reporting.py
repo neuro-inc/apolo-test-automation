@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+import uuid
 from collections.abc import Awaitable
 from collections.abc import Callable
 import inspect
@@ -10,6 +12,7 @@ from typing import Any, TypeVar
 import allure
 
 from tests.utils.exception_handling.exception_manager import ExceptionManager
+from tests.conftest import SCREENSHOTS_DIR
 
 logger = logging.getLogger("[📘TEST_INFO]")
 exception_manager = ExceptionManager(logger=logger)
@@ -29,41 +32,43 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
                     return result
                 except Exception as e:
                     logger.error(f"❌ STEP failed: {step_name}")
+                    page = None
 
                     if "ui_" in func.__name__:
-                        page = None
-                        for arg in list(args) + list(kwargs.values()):
-                            try:
-                                if hasattr(arg, "page"):  # page_manager
-                                    page = arg.page
-                                    break
-                                if "playwright.async_api.Page" in str(type(arg)):
-                                    page = arg
-                                    break
-                            except Exception:
-                                continue
+                        # Extract page from self._page_manager
+                        if args:
+                            self_instance = args[0]
+                            page_manager = getattr(self_instance, "_page_manager", None)
+                            if page_manager and hasattr(page_manager, "page"):
+                                page = page_manager.page
 
                         if page:
                             try:
-                                screenshot_path = (
-                                    f"reports/screenshots/{func.__name__}.png"
+                                screenshot_name = (
+                                    f"{func.__name__}_{uuid.uuid4().hex[:6]}.png"
+                                )
+                                screenshot_path = os.path.join(
+                                    SCREENSHOTS_DIR, screenshot_name
                                 )
                                 await page.screenshot(
                                     path=screenshot_path, full_page=True
                                 )
-                                allure.attach.file(  # type: ignore[no-untyped-call]
-                                    screenshot_path,
-                                    name=f"Screenshot: {step_name}",
-                                    attachment_type=allure.attachment_type.PNG,
-                                )
+
+                                with open(screenshot_path, "rb") as image_file:
+                                    allure.attach(
+                                        image_file.read(),
+                                        name=f"Screenshot: {step_name}",
+                                        attachment_type=allure.attachment_type.PNG,
+                                    )
                                 logger.info(
-                                    f"📸 Screenshot captured: {screenshot_path}"
+                                    f"📸 Screenshot captured and attached: {screenshot_path}"
                                 )
                             except Exception as ss_error:
                                 logger.warning(
                                     f"⚠️ Could not capture screenshot: {ss_error}"
                                 )
 
+                    # Raise inside the allure.step context so it's linked in UI
                     formatted_msg = exception_manager.handle(e, context=step_name)
                     raise AssertionError(formatted_msg) from e
 

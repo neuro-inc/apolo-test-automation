@@ -49,7 +49,13 @@ async def signup_default_user(
     ui_common_steps = UICommonSteps(
         page_manager, test_config, data_manager, users_manager, api_helper
     )
-    await ui_common_steps.ui_signup_new_user_ver_link()
+    try:
+        await ui_common_steps.ui_signup_new_user_ver_link()
+    except Exception as e:
+        logger.error(f"❌ Failed to sign up default user: {e}")
+        pytest.exit(
+            "🚫 Aborting test session: default user signup failed.", returncode=11
+        )
     _default_user = users_manager.default_user
 
     await context.close()

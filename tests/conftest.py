@@ -75,23 +75,24 @@ def pytest_runtest_makereport(
 
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     logger.info("=" * 60)
-    passed = failed = skipped = 0
-    logger.info("📊 TEST SUITE SUMMARY")
+    passed = 0
+    failed = 0
+    skipped = 0
     for suite, results in _SUITE_OUTCOMES.items():
-        logger.info(f"📁 {suite}")
-        logger.info(f"  ✅ Passed: {results['passed']}")
         passed += results["passed"]
-        logger.info(f"  ❌ Failed: {results['failed']}")
         failed += results["failed"]
-        logger.info(f"  ⏭️ Skipped: {results['skipped']}")
         skipped += results["skipped"]
-        logger.info("-" * 60)
-    logger.info("=" * 60)
-    logger.info("📊 TOTAL TEST CASES SUMMARY:")
-    logger.info(f"  ✅ Passed: {passed}")
-    logger.info(f"  ❌ Failed: {failed}")
-    logger.info(f"  ⏭️ Skipped: {skipped}")
-    logger.info("=" * 60)
+    summary_path = os.path.join(LOGS_DIR, "summary.log")
+    try:
+        with open(summary_path, "w") as f:
+            if exitstatus == 10:
+                f.write("Test setup failed. Cannot signup user for tests...\n")
+            f.write(
+                f"SUMMARY:    PASSED:{passed}   FAILED:{failed}.   SKIPPED:{skipped}\n"
+            )
+            logger.info(f"📝 Summary written to: {summary_path}")
+    except Exception as e:
+        logger.error(f"❌ Failed to write summary.log: {e}")
 
     logger.info("📦 Generating Allure report...")
     try:
