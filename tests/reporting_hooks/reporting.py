@@ -29,6 +29,41 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
                     return result
                 except Exception as e:
                     logger.error(f"❌ STEP failed: {step_name}")
+
+                    if "ui_" in func.__name__:
+                        page = None
+                        for arg in list(args) + list(kwargs.values()):
+                            try:
+                                if hasattr(arg, "page"):  # page_manager
+                                    page = arg.page
+                                    break
+                                if "playwright.async_api.Page" in str(type(arg)):
+                                    page = arg
+                                    break
+                            except Exception:
+                                continue
+
+                        if page:
+                            try:
+                                screenshot_path = (
+                                    f"reports/screenshots/{func.__name__}.png"
+                                )
+                                await page.screenshot(
+                                    path=screenshot_path, full_page=True
+                                )
+                                allure.attach.file(  # type: ignore[no-untyped-call]
+                                    screenshot_path,
+                                    name=f"Screenshot: {step_name}",
+                                    attachment_type=allure.attachment_type.PNG,
+                                )
+                                logger.info(
+                                    f"📸 Screenshot captured: {screenshot_path}"
+                                )
+                            except Exception as ss_error:
+                                logger.warning(
+                                    f"⚠️ Could not capture screenshot: {ss_error}"
+                                )
+
                     formatted_msg = exception_manager.handle(e, context=step_name)
                     raise AssertionError(formatted_msg) from e
 
