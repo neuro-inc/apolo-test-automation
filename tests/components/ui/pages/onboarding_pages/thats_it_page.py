@@ -32,3 +32,4 @@ class ThatsItPage(BasePage):
         self.log("Click let's do it button")
         await self.page.wait_for_timeout(200)
         await self._lets_do_it_button.click()
+        await self.page.reload()
