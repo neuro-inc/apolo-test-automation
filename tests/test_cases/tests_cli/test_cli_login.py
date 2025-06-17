@@ -4,9 +4,11 @@ from tests.components.ui.page_manager import PageManager
 from tests.reporting_hooks.reporting import async_step, async_suite, async_title
 from tests.test_cases.common_steps.cli_steps.cli_common_steps import CLICommonSteps
 from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.utils.api_helper import APIHelper
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.test_data import DataManager
+from tests.utils.test_data_management.users_manager import UsersManager
 
 
 @async_suite("CLI Login")
@@ -18,6 +20,8 @@ class TestCLILogin:
         data_manager: DataManager,
         apolo_cli: ApoloCLI,
         test_config: ConfigManager,
+        users_manager: UsersManager,
+        api_helper: APIHelper,
     ) -> None:
         """
         Initialize shared resources for the test methods.
@@ -26,17 +30,24 @@ class TestCLILogin:
         self._data_manager = data_manager
         self._apolo_cli = apolo_cli
         self._test_config = test_config
+        self._users_manager = users_manager
+        self._api_helper = api_helper
         self.ui_common_steps = UICommonSteps(
-            self._page_manager, self._test_config, self._data_manager
+            self._page_manager,
+            self._test_config,
+            self._data_manager,
+            self._users_manager,
+            self._api_helper,
         )
         self.cli_common_steps = CLICommonSteps(
             self._test_config, self._apolo_cli, self._data_manager
         )
 
-        email = self._test_config.auth.email
-        password = self._test_config.auth.password
+        self._email = self._users_manager.default_user.email
+        self._password = self._users_manager.default_user.password
+        self._username = self._users_manager.default_user.username
         # Login via UI to get access token
-        await self.ui_common_steps.ui_login(email, password)
+        await self.ui_common_steps.ui_login(self._email, self._password)
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 
@@ -55,7 +66,6 @@ class TestCLILogin:
         self, check_org: bool = False, check_proj: bool = False
     ) -> None:
         url: str = self._test_config.cli_login_url
-        username: str = self._test_config.auth.username
 
         organization_name = (
             self._data_manager.default_organization.org_name if check_org else None
@@ -67,5 +77,5 @@ class TestCLILogin:
         )
 
         assert await self._apolo_cli.verify_login_output(
-            url, username, organization_name, project_name
+            url, self._username, organization_name, project_name
         )

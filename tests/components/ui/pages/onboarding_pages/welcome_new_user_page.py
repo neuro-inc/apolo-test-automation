@@ -5,9 +5,8 @@ from tests.components.ui.pages.base_page import BasePage
 
 
 class WelcomeNewUserPage(BasePage):
-    def __init__(self, page: Page, email: str) -> None:
+    def __init__(self, page: Page) -> None:
         super().__init__(page)
-        self._email: str = email
         self._journey_text_field = BaseElement(
             self.page, "p:has-text('Ready to begin your journey?')"
         )

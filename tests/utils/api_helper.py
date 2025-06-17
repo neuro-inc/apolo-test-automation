@@ -94,10 +94,11 @@ class APIHelper:
         url = self._config.get_signup_status_url(email)
         logger.info(f"Checking if user {email} needs verification...")
         status, response = await self._get(url)
+        logger.info(f"Status: {status}. Response: {response}")
 
         if status == 200:
             if response.get("detail") == "Email already verified":
-                return False, f"{email} verified"
+                return False, "Email already verified"
             elif "ticket" in response:
                 return True, response["ticket"]
             else:
