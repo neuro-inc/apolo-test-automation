@@ -26,8 +26,9 @@ class BaseElement:
 
     async def is_visible(self) -> bool:
         try:
-            return await self.locator.is_visible()
-        except TimeoutError:
+            await expect(self.locator).to_be_visible(timeout=3000)
+            return True
+        except AssertionError:
             return False
 
     async def text_content(self) -> Optional[str]:

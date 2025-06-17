@@ -5,9 +5,11 @@ from tests.reporting_hooks.reporting import async_step, async_suite, async_title
 from tests.test_cases.common_steps.cli_steps.cli_common_steps import CLICommonSteps
 from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
+from tests.utils.api_helper import APIHelper
 from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.test_config_helper import ConfigManager
+from tests.utils.test_data_management.users_manager import UsersManager
 
 
 @async_suite("Apolo CLI Hello World Job Verification")
@@ -19,6 +21,8 @@ class TestHelloWorldJob:
         data_manager: DataManager,
         apolo_cli: ApoloCLI,
         test_config: ConfigManager,
+        users_manager: UsersManager,
+        api_helper: APIHelper,
     ) -> None:
         """
         Initialize shared resources for the test methods.
@@ -27,14 +31,20 @@ class TestHelloWorldJob:
         self._data_manager = data_manager
         self._apolo_cli = apolo_cli
         self._test_config = test_config
+        self._users_manager = users_manager
+        self._api_helper = api_helper
         self.ui_common_steps = UICommonSteps(
-            self._page_manager, self._test_config, self._data_manager
+            self._page_manager,
+            self._test_config,
+            self._data_manager,
+            self._users_manager,
+            self._api_helper,
         )
         self.cli_common_steps = CLICommonSteps(
             self._test_config, self._apolo_cli, self._data_manager
         )
-        self._email = self._test_config.auth.email
-        self._password = self._test_config.auth.password
+        self._email = self._users_manager.default_user.email
+        self._password = self._users_manager.default_user.password
 
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()

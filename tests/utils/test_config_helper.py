@@ -67,10 +67,6 @@ class ConfigManager:
         return str(self._config.cli_login_url)
 
     @property
-    def auth(self) -> DictConfig:
-        return DictConfig(self._config.auth)
-
-    @property
     def _endpoints(self) -> DictConfig:
         return DictConfig(self._config.endpoints)
 

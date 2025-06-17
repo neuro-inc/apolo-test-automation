@@ -3,8 +3,10 @@ import pytest
 from tests.reporting_hooks.reporting import async_step, async_suite, async_title
 from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
+from tests.utils.api_helper import APIHelper
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.test_data import DataManager
+from tests.utils.test_data_management.users_manager import UsersManager
 
 
 @async_suite("UI Login")
@@ -15,6 +17,8 @@ class TestUILogin:
         page_manager: PageManager,
         data_manager: DataManager,
         test_config: ConfigManager,
+        users_manager: UsersManager,
+        api_helper: APIHelper,
     ) -> None:
         """
         Initialize shared resources for the test methods.
@@ -22,11 +26,18 @@ class TestUILogin:
         self._page_manager = page_manager
         self._data_manager = data_manager
         self._test_config = test_config
+        self._users_manager = users_manager
+        self._api_helper = api_helper
         self.ui_common_steps = UICommonSteps(
-            self._page_manager, self._test_config, self._data_manager
+            self._page_manager,
+            self._test_config,
+            self._data_manager,
+            self._users_manager,
+            self._api_helper,
         )
 
-        self._email = self._test_config.auth.email
+        self._email = self._users_manager.default_user.email
+        self._password = self._users_manager.default_user.password
 
     @async_title("New user successful login")
     async def test_new_user_login(self) -> None:
@@ -41,10 +52,8 @@ class TestUILogin:
 
     @async_step("Enter valid credentials")
     async def ui_enter_valid_credentials(self) -> None:
-        await self._page_manager.login_page.enter_email(self._test_config.auth.email)
-        await self._page_manager.login_page.enter_password(
-            self._test_config.auth.password
-        )
+        await self._page_manager.login_page.enter_email(self._email)
+        await self._page_manager.login_page.enter_password(self._password)
 
     @async_step("Click continue button")
     async def ui_click_continue_button(self) -> None:

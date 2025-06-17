@@ -28,7 +28,11 @@ class TestUISignup:
         self._users_manager = users_manager
         self._api_helper = api_helper
         self.ui_common_steps = UICommonSteps(
-            self._page_manager, self._test_config, self._data_manager
+            self._page_manager,
+            self._test_config,
+            self._data_manager,
+            self._users_manager,
+            self._api_helper,
         )
         self._user = self._users_manager.generate_user()
 
@@ -70,7 +74,7 @@ class TestUISignup:
 
     @async_step("Verify that Verify email message displayed")
     async def verify_ui_email_message_displayed(self) -> None:
-        await self._page_manager.main_page.is_verify_email_message_displayed()
+        assert await self._page_manager.main_page.is_verify_email_message_displayed()
 
     @async_step("Verify user email with the activation link")
     async def activate_email_verification_link(self, email: str) -> None:
@@ -88,11 +92,13 @@ class TestUISignup:
 
     @async_step("Verify that Welcome new user page displayed")
     async def verify_ui_welcome_page_displayed(self) -> None:
-        await self._page_manager.welcome_new_user_page.is_loaded(email=self._user.email)
+        assert await self._page_manager.welcome_new_user_page.is_loaded(
+            email=self._user.email
+        )
 
     @async_step("Verify that Auth page displayed")
     async def verify_ui_auth_page_displayed(self) -> None:
-        await self._page_manager.auth_page.is_loaded()
+        assert await self._page_manager.auth_page.is_loaded()
 
     @async_step("Click login button")
     async def ui_click_login_button(self) -> None:
@@ -100,7 +106,7 @@ class TestUISignup:
 
     @async_step("Verify that Signup username page displayed")
     async def verify_ui_signup_username_page_displayed(self) -> None:
-        await self._page_manager.signup_username_page.is_loaded()
+        assert await self._page_manager.signup_username_page.is_loaded()
 
     @async_step("Enter username")
     async def ui_enter_username(self, username: str) -> None:
@@ -112,7 +118,7 @@ class TestUISignup:
 
     @async_step("Verify that User agreement pop up displayed")
     async def verify_ui_terms_of_agreement_displayed(self) -> None:
-        await self._page_manager.main_page.is_user_agreement_title_displayed()
+        assert await self._page_manager.main_page.is_user_agreement_title_displayed()
 
     @async_step("Check agreement checkbox")
     async def ui_check_agreement_checkbox(self) -> None:
