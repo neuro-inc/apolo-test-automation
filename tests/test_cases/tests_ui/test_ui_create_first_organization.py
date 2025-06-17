@@ -9,7 +9,7 @@ from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.users_manager import UsersManager
 
 
-@async_suite("UI Login")
+@async_suite("UI Organization Structure Setup")
 class TestUICreateFirstOrganization:
     @pytest.fixture(autouse=True)
     async def setup(

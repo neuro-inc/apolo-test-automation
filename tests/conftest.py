@@ -87,9 +87,7 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
         with open(summary_path, "w") as f:
             if exitstatus == 11:
                 f.write("Test setup failed. Cannot signup user for tests...\n")
-            f.write(
-                f"    PASSED:{passed}   FAILED:{failed}.   SKIPPED:{skipped}\n"
-            )
+            f.write(f"    PASSED:{passed}   FAILED:{failed}.   SKIPPED:{skipped}\n")
             logger.info(f"📝 Summary written to: {summary_path}")
     except Exception as e:
         logger.error(f"❌ Failed to write summary.log: {e}")

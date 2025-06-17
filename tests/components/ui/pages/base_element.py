@@ -1,8 +1,6 @@
 from typing import Optional, Any
 from playwright.async_api import Page, Locator, expect
 
-from playwright.async_api import TimeoutError as PlaywrightTimeoutError
-
 
 class BaseElement:
     def __init__(self, page: Page, selector: str, **kwargs: Any) -> None:
@@ -30,7 +28,7 @@ class BaseElement:
         try:
             await expect(self.locator).to_be_visible(timeout=3000)
             return True
-        except PlaywrightTimeoutError:
+        except AssertionError:
             return False
 
     async def text_content(self) -> Optional[str]:
