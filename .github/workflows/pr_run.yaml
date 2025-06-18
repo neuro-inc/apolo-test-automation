@@ -11,14 +11,5 @@ permissions:
 jobs:
   run-tests:
     name: Run Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set report path
-        id: set-date
-        run: echo "DEST=run-$(date +'%Y-%m-%d')-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
-
-      - name: Call reusable workflow
-        uses: ./.github/workflows/run_test.yaml
-        with:
-          destination_dir: ${{ steps.set-date.outputs.DEST }}
+    uses: ./.github/workflows/run_test.yaml
+    secrets: inherit
