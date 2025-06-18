@@ -56,7 +56,7 @@ jobs:
         id: read_summary
         run: |
           echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-          cat reports/logs/summary.log || echo "No summary log found." >> $GITHUB_OUTPUT
+          cat reports/logs/summary.log >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Deploy to GitHub Pages
@@ -72,7 +72,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         env:
-          SUMMARY_TEXT: ${{ steps.read_summary.outputs.summary_text }}
+          SUMMARY_TEXT: ${{ steps.summary.outputs.summary_text }}
           TESTS_RUN_STATUS: ${{ env.TESTS_RUN_STATUS }}
           DEST: ${{ env.DEST }}
         with:
