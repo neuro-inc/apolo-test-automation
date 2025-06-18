@@ -53,11 +53,11 @@ jobs:
 
       - name: Read test summary
         if: always()
-        id: read_summary
+        id: summary
         run: |
-          echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-          cat reports/logs/summary.log >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+            echo "summary_text<<EOF" >> $GITHUB_OUTPUT
+            cat reports/logs/summary.log >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Deploy to GitHub Pages
         if: always()
@@ -80,7 +80,7 @@ jobs:
             const pr = context.payload.pull_request;
             const runNumber = context.runNumber;
             const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/${process.env.DEST}/index.html`;
-            const summary = process.env.SUMMARY_TEXT || '_No summary available._';
+            const summary = process.env.SUMMARY_TEXT;
             const status = process.env.TESTS_RUN_STATUS;
 
             const statusEmoji = status === "0" ? "✅" : "❌";
