@@ -9,20 +9,16 @@ permissions:
   contents: read
 
 jobs:
-  set-date:
-    name: Set Report Path
-    runs-on: ubuntu-latest
-    outputs:
-      destination: ${{ steps.set.outputs.value }}
-    steps:
-      - name: Set current date
-        id: set
-        run: echo "value=run-$(date +'%Y-%m-%d')-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
-
   run-tests:
     name: Run Tests
-    needs: set-date
-    uses: ./.github/workflows/run_test.yaml
-    with:
-      destination_dir: ${{ needs.set-date.outputs.destination }}
-    secrets: inherit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set report path
+        id: set-date
+        run: echo "DEST=run-$(date +'%Y-%m-%d')-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+      - name: Call reusable workflow
+        uses: ./.github/workflows/run_test.yaml
+        with:
+          destination_dir: ${{ steps.set-date.outputs.DEST }}
