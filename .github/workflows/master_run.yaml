@@ -1,4 +1,4 @@
-name: Nightly Tests
+name: Nightly Tests Run Workflow
 
 on:
   schedule:
@@ -7,42 +7,7 @@ on:
 
 jobs:
   test:
-    name: Run Tests and Publish Latest Report
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version-file: .python-version
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
-
-      - name: Install Playwright browsers
-        run: |
-          uv run python -m playwright install --with-deps
-
-      - name: Install Allure
-        run: |
-          mkdir -p allure-bin
-          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
-          unzip -q allure.zip -d allure-bin
-          echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
-          export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
-          allure --version
-
-      - name: Run tests
-        run: uv run pytest tests
-
-      - name: Deploy to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./reports/allure-report
-          publish_branch: gh-pages
-          destination_dir: run-test-latest
+    uses: ./.github/workflows/run_test.yaml
+    with:
+      destination_dir: run-test-latest
+    secrets: inherit

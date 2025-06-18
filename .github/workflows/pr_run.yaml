@@ -1,0 +1,28 @@
+name: PR Tests Run Workflow
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  set-date:
+    name: Set Report Path
+    runs-on: ubuntu-latest
+    outputs:
+      destination: ${{ steps.set.outputs.value }}
+    steps:
+      - name: Set current date
+        id: set
+        run: echo "value=run-$(date +'%Y-%m-%d')-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+  run-tests:
+    name: Run Tests
+    needs: set-date
+    uses: ./.github/workflows/run_test.yaml
+    with:
+      destination_dir: ${{ needs.set-date.outputs.destination }}
+    secrets: inherit
