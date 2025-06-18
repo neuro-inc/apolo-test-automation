@@ -1,5 +1,7 @@
-# 🧪 Apolo Test Automation
+# 🧪 Apolo Test Automation 
+### [📊 View Latest Allure Report](https://ihorsosnovskyi.github.io/apolo-test-automation/run-test-latest/index.html)
 
+---
 All test execution and reporting is managed automatically using:
 
 - [pytest](https://docs.pytest.org/)
@@ -8,6 +10,10 @@ All test execution and reporting is managed automatically using:
 
 ---
 
+🕛 A nightly test run is executed from the `master` branch, and the latest Allure Reportis published automatically.  
+The link to the most recent test results is available at the top of this page.
+
+---
 ## 🚀 Setup Instructions (macOS/Linux)
 
 ### 1. Clone the repository
@@ -133,6 +139,5 @@ rm -rf .venv reports/
 │   └── logs/
 ├── pyproject.toml             # Dependency + project config
 ├── uv.lock                    # Locked dependency versions
-├── setup.sh                   # Setup script
 └── README.md
 ```

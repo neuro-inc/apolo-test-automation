@@ -93,6 +93,11 @@ jobs:
           name: allure-report
           path: ./reports/allure-report
 
+      - name: Set current date
+        if: always()
+        id: date
+        run: echo "value=run-$(date +'%Y-%m-%d')-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
       - name: Deploy to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
@@ -100,33 +105,36 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./reports/allure-report
           publish_branch: gh-pages
-          destination_dir: run-${{ github.run_number }}
+          destination_dir: ${{ steps.date.outputs.value }}
 
       - name: Comment with Allure Report URL
         if: always()
         uses: actions/github-script@v7
         with:
           script: |
-                  const pr = context.payload.pull_request;
-                  const jobName = context.job;
-                  const runNumber = context.runNumber;
-                  const summary = process.env.SUMMARY_TEXT;
-                  const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/run-${runNumber}/index.html`;
+            const pr = context.payload.pull_request;
+            const jobName = context.job;
+            const runNumber = context.runNumber;
+            const summary = process.env.SUMMARY_TEXT;
+            const datePath = process.env.DATE_PATH;
+            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/${datePath}/index.html`;
 
-                  const comment = [
-                    `**${jobName}** run #${runNumber}`,
-                    `**Summary:** ${summary}`,
-                    `**Allure report:** [View Report](${url})`
-                  ].join('\n');
+            const comment = [
+              `**${jobName}** run #${runNumber}`,
+              `**Summary:** ${summary}`,
+              `**Allure report:** [View Report](${url})`
+            ].join('\n');
 
-                  github.rest.issues.createComment({
-                  issue_number: pr.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: comment
-                  });
+            github.rest.issues.createComment({
+              issue_number: pr.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
         env:
-            SUMMARY_TEXT: ${{ steps.summary.outputs.summary_text }}
+          SUMMARY_TEXT: ${{ steps.summary.outputs.summary_text }}
+          DATE_PATH: ${{ steps.date.outputs.value }}
+
 
 
   check:
