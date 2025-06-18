@@ -78,15 +78,16 @@ jobs:
         with:
           script: |
             const pr = context.payload.pull_request;
+            const runNumber = context.runNumber;
             const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/${process.env.DEST}/index.html`;
             const summary = process.env.SUMMARY_TEXT || '_No summary available._';
             const status = process.env.TESTS_RUN_STATUS;
 
             const statusEmoji = status === "0" ? "✅" : "❌";
-            const statusText = status === "0" ? "Test run complete" : "Test run failed";
+            const statusText = status === "0" ? "complete" : "failed";
 
             const comment = [
-              `${statusEmoji} **${statusText}**`,
+              `${statusEmoji} **Test run #${runNumber} ${statusText}**`,
               `📊 **Allure Report:** [View Report](${url})`,
               ``,
               `📝 **Summary:**\n\`\`\`\n${summary.trim()}\n\`\`\``
