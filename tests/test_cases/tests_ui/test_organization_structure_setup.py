@@ -61,7 +61,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         )
 
         await add_steps.ui_click_welcome_lets_do_it_button()
-        await add_ui_common_steps.reload_page()
+        await add_ui_common_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
@@ -101,7 +101,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         )
 
         self.log("User2 reload page")
-        await add_ui_common_steps.reload_page()
+        await add_ui_common_steps.ui_reload_page()
         org = self._data_manager.get_organization_by_gherkin_name(
             gherkin_name="Default-organization"
         )

@@ -23,7 +23,7 @@ class UICommonSteps:
         self._api_helper = api_helper
 
     @async_step("Reload page")
-    async def reload_page(self) -> None:
+    async def ui_reload_page(self) -> None:
         await self._pm.page.reload()
 
     @async_step("Login via UI")
