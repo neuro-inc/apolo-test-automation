@@ -130,20 +130,20 @@ class MainPage(BasePage):
         return BaseElement(
             self.page,
             f'''
-  tr.contents:has(td:nth-child(1):text-is("{org_name}"))
-  >> td:nth-child(5)
-  >> button:has-text("Accept")
-''',
+            tr.contents:has(td:nth-child(1):text-is("{org_name}"))
+            >> td:nth-child(5)
+            >> button:has-text("Accept")
+            ''',
         )
 
     def _get_invite_row_decline_button(self, org_name: str) -> BaseElement:
         return BaseElement(
             self.page,
             f'''
-      tr.contents:has(td:nth-child(1):text-is("{org_name}"))
-      >> td:nth-child(5)
-      >> button:has-text("Decline")
-    ''',
+            tr.contents:has(td:nth-child(1):text-is("{org_name}"))
+            >> td:nth-child(5)
+            >> button:has-text("Decline")
+            ''',
         )
 
     async def is_invite_to_org_row_displayed(self, org_name: str) -> bool:

@@ -39,6 +39,7 @@ class BaseElement:
             return False
 
     async def click(self) -> None:
+        await expect(self.locator).to_be_visible()
         await self.locator.click()
 
     async def check(self) -> None:
