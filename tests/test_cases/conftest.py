@@ -1,22 +1,30 @@
 from __future__ import annotations
-
 from collections.abc import AsyncGenerator
+from collections.abc import Callable
+from collections.abc import Coroutine
+
+import asyncio
 import logging
 import os
+from typing import Any
 
+import allure
 import pytest
-from playwright.async_api import async_playwright, Browser, BrowserContext, Page
+from allure_commons.types import AttachmentType
+from playwright.async_api import async_playwright, Browser
 
 from tests.components.ui.page_manager import PageManager
-from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.utils.api_helper import APIHelper
 from tests.utils.cli.apolo_cli import ApoloCLI
+from tests.utils.exception_handling.exception_manager import ExceptionManager
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.schema_data import SchemaData
 from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.test_data_management.users_manager import UsersManager, UserData
 
 logger = logging.getLogger("[🔧TEST CONFIG]")
+exception_manager = ExceptionManager(logger=logger)
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
@@ -37,17 +45,10 @@ async def signup_default_user(
         users_manager.default_user = _default_user
         return
     logger.info("Signup default user...")
-    browser = await start_browser()
-    context: BrowserContext = await browser.new_context(no_viewport=True)
-    page: Page = await context.new_page()
-    logger.info(f"Navigating to: {test_config.base_url}")
-    await page.goto(test_config.base_url)
-
-    page_manager = PageManager(page)
-    request.node.page = page
+    pm = await _create_page_manager(test_config, request)
 
     ui_common_steps = UICommonSteps(
-        page_manager, test_config, data_manager, users_manager, api_helper
+        pm, test_config, data_manager, users_manager, api_helper
     )
     try:
         await ui_common_steps.ui_signup_new_user_ver_link()
@@ -56,34 +57,47 @@ async def signup_default_user(
         pytest.exit(
             "🚫 Aborting test session: default user signup failed.", returncode=11
         )
-    _default_user = users_manager.default_user
-
-    await context.close()
-    logger.info("Browser context closed")
-    await browser.close()
-    logger.info("Browser closed")
+    else:
+        _default_user = users_manager.default_user
+    finally:
+        await pm._cleanup() # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="function")
 async def page_manager(
     test_config: ConfigManager,
-    data_manager: DataManager,
     request: pytest.FixtureRequest,
-) -> AsyncGenerator[PageManager, None]:
-    browser = await start_browser()
-    context: BrowserContext = await browser.new_context(no_viewport=True)
-    page: Page = await context.new_page()
-    logger.info(f"Navigating to: {test_config.base_url}")
-    await page.goto(test_config.base_url)
+) -> PageManager:
+    pm = await _create_page_manager(test_config, request)
+    return pm
 
-    test_config.context = context
-    page_manager = PageManager(page)
-    request.node.page = page
-    yield page_manager
-    await context.close()
-    logger.info("Browser context closed")
-    await browser.close()
-    logger.info("Browser closed")
+
+@pytest.fixture(scope="function")
+async def add_page_manager(
+    test_config: ConfigManager,
+    request: pytest.FixtureRequest,
+) -> AsyncGenerator[Callable[[], Coroutine[Any, Any, PageManager]], Any]:
+    """
+    Factory fixture.
+    Call it inside a test as::
+
+        pm1 = await add_page_manager()
+        pm2 = await add_page_manager()
+
+    All opened browsers/contexts are closed automatically after the test.
+    """
+    created: list[PageManager] = []
+
+    async def _factory() -> PageManager:
+        pm = await _create_page_manager(test_config, request)
+        created.append(pm)
+        return pm
+
+    try:
+        yield _factory
+    finally:
+        for pm in reversed(created):
+            await pm._cleanup() # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="function")
@@ -130,23 +144,60 @@ async def clean_up(
     data_manager: DataManager,
     apolo_cli: ApoloCLI,
 ) -> AsyncGenerator[None, None]:
+    """
+    Post-test cleanup:
+    ▸ logs in to Apolo CLI,
+    ▸ removes all organisations recorded in the DataManager,
+    ▸ logs any cleanup errors without failing the test run.
+    """
     yield
-    logger.info("Running post-test cleanup")
 
-    organizations = data_manager.get_all_organizations()
-    logger.info(f"Cleaning up {len(organizations)} organizations")
-    if organizations:
-        logger.info("Logging in to Apolo CLI for cleanup")
-        token = test_config.token
-        url = test_config.cli_login_url
-        await apolo_cli.login_with_token(token, url)
-        for organization in organizations:
-            await apolo_cli.remove_organization(organization.org_name)
-            data_manager.remove_organization(organization.org_name)
-            logger.info(f"Removed organization: {organization.org_name}")
+    with allure.step("Post-test cleanup"):
+        try:
+            organisations = data_manager.get_all_organizations()
+            logger.info("Cleaning up %d organisations", len(organisations))
+
+            if not organisations:
+                allure.attach(
+                    "No organisations to clean up.",
+                    name="Cleanup note",
+                    attachment_type=AttachmentType.TEXT,
+                )
+                return
+
+            # Login once
+            with allure.step("CLI login for cleanup"):
+                await apolo_cli.login_with_token(
+                    test_config.token,
+                    test_config.cli_login_url,
+                )
+
+            # Delete each organisation
+            for org in organisations:
+                with allure.step(f"Delete organisation: {org.org_name}"):
+                    await apolo_cli.remove_organization(org.org_name)
+                    data_manager.remove_organization(org.org_name)
+                    logger.info("Removed organisation: %s", org.org_name)
+
+        except Exception as exc:
+            # Capture details but DO NOT fail the test
+            formatted_msg = exception_manager.handle(exc, context="Post-test cleanup")
+            logger.exception("Post-test cleanup failed: %s", formatted_msg)
+
+            allure.attach(
+                formatted_msg,
+                name="Cleanup exception",
+                attachment_type=AttachmentType.TEXT,
+            )
+
+            # Emit a non-fatal warning so the issue is still visible in the test output
+            logger.warning(f"Post-test cleanup failed: {formatted_msg}", RuntimeWarning)
+            global _default_user
+            logger.warning("Need to setup new user due to cleanup issues...")
+            _default_user = None
 
 
-async def start_browser() -> Browser:
+async def _start_browser() -> Browser:
     playwright = await async_playwright().start()
 
     if os.getenv("CI") == "true":
@@ -161,3 +212,28 @@ async def start_browser() -> Browser:
         )
 
     return browser
+
+
+async def _create_page_manager(
+    test_config: ConfigManager, request: pytest.FixtureRequest
+) -> PageManager:
+    browser = await _start_browser()
+    logger.info("Initializing new browser context")
+    context = await browser.new_context(no_viewport=True)
+    page = await context.new_page()
+    logger.info(f"Navigating to: {test_config.base_url}")
+    await page.goto(test_config.base_url)
+
+    test_config.context = context
+    request.node.page = page
+    pm = PageManager(page)
+
+    async def _cleanup() -> None:
+        await context.close()
+        logger.info("Browser context closed")
+        await browser.close()
+        logger.info("Browser closed")
+
+    pm._cleanup = _cleanup # type: ignore[attr-defined]
+    request.addfinalizer(lambda: asyncio.get_event_loop().create_task(_cleanup()))
+    return pm

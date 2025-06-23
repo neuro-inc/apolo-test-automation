@@ -1,7 +1,13 @@
+from __future__ import annotations
+
+from collections.abc import Callable
+from collections.abc import Awaitable
+
 import pytest
-from tests.reporting_hooks.reporting import async_step, async_suite, async_title
-from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.reporting_hooks.reporting import async_suite, async_title
+from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
+from tests.test_cases.steps.ui_steps.ui_signup_steps import UISignupSteps
 from tests.utils.api_helper import APIHelper
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.test_data import DataManager
@@ -14,6 +20,7 @@ class TestUISignup:
     async def setup(
         self,
         page_manager: PageManager,
+        add_page_manager: Callable[[], Awaitable[PageManager]],
         data_manager: DataManager,
         test_config: ConfigManager,
         users_manager: UsersManager,
@@ -22,108 +29,120 @@ class TestUISignup:
         """
         Initialize shared resources for the test methods.
         """
-        self._page_manager = page_manager
+        self._pm = page_manager
+        self._add_pm = await add_page_manager()
         self._data_manager = data_manager
         self._test_config = test_config
         self._users_manager = users_manager
         self._api_helper = api_helper
         self.ui_common_steps = UICommonSteps(
-            self._page_manager,
+            self._pm,
             self._test_config,
             self._data_manager,
             self._users_manager,
             self._api_helper,
         )
-        self._user = self._users_manager.generate_user()
+        self.steps = UISignupSteps(
+            self._pm,
+            self._test_config,
+            self._data_manager,
+            self._users_manager,
+            self._api_helper,
+        )
+        self.add_steps = UISignupSteps(
+            self._add_pm,
+            self._test_config,
+            self._data_manager,
+            self._users_manager,
+            self._api_helper,
+        )
 
     @async_title("New user successful signup")
     async def test_new_user_signup(self) -> None:
-        await self.ui_click_signup_button()
-        await self.ui_enter_email(self._user.email)
-        await self.ui_enter_password(self._user.password)
-        await self.ui_click_continue_button()
-        await self.verify_ui_email_message_displayed()
-        await self.activate_email_verification_link(self._user.email)
-        await self.ui_open_product_base_page()
-        await self.verify_ui_auth_page_displayed()
-        await self.ui_click_login_button()
-        await self.verify_ui_signup_username_page_displayed()
-        await self.ui_enter_username(self._user.username)
-        await self.ui_usr_click_signup_button()
-        await self.verify_ui_terms_of_agreement_displayed()
-        await self.ui_check_agreement_checkbox()
-        await self.ui_click_i_agree_button()
+        user = self._users_manager.generate_user()
+        steps = self.steps
+        await steps.ui_click_signup_button()
+        await steps.ui_enter_email(user.email)
+        await steps.ui_enter_password(user.password)
+        await steps.ui_click_continue_button()
+        await steps.verify_ui_email_message_displayed()
 
-        await self.verify_ui_welcome_page_displayed()
+        await steps.activate_email_verification_link(user.email)
+        await steps.ui_open_product_base_page()
+        await steps.verify_ui_auth_page_displayed()
 
-    @async_step("Click signup button")
-    async def ui_click_signup_button(self) -> None:
-        await self._page_manager.auth_page.click_sign_up_button()
+        await steps.ui_click_login_button()
+        await steps.verify_ui_signup_username_page_displayed()
 
-    @async_step("Enter email")
-    async def ui_enter_email(self, email: str) -> None:
-        await self._page_manager.signup_page.enter_email(email)
+        await steps.ui_enter_username(user.username)
+        await steps.ui_usr_click_signup_button()
+        await steps.verify_ui_terms_of_agreement_displayed()
 
-    @async_step("Enter password")
-    async def ui_enter_password(self, password: str) -> None:
-        await self._page_manager.signup_page.enter_password(password)
+        await steps.ui_check_agreement_checkbox()
+        await steps.ui_click_i_agree_button()
+        await steps.verify_ui_welcome_page_displayed(user.email)
 
-    @async_step("Click continue button")
-    async def ui_click_continue_button(self) -> None:
-        await self._page_manager.signup_page.click_continue_button()
+    @async_title("Invite not registered user as user to organization")
+    async def test_invite_not_registered_user_to_org(self) -> None:
+        steps = self.steps
+        add_steps = self.add_steps
+        main_user = self._users_manager.default_user
+        add_user = self._users_manager.generate_user()
 
-    @async_step("Verify that Verify email message displayed")
-    async def verify_ui_email_message_displayed(self) -> None:
-        assert await self._page_manager.main_page.is_verify_email_message_displayed()
-
-    @async_step("Verify user email with the activation link")
-    async def activate_email_verification_link(self, email: str) -> None:
-        needs_verification, url = await self._api_helper.check_user_needs_verification(
-            email
+        await self.ui_common_steps.ui_pass_new_user_onboarding(
+            main_user.email, main_user.password, "default_organization"
         )
-        assert needs_verification, f"User {email} does not need verification!!!!"
-
-        await self._page_manager.page.goto(url)
-
-    @async_step("Open product base page")
-    async def ui_open_product_base_page(self) -> None:
-        base_url = self._test_config.base_url
-        await self._page_manager.page.goto(base_url)
-
-    @async_step("Verify that Welcome new user page displayed")
-    async def verify_ui_welcome_page_displayed(self) -> None:
-        assert await self._page_manager.welcome_new_user_page.is_loaded(
-            email=self._user.email
+        organization = self._data_manager.default_organization
+        await steps.ui_click_organization_settings_button(main_user.email)
+        await steps.verify_ui_org_settings_popup_displayed(
+            main_user.email, main_user.username
         )
 
-    @async_step("Verify that Auth page displayed")
-    async def verify_ui_auth_page_displayed(self) -> None:
-        assert await self._page_manager.auth_page.is_loaded()
+        await steps.ui_click_people_button()
+        await steps.verify_ui_org_people_page_displayed()
 
-    @async_step("Click login button")
-    async def ui_click_login_button(self) -> None:
-        await self._page_manager.auth_page.click_log_in_button()
+        await steps.ui_click_invite_people_button()
+        await steps.verify_ui_invite_member_popup_displayed()
 
-    @async_step("Verify that Signup username page displayed")
-    async def verify_ui_signup_username_page_displayed(self) -> None:
-        assert await self._page_manager.signup_username_page.is_loaded()
+        await steps.ui_enter_invite_email(add_user.email)
+        await steps.ui_select_user_role()
+        await steps.verify_ui_invite_user_button_displayed(add_user.email)
+        await steps.verify_ui_send_invite_button_disabled()
 
-    @async_step("Enter username")
-    async def ui_enter_username(self, username: str) -> None:
-        await self._page_manager.signup_username_page.enter_username(username)
+        await steps.ui_click_invite_user_button(add_user.email)
+        await steps.verify_ui_send_invite_button_enabled()
 
-    @async_step("Click signup button on Signup username page")
-    async def ui_usr_click_signup_button(self) -> None:
-        await self._page_manager.signup_username_page.click_signup_button()
+        await steps.ui_click_send_invite_button()
+        await steps.verify_ui_user_displayed_in_users_list(add_user.email)
+        await steps.verify_ui_valid_user_role_displayed(add_user.email, "user")
+        await steps.verify_ui_valid_user_status_displayed(add_user.email, "Invited")
 
-    @async_step("Verify that User agreement pop up displayed")
-    async def verify_ui_terms_of_agreement_displayed(self) -> None:
-        assert await self._page_manager.main_page.is_user_agreement_title_displayed()
+        await add_steps.ui_click_signup_button()
+        await add_steps.ui_enter_email(add_user.email)
+        await add_steps.ui_enter_password(add_user.password)
+        await add_steps.ui_click_continue_button()
+        await add_steps.activate_email_verification_link(add_user.email)
+        await add_steps.ui_open_product_base_page()
+        await add_steps.verify_ui_auth_page_displayed()
 
-    @async_step("Check agreement checkbox")
-    async def ui_check_agreement_checkbox(self) -> None:
-        await self._page_manager.main_page.check_user_agreement_checkbox()
+        await add_steps.ui_click_login_button()
+        await add_steps.verify_ui_signup_username_page_displayed()
 
-    @async_step("Click i Agree button")
-    async def ui_click_i_agree_button(self) -> None:
-        await self._page_manager.main_page.click_user_agreement_agree_button()
+        await add_steps.ui_enter_username(add_user.username)
+        await add_steps.ui_usr_click_signup_button()
+        await add_steps.verify_ui_terms_of_agreement_displayed()
+
+        await add_steps.ui_check_agreement_checkbox()
+        await add_steps.ui_click_i_agree_button()
+        await add_steps.verify_ui_welcome_page_displayed(add_user.email)
+
+        await add_steps.ui_click_welcome_lets_do_it_button()
+        await add_steps.verify_ui_invite_to_org_page_displayed(
+            organization.org_name, "user"
+        )
+
+        await add_steps.ui_click_accept_and_go_button()
+        await add_steps.verify_ui_create_project_message_displayed(
+            organization.gherkin_name
+        )
+        await add_steps.verify_ui_create_project_button_displayed()

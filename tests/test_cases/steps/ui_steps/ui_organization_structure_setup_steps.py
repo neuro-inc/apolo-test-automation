@@ -1,64 +1,32 @@
-import pytest
-
-from tests.reporting_hooks.reporting import async_step, async_suite, async_title
-from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
-from tests.components.ui.page_manager import PageManager
+from tests.reporting_hooks.reporting import async_step
 from tests.utils.api_helper import APIHelper
-from tests.utils.test_data_management.test_data import DataManager
+from tests.components.ui.page_manager import PageManager
 from tests.utils.test_config_helper import ConfigManager
+from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.test_data_management.users_manager import UsersManager
 
 
-@async_suite("UI Organization Structure Setup")
-class TestUICreateFirstOrganization:
-    @pytest.fixture(autouse=True)
-    async def setup(
+class UIOrganizationStructureSetupSteps:
+    def __init__(
         self,
         page_manager: PageManager,
-        data_manager: DataManager,
         test_config: ConfigManager,
+        data_manager: DataManager,
         users_manager: UsersManager,
         api_helper: APIHelper,
     ) -> None:
-        """
-        Initialize shared resources for the test methods.
-        """
         self._page_manager = page_manager
-        self._data_manager = data_manager
         self._test_config = test_config
+        self._data_manager = data_manager
         self._users_manager = users_manager
         self._api_helper = api_helper
-        self.ui_common_steps = UICommonSteps(
-            self._page_manager,
-            self._test_config,
-            self._data_manager,
-            self._users_manager,
-            self._api_helper,
-        )
-        # Login via UI
-        self._email = self._users_manager.default_user.email
-        self._password = self._users_manager.default_user.password
-        self._username = self._users_manager.default_user.username
-        await self.ui_common_steps.ui_login(self._email, self._password)
 
-    @async_title("Create First Organization via UI")
-    async def test_new_user_login(self) -> None:
-        await self.ui_click_welcome_lets_do_it_button()
-        await self.verify_ui_join_organization_page_displayed(self._username)
-        await self.ui_click_create_organization_button()
-        await self.verify_ui_name_organization_page_displayed()
-        await self.ui_enter_organization_name("My-organization")
-        await self.ui_click_next_button()
-        await self.verify_ui_thats_it_page_displayed()
-        await self.ui_click_thats_it_lets_do_it_button()
-        await self.verify_ui_main_page_displayed()
-        await self.verify_ui_create_project_message_displayed("My-organization")
-        await self.verify_ui_create_project_button_displayed()
-
+    # ********************   Welcome new user page steps   ****************************
     @async_step("Click the let's do it button on Welcome page")
     async def ui_click_welcome_lets_do_it_button(self) -> None:
         await self._page_manager.welcome_new_user_page.click_lets_do_it_button()
 
+    # ********************   Join organization page steps   ****************************
     @async_step("Verify Join organization page displayed")
     async def verify_ui_join_organization_page_displayed(self, username: str) -> None:
         assert await self._page_manager.join_organization_page.is_loaded(
@@ -71,6 +39,7 @@ class TestUICreateFirstOrganization:
             self._page_manager.join_organization_page.click_create_organization_button()
         )
 
+    # ********************   Name organization page steps   ****************************
     @async_step("Verify Name organization page displayed")
     async def verify_ui_name_organization_page_displayed(self) -> None:
         assert await self._page_manager.name_your_organization_page.is_loaded()
@@ -86,6 +55,7 @@ class TestUICreateFirstOrganization:
     async def ui_click_next_button(self) -> None:
         await self._page_manager.name_your_organization_page.click_next_button()
 
+    # ********************   That's it page steps   ****************************
     @async_step("Verify That's it page displayed")
     async def verify_ui_thats_it_page_displayed(self) -> None:
         assert await self._page_manager.thats_it_page.is_loaded()
@@ -94,6 +64,7 @@ class TestUICreateFirstOrganization:
     async def ui_click_thats_it_lets_do_it_button(self) -> None:
         await self._page_manager.thats_it_page.click_lets_do_it_button()
 
+    # ********************   Main page steps   ****************************
     @async_step("Verify Main page is displayed")
     async def verify_ui_main_page_displayed(self) -> None:
         assert await self._page_manager.main_page.is_loaded()
@@ -112,3 +83,17 @@ class TestUICreateFirstOrganization:
     @async_step("Verify create project button displayed")
     async def verify_ui_create_project_button_displayed(self) -> None:
         assert await self._page_manager.main_page.is_create_first_project_button_displayed()
+
+    # ********************   invited to organization page steps   ****************************
+
+    @async_step("Verify that Invite to organization page displayed")
+    async def verify_ui_invite_to_org_page_displayed(
+        self, org_name: str, user_role: str
+    ) -> None:
+        assert await self._page_manager.invited_to_org_page.is_loaded(
+            org_name=org_name, user_role=user_role
+        )
+
+    @async_step("Click Accept and Go button")
+    async def ui_click_accept_and_go_button(self) -> None:
+        await self._page_manager.invited_to_org_page.click_accept_and_go_button()
