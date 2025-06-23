@@ -1,0 +1,121 @@
+INFO     [🔧TEST CONFIG]:conftest.py:112 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:118 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:138 Creating Apolo CLI instance
+INFO     [🔧TEST CONFIG]:conftest.py:144 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:130 Creating API helper
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-64knb9fq51@apolo.us', username='regression-64knb9fq51', password='******')
+INFO     [🔧TEST CONFIG]:conftest.py:215 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:234 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:237 Navigating to: https://console.dev.apolo.us/
+INFO     [📘TEST_INFO]:reporting.py:85 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:86 📝 TEST started: Invite registered user without organization to organization via UI
+INFO     [📘TEST_INFO]:reporting.py:87 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:215 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:234 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:237 Navigating to: https://console.dev.apolo.us/
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-my2qpmevr2@apolo.us', username='regression-my2qpmevr2', password='******')
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-my2qpmevr2@apolo.us', username='regression-my2qpmevr2', password='******')
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click sign up button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter regression-my2qpmevr2@apolo.us email
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter ********* password
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Click continue button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if verify email message displayed
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-my2qpmevr2@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-my2qpmevr2@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=nKaXxxIkjlI1wSWLvsaGAFpD4heXzNES#'}
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-my2qpmevr2@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-my2qpmevr2@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Check if page loaded
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click log in button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Check if page is loaded
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Enter regression-my2qpmevr2 username
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Click signup button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if user_agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check user agreement checkbox
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click user agreement I Agree button
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Signup new user via UI and activate email verification link
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Login via UI
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click log in button
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Pass new user onboarding and create first organization via UI
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Click lets do it button
+INFO     [🎭 Playwright]:base_page.py:15 <JoinOrganizationPage>: Click create organization button
+INFO     [🔧DATA MANAGER]:test_data.py:34 Added organization: org_name=regression-org-nzxeersnpb, gherkin_name=Default-organization
+INFO     [🎭 Playwright]:base_page.py:15 <NameNewOrganizationPage>: Enter regression-org-nzxeersnpb organization name
+INFO     [🎭 Playwright]:base_page.py:15 <NameNewOrganizationPage>: Click next button
+INFO     [🎭 Playwright]:base_page.py:15 <ThatsItPage>: Click let's do it button
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Pass new user onboarding and create first organization via UI
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Invite user to organization via UI
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click organization settings button
+INFO     [🎭 Playwright]:base_page.py:15 <OrganizationSettingsPopup>: Check if page loaded
+INFO     [🎭 Playwright]:base_page.py:15 <OrganizationSettingsPopup>: Click People button
+ERROR    [📘TEST_INFO]:reporting.py:34 ❌ STEP failed: Invite user to organization via UI
+ERROR    [📘TEST_INFO]:reporting.py:93 ❌ TEST failed: Invite registered user without organization to organization via UI
+Exception: [TimeoutError] during step: Invite user to organization via UI
+Message: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("a").filter(has_text="People")
+    - locator resolved to <a href="/org-settings" class="relative inline-flex cursor-pointer items-center rounded-xl py-1 transition-colors text-button h-12 gap-2 text-black hover:text-primary active:text-[#010A1B] disabled:text-neural-03 w-full justify-start px-2 font-400">…</a>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+    - element is not stable
+  - retrying click action
+    - waiting for element to be visible, enabled and stable
+  - element was detached from the DOM, retrying
+
+Note: Playwright Timeout. Element not found or action took too long.
+INFO     [📘TEST_INFO]:reporting.py:96 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:246 Browser context closed
+INFO     [🔧TEST CONFIG]:conftest.py:248 Browser closed
+INFO     [🔧TEST CONFIG]:conftest.py:166 Cleaning up 1 organisations
+INFO     [🖥apolo_CLI]:apolo_cli.py:123 login-with-token running command via cli:
+
+apolo config login-with-token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjhyNXZCR0E4ZXNuc1IzbXJ0NUFSViJ9.eyJodHRwczovL3BsYXRmb3JtLm5ldXJvbWF0aW9uLmlvL3VzZXIiOiJyZWdyZXNzaW9uLTY0a25iOWZxNTEiLCJodHRwczovL3BsYXRmb3JtLm5ldXJvbWF0aW9uLmlvL2xvZ2luX3JlZGlyZWN0X3VybCI6Imh0dHBzOi8vY29uc29sZS5kZXYuYXBvbG8udXMiLCJodHRwczovL3BsYXRmb3JtLmFwb2xvLnVzL29yaWdpbiI6Imh0dHBzOi8vY29uc29sZS5kZXYuYXBvbG8udXMiLCJpc3MiOiJodHRwczovL2F1dGguZGV2LmFwb2xvLnVzLyIsInN1YiI6ImF1dGgwfDY4NTk4M2EzZjlmZThkZjQwZWU4NjY5ZSIsImF1ZCI6WyJodHRwczovL2FwaS5kZXYuYXBvbG8udXMiLCJodHRwczovL2Rldi1hcG9sby11cy51cy5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNzUwNjk2OTQ0LCJleHAiOjE3NTA3ODMzNDQsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJhenAiOiJxM0kwT3p6R25URGtoUm1wZUo3V1dnYVRDdWNtVnhUTCJ9.odD-h8Ivx7Iff0ro2gfXgmxiZc4DGVo6LyRLcAs36q3bQO9uv0kDRlQRumsz7BGj9d2VHfJu2oq8LvQazX_KvvH9gn4-wqF5AyxrntRQ4fC3nT0VAMDzXckxA7Wf6vPZcqp_89QDA7mQS3cCDH_w6wQsT0cmOBUgdGd_xVW0-9yR87ft3Vy6oV-GS72VVdIhUSdvgcDzmPeL0u8Kdo9icFIHKM0TrtEdbj5M0Sui263ZVYLDlyfhDG6ZI03uzZ1NP-SXBx_HS8MyYS6SDTQHJuMbNZc0iUsqXHhGWWqmITH57aEnYAXJLhJRQu_2ytlIi-rt8S9LlwwllsYgBL7KRw https://api.dev.apolo.us/api/v1
+
+INFO     [🔧TEST CONFIG]:conftest.py:246 Browser context closed
+ERROR    asyncio:base_events.py:1865 Task exception was never retrieved
+future: <Task finished name='Task-149' coro=<_create_page_manager.<locals>._cleanup() done, defined at /home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py:244> exception=TargetClosedError('BrowserContext.close: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /home/runner/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AutoExpandDetailsElement,AvoidUnnecessaryBeforeUnloadCheckSync,CertificateTransparencyComponentUpdater,DeferRendererTasksAfterInput,DestroyProfileOnBrowserClose,DialMediaRouteProvider,ExtensionManifestV2Disabled,GlobalMediaControls,HttpsUpgrades,ImprovedCookieControls,LazyFrameLoading,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --enable-automation --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --disable-dev-shm-usage --user-data-dir=/tmp/playwright_chromiumdev_profile-a8bDdr --remote-debugging-pipe --no-startup-window\n<launched> pid=6485\n[pid=6485][err] [0623/164212.825369:WARNING:sandbox/policy/linux/sandbox_linux.cc:415] InitializeSandbox() called with multiple threads in process gpu-process.\n[pid=6485] <gracefully close start>')>
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 245, in _cleanup
+    await context.close()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/async_api/_generated.py", line 13448, in close
+    return mapping.from_maybe_impl(await self._impl_obj.close(reason=reason))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_browser_context.py", line 599, in close
+    await self._channel.send("close", {"reason": reason})
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TargetClosedError: BrowserContext.close: Target page, context or browser has been closed
+Browser logs:
+
+<launching> /home/runner/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AutoExpandDetailsElement,AvoidUnnecessaryBeforeUnloadCheckSync,CertificateTransparencyComponentUpdater,DeferRendererTasksAfterInput,DestroyProfileOnBrowserClose,DialMediaRouteProvider,ExtensionManifestV2Disabled,GlobalMediaControls,HttpsUpgrades,ImprovedCookieControls,LazyFrameLoading,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --enable-automation --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --disable-dev-shm-usage --user-data-dir=/tmp/playwright_chromiumdev_profile-a8bDdr --remote-debugging-pipe --no-startup-window
+<launched> pid=6485
+[pid=6485][err] [0623/164212.825369:WARNING:sandbox/policy/linux/sandbox_linux.cc:415] InitializeSandbox() called with multiple threads in process gpu-process.
+[pid=6485] <gracefully close start>
+INFO     [🔧TEST CONFIG]:conftest.py:248 Browser closed
+INFO     [🖥apolo_CLI]:apolo_cli.py:165 login-with-token succeeded:
+
+You were successfully logged out.
+Logged into https://api.dev.apolo.us/api/v1 as regression-64knb9fq51, current cluster is default, org is regression-org-nzxeersnpb project is None
+Read the docs at https://docs.apolo.us or run `apolo --help` to see the reference
+
+INFO     [🖥apolo_CLI]:apolo_cli.py:71 Removing organization 'regression-org-nzxeersnpb' (force=True)
+INFO     [🖥apolo_CLI]:apolo_cli.py:123 remove organization 'regression-org-nzxeersnpb' running command via cli:
+
+apolo admin remove-org regression-org-nzxeersnpb --force
+
+INFO     [🖥apolo_CLI]:apolo_cli.py:165 remove organization 'regression-org-nzxeersnpb' succeeded:
+
+
+
+INFO     [🔧TEST CONFIG]:conftest.py:186 Removed organisation: regression-org-nzxeersnpb
