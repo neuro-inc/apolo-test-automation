@@ -29,15 +29,13 @@ class UIOrganizationStructureSetupSteps:
     # ********************   Join organization page steps   ****************************
     @async_step("Verify Join organization page displayed")
     async def verify_ui_join_organization_page_displayed(self, username: str) -> None:
-        assert await self._pm.join_organization_page.is_loaded(
-            username=username
-        ), "Join organization page should be displayed!"
+        assert await self._pm.join_organization_page.is_loaded(username=username), (
+            "Join organization page should be displayed!"
+        )
 
     @async_step("Click create organization button")
     async def ui_click_create_organization_button(self) -> None:
-        await (
-            self._pm.join_organization_page.click_create_organization_button()
-        )
+        await self._pm.join_organization_page.click_create_organization_button()
 
     # ********************   Name organization page steps   ****************************
     @async_step("Verify Name organization page displayed")
@@ -71,9 +69,7 @@ class UIOrganizationStructureSetupSteps:
     # ********************   Main page steps   ****************************
     @async_step("Verify Main page is displayed")
     async def verify_ui_main_page_displayed(self) -> None:
-        assert await self._pm.main_page.is_loaded(), (
-            "Main page should be loaded!"
-        )
+        assert await self._pm.main_page.is_loaded(), "Main page should be loaded!"
 
     @async_step("Click User Organization settings button")
     async def ui_click_organization_settings_button(self, email: str) -> None:
@@ -108,17 +104,13 @@ class UIOrganizationStructureSetupSteps:
 
     @async_step("Verify invite to organization info displayed on the main page")
     async def verify_ui_invite_org_info_displayed(self, org_name: str) -> None:
-        await self._pm.main_page.is_invite_to_org_row_displayed(
-            org_name=org_name
-        )
+        await self._pm.main_page.is_invite_to_org_row_displayed(org_name=org_name)
 
     @async_step("Verify invite to organization role is valid")
     async def verify_ui_invite_to_org_role_is_valid(
         self, org_name: str, role: str
     ) -> None:
-        value = await self._pm.main_page.get_invite_to_org_role(
-            org_name=org_name
-        )
+        value = await self._pm.main_page.get_invite_to_org_role(org_name=org_name)
         assert value.lower() == role.lower(), (
             f"Wrong user role in invite to the organization {org_name}"
         )
@@ -133,8 +125,10 @@ class UIOrganizationStructureSetupSteps:
         "Verify that Organization select button is displayed in organization settings popup"
     )
     async def verify_ui_select_org_button_displayed(self, org_name: str) -> None:
-        assert await self._pm.organization_settings_popup.is_select_org_button_displayed(
-            org_name=org_name
+        assert (
+            await self._pm.organization_settings_popup.is_select_org_button_displayed(
+                org_name=org_name
+            )
         ), f"Select organization {org_name} button should be displayed!"
 
     # ********************   invited to organization page steps   ****************************
