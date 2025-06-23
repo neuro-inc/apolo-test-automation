@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from collections.abc import Awaitable
 from collections.abc import Callable
 import pytest
@@ -32,6 +33,8 @@ class BaseUITest:
         self._api_helper = api_helper
         self._primary_taken = False  # tracks first implicit use
 
+        self.logger: logging.Logger = logging.getLogger("[📄 TestCaseInfo]")
+
     async def _pick_pm(self) -> PageManager:
         """
         Decide which PageManager to hand out:
@@ -45,6 +48,10 @@ class BaseUITest:
             return self._pm
 
         return await self._add_pm()
+
+    def log(self, message: str, level: int = logging.INFO) -> None:
+        formatted_message = f"{':' * 15} {message}"
+        self.logger.log(level, formatted_message)
 
     async def init_test_steps(
         self,

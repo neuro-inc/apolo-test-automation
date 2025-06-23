@@ -40,6 +40,13 @@ async def signup_default_user(
     api_helper: APIHelper,
     request: pytest.FixtureRequest,
 ) -> None:
+    """
+    Signs up and verifies a default user before each test.
+    - Reuses cached user if already available.
+    - Performs signup and email verification via UI steps.
+    - Aborts the test session if signup fails.
+    - Ensures browser context is cleaned up after execution.
+    """
     global _default_user
     if _default_user:
         users_manager.default_user = _default_user
@@ -60,7 +67,7 @@ async def signup_default_user(
     else:
         _default_user = users_manager.default_user
     finally:
-        await pm._cleanup() # type: ignore[attr-defined]
+        await pm._cleanup()  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="function")
@@ -97,7 +104,7 @@ async def add_page_manager(
         yield _factory
     finally:
         for pm in reversed(created):
-            await pm._cleanup() # type: ignore[attr-defined]
+            await pm._cleanup()  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="function")
@@ -143,12 +150,13 @@ async def clean_up(
     test_config: ConfigManager,
     data_manager: DataManager,
     apolo_cli: ApoloCLI,
+    request: pytest.FixtureRequest,
 ) -> AsyncGenerator[None, None]:
     """
     Post-test cleanup:
-    ▸ logs in to Apolo CLI,
-    ▸ removes all organisations recorded in the DataManager,
-    ▸ logs any cleanup errors without failing the test run.
+    - logs in to Apolo CLI,
+    - removes all organisations recorded in the DataManager,
+    - logs any cleanup errors without failing the test run.
     """
     yield
 
@@ -165,14 +173,12 @@ async def clean_up(
                 )
                 return
 
-            # Login once
             with allure.step("CLI login for cleanup"):
                 await apolo_cli.login_with_token(
                     test_config.token,
                     test_config.cli_login_url,
                 )
 
-            # Delete each organisation
             for org in organisations:
                 with allure.step(f"Delete organisation: {org.org_name}"):
                     await apolo_cli.remove_organization(org.org_name)
@@ -181,6 +187,10 @@ async def clean_up(
 
         except Exception as exc:
             # Capture details but DO NOT fail the test
+            if not hasattr(request.session, "cleanup_warning"):
+                request.session.cleanup_warning = (  # type: ignore[attr-defined]
+                    "Test cleanup failed. See log file for details!\n"
+                )
             formatted_msg = exception_manager.handle(exc, context="Post-test cleanup")
             logger.exception("Post-test cleanup failed: %s", formatted_msg)
 
@@ -190,7 +200,6 @@ async def clean_up(
                 attachment_type=AttachmentType.TEXT,
             )
 
-            # Emit a non-fatal warning so the issue is still visible in the test output
             logger.warning(f"Post-test cleanup failed: {formatted_msg}", RuntimeWarning)
             global _default_user
             logger.warning("Need to setup new user due to cleanup issues...")
@@ -198,18 +207,15 @@ async def clean_up(
 
 
 async def _start_browser() -> Browser:
+    """
+    Launches a headless Chromium browser with CI-safe arguments.
+    """
     playwright = await async_playwright().start()
 
-    if os.getenv("CI") == "true":
-        logger.info("Starting browser in a headless mode...")
-        browser = await playwright.chromium.launch(
-            headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"]
-        )
-    else:
-        logger.info("Starting browser in a headed (visible) mode...")
-        browser = await playwright.chromium.launch(
-            headless=False, args=["--start-maximized"]
-        )
+    logger.info("Starting browser in a headless mode...")
+    browser = await playwright.chromium.launch(
+        headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"]
+    )
 
     return browser
 
@@ -217,6 +223,13 @@ async def _start_browser() -> Browser:
 async def _create_page_manager(
     test_config: ConfigManager, request: pytest.FixtureRequest
 ) -> PageManager:
+    """
+    Creates a PageManager with a new browser context and navigates to the base URL.
+    - Launches a browser and opens a new page.
+    - Navigates to the configured base URL.
+    - Attaches the context and page to the test config and request.
+    - Registers an async cleanup finalizer to close browser resources.
+    """
     browser = await _start_browser()
     logger.info("Initializing new browser context")
     context = await browser.new_context(no_viewport=True)
@@ -234,6 +247,6 @@ async def _create_page_manager(
         await browser.close()
         logger.info("Browser closed")
 
-    pm._cleanup = _cleanup # type: ignore[attr-defined]
+    pm._cleanup = _cleanup  # type: ignore[attr-defined]
     request.addfinalizer(lambda: asyncio.get_event_loop().create_task(_cleanup()))
     return pm

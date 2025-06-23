@@ -69,6 +69,10 @@ class UIOrganizationStructureSetupSteps:
     async def verify_ui_main_page_displayed(self) -> None:
         assert await self._page_manager.main_page.is_loaded()
 
+    @async_step("Click User Organization settings button")
+    async def ui_click_organization_settings_button(self, email: str) -> None:
+        await self._page_manager.main_page.click_organization_settings_button(email)
+
     @async_step("Verify project creation message is displayed")
     async def verify_ui_create_project_message_displayed(
         self, gherkin_name: str
@@ -83,6 +87,47 @@ class UIOrganizationStructureSetupSteps:
     @async_step("Verify create project button displayed")
     async def verify_ui_create_project_button_displayed(self) -> None:
         assert await self._page_manager.main_page.is_create_first_project_button_displayed()
+
+    @async_step("Verify that invitation to organization displayed on the left pane")
+    async def verify_ui_invite_to_org_displayed(self, org_name: str) -> None:
+        assert await self._page_manager.main_page.is_invite_to_org_button_displayed(
+            org_name=org_name
+        ), f"Invitation button to organization {org_name} should be displayed!"
+
+    @async_step("Click invite to organization button on the left pane")
+    async def ui_click_invite_to_org_button(self, org_name: str) -> None:
+        await self._page_manager.main_page.click_invite_to_org_button(org_name=org_name)
+
+    @async_step("Verify invite to organization info displayed on the main page")
+    async def verify_ui_invite_org_info_displayed(self, org_name: str) -> None:
+        await self._page_manager.main_page.is_invite_to_org_row_displayed(
+            org_name=org_name
+        )
+
+    @async_step("Verify invite to organization role is valid")
+    async def verify_ui_invite_to_org_role_is_valid(
+        self, org_name: str, role: str
+    ) -> None:
+        value = await self._page_manager.main_page.get_invite_to_org_role(
+            org_name=org_name
+        )
+        assert value.lower() == role.lower(), (
+            f"Wrong user role in invite to the organization {org_name}"
+        )
+
+    @async_step("Click Accept button for invitation to the organization")
+    async def ui_click_accept_invite_to_org(self, org_name: str) -> None:
+        await self._page_manager.main_page.click_accept_invite_to_org(org_name=org_name)
+
+    # ********************   Organization settings popup steps   ****************************
+
+    @async_step(
+        "Verify that Organization select button is displayed in organization settings popup"
+    )
+    async def verify_ui_select_org_button_displayed(self, org_name: str) -> None:
+        assert await self._page_manager.organization_settings_popup.is_select_org_button_displayed(
+            org_name=org_name
+        ), f"Select organization {org_name} button should be displayed!"
 
     # ********************   invited to organization page steps   ****************************
 

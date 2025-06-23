@@ -37,14 +37,7 @@ class UICommonSteps:
         self._test_config.token = token
 
     @async_step("Pass new user onboarding and create first organization via UI")
-    async def ui_pass_new_user_onboarding(
-        self, email: str, password: str, gherkin_name: str
-    ) -> None:
-        await self._pm.auth_page.click_log_in_button()
-        await self._pm.login_page.login(email, password)
-        assert await self._pm.welcome_new_user_page.is_loaded(email=email), (
-            "Welcome new user page should be displayed!"
-        )
+    async def ui_pass_new_user_onboarding(self, gherkin_name: str) -> None:
         token = await extract_access_token_from_local_storage(self._pm.login_page.page)
         self._test_config.token = token
 

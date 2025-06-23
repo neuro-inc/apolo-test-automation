@@ -47,15 +47,19 @@ class DataManager:
             None,
         )
 
-    def get_organization_by_gherkin_name(
-        self, gherkin_name: str
-    ) -> OrganizationData:
+    def get_organization_by_gherkin_name(self, gherkin_name: str) -> OrganizationData:
         org = next(
-            (org for org in self._organizations.values() if org.gherkin_name == gherkin_name),
-            None
+            (
+                org
+                for org in self._organizations.values()
+                if org.gherkin_name == gherkin_name
+            ),
+            None,
         )
         if org is None:
-            raise ValueError(f"No organization found with gherkin_name '{gherkin_name}'")
+            raise ValueError(
+                f"No organization found with gherkin_name '{gherkin_name}'"
+            )
         return org
 
     def get_all_organizations(self) -> list[OrganizationData]:

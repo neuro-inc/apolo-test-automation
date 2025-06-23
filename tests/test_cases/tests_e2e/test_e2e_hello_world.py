@@ -53,9 +53,8 @@ class TestHelloWorldJob:
 
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
-        await self.ui_common_steps.ui_pass_new_user_onboarding(
-            self._email, self._password, "default"
-        )
+        await self.ui_common_steps.ui_login(self._email, self._password)
+        await self.ui_common_steps.ui_pass_new_user_onboarding("default")
         await self.cli_common_steps.cli_login_with_token()
         await asyncio.sleep(2)
         await self.create_project("my-project")

@@ -19,18 +19,18 @@ class OrganizationSettingsPopup(BasePage):
         username = kwargs.get("username")
         if not isinstance(username, str):
             raise ValueError("Expected 'username' to be a non-empty string in kwargs")
-        return (
-            # await self._get_user_email_label(email).expect_to_be_loaded()
-            # await self._get_user_username_label(username).expect_to_be_loaded()
-            await self._get_log_out_button().expect_to_be_loaded()
-        )
+        return await self._get_log_out_button().expect_to_be_loaded()
 
-    def _get_select_organization_button(self, org_name: str) -> BaseElement:
-        return BaseElement(self.page, "button", has_text=org_name)
+    def _get_select_org_button(self, org_name: str) -> BaseElement:
+        return BaseElement(self.page, f"button:has(p[title={org_name}])")
+
+    async def is_select_org_button_displayed(self, org_name: str) -> bool:
+        self.log(f"Check if select organization {org_name} button displayed")
+        return await self._get_select_org_button(org_name).is_visible()
 
     async def click_select_organization_button(self, org_name: str) -> None:
         self.log(f"Select {org_name} organization")
-        await self._get_select_organization_button(org_name).click()
+        await self._get_select_org_button(org_name).click()
 
     def _get_settings_button(self) -> BaseElement:
         return BaseElement(self.page, "a", has_text="Settings")

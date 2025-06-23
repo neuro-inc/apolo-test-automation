@@ -103,3 +103,66 @@ class MainPage(BasePage):
     async def click_user_agreement_agree_button(self) -> None:
         self.log("Click user agreement I Agree button")
         await self._get_user_agreement_agree_button().click()
+
+    def _get_invite_to_org_button(self, org_name: str) -> BaseElement:
+        return BaseElement(self.page, 'a[href="/invites"]', has_text=org_name)
+
+    async def is_invite_to_org_button_displayed(self, org_name: str) -> bool:
+        self.log(f"Check if invite to organization {org_name} displayed")
+        return await self._get_invite_to_org_button(org_name).is_visible()
+
+    async def click_invite_to_org_button(self, org_name: str) -> None:
+        self.log(f"Click invite to organization {org_name} button")
+        await self._get_invite_to_org_button(org_name).click()
+
+    def _get_invite_to_org_row(self, org_name: str) -> BaseElement:
+        return BaseElement(
+            self.page, f'tr.contents:has(td:nth-child(1):text-is("{org_name}"))'
+        )
+
+    def _get_invite_row_role_td(self, org_name: str) -> BaseElement:
+        return BaseElement(
+            self.page,
+            f'tr.contents:has(td:nth-child(1):text-is("{org_name}")) >> td:nth-child(2)',
+        )
+
+    def _get_invite_row_accept_button(self, org_name: str) -> BaseElement:
+        return BaseElement(
+            self.page,
+            f'''
+  tr.contents:has(td:nth-child(1):text-is("{org_name}"))
+  >> td:nth-child(5)
+  >> button:has-text("Accept")
+''',
+        )
+
+    def _get_invite_row_decline_button(self, org_name: str) -> BaseElement:
+        return BaseElement(
+            self.page,
+            f'''
+      tr.contents:has(td:nth-child(1):text-is("{org_name}"))
+      >> td:nth-child(5)
+      >> button:has-text("Decline")
+    ''',
+        )
+
+    async def is_invite_to_org_row_displayed(self, org_name: str) -> bool:
+        self.log(f"Check if invite row to organization {org_name} displayed")
+        row = self._get_invite_to_org_row(org_name)
+        accept_btn = self._get_invite_row_accept_button(org_name)
+        decline_btn = self._get_invite_row_decline_button(org_name)
+
+        return (
+            await row.is_visible()
+            and await accept_btn.is_visible()
+            and await decline_btn.is_visible()
+        )
+
+    async def get_invite_to_org_role(self, org_name: str) -> str:
+        self.log(f"Get user role in invite to organization {org_name}")
+        role_td = self._get_invite_row_role_td(org_name)
+        return await role_td.text_content()
+
+    async def click_accept_invite_to_org(self, org_name: str) -> None:
+        self.log(f"Click accept invite to organization {org_name} button")
+        await self._get_invite_row_accept_button(org_name).click()

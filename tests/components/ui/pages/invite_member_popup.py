@@ -29,12 +29,14 @@ class InviteMemberPopup(BasePage):
         return await self._get_user_data_input().is_visible()
 
     async def enter_user_data(
-            self,
-            email: str | None = None,  # 👈 explicit Optional
-            username: str | None = None,  # 👈 explicit Optional
+        self,
+        email: str | None = None,  # 👈 explicit Optional
+        username: str | None = None,  # 👈 explicit Optional
     ) -> None:
         if (email is None) == (username is None):  # both None or both non-None
-            raise ValueError(f"Provide exactly one of email or username, got: {email}, {username}")
+            raise ValueError(
+                f"Provide exactly one of email or username, got: {email}, {username}"
+            )
 
         value = cast(str, email or username)
         self.log(f"Enter {value}")
