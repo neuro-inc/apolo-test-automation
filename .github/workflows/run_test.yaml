@@ -1,0 +1,107 @@
+name: Reusable Test Runner
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set destination directory
+        id: set-destination
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "DEST=run-$(date +'%Y-%m-%d')-${{ github.run_number }}" >> "$GITHUB_ENV"
+          else
+            echo "DEST=run-test-latest" >> "$GITHUB_ENV"
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install Playwright browsers
+        run: uv run python -m playwright install --with-deps
+
+      - name: Install Allure
+        run: |
+          mkdir -p allure-bin
+          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+          unzip -q allure.zip -d allure-bin
+          echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
+          export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
+          allure --version
+
+      - name: Run tests
+        id: run_tests
+        run: |
+          set +e
+          uv run pytest tests
+          echo "TESTS_RUN_STATUS=$?" >> "$GITHUB_ENV"
+
+      - name: Read test summary
+        if: always()
+        id: summary
+        run: |
+            echo "summary_text<<EOF" >> $GITHUB_OUTPUT
+            cat reports/logs/summary.log >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports/allure-report
+          publish_branch: gh-pages
+          destination_dir: ${{ env.DEST }}
+
+      - name: Comment on PR with Allure Report
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        env:
+          SUMMARY_TEXT: ${{ steps.summary.outputs.summary_text }}
+          TESTS_RUN_STATUS: ${{ env.TESTS_RUN_STATUS }}
+          DEST: ${{ env.DEST }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const runNumber = context.runNumber;
+            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/${process.env.DEST}/index.html`;
+            const summary = process.env.SUMMARY_TEXT;
+            const status = process.env.TESTS_RUN_STATUS;
+
+            const statusEmoji = status === "0" ? "✅" : "❌";
+            const statusText = status === "0" ? "complete" : "failed";
+
+            const comment = [
+              `${statusEmoji} **Test run #${runNumber} ${statusText}**`,
+              `📊 **Allure Report:** [View Report](${url})`,
+              ``,
+              `📝 **Summary:**\n\`\`\`\n${summary.trim()}\n\`\`\``
+            ].join('\n');
+
+            github.rest.issues.createComment({
+              issue_number: pr.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+
+      - name: Fail job if tests failed
+        if: env.TESTS_RUN_STATUS != '0'
+        run: exit 1
