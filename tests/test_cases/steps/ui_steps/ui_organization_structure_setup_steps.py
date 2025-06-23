@@ -31,7 +31,7 @@ class UIOrganizationStructureSetupSteps:
     async def verify_ui_join_organization_page_displayed(self, username: str) -> None:
         assert await self._page_manager.join_organization_page.is_loaded(
             username=username
-        )
+        ), "Join organization page should be displayed!"
 
     @async_step("Click create organization button")
     async def ui_click_create_organization_button(self) -> None:
@@ -42,7 +42,9 @@ class UIOrganizationStructureSetupSteps:
     # ********************   Name organization page steps   ****************************
     @async_step("Verify Name organization page displayed")
     async def verify_ui_name_organization_page_displayed(self) -> None:
-        assert await self._page_manager.name_your_organization_page.is_loaded()
+        assert await self._page_manager.name_your_organization_page.is_loaded(), (
+            "Name organization page should be displayed!"
+        )
 
     @async_step("Enter organization name")
     async def ui_enter_organization_name(self, gherkin_name: str) -> None:
@@ -58,7 +60,9 @@ class UIOrganizationStructureSetupSteps:
     # ********************   That's it page steps   ****************************
     @async_step("Verify That's it page displayed")
     async def verify_ui_thats_it_page_displayed(self) -> None:
-        assert await self._page_manager.thats_it_page.is_loaded()
+        assert await self._page_manager.thats_it_page.is_loaded(), (
+            "That's it page should be loaded!"
+        )
 
     @async_step("Click lets do it button on That's it page")
     async def ui_click_thats_it_lets_do_it_button(self) -> None:
@@ -67,7 +71,9 @@ class UIOrganizationStructureSetupSteps:
     # ********************   Main page steps   ****************************
     @async_step("Verify Main page is displayed")
     async def verify_ui_main_page_displayed(self) -> None:
-        assert await self._page_manager.main_page.is_loaded()
+        assert await self._page_manager.main_page.is_loaded(), (
+            "Main page should be loaded!"
+        )
 
     @async_step("Click User Organization settings button")
     async def ui_click_organization_settings_button(self, email: str) -> None:
@@ -86,7 +92,9 @@ class UIOrganizationStructureSetupSteps:
 
     @async_step("Verify create project button displayed")
     async def verify_ui_create_project_button_displayed(self) -> None:
-        assert await self._page_manager.main_page.is_create_first_project_button_displayed()
+        assert await self._page_manager.main_page.is_create_first_project_button_displayed(), (
+            "Create project button should be displayed!"
+        )
 
     @async_step("Verify that invitation to organization displayed on the left pane")
     async def verify_ui_invite_to_org_displayed(self, org_name: str) -> None:
@@ -137,7 +145,7 @@ class UIOrganizationStructureSetupSteps:
     ) -> None:
         assert await self._page_manager.invited_to_org_page.is_loaded(
             org_name=org_name, user_role=user_role
-        )
+        ), "Invite to organization page should be displayed!"
 
     @async_step("Click Accept and Go button")
     async def ui_click_accept_and_go_button(self) -> None:
