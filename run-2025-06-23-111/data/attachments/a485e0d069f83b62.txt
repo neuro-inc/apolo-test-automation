@@ -1,0 +1,107 @@
+--- Logging error ---
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 184, in clean_up
+    await apolo_cli.remove_organization(org.org_name)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/utils/cli/apolo_cli.py", line 75, in remove_organization
+    return await self._run_command(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+        *args, action=f"remove organization '{org_name}'"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/utils/cli/apolo_cli.py", line 163, in _run_command
+    raise RuntimeError(error_message)
+RuntimeError: remove organization 'regression-org-ximu4ku48w' failed:
+
+ERROR: Organization 'regression-org-ximu4ku48w' is not found.
+
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/logging/__init__.py", line 1150, in emit
+    msg = self.format(record)
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/logging/__init__.py", line 998, in format
+    return fmt.format(record)
+           ~~~~~~~~~~^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/logging/__init__.py", line 711, in format
+    record.message = record.getMessage()
+                     ~~~~~~~~~~~~~~~~~^^
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/logging/__init__.py", line 400, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/bin/pytest", line 10, in <module>
+    sys.exit(console_main())
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py", line 201, in console_main
+    code = main()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py", line 175, in main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/main.py", line 336, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/main.py", line 289, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/main.py", line 343, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/main.py", line 367, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 117, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 141, in runtestprotocol
+    reports.append(call_and_report(item, "teardown", log, nextitem=nextitem))
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 245, in call_and_report
+    call = CallInfo.from_call(
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+    result: TResult | None = func()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 246, in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 193, in pytest_runtest_teardown
+    item.session._setupstate.teardown_exact(nextitem)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 546, in teardown_exact
+    fin()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/fixtures.py", line 1057, in finish
+    fin()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/allure_commons/_allure.py", line 231, in __call__
+    return self._fixture_function(*args, **kwargs)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pytest_asyncio/plugin.py", line 339, in finalizer
+    event_loop.run_until_complete(task)
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/asyncio/base_events.py", line 706, in run_until_complete
+    self.run_forever()
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/asyncio/base_events.py", line 677, in run_forever
+    self._run_once()
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/asyncio/base_events.py", line 2034, in _run_once
+    handle._run()
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/asyncio/events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pytest_asyncio/plugin.py", line 330, in async_finalizer
+    await gen_obj.__anext__()  # type: ignore[union-attr]
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 203, in clean_up
+    logger.warning(f"Post-test cleanup failed: {formatted_msg}", RuntimeWarning)
+Message: "Post-test cleanup failed: [RuntimeError] during step: Post-test cleanup\nMessage: remove organization 'regression-org-ximu4ku48w' failed:\n\nERROR: Organization 'regression-org-ximu4ku48w' is not found.\n\n"
+Arguments: (<class 'RuntimeWarning'>,)
