@@ -56,11 +56,12 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         await ui_common_steps.ui_pass_new_user_onboarding(
             gherkin_name="Default-organization",
         )
+        await add_steps.ui_click_welcome_lets_do_it_button()
+
         await ui_common_steps.ui_invite_user_to_org(
             email=user.email, username=user.username, add_user_email=add_user.email
         )
 
-        await add_steps.ui_click_welcome_lets_do_it_button()
         await add_ui_common_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(

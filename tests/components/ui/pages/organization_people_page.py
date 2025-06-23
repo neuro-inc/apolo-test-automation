@@ -28,6 +28,7 @@ class OrganizationPeoplePage(BasePage):
 
     async def click_invite_people_button(self) -> None:
         self.log("Click Invite people button")
+        await self.page.wait_for_timeout(300)
         await self._get_invite_people_button().click()
 
     def _get_org_user_row(self, email: str) -> BaseElement:

@@ -44,6 +44,7 @@ class OrganizationSettingsPopup(BasePage):
 
     async def click_people_button(self) -> None:
         self.log("Click People button")
+        await self.page.wait_for_timeout(300)
         await self._get_people_button().click()
 
     def _get_billing_button(self) -> BaseElement:

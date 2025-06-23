@@ -41,7 +41,6 @@ class UICommonSteps:
         token = await extract_access_token_from_local_storage(self._pm.login_page.page)
         self._test_config.token = token
 
-        await self._pm.page.wait_for_timeout(500)
         await self._pm.welcome_new_user_page.click_lets_do_it_button()
         await self._pm.join_organization_page.click_create_organization_button()
 
@@ -51,7 +50,6 @@ class UICommonSteps:
         await page.enter_organization_name(organization_name)
         await self._pm.name_your_organization_page.click_next_button()
 
-        await self._pm.page.wait_for_timeout(500)
         await self._pm.thats_it_page.click_lets_do_it_button()
 
     @async_step("Signup new user via UI and activate email verification link")

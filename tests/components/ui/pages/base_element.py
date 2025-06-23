@@ -40,6 +40,7 @@ class BaseElement:
 
     async def click(self) -> None:
         await expect(self.locator).to_be_visible()
+        await expect(self.locator).to_be_enabled()
         await self.locator.click()
 
     async def check(self) -> None:
