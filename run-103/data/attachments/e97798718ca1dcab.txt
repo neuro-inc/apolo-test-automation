@@ -1,0 +1,82 @@
+INFO     [🔧TEST CONFIG]:conftest.py:91 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:97 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:117 Creating Apolo CLI instance
+INFO     [🔧TEST CONFIG]:conftest.py:123 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:109 Creating API helper
+INFO     [🔧TEST CONFIG]:conftest.py:39 Signup default user...
+INFO     [🔧TEST CONFIG]:conftest.py:153 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:43 Navigating to: https://console.dev.apolo.us/
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-qfdmope3bm@apolo.us', username='regression-qfdmope3bm', password='******')
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-qfdmope3bm@apolo.us', username='regression-qfdmope3bm', password='******')
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click sign up button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter regression-qfdmope3bm@apolo.us email
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter ********* password
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Click continue button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if verify email message displayed
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-qfdmope3bm@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-qfdmope3bm@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=5jLp5h0zRfDUNVTHQqgf3ndEjuHctTx2#'}
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-qfdmope3bm@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-qfdmope3bm@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Check if page loaded
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click log in button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Check if page is loaded
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Enter regression-qfdmope3bm username
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Click signup button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if user_agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check user agreement checkbox
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click user agreement I Agree button
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Signup new user via UI and activate email verification link
+INFO     [🔧TEST CONFIG]:conftest.py:62 Browser context closed
+INFO     [🔧TEST CONFIG]:conftest.py:64 Browser closed
+INFO     [🔧TEST CONFIG]:conftest.py:153 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:76 Navigating to: https://console.dev.apolo.us/
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Login via UI
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click log in button
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Verify Apolo CLI client is installed
+INFO     [🖥apolo_CLI]:apolo_cli.py:123 check CLI version running command via cli:
+
+apolo --version
+
+INFO     [🖥apolo_CLI]:apolo_cli.py:165 check CLI version succeeded:
+
+Apolo Platform Client 25.5.0
+
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Verify Apolo CLI client is installed
+INFO     [📘TEST_INFO]:reporting.py:131 ============================================================
+INFO     [📘TEST_INFO]:reporting.py:132 📁 SUITE STARTED: CLI Login
+INFO     [📘TEST_INFO]:reporting.py:133 ============================================================
+INFO     [📘TEST_INFO]:reporting.py:85 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:86 📝 TEST started: User logs in to Apolo CLI with auth token and verifies login success
+INFO     [📘TEST_INFO]:reporting.py:87 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Login to apolo CLI with access token
+INFO     [🖥apolo_CLI]:apolo_cli.py:123 login-with-token running command via cli:
+
+apolo config login-with-token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjhyNXZCR0E4ZXNuc1IzbXJ0NUFSViJ9.eyJodHRwczovL3BsYXRmb3JtLm5ldXJvbWF0aW9uLmlvL3VzZXIiOiJyZWdyZXNzaW9uLXFmZG1vcGUzYm0iLCJodHRwczovL3BsYXRmb3JtLm5ldXJvbWF0aW9uLmlvL2xvZ2luX3JlZGlyZWN0X3VybCI6Imh0dHBzOi8vY29uc29sZS5kZXYuYXBvbG8udXMiLCJodHRwczovL3BsYXRmb3JtLmFwb2xvLnVzL29yaWdpbiI6Imh0dHBzOi8vY29uc29sZS5kZXYuYXBvbG8udXMiLCJpc3MiOiJodHRwczovL2F1dGguZGV2LmFwb2xvLnVzLyIsInN1YiI6ImF1dGgwfDY4NTg5ZjQ3ZjgxMmUwZTFlODEyZWY4NCIsImF1ZCI6WyJodHRwczovL2FwaS5kZXYuYXBvbG8udXMiLCJodHRwczovL2Rldi1hcG9sby11cy51cy5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNzUwNjM4NDIxLCJleHAiOjE3NTA3MjQ4MjEsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJhenAiOiJxM0kwT3p6R25URGtoUm1wZUo3V1dnYVRDdWNtVnhUTCJ9.JcOVuqO7md2RYyAeIeSk4b-LjlziK9MVYH8EUqexGawClp2qr0rlxOWdP8Ax2yKP7pU4AxHPbHqljGjTMSHPzqofD5n7I83bTVPsty-WR6Mds3sHEkt9eJYupJWSpVRixndrfQwXfnfW6Irux-YL2OK-UUBoXaYlAdCk7XDjlU62Ir3qcCtApd907-dhCLu7nPaYZ1awGjhUG_RrKKvBVqPc6TgwZLiw1JKi8B1goS7UIhiKK8pC9B4kmNpTvBd4IJK2sj0ADklBE4Ojz3nYHMalgDrJ__XAPao7vbQ6xNy5V46pw1GKry2OuePc8iEFbQ59ICwu5sMNWd9G5XYP7A https://api.dev.apolo.us/api/v1
+
+INFO     [🖥apolo_CLI]:apolo_cli.py:165 login-with-token succeeded:
+
+Logged into https://api.dev.apolo.us/api/v1 as regression-qfdmope3bm
+Read the docs at https://docs.apolo.us or run `apolo --help` to see the reference
+
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Login to apolo CLI with access token
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Verify CLI login successfull
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Verify CLI login successfull
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Verify CLI login output
+INFO     [🖥apolo_CLI]:apolo_cli.py:201 
+Login verification passed for user 'regression-qfdmope3bm' with org 'None' and project 'None'
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Verify CLI login output
+INFO     [📘TEST_INFO]:reporting.py:90 ✅ TEST completed: User logs in to Apolo CLI with auth token and verifies login success
+INFO     [📘TEST_INFO]:reporting.py:96 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:145 ============================================================
+INFO     [📘TEST_INFO]:reporting.py:146 📊 SUITE SUMMARY: 1 passed, 0 failed
+INFO     [📘TEST_INFO]:reporting.py:150 ============================================================
+INFO     [🔧TEST CONFIG]:conftest.py:84 Browser context closed
+INFO     [🔧TEST CONFIG]:conftest.py:86 Browser closed
+INFO     [🔧TEST CONFIG]:conftest.py:134 Running post-test cleanup
+INFO     [🔧TEST CONFIG]:conftest.py:137 Cleaning up 0 organizations
