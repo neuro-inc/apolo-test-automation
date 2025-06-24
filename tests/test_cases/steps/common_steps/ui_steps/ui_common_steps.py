@@ -52,6 +52,8 @@ class UICommonSteps:
 
         await self._pm.thats_it_page.click_lets_do_it_button()
 
+        assert await self._pm.main_page.is_loaded(), "Main page should be loaded!"
+
     @async_step("Signup new user via UI and activate email verification link")
     async def ui_signup_new_user_ver_link(self) -> UserData:
         user = self._users_manager.generate_user()

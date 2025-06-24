@@ -41,6 +41,8 @@ class InviteMemberPopup(BasePage):
         value = cast(str, email or username)
         self.log(f"Enter {value}")
         await self._get_user_data_input().fill(value)
+        await self.page.wait_for_load_state("networkidle")
+        await self.page.wait_for_timeout(200)
 
     def _get_user_role_dropdown(self) -> BaseElement:
         return BaseElement(
