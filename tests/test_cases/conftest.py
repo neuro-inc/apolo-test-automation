@@ -236,6 +236,7 @@ async def _create_page_manager(
     page = await context.new_page()
     logger.info(f"Navigating to: {test_config.base_url}")
     await page.goto(test_config.base_url)
+    await page.wait_for_load_state("networkidle")
 
     test_config.context = context
     request.node.page = page

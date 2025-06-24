@@ -235,3 +235,5 @@ class UISignupSteps:
     async def ui_open_product_base_page(self) -> None:
         base_url = self._test_config.base_url
         await self._pm.page.goto(base_url)
+        await self._pm.page.wait_for_load_state("networkidle")
+
