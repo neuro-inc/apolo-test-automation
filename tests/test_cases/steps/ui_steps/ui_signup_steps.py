@@ -236,4 +236,3 @@ class UISignupSteps:
         base_url = self._test_config.base_url
         await self._pm.page.goto(base_url)
         await self._pm.page.wait_for_load_state("networkidle")
-
