@@ -38,7 +38,7 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
                         # Extract page from self._page_manager
                         if args:
                             self_instance = args[0]
-                            page_manager = getattr(self_instance, "_page_manager", None)
+                            page_manager = getattr(self_instance, "_pm", None)
                             if page_manager and hasattr(page_manager, "page"):
                                 page = page_manager.page
 

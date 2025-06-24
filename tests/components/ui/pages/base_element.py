@@ -1,12 +1,35 @@
-from typing import Optional, Any
+from typing import Optional, Any, cast
 from playwright.async_api import Page, Locator, expect
 
 
 class BaseElement:
-    def __init__(self, page: Page, selector: str, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        page: Page,
+        selector: Optional[str] = None,
+        *,
+        by_label: Optional[str] = None,
+        by_role: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
         self.page: Page = page
-        self.selector: str = selector
-        self.locator: Locator = self.page.locator(selector, **kwargs)
+        self.selector: str
+        self.locator: Locator
+
+        if by_label:
+            self.selector = f'get_by_label("{by_label}")'
+            self.locator = page.get_by_label(by_label, **kwargs)
+
+        elif by_role:
+            self.selector = f'get_by_role("{by_role}", kwargs={kwargs})'
+            self.locator = page.get_by_role(cast("Any", by_role), **kwargs)
+
+        elif selector:
+            self.selector = selector
+            self.locator = page.locator(selector, **kwargs)
+
+        else:
+            raise ValueError("Provide one of: 'selector', 'by_label', or 'by_role'.")
 
     async def expect_to_be_loaded(self, timeout: int = 5000) -> bool:
         try:
@@ -16,6 +39,8 @@ class BaseElement:
             return False
 
     async def click(self) -> None:
+        await expect(self.locator).to_be_visible()
+        await expect(self.locator).to_be_enabled()
         await self.locator.click()
 
     async def check(self) -> None:
@@ -24,6 +49,9 @@ class BaseElement:
     async def fill(self, value: str) -> None:
         await self.locator.fill(value)
 
+    async def select_option(self, option_name: str) -> None:
+        await self.locator.select_option(option_name)
+
     async def is_visible(self) -> bool:
         try:
             await expect(self.locator).to_be_visible(timeout=3000)
@@ -31,8 +59,11 @@ class BaseElement:
         except AssertionError:
             return False
 
-    async def text_content(self) -> Optional[str]:
-        return await self.locator.text_content()
+    async def is_enabled(self) -> bool:
+        return await self.locator.is_enabled()
+
+    async def text_content(self) -> str:
+        return await self.locator.inner_text()
 
     async def wait_for_selector(self, timeout: Optional[int] = None) -> None:
         await self.page.wait_for_selector(self.selector, timeout=timeout)

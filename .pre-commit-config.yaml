@@ -36,6 +36,13 @@ repos:
   hooks:
   - id: check-github-actions
   - id: check-github-workflows
+- repo: local
+  hooks:
+    - id: assert-without-message
+      name: Detect bare assert without error message
+      entry: bash -c 'python -c "import ast, sys; [print(f\"{f}:{n.lineno} assert without message\") or exit(1) for f in sys.argv[1:] for n in ast.walk(ast.parse(open(f).read())) if isinstance(n, ast.Assert) and n.msg is None]" "$@"'
+      language: system
+      types: [python]
 ci:
     skip:
     - check-github-actions

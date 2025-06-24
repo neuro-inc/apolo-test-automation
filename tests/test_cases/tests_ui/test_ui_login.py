@@ -1,7 +1,7 @@
 import pytest
 
 from tests.reporting_hooks.reporting import async_step, async_suite, async_title
-from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
 from tests.utils.api_helper import APIHelper
 from tests.utils.test_config_helper import ConfigManager
@@ -23,13 +23,13 @@ class TestUILogin:
         """
         Initialize shared resources for the test methods.
         """
-        self._page_manager = page_manager
+        self._pm = page_manager
         self._data_manager = data_manager
         self._test_config = test_config
         self._users_manager = users_manager
         self._api_helper = api_helper
         self.ui_common_steps = UICommonSteps(
-            self._page_manager,
+            self._pm,
             self._test_config,
             self._data_manager,
             self._users_manager,
@@ -48,17 +48,17 @@ class TestUILogin:
 
     @async_step("Click login button")
     async def ui_click_login_button(self) -> None:
-        await self._page_manager.auth_page.click_log_in_button()
+        await self._pm.auth_page.click_log_in_button()
 
     @async_step("Enter valid credentials")
     async def ui_enter_valid_credentials(self) -> None:
-        await self._page_manager.login_page.enter_email(self._email)
-        await self._page_manager.login_page.enter_password(self._password)
+        await self._pm.login_page.enter_email(self._email)
+        await self._pm.login_page.enter_password(self._password)
 
     @async_step("Click continue button")
     async def ui_click_continue_button(self) -> None:
-        await self._page_manager.login_page.click_continue_button()
+        await self._pm.login_page.click_continue_button()
 
     @async_step("Verify that Welcome new user page displayed")
     async def verify_ui_welcome_page_displayed(self) -> None:
-        await self._page_manager.welcome_new_user_page.is_loaded(email=self._email)
+        await self._pm.welcome_new_user_page.is_loaded(email=self._email)

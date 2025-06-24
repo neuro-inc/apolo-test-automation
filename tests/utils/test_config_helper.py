@@ -52,7 +52,8 @@ class ConfigManager:
 
     @token.setter
     def token(self, value: str) -> None:
-        self._token = value
+        if not self._token:
+            self._token = value
 
     @property
     def env(self) -> str:

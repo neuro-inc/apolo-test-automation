@@ -23,7 +23,9 @@ class PlaywrightExceptionFormatter(ExceptionFormatter):
             except Exception:
                 message += "\nURL at error: (unavailable)"
 
-        if isinstance(exception, PlaywrightTimeoutError):
+        if isinstance(exception, PlaywrightTimeoutError) or isinstance(
+            exception, TimeoutError
+        ):
             message += (
                 "\nNote: Playwright Timeout. Element not found or action took too long."
             )

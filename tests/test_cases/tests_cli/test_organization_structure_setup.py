@@ -1,8 +1,10 @@
 import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
-from tests.test_cases.common_steps.cli_steps.cli_common_steps import CLICommonSteps
-from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.test_cases.steps.common_steps.cli_steps.cli_common_steps import (
+    CLICommonSteps,
+)
+from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
 from tests.utils.api_helper import APIHelper
 from tests.utils.test_data_management.test_data import DataManager

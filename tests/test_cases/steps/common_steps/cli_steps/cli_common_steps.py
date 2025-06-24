@@ -20,11 +20,13 @@ class CLICommonSteps:
         token = self._test_config.token
         url = self._test_config.cli_login_url
         await self._apolo_cli.login_with_token(token, url)
-        assert self._apolo_cli.login_successful
+        assert self._apolo_cli.login_successful, "Login via CLI should be successful!"
 
     @async_step("Verify Apolo CLI client is installed")
     async def verify_cli_client_installed(self) -> None:
-        assert await self._apolo_cli.is_cli_installed()
+        assert await self._apolo_cli.is_cli_installed(), (
+            "Apolo CLI client should be installed!"
+        )
 
     @async_step("Verify organization_count")
     async def verify_cli_organization_count(self, count: int) -> None:

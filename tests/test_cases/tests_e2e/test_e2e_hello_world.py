@@ -2,8 +2,10 @@ import asyncio
 import pytest
 
 from tests.reporting_hooks.reporting import async_step, async_suite, async_title
-from tests.test_cases.common_steps.cli_steps.cli_common_steps import CLICommonSteps
-from tests.test_cases.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.test_cases.steps.common_steps.cli_steps.cli_common_steps import (
+    CLICommonSteps,
+)
+from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
 from tests.utils.api_helper import APIHelper
 from tests.utils.test_data_management.test_data import DataManager
@@ -51,9 +53,8 @@ class TestHelloWorldJob:
 
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
-        await self.ui_common_steps.ui_pass_new_user_onboarding(
-            self._email, self._password, "default"
-        )
+        await self.ui_common_steps.ui_login(self._email, self._password)
+        await self.ui_common_steps.ui_pass_new_user_onboarding("default")
         await self.cli_common_steps.cli_login_with_token()
         await asyncio.sleep(2)
         await self.create_project("my-project")
@@ -93,13 +94,15 @@ class TestHelloWorldJob:
         await self._page_manager.main_page.click_jobs_button()
         assert not await self._page_manager.jobs_page.is_jobs_button_displayed(
             "Hello World"
-        )
+        ), "Job 'Hello World' should not be displayed in running jobs!"
 
     @async_step("Show all jobs and verify job is successful")
     async def verify_job_successful(self, job_name: str) -> None:
         await self._page_manager.jobs_page.click_show_all_jobs_button()
         job = self._data_manager.get_job_from_default_project(job_name)
-        assert await self._page_manager.jobs_page.is_jobs_button_displayed(job.job_name)
+        assert await self._page_manager.jobs_page.is_jobs_button_displayed(
+            job.job_name
+        ), f"Job {job_name} should be displayed!"
         assert await self._page_manager.jobs_page.is_job_status_successfull(
             job.job_name
-        )
+        ), f"Job {job_name} status should be successful!"
