@@ -1,0 +1,9 @@
+[RuntimeError] during step: Post-test cleanup
+Message: remove organization 'regression-org-n4hp4q8ruq' failed:
+
+ERROR: Illegal argument(s) (Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.ForeignKeyViolationError'>: update or delete on table "orgs" violates foreign key constraint "invites_org_name_fkey" on table "invites"
+DETAIL:  Key (name)=(regression-org-n4hp4q8ruq) is still referenced from table "invites".
+[SQL: DELETE FROM orgs WHERE orgs.name = %s RETURNING orgs.name, orgs.balance, orgs.user_default_credits, orgs.notification_intervals, orgs.balance_depleted_at]
+[parameters: ('regression-org-n4hp4q8ruq',)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj). Path with query: /apis/admin/v1/orgs/regression-org-n4hp4q8ruq.)
+
