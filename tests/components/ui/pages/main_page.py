@@ -46,7 +46,7 @@ class MainPage(BasePage):
         await self._get_apps_button().click()
 
     def _get_jobs_button(self) -> BaseElement:
-        return BaseElement(self.page, 'a[href^="/jobs"]')
+        return BaseElement(self.page, 'a[href^="/jobs?cluster="]', has_text="Jobs")
 
     async def click_jobs_button(self) -> None:
         self.log("Click jobs button")

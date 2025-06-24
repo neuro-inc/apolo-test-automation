@@ -59,7 +59,7 @@ class TestHelloWorldJob:
         await asyncio.sleep(2)
         await self.create_project("my-project")
         await self.run_hello_world_job("my-project")
-        await self.check_job_not_in_running()
+        await self.ui_check_job_not_in_running()
         await self.verify_job_successful("Hello World")
 
     @async_step("Log in via UI")
@@ -89,7 +89,7 @@ class TestHelloWorldJob:
         )
 
     @async_step("Open Jobs page and verify job not in running list")
-    async def check_job_not_in_running(self) -> None:
+    async def ui_check_job_not_in_running(self) -> None:
         await self._page_manager.main_page.page.reload()
         await self._page_manager.main_page.click_jobs_button()
         assert not await self._page_manager.jobs_page.is_jobs_button_displayed(
