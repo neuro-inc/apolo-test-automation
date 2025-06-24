@@ -1,7 +1,10 @@
+import logging
 from typing import Optional
 
 from tests.utils.test_data_management.organization_data import OrganizationData
 from tests.utils.test_data_management.job_data import JobData
+
+logger = logging.getLogger("[🔧DATA MANAGER]")
 
 
 class DataManager:
@@ -28,6 +31,9 @@ class DataManager:
             )
         org = OrganizationData(gherkin_name, org_name)
         self._organizations[org.org_name] = org
+        logger.info(
+            f"Added organization: org_name={org.org_name}, gherkin_name={gherkin_name}"
+        )
         if self._default_organization is None:
             self._default_organization = org
         return org
@@ -41,10 +47,8 @@ class DataManager:
             None,
         )
 
-    def get_organization_by_gherkin_name(
-        self, gherkin_name: str
-    ) -> Optional[OrganizationData]:
-        return next(
+    def get_organization_by_gherkin_name(self, gherkin_name: str) -> OrganizationData:
+        org = next(
             (
                 org
                 for org in self._organizations.values()
@@ -52,6 +56,11 @@ class DataManager:
             ),
             None,
         )
+        if org is None:
+            raise ValueError(
+                f"No organization found with gherkin_name '{gherkin_name}'"
+            )
+        return org
 
     def get_all_organizations(self) -> list[OrganizationData]:
         return list(self._organizations.values())
