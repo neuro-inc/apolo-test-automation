@@ -53,7 +53,7 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
                 finally:
                     if page:
                         try:
-                            await page._cleanup() # type: ignore[attr-defined]
+                            await page._cleanup()
                             suffix = "fail" if is_failed else "success"
                             screenshot_name = (
                                 f"{func.__name__}_{suffix}_{uuid.uuid4().hex[:6]}.png"
