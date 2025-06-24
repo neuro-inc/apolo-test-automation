@@ -57,10 +57,7 @@ class MainPage(BasePage):
 
     async def click_organization_settings_button(self, email: str) -> None:
         self.log("Click organization settings button")
-        await self.page.wait_for_timeout(500)
         await self._get_organization_settings_button(email).click()
-        await self.page.wait_for_load_state("networkidle")
-        await self.page.wait_for_timeout(200)
 
     # *************************  ORGANIZATION SETTING POPUP  *******************************************
     def _get_select_organization_button(self, org_name: str) -> BaseElement:

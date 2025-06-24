@@ -41,8 +41,6 @@ class InviteMemberPopup(BasePage):
         value = cast(str, email or username)
         self.log(f"Enter {value}")
         await self._get_user_data_input().fill(value)
-        await self.page.wait_for_load_state("networkidle")
-        await self.page.wait_for_timeout(200)
 
     def _get_user_role_dropdown(self) -> BaseElement:
         return BaseElement(
@@ -72,7 +70,6 @@ class InviteMemberPopup(BasePage):
 
     async def click_invite_user_button(self, email: str) -> None:
         self.log(f"Click Invite user {email}")
-        await self.page.wait_for_timeout(300)
         await self._get_invite_user_button(email).click()
 
     def _get_cancel_button(self) -> BaseElement:

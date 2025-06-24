@@ -39,9 +39,11 @@ class BaseElement:
             return False
 
     async def click(self) -> None:
-        await expect(self.locator).to_be_visible()
-        await expect(self.locator).to_be_enabled()
-        await self.locator.wait_for(state="attached")
+        timeout = 1000
+        await self.locator.wait_for(state="attached", timeout=timeout)
+        await expect(self.locator).to_be_visible(timeout=timeout)
+        await expect(self.locator).to_be_enabled(timeout=timeout)
+        await self.page.wait_for_timeout(200)
         await self.locator.click()
 
     async def check(self) -> None:

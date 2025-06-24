@@ -36,24 +36,50 @@ class UICommonSteps:
         token = await extract_access_token_from_local_storage(self._pm.login_page.page)
         self._test_config.token = token
 
+    # ********************   Onboarding steps   ****************************
+
     @async_step("Pass new user onboarding and create first organization via UI")
     async def ui_pass_new_user_onboarding(self, gherkin_name: str) -> None:
         token = await extract_access_token_from_local_storage(self._pm.login_page.page)
         self._test_config.token = token
 
-        await self._pm.welcome_new_user_page.click_lets_do_it_button()
-        await self._pm.join_organization_page.click_create_organization_button()
+        await self.ui_click_welcome_page_lets_do_it_button()
+        await self.ui_click_create_org_button()
 
         organization = self._data_manager.add_organization(gherkin_name=gherkin_name)
-        organization_name = organization.org_name
-        page = self._pm.name_your_organization_page
-        await page.enter_organization_name(organization_name)
+        org_name = organization.org_name
+        await self.ui_enter_organization_name(org_name)
+        await self.ui_click_name_org_next_button()
+
+        await self.ui_thats_it_p_lets_do_it_button()
+
+        await self.verify_ui_main_page_displayed()
+
+    @async_step("Click Let's do it button on a Welcome page")
+    async def ui_click_welcome_page_lets_do_it_button(self) -> None:
+        await self._pm.welcome_new_user_page.click_lets_do_it_button()
+
+    @async_step("Click Let's do it button on a Welcome page")
+    async def ui_click_create_org_button(self) -> None:
+        await self._pm.join_organization_page.click_create_organization_button()
+
+    @async_step("Enter organization name")
+    async def ui_enter_organization_name(self, org_name: str) -> None:
+        await self._pm.name_your_organization_page.enter_organization_name(org_name)
+
+    @async_step("Click Next button on a name organization page")
+    async def ui_click_name_org_next_button(self) -> None:
         await self._pm.name_your_organization_page.click_next_button()
 
+    @async_step("Click Let's do it button on a That's it page")
+    async def ui_thats_it_p_lets_do_it_button(self) -> None:
         await self._pm.thats_it_page.click_lets_do_it_button()
 
+    @async_step("Verify that main page is loaded")
+    async def verify_ui_main_page_displayed(self) -> None:
         assert await self._pm.main_page.is_loaded(), "Main page should be loaded!"
 
+    # ********************   New user signup steps   ****************************
     @async_step("Signup new user via UI and activate email verification link")
     async def ui_signup_new_user_ver_link(self) -> UserData:
         user = self._users_manager.generate_user()
@@ -106,6 +132,7 @@ class UICommonSteps:
 
         return user
 
+    # ********************   invite user to organization steps   ****************************
     @async_step("Invite user to organization via UI")
     async def ui_invite_user_to_org(
         self, email: str, username: str, add_user_email: str

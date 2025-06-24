@@ -33,9 +33,9 @@ class LoginPage(BasePage):
         await self._password_input.fill(text)
 
     async def login(self, email: str, password: str) -> None:
-        await self._email_input.fill(email)
-        await self._password_input.fill(password)
-        await self._continue_button.click()
+        await self.enter_email(email)
+        await self.enter_password(password)
+        await self.click_continue_button()
 
     async def click_continue_button(self) -> None:
         self.log("Click continue button")

@@ -29,14 +29,14 @@ class TestHelloWorldJob:
         """
         Initialize shared resources for the test methods.
         """
-        self._page_manager = page_manager
+        self._pm = page_manager
         self._data_manager = data_manager
         self._apolo_cli = apolo_cli
         self._test_config = test_config
         self._users_manager = users_manager
         self._api_helper = api_helper
         self.ui_common_steps = UICommonSteps(
-            self._page_manager,
+            self._pm,
             self._test_config,
             self._data_manager,
             self._users_manager,
@@ -64,8 +64,8 @@ class TestHelloWorldJob:
 
     @async_step("Log in via UI")
     async def login(self) -> None:
-        await self._page_manager.auth_page.click_log_in_button()
-        await self._page_manager.login_page.login(self._email, self._password)
+        await self._pm.auth_page.click_log_in_button()
+        await self._pm.login_page.login(self._email, self._password)
 
     @async_step("Create default organization")
     async def create_organization(self) -> None:
@@ -90,19 +90,19 @@ class TestHelloWorldJob:
 
     @async_step("Open Jobs page and verify job not in running list")
     async def ui_check_job_not_in_running(self) -> None:
-        await self._page_manager.main_page.page.reload()
-        await self._page_manager.main_page.click_jobs_button()
-        assert not await self._page_manager.jobs_page.is_jobs_button_displayed(
-            "Hello World"
-        ), "Job 'Hello World' should not be displayed in running jobs!"
+        await self._pm.main_page.page.reload()
+        await self._pm.main_page.click_jobs_button()
+        assert not await self._pm.jobs_page.is_jobs_button_displayed("Hello World"), (
+            "Job 'Hello World' should not be displayed in running jobs!"
+        )
 
     @async_step("Show all jobs and verify job is successful")
     async def verify_job_successful(self, job_name: str) -> None:
-        await self._page_manager.jobs_page.click_show_all_jobs_button()
+        await self._pm.jobs_page.click_show_all_jobs_button()
         job = self._data_manager.get_job_from_default_project(job_name)
-        assert await self._page_manager.jobs_page.is_jobs_button_displayed(
-            job.job_name
-        ), f"Job {job_name} should be displayed!"
-        assert await self._page_manager.jobs_page.is_job_status_successfull(
-            job.job_name
-        ), f"Job {job_name} status should be successful!"
+        assert await self._pm.jobs_page.is_jobs_button_displayed(job.job_name), (
+            f"Job {job_name} should be displayed!"
+        )
+        assert await self._pm.jobs_page.is_job_status_successfull(job.job_name), (
+            f"Job {job_name} status should be successful!"
+        )
