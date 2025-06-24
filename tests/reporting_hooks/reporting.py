@@ -98,13 +98,6 @@ def async_title(title_name: str) -> Callable[[ReportFunc], ReportFunc]:
             finally:
                 logger.info("-" * 60)
 
-                # Try to extract page if it's a UI step
-                if "ui_" in func.__name__ and args:
-                    self_instance = args[0]
-                    page_manager = getattr(self_instance, "_pm", None)
-                    if page_manager and hasattr(page_manager, "page"):
-                        await page_manager._cleanup()
-
         return wrapper
 
     return decorator

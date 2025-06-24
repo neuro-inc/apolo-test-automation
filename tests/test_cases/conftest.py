@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import asyncio
 from collections.abc import AsyncGenerator
 from collections.abc import Callable
 from collections.abc import Coroutine
@@ -245,6 +247,9 @@ async def _create_page_manager(
         logger.info("Browser closed")
 
     pm._cleanup = _cleanup  # type: ignore[attr-defined]
+    request.addfinalizer(
+        lambda: asyncio.get_event_loop().run_until_complete(_cleanup())
+    )
     return pm
 
 
