@@ -1,0 +1,253 @@
+INFO     [🔧TEST CONFIG]:conftest.py:112 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:118 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:138 Creating Apolo CLI instance
+INFO     [🔧TEST CONFIG]:conftest.py:144 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:130 Creating API helper
+INFO     [🔧TEST CONFIG]:conftest.py:54 Signup default user...
+INFO     [🔧TEST CONFIG]:conftest.py:215 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:234 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:237 Navigating to: https://console.dev.apolo.us/
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-7s1dgli98o@apolo.us', username='regression-7s1dgli98o', password='******')
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-7s1dgli98o@apolo.us', username='regression-7s1dgli98o', password='******')
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click sign up button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter regression-7s1dgli98o@apolo.us email
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter ********* password
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Click continue button
+ERROR    asyncio:base_events.py:1865 Task exception was never retrieved
+future: <Task finished name='Task-149' coro=<_create_page_manager.<locals>._cleanup() done, defined at /home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py:244> exception=TargetClosedError('BrowserContext.close: Target page, context or browser has been closed')>
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 245, in _cleanup
+    await context.close()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/async_api/_generated.py", line 13448, in close
+    return mapping.from_maybe_impl(await self._impl_obj.close(reason=reason))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_browser_context.py", line 599, in close
+    await self._channel.send("close", {"reason": reason})
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TargetClosedError: BrowserContext.close: Target page, context or browser has been closed
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if verify email message displayed
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-7s1dgli98o@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-7s1dgli98o@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=7fV0seff8PBwqNkvIhVzLbJ31E517MGE#'}
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-7s1dgli98o@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-7s1dgli98o@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Check if page loaded
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click log in button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Check if page is loaded
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Enter regression-7s1dgli98o username
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Click signup button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if user_agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check user agreement checkbox
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click user agreement I Agree button
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Signup new user via UI and activate email verification link
+INFO     [🔧TEST CONFIG]:conftest.py:246 Browser context closed
+INFO     [🔧TEST CONFIG]:conftest.py:248 Browser closed
+INFO     [🔧TEST CONFIG]:conftest.py:215 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:234 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:237 Navigating to: https://console.dev.apolo.us/
+INFO     [📘TEST_INFO]:reporting.py:85 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:86 📝 TEST started: Invite user with organization to organization via UI
+INFO     [📘TEST_INFO]:reporting.py:87 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:215 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:234 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:237 Navigating to: https://console.dev.apolo.us/
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User1 login
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Login via UI
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click log in button
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Login via UI
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User1 pass new user onboarding and create organization
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Pass new user onboarding and create first organization via UI
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Click lets do it button
+INFO     [🎭 Playwright]:base_page.py:15 <JoinOrganizationPage>: Click create organization button
+INFO     [🔧DATA MANAGER]:test_data.py:34 Added organization: org_name=regression-org-gbf1djyaw7, gherkin_name=Default-organization
+INFO     [🎭 Playwright]:base_page.py:15 <NameNewOrganizationPage>: Enter regression-org-gbf1djyaw7 organization name
+INFO     [🎭 Playwright]:base_page.py:15 <NameNewOrganizationPage>: Click next button
+INFO     [🎭 Playwright]:base_page.py:15 <ThatsItPage>: Click let's do it button
+ERROR    asyncio:base_events.py:1865 Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<Connection.run() running at /home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py:281> wait_for=<Future pending cb=[Task.task_wakeup()]>>
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Pass new user onboarding and create first organization via UI
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 signup and validate email link
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-rfy679ogqe@apolo.us', username='regression-rfy679ogqe', password='******')
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click sign up button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter regression-rfy679ogqe@apolo.us email
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter ********* password
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Click continue button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if verify email message displayed
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-rfy679ogqe@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-rfy679ogqe@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=1iNEBwzQKBdhu6aS0zLmikSbtpWIN3BM#'}
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-rfy679ogqe@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-rfy679ogqe@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Check if page loaded
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click log in button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Check if page is loaded
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Enter regression-rfy679ogqe username
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Click signup button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if user_agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check user agreement checkbox
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click user agreement I Agree button
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Signup new user via UI and activate email verification link
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 password new user onboarding and create organization
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Pass new user onboarding and create first organization via UI
+INFO     [🎭 Playwright]:base_page.py:15 <WelcomeNewUserPage>: Click lets do it button
+INFO     [🎭 Playwright]:base_page.py:15 <JoinOrganizationPage>: Click create organization button
+INFO     [🔧DATA MANAGER]:test_data.py:34 Added organization: org_name=regression-org-h3awt4fd3o, gherkin_name=new-organization
+INFO     [🎭 Playwright]:base_page.py:15 <NameNewOrganizationPage>: Enter regression-org-h3awt4fd3o organization name
+INFO     [🎭 Playwright]:base_page.py:15 <NameNewOrganizationPage>: Click next button
+INFO     [🎭 Playwright]:base_page.py:15 <ThatsItPage>: Click let's do it button
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Pass new user onboarding and create first organization via UI
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User1 invite User2 to organization
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Invite user to organization via UI
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click organization settings button
+INFO     [🎭 Playwright]:base_page.py:15 <OrganizationSettingsPopup>: Check if page loaded
+INFO     [🎭 Playwright]:base_page.py:15 <OrganizationSettingsPopup>: Click People button
+INFO     [🎭 Playwright]:base_page.py:15 <OrganizationPeoplePage>: Check if page loaded
+INFO     [🎭 Playwright]:base_page.py:15 <OrganizationPeoplePage>: Click Invite people button
+INFO     [🎭 Playwright]:base_page.py:15 <InviteMemberPopup>: Check if page loaded
+INFO     [🎭 Playwright]:base_page.py:15 <InviteMemberPopup>: Enter regression-rfy679ogqe@apolo.us
+INFO     [🎭 Playwright]:base_page.py:15 <InviteMemberPopup>: Select user role
+INFO     [🎭 Playwright]:base_page.py:15 <InviteMemberPopup>: Check if Invite user regression-rfy679ogqe@apolo.us button displayed
+INFO     [🎭 Playwright]:base_page.py:15 <InviteMemberPopup>: Click Invite user regression-rfy679ogqe@apolo.us
+INFO     [🎭 Playwright]:base_page.py:15 <InviteMemberPopup>: Click Send invite button
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Invite user to organization via UI
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 reload page
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Reload page
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Reload page
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 verify that invite to organization button displayed
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Verify that invitation to organization displayed on the left pane
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if invite to organization regression-org-gbf1djyaw7 displayed
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Verify that invitation to organization displayed on the left pane
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 click invite to organization button
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Click invite to organization button on the left pane
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click invite to organization regression-org-gbf1djyaw7 button
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Click invite to organization button on the left pane
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 verify that invite row displayed on the main page
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Verify invite to organization info displayed on the main page
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if invite row to organization regression-org-gbf1djyaw7 displayed
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Verify invite to organization info displayed on the main page
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 verify that user role is valid
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Verify invite to organization role is valid
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Get user role in invite to organization regression-org-gbf1djyaw7
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Verify invite to organization role is valid
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 click accept button
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Click Accept button for invitation to the organization
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click accept invite to organization regression-org-gbf1djyaw7 button
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Click Accept button for invitation to the organization
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 click organization settings button
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Click User Organization settings button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Click organization settings button
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Click User Organization settings button
+INFO     [📄 TestCaseInfo]:base_ui_test.py:54 ::::::::::::::: User2 verify that second organization displayed
+INFO     [📘TEST_INFO]:reporting.py:27 ▶️ STEP started: Verify that Organization select button is displayed in organization settings popup
+INFO     [🎭 Playwright]:base_page.py:15 <OrganizationSettingsPopup>: Check if select organization regression-org-gbf1djyaw7 button displayed
+INFO     [📘TEST_INFO]:reporting.py:31 ✅ STEP completed: Verify that Organization select button is displayed in organization settings popup
+INFO     [📘TEST_INFO]:reporting.py:90 ✅ TEST completed: Invite user with organization to organization via UI
+INFO     [📘TEST_INFO]:reporting.py:96 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:145 ============================================================
+INFO     [📘TEST_INFO]:reporting.py:146 📊 SUITE SUMMARY: 2 passed, 1 failed
+INFO     [📘TEST_INFO]:reporting.py:150 ============================================================
+INFO     [🔧TEST CONFIG]:conftest.py:246 Browser context closed
+INFO     [🔧TEST CONFIG]:conftest.py:248 Browser closed
+INFO     [🔧TEST CONFIG]:conftest.py:246 Browser context closed
+ERROR    asyncio:base_events.py:1865 Task exception was never retrieved
+future: <Task finished name='Task-185' coro=<_create_page_manager.<locals>._cleanup() done, defined at /home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py:244> exception=TargetClosedError('BrowserContext.close: Target page, context or browser has been closed')>
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 245, in _cleanup
+    await context.close()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/async_api/_generated.py", line 13448, in close
+    return mapping.from_maybe_impl(await self._impl_obj.close(reason=reason))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_browser_context.py", line 599, in close
+    await self._channel.send("close", {"reason": reason})
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TargetClosedError: BrowserContext.close: Target page, context or browser has been closed
+INFO     [🔧TEST CONFIG]:conftest.py:166 Cleaning up 2 organisations
+INFO     [🖥apolo_CLI]:apolo_cli.py:123 login-with-token running command via cli:
+
+apolo config login-with-token eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjhyNXZCR0E4ZXNuc1IzbXJ0NUFSViJ9.eyJodHRwczovL3BsYXRmb3JtLm5ldXJvbWF0aW9uLmlvL3VzZXIiOiJyZWdyZXNzaW9uLTdzMWRnbGk5OG8iLCJodHRwczovL3BsYXRmb3JtLm5ldXJvbWF0aW9uLmlvL2xvZ2luX3JlZGlyZWN0X3VybCI6Imh0dHBzOi8vY29uc29sZS5kZXYuYXBvbG8udXMiLCJodHRwczovL3BsYXRmb3JtLmFwb2xvLnVzL29yaWdpbiI6Imh0dHBzOi8vY29uc29sZS5kZXYuYXBvbG8udXMiLCJpc3MiOiJodHRwczovL2F1dGguZGV2LmFwb2xvLnVzLyIsInN1YiI6ImF1dGgwfDY4NWI3NzQxNTVkNGNkYzlmOGI5MjhkOCIsImF1ZCI6WyJodHRwczovL2FwaS5kZXYuYXBvbG8udXMiLCJodHRwczovL2Rldi1hcG9sby11cy51cy5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNzUwODI0NzgwLCJleHAiOjE3NTA5MTExODAsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJhenAiOiJxM0kwT3p6R25URGtoUm1wZUo3V1dnYVRDdWNtVnhUTCJ9.SGHiSbJB-oN-TcdP7p4gd7kdx7Jv_LaVHH9E4baG19IFKXiR73uRf4y9fNEFXxcavwjcciVuXtXmCoqOA780dgf1PaoWavWyViiSs9elFsNNkOt2ZIIJkHWldYjpK088WoyW_i1eEnhmHDfKG4vwqNf54Juuwbh0_xICjjxykQFAxxd2JMJ2PtPHMdSMM4k2fmE1B1RyDKOBNslbSn0fm_g7jmmmRq4OnLt6UXnQlKH8PJDuZGtJ_1MW-qR8zMOqyghhXqFJwfeB3CNTDt5jW6MpDxtHrr4iznBrrxIYjjrznwo5198qZWsB30J2uTwD7KVvrOmwFce3SRTRGJvugg https://api.dev.apolo.us/api/v1
+
+INFO     [🔧TEST CONFIG]:conftest.py:248 Browser closed
+INFO     [🔧TEST CONFIG]:conftest.py:246 Browser context closed
+INFO     [🔧TEST CONFIG]:conftest.py:248 Browser closed
+INFO     [🖥apolo_CLI]:apolo_cli.py:165 login-with-token succeeded:
+
+You were successfully logged out.
+Logged into https://api.dev.apolo.us/api/v1 as regression-7s1dgli98o, current cluster is default, org is regression-org-gbf1djyaw7 project is None
+Read the docs at https://docs.apolo.us or run `apolo --help` to see the reference
+
+INFO     [🖥apolo_CLI]:apolo_cli.py:71 Removing organization 'regression-org-gbf1djyaw7' (force=True)
+INFO     [🖥apolo_CLI]:apolo_cli.py:123 remove organization 'regression-org-gbf1djyaw7' running command via cli:
+
+apolo admin remove-org regression-org-gbf1djyaw7 --force
+
+ERROR    [🖥apolo_CLI]:apolo_cli.py:162 remove organization 'regression-org-gbf1djyaw7' failed:
+
+ERROR: Illegal argument(s) (Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.ForeignKeyViolationError'>: update or delete on table "orgs" violates foreign key constraint "invites_org_name_fkey" on table "invites"
+DETAIL:  Key (name)=(regression-org-gbf1djyaw7) is still referenced from table "invites".
+[SQL: DELETE FROM orgs WHERE orgs.name = %s RETURNING orgs.name, orgs.balance, orgs.user_default_credits, orgs.notification_intervals, orgs.balance_depleted_at]
+[parameters: ('regression-org-gbf1djyaw7',)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj). Path with query: /apis/admin/v1/orgs/regression-org-gbf1djyaw7.)
+
+
+ERROR    [🔧TEST CONFIG]:conftest.py:195 Post-test cleanup failed: [RuntimeError] during step: Post-test cleanup
+Message: remove organization 'regression-org-gbf1djyaw7' failed:
+
+ERROR: Illegal argument(s) (Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.ForeignKeyViolationError'>: update or delete on table "orgs" violates foreign key constraint "invites_org_name_fkey" on table "invites"
+DETAIL:  Key (name)=(regression-org-gbf1djyaw7) is still referenced from table "invites".
+[SQL: DELETE FROM orgs WHERE orgs.name = %s RETURNING orgs.name, orgs.balance, orgs.user_default_credits, orgs.notification_intervals, orgs.balance_depleted_at]
+[parameters: ('regression-org-gbf1djyaw7',)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj). Path with query: /apis/admin/v1/orgs/regression-org-gbf1djyaw7.)
+
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 184, in clean_up
+    await apolo_cli.remove_organization(org.org_name)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/utils/cli/apolo_cli.py", line 75, in remove_organization
+    return await self._run_command(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+        *args, action=f"remove organization '{org_name}'"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/utils/cli/apolo_cli.py", line 163, in _run_command
+    raise RuntimeError(error_message)
+RuntimeError: remove organization 'regression-org-gbf1djyaw7' failed:
+
+ERROR: Illegal argument(s) (Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.ForeignKeyViolationError'>: update or delete on table "orgs" violates foreign key constraint "invites_org_name_fkey" on table "invites"
+DETAIL:  Key (name)=(regression-org-gbf1djyaw7) is still referenced from table "invites".
+[SQL: DELETE FROM orgs WHERE orgs.name = %s RETURNING orgs.name, orgs.balance, orgs.user_default_credits, orgs.notification_intervals, orgs.balance_depleted_at]
+[parameters: ('regression-org-gbf1djyaw7',)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj). Path with query: /apis/admin/v1/orgs/regression-org-gbf1djyaw7.)
+
+
+WARNING  [🔧TEST CONFIG]:conftest.py:203 Post-test cleanup failed: [RuntimeError] during step: Post-test cleanup
+Message: remove organization 'regression-org-gbf1djyaw7' failed:
+
+ERROR: Illegal argument(s) (Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.ForeignKeyViolationError'>: update or delete on table "orgs" violates foreign key constraint "invites_org_name_fkey" on table "invites"
+DETAIL:  Key (name)=(regression-org-gbf1djyaw7) is still referenced from table "invites".
+[SQL: DELETE FROM orgs WHERE orgs.name = <class 'RuntimeWarning'> RETURNING orgs.name, orgs.balance, orgs.user_default_credits, orgs.notification_intervals, orgs.balance_depleted_at]
+[parameters: ('regression-org-gbf1djyaw7',)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj). Path with query: /apis/admin/v1/orgs/regression-org-gbf1djyaw7.)
+
+
+WARNING  [🔧TEST CONFIG]:conftest.py:205 Need to setup new user due to cleanup issues...
