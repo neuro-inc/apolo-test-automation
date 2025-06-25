@@ -46,7 +46,7 @@ class MainPage(BasePage):
         await self._get_apps_button().click()
 
     def _get_jobs_button(self) -> BaseElement:
-        return BaseElement(self.page, 'a[href^="/jobs"]')
+        return BaseElement(self.page, 'a[href^="/jobs?cluster="]', has_text="Jobs")
 
     async def click_jobs_button(self) -> None:
         self.log("Click jobs button")
@@ -57,9 +57,7 @@ class MainPage(BasePage):
 
     async def click_organization_settings_button(self, email: str) -> None:
         self.log("Click organization settings button")
-        await self.page.wait_for_timeout(500)
         await self._get_organization_settings_button(email).click()
-        await self.page.wait_for_timeout(500)
 
     # *************************  ORGANIZATION SETTING POPUP  *******************************************
     def _get_select_organization_button(self, org_name: str) -> BaseElement:

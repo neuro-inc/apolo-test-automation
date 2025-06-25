@@ -1,9 +1,10 @@
 from __future__ import annotations
+
+import asyncio
 from collections.abc import AsyncGenerator
 from collections.abc import Callable
 from collections.abc import Coroutine
 
-import asyncio
 import logging
 import os
 from typing import Any
@@ -223,19 +224,17 @@ async def _start_browser() -> Browser:
 async def _create_page_manager(
     test_config: ConfigManager, request: pytest.FixtureRequest
 ) -> PageManager:
-    """
-    Creates a PageManager with a new browser context and navigates to the base URL.
-    - Launches a browser and opens a new page.
-    - Navigates to the configured base URL.
-    - Attaches the context and page to the test config and request.
-    - Registers an async cleanup finalizer to close browser resources.
-    """
     browser = await _start_browser()
     logger.info("Initializing new browser context")
     context = await browser.new_context(no_viewport=True)
     page = await context.new_page()
+
+    # Attach HTTP response logging
+    page.on("response", _log_failed_requests)
+
     logger.info(f"Navigating to: {test_config.base_url}")
     await page.goto(test_config.base_url)
+    await page.wait_for_load_state("networkidle", timeout=5000)
 
     test_config.context = context
     request.node.page = page
@@ -248,5 +247,26 @@ async def _create_page_manager(
         logger.info("Browser closed")
 
     pm._cleanup = _cleanup  # type: ignore[attr-defined]
-    request.addfinalizer(lambda: asyncio.get_event_loop().create_task(_cleanup()))
+    request.addfinalizer(
+        lambda: asyncio.get_event_loop().run_until_complete(_cleanup())
+    )
     return pm
+
+
+async def _log_failed_requests(response: Any) -> None:
+    """
+    Logs HTTP responses with 4xx and 5xx status codes.
+    """
+    status = response.status
+    if status >= 400:
+        url = response.url
+        try:
+            body = await response.text()
+        except Exception:
+            body = "<unavailable>"
+        logger.warning(f"[HTTP {status}] {url}\nBody: {body[:500]}")
+        allure.attach(
+            f"URL: {url}\nStatus: {status}\n\nResponse body:\n{body[:1000]}",
+            name=f"HTTP {status} - {os.path.basename(url)}",
+            attachment_type=AttachmentType.TEXT,
+        )

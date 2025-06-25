@@ -45,5 +45,4 @@ class InvitedToOrgPage(BasePage):
 
     async def click_accept_and_go_button(self) -> None:
         self.log("Click accept and Go button")
-        await self.page.wait_for_timeout(200)
         await self._get_accept_and_go_button().click()
