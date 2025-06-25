@@ -1,5 +1,5 @@
 # 🧪 Apolo Test Automation
-### [📊 View Latest Allure Report](https://ihorsosnovskyi.github.io/apolo-test-automation/run-test-latest/index.html)
+### [📊 View Latest Allure Report](https://neuro-inc.github.io/apolo-test-automation/run-test-latest/index.html)
 
 ---
 All test execution and reporting is managed automatically using:

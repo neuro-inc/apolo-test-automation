@@ -26,51 +26,54 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
         async def wrapper(*args: Any, **kwargs: Any) -> Any:
             logger.info(f"▶️ STEP started: {step_name}")
             with allure.step(step_name):
+                result = None
+                page = None
+                is_failed = False
+
+                # Try to extract page if it's a UI step
+                if "ui_" in func.__name__ and args:
+                    self_instance = args[0]
+                    page_manager = getattr(self_instance, "_pm", None)
+                    if page_manager and hasattr(page_manager, "page"):
+                        page = page_manager.page
+
                 try:
                     result = await func(*args, **kwargs)
+                    if page:
+                        await page.wait_for_load_state("networkidle")
                     logger.info(f"✅ STEP completed: {step_name}")
                     return result
+
                 except Exception as e:
+                    is_failed = True
                     logger.error(f"❌ STEP failed: {step_name}")
-                    page = None
-
-                    if "ui_" in func.__name__:
-                        # Extract page from self._page_manager
-                        if args:
-                            self_instance = args[0]
-                            page_manager = getattr(self_instance, "_pm", None)
-                            if page_manager and hasattr(page_manager, "page"):
-                                page = page_manager.page
-
-                        if page:
-                            try:
-                                screenshot_name = (
-                                    f"{func.__name__}_{uuid.uuid4().hex[:6]}.png"
-                                )
-                                screenshot_path = os.path.join(
-                                    SCREENSHOTS_DIR, screenshot_name
-                                )
-                                await page.screenshot(
-                                    path=screenshot_path, full_page=True
-                                )
-
-                                with open(screenshot_path, "rb") as image_file:
-                                    allure.attach(
-                                        image_file.read(),
-                                        name=f"Screenshot: {step_name}",
-                                        attachment_type=allure.attachment_type.PNG,
-                                    )
-                                logger.info(
-                                    f"📸 Screenshot captured and attached: {screenshot_path}"
-                                )
-                            except Exception as ss_error:
-                                logger.warning(
-                                    f"⚠️ Could not capture screenshot: {ss_error}"
-                                )
-
-                    # Raise inside the allure.step context so it's linked in UI
                     formatted_msg = exception_manager.handle(e, context=step_name)
                     raise AssertionError(formatted_msg) from e
+
+                finally:
+                    if page:
+                        try:
+                            suffix = "fail" if is_failed else "success"
+                            screenshot_name = (
+                                f"{func.__name__}_{suffix}_{uuid.uuid4().hex[:6]}.png"
+                            )
+                            screenshot_path = os.path.join(
+                                SCREENSHOTS_DIR, screenshot_name
+                            )
+                            await page.screenshot(path=screenshot_path, full_page=True)
+                            with open(screenshot_path, "rb") as image_file:
+                                allure.attach(
+                                    image_file.read(),
+                                    name=f"Screenshot: {step_name} ({suffix})",
+                                    attachment_type=allure.attachment_type.PNG,
+                                )
+                            logger.info(
+                                f"📸 Screenshot captured and attached ({suffix}): {screenshot_path}"
+                            )
+                        except Exception as ss_error:
+                            logger.warning(
+                                f"⚠️ Could not capture screenshot ({suffix}): {ss_error}"
+                            )
 
         return wrapper
 
