@@ -36,6 +36,20 @@ class MainPage(BasePage):
         self.log("Check if create project button displayed")
         return await self._get_create_first_project_button().is_visible()
 
+    async def click_create_first_project_button(self) -> None:
+        self.log("Click create first project button on the main page")
+        await self._get_create_first_project_button().click()
+        await self.page.wait_for_timeout(300)
+
+    # ******************************  TOP PANE  **************************************************
+    def _get_top_pane_proj_button(self) -> BaseElement:
+        return BaseElement(self.page, "button.bg-rebecca", has_text="Project")
+
+    async def click_top_pane_proj_button(self) -> None:
+        self.log("Click create project button on the top pane")
+        await self._get_top_pane_proj_button().click()
+        await self.page.wait_for_timeout(300)
+
     # ******************************  LEFT PANE  **************************************************
 
     def _get_apps_button(self) -> BaseElement:

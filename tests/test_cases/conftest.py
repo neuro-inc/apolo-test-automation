@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 from collections.abc import AsyncGenerator
 from collections.abc import Callable
 from collections.abc import Coroutine
@@ -12,7 +11,7 @@ from typing import Any
 import allure
 import pytest
 from allure_commons.types import AttachmentType
-from playwright.async_api import async_playwright, Browser
+from playwright.async_api import async_playwright, Browser, BrowserContext
 
 from tests.components.ui.page_manager import PageManager
 from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
@@ -31,6 +30,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
 _default_user: UserData | None = None
+_browser_context_pairs: list[tuple[Browser, BrowserContext]] = []
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -67,8 +67,6 @@ async def signup_default_user(
         )
     else:
         _default_user = users_manager.default_user
-    finally:
-        await pm._cleanup()  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="function")
@@ -94,18 +92,12 @@ async def add_page_manager(
 
     All opened browsers/contexts are closed automatically after the test.
     """
-    created: list[PageManager] = []
 
     async def _factory() -> PageManager:
         pm = await _create_page_manager(test_config, request)
-        created.append(pm)
         return pm
 
-    try:
-        yield _factory
-    finally:
-        for pm in reversed(created):
-            await pm._cleanup()  # type: ignore[attr-defined]
+    yield _factory
 
 
 @pytest.fixture(scope="function")
@@ -157,34 +149,16 @@ async def clean_up(
     Post-test cleanup:
     - logs in to Apolo CLI,
     - removes all organisations recorded in the DataManager,
+    - closes all browser sessions,
     - logs any cleanup errors without failing the test run.
     """
     yield
 
     with allure.step("Post-test cleanup"):
         try:
-            organisations = data_manager.get_all_organizations()
-            logger.info("Cleaning up %d organisations", len(organisations))
+            await _cleanup_orgs(test_config, data_manager, apolo_cli)
 
-            if not organisations:
-                allure.attach(
-                    "No organisations to clean up.",
-                    name="Cleanup note",
-                    attachment_type=AttachmentType.TEXT,
-                )
-                return
-
-            with allure.step("CLI login for cleanup"):
-                await apolo_cli.login_with_token(
-                    test_config.token,
-                    test_config.cli_login_url,
-                )
-
-            for org in organisations:
-                with allure.step(f"Delete organisation: {org.org_name}"):
-                    await apolo_cli.remove_organization(org.org_name)
-                    data_manager.remove_organization(org.org_name)
-                    logger.info("Removed organisation: %s", org.org_name)
+            await _cleanup_browsers()
 
         except Exception as exc:
             # Capture details but DO NOT fail the test
@@ -202,9 +176,65 @@ async def clean_up(
             )
 
             logger.warning(f"Post-test cleanup failed: {formatted_msg}", RuntimeWarning)
-            global _default_user
-            logger.warning("Need to setup new user due to cleanup issues...")
-            _default_user = None
+
+
+async def _cleanup_orgs(
+    test_config: ConfigManager,
+    data_manager: DataManager,
+    apolo_cli: ApoloCLI,
+) -> None:
+    organisations = data_manager.get_all_organizations()
+    logger.info("Cleaning up %d organisations", len(organisations))
+
+    if not organisations:
+        allure.attach(
+            "No organisations to clean up.",
+            name="Cleanup note",
+            attachment_type=AttachmentType.TEXT,
+        )
+        return
+
+    with allure.step("CLI login for cleanup"):
+        await apolo_cli.login_with_token(
+            test_config.token,
+            test_config.cli_login_url,
+        )
+
+    for org in organisations:
+        with allure.step(f"Delete organisation: {org.org_name}"):
+            try:
+                await apolo_cli.remove_organization(org.org_name)
+                data_manager.remove_organization(org.org_name)
+            except Exception as exc:
+                formatted_msg = exception_manager.handle(
+                    exc, context="Post-test cleanup"
+                )
+                logger.warning("Can not delete org: %s", formatted_msg)
+                global _default_user
+                logger.warning("Need to setup new user due to cleanup issues...")
+                _default_user = None
+            else:
+                logger.info("Removed organisation: %s", org.org_name)
+
+
+async def _cleanup_browsers() -> None:
+    logger.info("Closing all browser sessions")
+    for browser, context in _browser_context_pairs:
+        try:
+            await context.close()
+            logger.info("Closed context")
+        except Exception as e:
+            logger.warning(f"Failed to close context: {e}")
+
+        try:
+            if browser.is_connected():
+                await browser.close()
+                logger.info("Closed browser")
+        except Exception as e:
+            logger.warning(f"Failed to close browser: {e}")
+
+    _browser_context_pairs.clear()
+    logger.info("Closed all browser sessions")
 
 
 async def _start_browser() -> Browser:
@@ -215,7 +245,8 @@ async def _start_browser() -> Browser:
 
     logger.info("Starting browser in a headless mode...")
     browser = await playwright.chromium.launch(
-        headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"]
+        headless=True,
+        args=["--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080"],
     )
 
     return browser
@@ -227,6 +258,7 @@ async def _create_page_manager(
     browser = await _start_browser()
     logger.info("Initializing new browser context")
     context = await browser.new_context(no_viewport=True)
+    _browser_context_pairs.append((browser, context))
     page = await context.new_page()
 
     # Attach HTTP response logging
@@ -239,34 +271,41 @@ async def _create_page_manager(
     test_config.context = context
     request.node.page = page
     pm = PageManager(page)
-
-    async def _cleanup() -> None:
-        await context.close()
-        logger.info("Browser context closed")
-        await browser.close()
-        logger.info("Browser closed")
-
-    pm._cleanup = _cleanup  # type: ignore[attr-defined]
-    request.addfinalizer(
-        lambda: asyncio.get_event_loop().run_until_complete(_cleanup())
-    )
     return pm
 
 
 async def _log_failed_requests(response: Any) -> None:
     """
-    Logs HTTP responses with 4xx and 5xx status codes.
+    Logs failed HTTP responses (status 4xx and 5xx), including:
+    - Request method and URL
+    - Request body (if available)
+    - Response body (truncated)
     """
     status = response.status
     if status >= 400:
-        url = response.url
+        request = response.request
+        method = request.method
+        url = request.url
+
         try:
-            body = await response.text()
+            request_body = await request.post_data()
         except Exception:
-            body = "<unavailable>"
-        logger.warning(f"[HTTP {status}] {url}\nBody: {body[:500]}")
+            request_body = "<not available>"
+
+        try:
+            response_body = await response.text()
+        except Exception:
+            response_body = "<unavailable>"
+
+        log_msg = (
+            f"[HTTP {status}] {method} {url}\n"
+            f"Request Body:\n{request_body}\n"
+            f"Response Body (first 100 chars):\n{response_body[:100]}"
+        )
+
+        logger.warning(log_msg)
         allure.attach(
-            f"URL: {url}\nStatus: {status}\n\nResponse body:\n{body[:1000]}",
-            name=f"HTTP {status} - {os.path.basename(url)}",
+            log_msg,
+            name=f"HTTP {status} - {method} {os.path.basename(url)}",
             attachment_type=AttachmentType.TEXT,
         )

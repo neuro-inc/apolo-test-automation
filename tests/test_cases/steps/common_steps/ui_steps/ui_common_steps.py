@@ -59,7 +59,7 @@ class UICommonSteps:
     async def ui_click_welcome_page_lets_do_it_button(self) -> None:
         await self._pm.welcome_new_user_page.click_lets_do_it_button()
 
-    @async_step("Click Let's do it button on a Welcome page")
+    @async_step("Click Create organization button on a join organization page")
     async def ui_click_create_org_button(self) -> None:
         await self._pm.join_organization_page.click_create_organization_button()
 
@@ -148,17 +148,67 @@ class UICommonSteps:
         )
 
         await self._pm.organization_people_page.click_invite_people_button()
-        assert await self._pm.invite_member_popup.is_loaded(), (
+        assert await self._pm.invite_org_member_popup.is_loaded(), (
             "Invite member popup should be displayed!"
         )
 
-        await self._pm.invite_member_popup.enter_user_data(email=add_user_email)
-        await self._pm.invite_member_popup.select_user_role()
-        assert await self._pm.invite_member_popup.is_invite_user_displayed(
+        await self._pm.invite_org_member_popup.enter_user_data(email=add_user_email)
+        await self._pm.invite_org_member_popup.select_user_role()
+        assert await self._pm.invite_org_member_popup.is_invite_user_displayed(
             email=add_user_email
         ), f"Invite user {add_user_email} button should be displayed!"
 
-        await self._pm.invite_member_popup.click_invite_user_button(
+        await self._pm.invite_org_member_popup.click_invite_user_button(
             email=add_user_email
         )
-        await self._pm.invite_member_popup.click_send_invite_button()
+        await self._pm.invite_org_member_popup.click_send_invite_button()
+
+    # ********************   Create project steps   ****************************
+    @async_step("Create first project from main page")
+    async def ui_create_first_proj_from_main_page(
+        self,
+        org_name: str,
+        proj_name: str,
+        default_role: str,
+        make_default: bool = False,
+    ) -> None:
+        await self.ui_click_create_proj_button_main_page()
+        await self.verify_ui_create_proj_popup_displayed(org_name)
+
+        await self.ui_enter_proj_name(proj_name)
+        await self.ui_select_role(default_role)
+        if make_default:
+            await self.ui_click_make_default_checkbox()
+        await self.ui_click_create_button()
+
+        await self.verify_ui_apps_page_displayed()
+
+    @async_step("Click Create project button on the main page")
+    async def ui_click_create_proj_button_main_page(self) -> None:
+        await self._pm.main_page.click_create_first_project_button()
+
+    @async_step("Verify Create project popup displayed")
+    async def verify_ui_create_proj_popup_displayed(self, org_name: str) -> None:
+        assert await self._pm.create_proj_popup.is_loaded(org_name=org_name), (
+            "Create project popup should be displayed!"
+        )
+
+    @async_step("Enter project name")
+    async def ui_enter_proj_name(self, proj_name: str) -> None:
+        await self._pm.create_proj_popup.enter_proj_name(proj_name=proj_name)
+
+    @async_step("Select user role")
+    async def ui_select_role(self, role: str) -> None:
+        await self._pm.create_proj_popup.select_default_role(role=role)
+
+    @async_step("Click project default checkbox")
+    async def ui_click_make_default_checkbox(self) -> None:
+        await self._pm.create_proj_popup.click_proj_default_checkbox()
+
+    @async_step("Click Create button")
+    async def ui_click_create_button(self) -> None:
+        await self._pm.create_proj_popup.click_create_button()
+
+    @async_step("Verify Apps page displayed")
+    async def verify_ui_apps_page_displayed(self) -> None:
+        assert await self._pm.apps_page.is_loaded(), "Apps page should be displayed!"
