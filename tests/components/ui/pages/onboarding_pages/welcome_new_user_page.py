@@ -36,3 +36,4 @@ class WelcomeNewUserPage(BasePage):
     async def click_lets_do_it_button(self) -> None:
         self.log("Click lets do it button")
         await self._lets_do_it_button.click()
+        await self.page.wait_for_timeout(500)
