@@ -5,7 +5,7 @@ from tests.components.ui.pages.base_element import BaseElement
 from tests.components.ui.pages.base_page import BasePage
 
 
-class InviteMemberPopup(BasePage):
+class InviteOrgMemberPopup(BasePage):
     def __init__(self, page: Page) -> None:
         super().__init__(page)
 
@@ -24,14 +24,10 @@ class InviteMemberPopup(BasePage):
     def _get_user_data_input(self) -> BaseElement:
         return BaseElement(self.page, by_label="Username / Email")
 
-    async def is_user_data_input_displayed(self) -> bool:
-        self.log("Check if email/username input displayed")
-        return await self._get_user_data_input().is_visible()
-
     async def enter_user_data(
         self,
-        email: str | None = None,  # 👈 explicit Optional
-        username: str | None = None,  # 👈 explicit Optional
+        email: str | None = None,
+        username: str | None = None,
     ) -> None:
         if (email is None) == (username is None):  # both None or both non-None
             raise ValueError(

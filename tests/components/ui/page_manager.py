@@ -1,10 +1,14 @@
 from playwright.async_api import Page
 
+from tests.components.ui.pages.apps_page import AppsPage
 from tests.components.ui.pages.auth_page import AuthPage
-from tests.components.ui.pages.invite_member_popup import InviteMemberPopup
+from tests.components.ui.pages.create_project_popup import CreateProjectPopup
+from tests.components.ui.pages.invite_org_member_popup import InviteOrgMemberPopup
+from tests.components.ui.pages.invite_project_memeber_popup import InviteProjMemberPopup
 from tests.components.ui.pages.jobs_page import JobsPage
 from tests.components.ui.pages.login_page import LoginPage
 from tests.components.ui.pages.main_page import MainPage
+from tests.components.ui.pages.no_project_popup import NoProjectPopup
 from tests.components.ui.pages.onboarding_pages.invited_to_org_page import (
     InvitedToOrgPage,
 )
@@ -22,6 +26,8 @@ from tests.components.ui.pages.organization_people_page import OrganizationPeopl
 from tests.components.ui.pages.organization_settings_popup import (
     OrganizationSettingsPopup,
 )
+from tests.components.ui.pages.project_people_page import ProjectPeoplePage
+from tests.components.ui.pages.projects_info_popup import ProjectsInfoPopup
 from tests.components.ui.pages.signup_page import SignupPage
 from tests.components.ui.pages.signup_username_page import SignupUsernamePage
 
@@ -29,6 +35,9 @@ from tests.components.ui.pages.signup_username_page import SignupUsernamePage
 class PageManager:
     def __init__(self, page: Page):
         self.page = page
+        self.user_label = (
+            "main"  # flag for reporting additional users(new browser context)
+        )
 
         self.auth_page = AuthPage(page)
         self.login_page = LoginPage(page)
@@ -43,4 +52,10 @@ class PageManager:
         self.thats_it_page = ThatsItPage(page)
         self.organization_settings_popup = OrganizationSettingsPopup(page)
         self.organization_people_page = OrganizationPeoplePage(page)
-        self.invite_member_popup = InviteMemberPopup(page)
+        self.invite_org_member_popup = InviteOrgMemberPopup(page)
+        self.create_proj_popup = CreateProjectPopup(page)
+        self.no_proj_popup = NoProjectPopup(page)
+        self.apps_page = AppsPage(page)
+        self.projects_info_popup = ProjectsInfoPopup(page)
+        self.project_people_page = ProjectPeoplePage(page)
+        self.invite_proj_member_popup = InviteProjMemberPopup(page)
