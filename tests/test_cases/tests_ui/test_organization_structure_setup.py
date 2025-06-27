@@ -72,6 +72,44 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         await add_steps.verify_ui_create_project_message_displayed(org.gherkin_name)
         await add_steps.verify_ui_create_project_button_displayed()
 
+    @async_title(
+        "Invite registered user without organization to organization with default project via UI"
+    )
+    async def test_invite_registered_user_without_org_default_proj_via_ui(self) -> None:
+        user = self._user
+        ui_common_steps = self._ui_common_steps
+        add_steps, add_ui_common_steps = await self.init_test_steps(
+            UIOrganizationStructureSetupSteps
+        )
+        add_user = await add_ui_common_steps.ui_signup_new_user_ver_link()
+
+        await ui_common_steps.ui_login(
+            email=user.email,
+            password=user.password,
+        )
+        await ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.default_organization
+        proj = org.add_project("First-project")
+        await ui_common_steps.ui_create_first_proj_from_main_page(
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="Reader",
+            make_default=True,
+        )
+        await add_steps.ui_click_welcome_lets_do_it_button()
+
+        await ui_common_steps.ui_invite_user_to_org(
+            email=user.email, username=user.username, add_user_email=add_user.email
+        )
+
+        await add_ui_common_steps.ui_reload_page()
+
+        await add_steps.verify_ui_invite_to_org_page_displayed(org.org_name, "user")
+        await add_steps.ui_click_accept_and_go_button()
+        await add_ui_common_steps.verify_ui_apps_page_displayed()
+
     @async_title("Invite user with organization to organization via UI")
     async def test_invite_registered_user_with_org_via_ui(self) -> None:
         user = self._user

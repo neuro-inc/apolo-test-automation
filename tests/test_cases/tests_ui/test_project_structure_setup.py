@@ -1,0 +1,263 @@
+import pytest
+
+from tests.reporting_hooks.reporting import async_suite, async_title
+from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.test_cases.steps.ui_steps.ui_project_structure_setup_steps import (
+    UIProjectStructureSetupSteps,
+)
+from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+
+
+@async_suite("UI Project Structure Setup")
+class TestUIProjectStructureSetup(BaseUITest):
+    @pytest.fixture(autouse=True)
+    async def setup(self) -> None:
+        """
+        Initialize shared resources for the test methods.
+        """
+        steps, ui_common_steps = await self.init_test_steps(
+            UIProjectStructureSetupSteps
+        )
+        self._steps: UIProjectStructureSetupSteps = steps
+        self._ui_common_steps: UICommonSteps = ui_common_steps
+
+        self._user = self._users_manager.default_user
+
+    @async_title("Create First Project from main page via UI")
+    async def test_create_first_proj_main_page_via_ui(self) -> None:
+        user = self._user
+        steps = self._steps
+        ui_common_steps = self._ui_common_steps
+        await ui_common_steps.ui_login(user.email, user.password)
+        await ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="Default-organization"
+        )
+
+        org = self._data_manager.default_organization
+        proj = org.add_project("Default-project")
+
+        await steps.ui_click_create_proj_button_main_page()
+        await steps.verify_ui_create_proj_popup_displayed(org.org_name)
+
+        await steps.ui_enter_proj_name(proj.project_name)
+        await steps.ui_select_role("Reader")
+        await steps.ui_click_create_button()
+
+        await steps.verify_ui_apps_page_displayed()
+
+        await steps.ui_click_proj_button_top_pane()
+        await steps.verify_ui_projects_info_popup_displayed(proj_name=proj.project_name)
+
+    @async_title("Create First Project from top pane of main via UI")
+    async def test_create_first_proj_top_pane_via_ui(self) -> None:
+        user = self._user
+        steps = self._steps
+        ui_common_steps = self._ui_common_steps
+        await ui_common_steps.ui_login(user.email, user.password)
+        await ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="Default-organization"
+        )
+
+        org = self._data_manager.default_organization
+        proj = org.add_project("Default-project")
+
+        await steps.ui_click_proj_button_top_pane()
+        await steps.verify_ui_no_proj_popup_displayed(org.org_name)
+
+        await steps.ui_click_create_new_proj_button()
+
+        await steps.verify_ui_create_proj_popup_displayed(org.org_name)
+
+        await steps.ui_enter_proj_name(proj.project_name)
+        await steps.ui_select_role("Reader")
+        await steps.ui_click_create_button()
+
+        await steps.verify_ui_apps_page_displayed()
+
+        await steps.ui_click_proj_button_top_pane()
+        await steps.verify_ui_projects_info_popup_displayed(proj_name=proj.project_name)
+
+    @async_title("Create Create second project via UI")
+    async def test_create_second_proj_via_ui(self) -> None:
+        user = self._user
+        steps = self._steps
+        ui_common_steps = self._ui_common_steps
+        await ui_common_steps.ui_login(user.email, user.password)
+        await ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="Default-organization"
+        )
+
+        org = self._data_manager.default_organization
+        proj1 = org.add_project("project 1")
+
+        await ui_common_steps.ui_create_first_proj_from_main_page(
+            org_name=org.org_name, proj_name=proj1.project_name, default_role="Reader"
+        )
+
+        await steps.ui_click_proj_button_top_pane()
+        await steps.verify_ui_projects_info_popup_displayed(
+            proj_name=proj1.project_name
+        )
+
+        proj2 = org.add_project("Project2")
+        await steps.ui_click_create_new_proj_button()
+
+        await steps.verify_ui_create_proj_popup_displayed(org.org_name)
+
+        await steps.ui_enter_proj_name(proj2.project_name)
+        await steps.ui_select_role("Reader")
+        await steps.ui_click_create_button()
+
+        await steps.verify_ui_apps_page_displayed()
+
+        await steps.ui_click_proj_button_top_pane()
+        await steps.verify_ui_projects_info_popup_displayed(
+            proj_name=proj2.project_name
+        )
+        await steps.verify_ui_other_proj_displayed_in_info(proj_name=proj1.project_name)
+
+    @async_title("Invite member of organization to project via UI")
+    async def test_invite_org_member_to_proj_via_ui(self) -> None:
+        user = self._user
+        steps = self._steps
+        ui_common_steps = self._ui_common_steps
+        await ui_common_steps.ui_login(user.email, user.password)
+        await ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="Default-organization"
+        )
+
+        org = self._data_manager.default_organization
+        proj1 = org.add_project("project 1")
+
+        await ui_common_steps.ui_create_first_proj_from_main_page(
+            org_name=org.org_name, proj_name=proj1.project_name, default_role="Reader"
+        )
+
+        add_steps, add_ui_common_steps = await self.init_test_steps(
+            UIProjectStructureSetupSteps
+        )
+        self.log("User2 signup and verify email link")
+        add_user = await add_ui_common_steps.ui_signup_new_user_ver_link()
+
+        self.log("User1 invite User2 to organization")
+        await ui_common_steps.ui_invite_user_to_org(
+            email=user.email, username=user.username, add_user_email=add_user.email
+        )
+
+        self.log("User 2 accept invite to organization")
+        await add_ui_common_steps.ui_reload_page()
+        await add_ui_common_steps.ui_click_welcome_page_lets_do_it_button()
+        await add_steps.verify_ui_invite_to_org_page_displayed(org.org_name, "user")
+        await add_steps.ui_click_accept_and_go_button()
+        await add_steps.verify_ui_create_project_message_displayed(org.gherkin_name)
+        await add_steps.verify_ui_create_project_button_displayed()
+
+        self.log(f"User1 invite User2 to project {proj1.project_name}")
+        await steps.ui_click_proj_button_top_pane()
+        await steps.ui_click_people_btn_proj_info_popup()
+        await steps.verify_ui_proj_people_page_displayed()
+
+        await steps.ui_click_invite_people_proj_people_btn()
+        await steps.verify_ui_invite_proj_member_popup_displayed(
+            org_name=org.org_name, proj_name=proj1.project_name
+        )
+
+        await steps.ui_enter_user_data(email=add_user.email)
+        await steps.ui_select_user_role(role="Reader")
+        await steps.verify_ui_invite_user_btn_displayed(email=add_user.email)
+        await steps.verify_ui_invite_bth_disabled()
+
+        await steps.ui_click_invite_user_btn(email=add_user.email)
+        await steps.verify_ui_invite_bth_enabled()
+
+        await steps.ui_click_invite_btn()
+        await steps.verify_ui_proj_people_page_displayed()
+        await steps.verify_ui_user_displayed_in_users_list(username=add_user.username)
+        await steps.verify_ui_invited_user_role(
+            username=add_user.username, role="Reader"
+        )
+        await steps.verify_ui_invited_user_email(
+            username=add_user.username, email=add_user.email
+        )
+
+        await add_ui_common_steps.ui_reload_page()
+        await add_steps.verify_ui_apps_page_displayed()
+
+        await add_steps.ui_click_proj_button_top_pane()
+        await add_steps.verify_ui_projects_info_popup_displayed(
+            proj_name=proj1.project_name
+        )
+
+    @async_title("Invite member that NOT in organization to project via UI")
+    async def test_invite_not_org_member_to_proj_via_ui(self) -> None:
+        user = self._user
+        steps = self._steps
+        ui_common_steps = self._ui_common_steps
+        await ui_common_steps.ui_login(user.email, user.password)
+        await ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="Default-organization"
+        )
+
+        org = self._data_manager.default_organization
+        proj1 = org.add_project("project 1")
+
+        await ui_common_steps.ui_create_first_proj_from_main_page(
+            org_name=org.org_name, proj_name=proj1.project_name, default_role="Reader"
+        )
+
+        self.log(f"User1 invite User2 to project {proj1.project_name}")
+        await steps.ui_click_proj_button_top_pane()
+        await steps.ui_click_people_btn_proj_info_popup()
+        await steps.verify_ui_proj_people_page_displayed()
+
+        await steps.ui_click_invite_people_proj_people_btn()
+        await steps.verify_ui_invite_proj_member_popup_displayed(
+            org_name=org.org_name, proj_name=proj1.project_name
+        )
+
+        add_steps, add_ui_common_steps = await self.init_test_steps(
+            UIProjectStructureSetupSteps
+        )
+        self.log("User2 signup and validate email link")
+        add_user = await add_ui_common_steps.ui_signup_new_user_ver_link()
+        self.log("User2 password new user onboarding and create organization")
+        await add_ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="new-organization"
+        )
+
+        await steps.ui_enter_user_data(email=add_user.email)
+        await steps.ui_select_user_role(role="Reader")
+        await steps.verify_ui_invite_user_btn_not_displayed(email=add_user.email)
+
+    @async_title("Invite not registered user to project via UI")
+    async def test_invite_not_registered_to_proj_via_ui(self) -> None:
+        user = self._user
+        steps = self._steps
+        ui_common_steps = self._ui_common_steps
+        await ui_common_steps.ui_login(user.email, user.password)
+        await ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="Default-organization"
+        )
+
+        org = self._data_manager.default_organization
+        proj1 = org.add_project("project 1")
+
+        await ui_common_steps.ui_create_first_proj_from_main_page(
+            org_name=org.org_name, proj_name=proj1.project_name, default_role="Reader"
+        )
+
+        self.log(f"User1 invite User2 to project {proj1.project_name}")
+        await steps.ui_click_proj_button_top_pane()
+        await steps.ui_click_people_btn_proj_info_popup()
+        await steps.verify_ui_proj_people_page_displayed()
+
+        await steps.ui_click_invite_people_proj_people_btn()
+        await steps.verify_ui_invite_proj_member_popup_displayed(
+            org_name=org.org_name, proj_name=proj1.project_name
+        )
+
+        add_user = self._users_manager.generate_user()
+
+        await steps.ui_enter_user_data(email=add_user.email)
+        await steps.ui_select_user_role(role="Reader")
+        await steps.verify_ui_invite_user_btn_not_displayed(email=add_user.email)

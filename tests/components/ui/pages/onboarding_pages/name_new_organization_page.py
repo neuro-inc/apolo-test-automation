@@ -33,3 +33,4 @@ class NameNewOrganizationPage(BasePage):
     async def click_next_button(self) -> None:
         self.log("Click next button")
         await self._next_button.click()
+        await self.page.wait_for_timeout(1000)
