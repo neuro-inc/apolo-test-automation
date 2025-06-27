@@ -182,43 +182,43 @@ class UISignupSteps:
 
     @async_step("Verify that Invite member popup displayed")
     async def verify_ui_invite_member_popup_displayed(self) -> None:
-        assert await self._pm.invite_member_popup.is_loaded(), (
+        assert await self._pm.invite_org_member_popup.is_loaded(), (
             "Invite member popup should be displayed!"
         )
 
     @async_step("Enter email")
     async def ui_enter_invite_email(self, email: str) -> None:
-        await self._pm.invite_member_popup.enter_user_data(email=email)
+        await self._pm.invite_org_member_popup.enter_user_data(email=email)
 
     @async_step("Select 'User' role")
     async def ui_select_user_role(self) -> None:
-        await self._pm.invite_member_popup.select_user_role()
+        await self._pm.invite_org_member_popup.select_user_role()
 
     @async_step("Verify that Invite user button appeared")
     async def verify_ui_invite_user_button_displayed(self, email: str) -> None:
-        assert await self._pm.invite_member_popup.is_invite_user_displayed(
+        assert await self._pm.invite_org_member_popup.is_invite_user_displayed(
             email=email
         ), "Invite user button should be displayed!"
 
     @async_step("Click Invite user button")
     async def ui_click_invite_user_button(self, email: str) -> None:
-        await self._pm.invite_member_popup.click_invite_user_button(email=email)
+        await self._pm.invite_org_member_popup.click_invite_user_button(email=email)
 
     @async_step("Verify that Send invite button disabled")
     async def verify_ui_send_invite_button_disabled(self) -> None:
-        assert not await self._pm.invite_member_popup.is_send_invite_button_enabled(), (
-            "Send invite button should be disabled!"
-        )
+        assert (
+            not await self._pm.invite_org_member_popup.is_send_invite_button_enabled()
+        ), "Send invite button should be disabled!"
 
     @async_step("Verify that Send invite button enabled")
     async def verify_ui_send_invite_button_enabled(self) -> None:
-        assert await self._pm.invite_member_popup.is_send_invite_button_enabled(), (
+        assert await self._pm.invite_org_member_popup.is_send_invite_button_enabled(), (
             "Send invite button should be enabled!"
         )
 
     @async_step("Click Send invite button")
     async def ui_click_send_invite_button(self) -> None:
-        await self._pm.invite_member_popup.click_send_invite_button()
+        await self._pm.invite_org_member_popup.click_send_invite_button()
 
     # ********************   Verification link steps   ****************************
 

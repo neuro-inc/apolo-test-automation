@@ -56,7 +56,7 @@ class TestUISignup(BaseUITest):
         await ui_common_steps.ui_login(main_user.email, main_user.password)
         self.log("User1 pass onboarding and create organization")
         await ui_common_steps.ui_pass_new_user_onboarding("default_organization")
-        organization = self._data_manager.default_organization
+        org = self._data_manager.default_organization
 
         await steps.ui_click_organization_settings_button(main_user.email)
         await steps.verify_ui_org_settings_popup_displayed(
@@ -102,12 +102,62 @@ class TestUISignup(BaseUITest):
         await add_steps.verify_ui_welcome_page_displayed(add_user.email)
 
         await add_steps.ui_click_welcome_lets_do_it_button()
-        await add_steps.verify_ui_invite_to_org_page_displayed(
-            organization.org_name, "user"
-        )
+        await add_steps.verify_ui_invite_to_org_page_displayed(org.org_name, "user")
 
         await add_steps.ui_click_accept_and_go_button()
-        await add_steps.verify_ui_create_project_message_displayed(
-            organization.gherkin_name
-        )
+        await add_steps.verify_ui_create_project_message_displayed(org.gherkin_name)
         await add_steps.verify_ui_create_project_button_displayed()
+
+    @async_title(
+        "Invite not registered user to organization with default project via UI"
+    )
+    async def test_invite_not_registered_user_to_org_with_default_proj(self) -> None:
+        user = self._users_manager.default_user
+        ui_common_steps = self._ui_common_steps
+        add_steps, add_ui_common_steps = await self.init_test_steps(UISignupSteps)
+        add_user = self._users_manager.generate_user()
+
+        await ui_common_steps.ui_login(
+            email=user.email,
+            password=user.password,
+        )
+        await ui_common_steps.ui_pass_new_user_onboarding(
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.default_organization
+        proj = org.add_project("First-project")
+        await ui_common_steps.ui_create_first_proj_from_main_page(
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="Reader",
+            make_default=True,
+        )
+
+        await ui_common_steps.ui_invite_user_to_org(
+            email=user.email, username=user.username, add_user_email=add_user.email
+        )
+
+        await add_steps.ui_click_signup_button()
+        await add_steps.ui_enter_email(add_user.email)
+        await add_steps.ui_enter_password(add_user.password)
+        await add_steps.ui_click_continue_button()
+        await add_steps.activate_email_verification_link(add_user.email)
+        await add_steps.ui_open_product_base_page()
+        await add_steps.verify_ui_auth_page_displayed()
+
+        await add_steps.ui_click_login_button()
+        await add_steps.verify_ui_signup_username_page_displayed()
+
+        await add_steps.ui_enter_username(add_user.username)
+        await add_steps.ui_usr_click_signup_button()
+        await add_steps.verify_ui_terms_of_agreement_displayed()
+
+        await add_steps.ui_check_agreement_checkbox()
+        await add_steps.ui_click_i_agree_button()
+        await add_steps.verify_ui_welcome_page_displayed(add_user.email)
+
+        await add_steps.ui_click_welcome_lets_do_it_button()
+        await add_steps.verify_ui_invite_to_org_page_displayed(org.org_name, "user")
+
+        await add_steps.ui_click_accept_and_go_button()
+        await add_ui_common_steps.verify_ui_apps_page_displayed()
