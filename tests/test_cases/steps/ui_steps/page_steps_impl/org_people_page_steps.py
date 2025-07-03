@@ -10,7 +10,7 @@ class OrgPeoplePageSteps:
         self._pm = page_manager
 
     @async_step("Verify that Organization people page displayed")
-    async def verify_ui_org_people_page_displayed(self) -> None:
+    async def verify_ui_page_displayed(self) -> None:
         assert await self._pm.organization_people_page.is_loaded(), (
             "Organization people page should be displayed!"
         )

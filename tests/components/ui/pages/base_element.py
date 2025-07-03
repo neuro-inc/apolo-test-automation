@@ -1,6 +1,9 @@
 from typing import Optional, Any, cast
 from playwright.async_api import Page, Locator, expect
 
+from playwright.async_api import TimeoutError as PlaywrightTimeoutError
+
+
 
 class BaseElement:
     def __init__(
@@ -35,20 +38,25 @@ class BaseElement:
         try:
             await expect(self.locator).to_be_visible(timeout=timeout)
             return True
-        except TimeoutError:
+        except TimeoutError as e:
             return False
 
     async def click(self) -> None:
-        timeout = 5000
+        timeout = 1000
         await self.locator.wait_for(state="attached", timeout=timeout)
         await expect(self.locator).to_be_visible(timeout=timeout)
         await expect(self.locator).to_be_enabled(timeout=timeout)
         await self.page.wait_for_timeout(200)
         try:
             await self.locator.click()
-        except TimeoutError:
-            # Fallback in case of overlays
-            await self.locator.click(force=True)
+        except Exception:
+            # Fallback: click via bounding box
+            box = await self.locator.bounding_box()
+            if box:
+                await self.page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
+            else:
+                raise Exception("Element found but not clickable, and no bounding box available.")
+
 
     async def check(self) -> None:
         await self.locator.check()

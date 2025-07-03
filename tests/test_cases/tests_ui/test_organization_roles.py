@@ -41,8 +41,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         )
 
         self.log("User2 Login")
-        add_user = self._users_manager.second_user
-        await add_steps.ui_login(email=add_user.email, password=add_user.password)
+        add_user = await add_steps.ui_signup_new_user_ver_link()
         self.log("User2 password new user onboarding and create organization")
         await add_steps.ui_pass_new_user_onboarding(gherkin_name="new-organization")
 

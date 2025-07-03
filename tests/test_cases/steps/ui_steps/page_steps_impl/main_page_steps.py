@@ -37,15 +37,11 @@ class MainPageSteps:
         await self._pm.main_page.click_organization_settings_button(email)
 
     @async_step("Verify project creation message is displayed")
-    async def verify_ui_create_project_message_displayed(
-        self, gherkin_name: str
-    ) -> None:
-        organization = self._data_manager.get_organization_by_gherkin_name(gherkin_name)
-        assert organization, f"Organization {gherkin_name} not found"
+    async def verify_ui_create_project_message_displayed(self, org_name: str) -> None:
         page = self._pm.main_page
-        assert await page.is_create_first_project_text_field_displayed(
-            organization.org_name
-        ), f"Organization {gherkin_name} does not have a project creation message"
+        assert await page.is_create_first_project_text_field_displayed(org_name), (
+            f"Organization {org_name} does not have a project creation message"
+        )
 
     @async_step("Verify create project button displayed")
     async def verify_ui_create_project_button_displayed(self) -> None:
@@ -54,7 +50,7 @@ class MainPageSteps:
         )
 
     @async_step("Verify Main page is displayed")
-    async def verify_ui_main_page_displayed(self) -> None:
+    async def verify_ui_page_displayed(self) -> None:
         assert await self._pm.main_page.is_loaded(), "Main page should be loaded!"
 
     @async_step("Verify that invitation to organization displayed on the left pane")

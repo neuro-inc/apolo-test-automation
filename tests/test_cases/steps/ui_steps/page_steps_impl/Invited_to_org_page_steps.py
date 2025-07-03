@@ -10,9 +10,7 @@ class InvitedToOrgPageSteps:
         self._pm = page_manager
 
     @async_step("Verify that Invited to organization page displayed")
-    async def verify_ui_invite_to_org_page_displayed(
-        self, org_name: str, user_role: str
-    ) -> None:
+    async def verify_ui_page_displayed(self, org_name: str, user_role: str) -> None:
         assert await self._pm.invited_to_org_page.is_loaded(
             org_name=org_name, user_role=user_role
         ), "Invited to organization page should be displayed!"

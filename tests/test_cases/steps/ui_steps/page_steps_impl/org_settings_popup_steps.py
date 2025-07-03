@@ -10,9 +10,7 @@ class OrgSettingsPopupSteps:
         self._pm = page_manager
 
     @async_step("Verify that Organization settings pop up displayed")
-    async def verify_ui_org_settings_popup_displayed(
-        self, email: str, username: str
-    ) -> None:
+    async def verify_ui_popup_displayed(self, email: str, username: str) -> None:
         assert await self._pm.organization_settings_popup.is_loaded(
             email=email, username=username
         ), "Organization settings popup should be displayed!"

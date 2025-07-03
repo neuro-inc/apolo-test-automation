@@ -10,7 +10,7 @@ class ProjInfoPopupSteps:
         self._pm = page_manager
 
     @async_step("Verify Projects info popup displayed")
-    async def verify_ui_projects_info_popup_displayed(self, proj_name: str) -> None:
+    async def verify_ui_popup_displayed(self, proj_name: str) -> None:
         assert await self._pm.projects_info_popup.is_loaded(proj_name=proj_name), (
             "Projects info popup should be displayed!"
         )

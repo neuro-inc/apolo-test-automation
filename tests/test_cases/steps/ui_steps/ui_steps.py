@@ -48,7 +48,7 @@ class UISteps(PageSteps):
         if admin:
             await self.auth_page.ui_click_login_button()
             await self._pm.login_page.login(email, password)
-            await self.main_page.verify_ui_main_page_displayed()
+            await self.main_page.verify_ui_page_displayed()
             token = await extract_access_token_from_local_storage(
                 self._pm.login_page.page
             )
@@ -56,9 +56,7 @@ class UISteps(PageSteps):
         else:
             await self.auth_page.ui_click_login_button()
             await self._pm.login_page.login(email, password)
-            await self.welcome_new_user_page.verify_ui_welcome_page_displayed(
-                email=email
-            )
+            await self.welcome_new_user_page.verify_ui_page_displayed(email=email)
             token = await extract_access_token_from_local_storage(
                 self._pm.login_page.page
             )
@@ -71,7 +69,7 @@ class UISteps(PageSteps):
         token = await extract_access_token_from_local_storage(self._pm.login_page.page)
         self._test_config.token = token
 
-        await self.welcome_new_user_page.ui_click_welcome_lets_do_it_button()
+        await self.welcome_new_user_page.ui_click_lets_do_it_button()
         await self.join_org_page.ui_click_create_organization_button()
 
         organization = self._data_manager.add_organization(gherkin_name=gherkin_name)
@@ -80,9 +78,9 @@ class UISteps(PageSteps):
         await self.name_org_page.ui_enter_organization_name(org_name)
         await self.name_org_page.ui_click_next_button()
 
-        await self.thats_it_page.ui_click_thats_it_lets_do_it_button()
+        await self.thats_it_page.ui_click_lets_do_it_button()
 
-        await self.main_page.verify_ui_main_page_displayed()
+        await self.main_page.verify_ui_page_displayed()
 
     # ********************   New user signup steps   ****************************
     @async_step("Signup new user via UI and activate email verification link")
@@ -116,10 +114,10 @@ class UISteps(PageSteps):
 
         base_url = self._test_config.base_url
         await self._pm.page.goto(base_url)
-        await self.auth_page.verify_ui_auth_page_displayed()
+        await self.auth_page.verify_ui_page_displayed()
 
         await self.auth_page.ui_click_login_button()
-        await self.signup_username_page.verify_ui_signup_username_page_displayed()
+        await self.signup_username_page.verify_ui_page_displayed()
 
         await self.signup_username_page.ui_enter_username(user.username)
         await self.signup_username_page.ui_click_signup_button()
@@ -127,9 +125,7 @@ class UISteps(PageSteps):
 
         await self.main_page.ui_check_agreement_checkbox()
         await self.main_page.ui_click_i_agree_button()
-        await self.welcome_new_user_page.verify_ui_welcome_page_displayed(
-            email=user.email
-        )
+        await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
 
         return user
 
@@ -139,15 +135,15 @@ class UISteps(PageSteps):
         self, email: str, username: str, add_user_email: str
     ) -> None:
         await self.main_page.ui_click_organization_settings_button(email)
-        await self.org_settings_popup.verify_ui_org_settings_popup_displayed(
+        await self.org_settings_popup.verify_ui_popup_displayed(
             email=email, username=username
         )
 
         await self.org_settings_popup.ui_click_people_button()
-        await self.org_people_page.verify_ui_org_people_page_displayed()
+        await self.org_people_page.verify_ui_page_displayed()
 
         await self.org_people_page.ui_click_invite_people_button()
-        await self.invite_org_member_popup.verify_ui_invite_member_popup_displayed()
+        await self.invite_org_member_popup.verify_ui_popup_displayed()
 
         await self.invite_org_member_popup.ui_enter_invite_email(email=add_user_email)
         await self.invite_org_member_popup.ui_select_user_role()
@@ -191,7 +187,7 @@ class UISteps(PageSteps):
         make_default: bool = False,
     ) -> None:
         await self.main_page.ui_click_create_proj_button_main_page()
-        await self.create_proj_popup.verify_ui_create_proj_popup_displayed(org_name)
+        await self.create_proj_popup.verify_ui_popup_displayed(org_name)
 
         await self.create_proj_popup.ui_enter_proj_name(proj_name)
         await self.create_proj_popup.ui_select_role(default_role)
@@ -199,4 +195,4 @@ class UISteps(PageSteps):
             await self.create_proj_popup.ui_click_make_default_checkbox()
         await self.create_proj_popup.ui_click_create_button()
 
-        await self.apps_page.verify_ui_apps_page_displayed()
+        await self.apps_page.verify_ui_page_displayed()

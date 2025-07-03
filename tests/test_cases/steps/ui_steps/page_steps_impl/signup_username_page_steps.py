@@ -10,7 +10,7 @@ class SignupUsernamePageSteps:
         self._pm = page_manager
 
     @async_step("Verify that Signup username page displayed")
-    async def verify_ui_signup_username_page_displayed(self) -> None:
+    async def verify_ui_page_displayed(self) -> None:
         assert await self._pm.signup_username_page.is_loaded(), (
             "Signup username page should be displayed!"
         )

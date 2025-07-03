@@ -10,7 +10,7 @@ class JoinOrgPageSteps:
         self._pm = page_manager
 
     @async_step("Verify Join organization page displayed")
-    async def verify_ui_join_organization_page_displayed(self, username: str) -> None:
+    async def verify_ui_page_displayed(self, username: str) -> None:
         assert await self._pm.join_organization_page.is_loaded(username=username), (
             "Join organization page should be displayed!"
         )

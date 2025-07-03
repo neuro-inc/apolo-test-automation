@@ -13,17 +13,15 @@ class NameOrgPageSteps:
         self._data_manager = data_manager
 
     @async_step("Verify Name organization page displayed")
-    async def verify_ui_name_organization_page_displayed(self) -> None:
+    async def verify_ui_page_displayed(self) -> None:
         assert await self._pm.name_your_organization_page.is_loaded(), (
             "Name organization page should be displayed!"
         )
 
     @async_step("Enter organization name")
-    async def ui_enter_organization_name(self, gherkin_name: str) -> None:
-        organization = self._data_manager.add_organization(gherkin_name=gherkin_name)
-        organization_name = organization.org_name
+    async def ui_enter_organization_name(self, org_name: str) -> None:
         page = self._pm.name_your_organization_page
-        await page.enter_organization_name(organization_name)
+        await page.enter_organization_name(org_name)
 
     @async_step("Click next button")
     async def ui_click_next_button(self) -> None:

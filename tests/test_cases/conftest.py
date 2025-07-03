@@ -6,7 +6,7 @@ from collections.abc import Coroutine
 
 import logging
 import os
-from typing import Any, Optional
+from typing import Any
 
 import allure
 import pytest
@@ -14,7 +14,7 @@ from allure_commons.types import AttachmentType
 from playwright.async_api import async_playwright, Browser, BrowserContext
 
 from tests.components.ui.page_manager import PageManager
-from tests.test_cases.steps.ui_steps.ui_steps import UISteps
+from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.utils.api_helper import APIHelper
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.exception_handling.exception_manager import ExceptionManager
@@ -29,35 +29,8 @@ exception_manager = ExceptionManager(logger=logger)
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
-_cleanup_token: str = ""
-_default_user: Optional[UserData] = None
-_second_user: Optional[UserData] = None
-_third_user: Optional[UserData] = None
+_default_user: UserData | None = None
 _browser_context_pairs: list[tuple[Browser, BrowserContext]] = []
-
-
-@pytest.fixture(autouse=True, scope="function")
-async def get_cleanup_token(
-    test_config: ConfigManager,
-    data_manager: DataManager,
-    users_manager: UsersManager,
-    api_helper: APIHelper,
-    request: pytest.FixtureRequest,
-) -> None:
-    global _cleanup_token
-
-    if _cleanup_token:
-        test_config.cleanup_token = _cleanup_token
-    else:
-        pm = await _create_page_manager(test_config, request)
-        steps = UISteps(
-            pm, test_config, data_manager, users_manager, api_helper
-        )
-        # email = os.getenv("SUPERADMIN_EMAIL")
-        email = "ihor.sosnovskyi@sandbx.co"
-        # password = os.getenv("SUPERADMIN_PASSWORD")
-        password = "Myp@ssw1"
-        await steps.ui_login(email, password, admin=True)
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -69,58 +42,31 @@ async def signup_default_user(
     request: pytest.FixtureRequest,
 ) -> None:
     """
-    Signs up and verifies a default users before each test.
+    Signs up and verifies a default user before each test.
     - Reuses cached user if already available.
     - Performs signup and email verification via UI steps.
     - Aborts the test session if signup fails.
     - Ensures browser context is cleaned up after execution.
     """
     global _default_user
-    global _second_user
-    global _third_user
     if _default_user:
         users_manager.default_user = _default_user
-        if _second_user is not None:
-            users_manager.second_user = _second_user
-
-        if _third_user is not None:
-            users_manager.third_user = _third_user
         return
+    logger.info("Signup default user...")
+    pm = await _create_page_manager(test_config, request)
+
+    ui_common_steps = UICommonSteps(
+        pm, test_config, data_manager, users_manager, api_helper
+    )
     try:
-        _default_user = await _signup_default_user(
-            test_config, data_manager, users_manager, api_helper, request
-        )
-        users_manager.default_user = _default_user
-        _second_user = await _signup_default_user(
-            test_config, data_manager, users_manager, api_helper, request
-        )
-        users_manager.second_user = _second_user
-        _third_user = await _signup_default_user(
-            test_config, data_manager, users_manager, api_helper, request
-        )
-        users_manager.third_user = _third_user
+        await ui_common_steps.ui_signup_new_user_ver_link()
     except Exception as e:
         logger.error(f"❌ Failed to sign up default user: {e}")
         pytest.exit(
             "🚫 Aborting test session: default user signup failed.", returncode=11
         )
-
-
-async def _signup_default_user(
-    test_config: ConfigManager,
-    data_manager: DataManager,
-    users_manager: UsersManager,
-    api_helper: APIHelper,
-    request: pytest.FixtureRequest,
-) -> UserData:
-    logger.info("Signup default user...")
-
-    pm = await _create_page_manager(test_config, request)
-
-    steps = UISteps(
-        pm, test_config, data_manager, users_manager, api_helper
-    )
-    return await steps.ui_signup_new_user_ver_link()
+    else:
+        _default_user = users_manager.default_user
 
 
 @pytest.fixture(scope="function")
@@ -265,10 +211,8 @@ async def _cleanup_orgs(
                 )
                 logger.warning("Can not delete org: %s", formatted_msg)
                 global _default_user
-                logger.warning("Need to setup new users due to cleanup issues...")
+                logger.warning("Need to setup new user due to cleanup issues...")
                 _default_user = None
-                _second_user = None
-                _third_user = None
             else:
                 logger.info("Removed organisation: %s", org.org_name)
 
@@ -301,8 +245,7 @@ async def _start_browser() -> Browser:
 
     logger.info("Starting browser in a headless mode...")
     browser = await playwright.chromium.launch(
-        headless=False,
-        # headless=True,
+        headless=True,
         args=["--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080"],
     )
 

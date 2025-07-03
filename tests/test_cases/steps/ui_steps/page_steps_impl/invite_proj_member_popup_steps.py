@@ -10,9 +10,7 @@ class InviteProjMemberPopupSteps:
         self._pm = page_manager
 
     @async_step("Verify Invite project member popup displayed")
-    async def verify_ui_invite_proj_member_popup_displayed(
-        self, org_name: str, proj_name: str
-    ) -> None:
+    async def verify_ui_popup_displayed(self, org_name: str, proj_name: str) -> None:
         assert await self._pm.invite_proj_member_popup.is_loaded(
             org_name=org_name, proj_name=proj_name
         ), "Invite project member popup should be displayed!"

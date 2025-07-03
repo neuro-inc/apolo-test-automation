@@ -21,20 +21,17 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         user = self._user
         steps = self._steps
         await steps.ui_login(user.email, user.password)
-        await steps.welcome_new_user_page.ui_click_welcome_lets_do_it_button()
-        await steps.join_org_page.verify_ui_join_organization_page_displayed(
-            user.username
-        )
+        await steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await steps.join_org_page.verify_ui_page_displayed(user.username)
         await steps.join_org_page.ui_click_create_organization_button()
-        await steps.name_org_page.verify_ui_name_organization_page_displayed()
-        await steps.name_org_page.ui_enter_organization_name("My-organization")
+        await steps.name_org_page.verify_ui_page_displayed()
+        org = self._data_manager.add_organization("My-organization")
+        await steps.name_org_page.ui_enter_organization_name(org.org_name)
         await steps.name_org_page.ui_click_next_button()
-        await steps.thats_it_page.verify_ui_thats_it_page_displayed()
-        await steps.thats_it_page.ui_click_thats_it_lets_do_it_button()
-        await steps.main_page.verify_ui_main_page_displayed()
-        await steps.main_page.verify_ui_create_project_message_displayed(
-            "My-organization"
-        )
+        await steps.thats_it_page.verify_ui_page_displayed()
+        await steps.thats_it_page.ui_click_lets_do_it_button()
+        await steps.main_page.verify_ui_page_displayed()
+        await steps.main_page.verify_ui_create_project_message_displayed(org.org_name)
         await steps.main_page.verify_ui_create_project_button_displayed()
 
     @async_title("Invite registered user without organization to organization via UI")
@@ -42,7 +39,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         user = self._user
         steps = self._steps
         add_steps = await self.init_test_steps()
-        add_user = self._users_manager.second_user
+        add_user = await add_steps.ui_signup_new_user_ver_link()
 
         await steps.ui_login(
             email=user.email,
@@ -51,12 +48,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         await steps.ui_pass_new_user_onboarding(
             gherkin_name="Default-organization",
         )
-
-        await add_steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
-        await add_steps.welcome_new_user_page.ui_click_welcome_lets_do_it_button()
+        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
             email=user.email, username=user.username, add_user_email=add_user.email
@@ -67,12 +59,12 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.invited_to_org_page.verify_ui_invite_to_org_page_displayed(
+        await add_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "user"
         )
         await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
         await add_steps.main_page.verify_ui_create_project_message_displayed(
-            org.gherkin_name
+            org.org_name
         )
         await add_steps.main_page.verify_ui_create_project_button_displayed()
 
@@ -83,7 +75,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         user = self._user
         steps = self._steps
         add_steps = await self.init_test_steps()
-        add_user = self._users_manager.second_user
+        add_user = await add_steps.ui_signup_new_user_ver_link()
 
         await steps.ui_login(
             email=user.email,
@@ -100,11 +92,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
             default_role="Reader",
             make_default=True,
         )
-        await add_steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
-        await add_steps.welcome_new_user_page.ui_click_welcome_lets_do_it_button()
+
+        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
             email=user.email, username=user.username, add_user_email=add_user.email
@@ -112,11 +101,11 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
         await add_steps.ui_reload_page()
 
-        await add_steps.invited_to_org_page.verify_ui_invite_to_org_page_displayed(
+        await add_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "user"
         )
         await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.apps_page.verify_ui_apps_page_displayed()
+        await add_steps.apps_page.verify_ui_page_displayed()
 
     @async_title("Invite user with organization to organization via UI")
     async def test_invite_registered_user_with_org_via_ui(self) -> None:
@@ -134,8 +123,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         )
 
         self.log("User2 Login")
-        add_user = self._users_manager.second_user
-        await add_steps.ui_login(email=add_user.email, password=add_user.password)
+        add_user = await add_steps.ui_signup_new_user_ver_link()
         self.log("User2 password new user onboarding and create organization")
         await add_steps.ui_pass_new_user_onboarding(gherkin_name="new-organization")
 
@@ -154,9 +142,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
             org_name=org.org_name
         )
         self.log("User2 click invite to organization button")
-        await add_steps.main_page.ui_click_invite_to_org_button(
-            org_name=org.org_name
-        )
+        await add_steps.main_page.ui_click_invite_to_org_button(org_name=org.org_name)
 
         self.log("User2 verify that invite row displayed on the main page")
         await add_steps.main_page.verify_ui_invite_org_info_displayed(
@@ -167,9 +153,7 @@ class TestUIOrganizationStructureSetup(BaseUITest):
             org_name=org.org_name, role="user"
         )
         self.log("User2 click accept button")
-        await add_steps.main_page.ui_click_accept_invite_to_org(
-            org_name=org.org_name
-        )
+        await add_steps.main_page.ui_click_accept_invite_to_org(org_name=org.org_name)
 
         self.log("User2 click organization settings button")
         await add_steps.main_page.ui_click_organization_settings_button(

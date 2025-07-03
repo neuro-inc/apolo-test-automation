@@ -28,18 +28,16 @@ class TestUIProjectStructureSetup(BaseUITest):
         proj = org.add_project("Default-project")
 
         await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_create_proj_popup_displayed(
-            org.org_name
-        )
+        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
 
         await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
         await steps.create_proj_popup.ui_select_role("Reader")
         await steps.create_proj_popup.ui_click_create_button()
 
-        await steps.apps_page.verify_ui_apps_page_displayed()
+        await steps.apps_page.verify_ui_page_displayed()
 
         await steps.main_page.ui_click_proj_button_top_pane()
-        await steps.proj_info_popup.verify_ui_projects_info_popup_displayed(
+        await steps.proj_info_popup.verify_ui_popup_displayed(
             proj_name=proj.project_name
         )
 
@@ -54,22 +52,20 @@ class TestUIProjectStructureSetup(BaseUITest):
         proj = org.add_project("Default-project")
 
         await steps.main_page.ui_click_proj_button_top_pane()
-        await steps.no_proj_popup.verify_ui_no_proj_popup_displayed(org.org_name)
+        await steps.no_proj_popup.verify_ui_popup_displayed(org.org_name)
 
         await steps.no_proj_popup.ui_click_create_new_proj_button()
 
-        await steps.create_proj_popup.verify_ui_create_proj_popup_displayed(
-            org.org_name
-        )
+        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
 
         await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
         await steps.create_proj_popup.ui_select_role("Reader")
         await steps.create_proj_popup.ui_click_create_button()
 
-        await steps.apps_page.verify_ui_apps_page_displayed()
+        await steps.apps_page.verify_ui_page_displayed()
 
         await steps.main_page.ui_click_proj_button_top_pane()
-        await steps.proj_info_popup.verify_ui_projects_info_popup_displayed(
+        await steps.proj_info_popup.verify_ui_popup_displayed(
             proj_name=proj.project_name
         )
 
@@ -88,25 +84,23 @@ class TestUIProjectStructureSetup(BaseUITest):
         )
 
         await steps.main_page.ui_click_proj_button_top_pane()
-        await steps.proj_info_popup.verify_ui_projects_info_popup_displayed(
+        await steps.proj_info_popup.verify_ui_popup_displayed(
             proj_name=proj1.project_name
         )
 
         proj2 = org.add_project("Project2")
         await steps.proj_info_popup.ui_click_create_new_proj_button()
 
-        await steps.create_proj_popup.verify_ui_create_proj_popup_displayed(
-            org.org_name
-        )
+        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
 
         await steps.create_proj_popup.ui_enter_proj_name(proj2.project_name)
         await steps.create_proj_popup.ui_select_role("Reader")
         await steps.create_proj_popup.ui_click_create_button()
 
-        await steps.apps_page.verify_ui_apps_page_displayed()
+        await steps.apps_page.verify_ui_page_displayed()
 
         await steps.main_page.ui_click_proj_button_top_pane()
-        await steps.proj_info_popup.verify_ui_projects_info_popup_displayed(
+        await steps.proj_info_popup.verify_ui_popup_displayed(
             proj_name=proj2.project_name
         )
         await steps.proj_info_popup.verify_ui_other_proj_displayed_in_info(
@@ -129,8 +123,7 @@ class TestUIProjectStructureSetup(BaseUITest):
 
         add_steps = await self.init_test_steps()
         self.log("User2 login")
-        add_user = self._users_manager.second_user
-        await add_steps.ui_login(add_user.email, add_user.password)
+        add_user = await add_steps.ui_signup_new_user_ver_link()
 
         self.log("User1 invite User2 to organization")
         await steps.ui_invite_user_to_org(
@@ -139,26 +132,24 @@ class TestUIProjectStructureSetup(BaseUITest):
 
         self.log("User 2 accept invite to organization")
         await add_steps.ui_reload_page()
-        await add_steps.welcome_new_user_page.ui_click_welcome_lets_do_it_button()
-        await add_steps.invited_to_org_page.verify_ui_invite_to_org_page_displayed(
+        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await add_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "user"
         )
         await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
         await add_steps.main_page.verify_ui_create_project_message_displayed(
-            org.gherkin_name
+            org.org_name
         )
         await add_steps.main_page.verify_ui_create_project_button_displayed()
 
         self.log(f"User1 invite User2 to project {proj1.project_name}")
         await steps.main_page.ui_click_proj_button_top_pane()
         await steps.proj_info_popup.ui_click_people_btn_proj_info_popup()
-        await steps.proj_people_page.verify_ui_proj_people_page_displayed()
+        await steps.proj_people_page.verify_ui_page_displayed()
 
         await steps.proj_people_page.ui_click_invite_people_proj_people_btn()
-        await (
-            steps.invite_proj_member_popup.verify_ui_invite_proj_member_popup_displayed(
-                org_name=org.org_name, proj_name=proj1.project_name
-            )
+        await steps.invite_proj_member_popup.verify_ui_popup_displayed(
+            org_name=org.org_name, proj_name=proj1.project_name
         )
 
         await steps.invite_proj_member_popup.ui_enter_user_data(email=add_user.email)
@@ -174,7 +165,7 @@ class TestUIProjectStructureSetup(BaseUITest):
         await steps.invite_proj_member_popup.verify_ui_invite_bth_enabled()
 
         await steps.invite_proj_member_popup.ui_click_invite_btn()
-        await steps.proj_people_page.verify_ui_proj_people_page_displayed()
+        await steps.proj_people_page.verify_ui_page_displayed()
         await steps.proj_people_page.verify_ui_user_displayed_in_users_list(
             username=add_user.username
         )
@@ -185,11 +176,11 @@ class TestUIProjectStructureSetup(BaseUITest):
             username=add_user.username, email=add_user.email
         )
 
-        await steps.ui_reload_page()
-        await add_steps.apps_page.verify_ui_apps_page_displayed()
+        await add_steps.ui_reload_page()
+        await add_steps.apps_page.verify_ui_page_displayed()
 
         await add_steps.main_page.ui_click_proj_button_top_pane()
-        await add_steps.proj_info_popup.verify_ui_projects_info_popup_displayed(
+        await add_steps.proj_info_popup.verify_ui_popup_displayed(
             proj_name=proj1.project_name
         )
 
@@ -210,19 +201,16 @@ class TestUIProjectStructureSetup(BaseUITest):
         self.log(f"User1 invite User2 to project {proj1.project_name}")
         await steps.main_page.ui_click_proj_button_top_pane()
         await steps.proj_info_popup.ui_click_people_btn_proj_info_popup()
-        await steps.proj_people_page.verify_ui_proj_people_page_displayed()
+        await steps.proj_people_page.verify_ui_page_displayed()
 
         await steps.proj_people_page.ui_click_invite_people_proj_people_btn()
-        await (
-            steps.invite_proj_member_popup.verify_ui_invite_proj_member_popup_displayed(
-                org_name=org.org_name, proj_name=proj1.project_name
-            )
+        await steps.invite_proj_member_popup.verify_ui_popup_displayed(
+            org_name=org.org_name, proj_name=proj1.project_name
         )
 
         add_steps = await self.init_test_steps()
         self.log("User2 login")
-        add_user = self._users_manager.second_user
-        await add_steps.ui_login(add_user.email, add_user.password)
+        add_user = await add_steps.ui_signup_new_user_ver_link()
         self.log("User2 password new user onboarding and create organization")
         await add_steps.ui_pass_new_user_onboarding(gherkin_name="new-organization")
 
@@ -249,13 +237,11 @@ class TestUIProjectStructureSetup(BaseUITest):
         self.log(f"User1 invite User2 to project {proj1.project_name}")
         await steps.main_page.ui_click_proj_button_top_pane()
         await steps.proj_info_popup.ui_click_people_btn_proj_info_popup()
-        await steps.proj_people_page.verify_ui_proj_people_page_displayed()
+        await steps.proj_people_page.verify_ui_page_displayed()
 
         await steps.proj_people_page.ui_click_invite_people_proj_people_btn()
-        await (
-            steps.invite_proj_member_popup.verify_ui_invite_proj_member_popup_displayed(
-                org_name=org.org_name, proj_name=proj1.project_name
-            )
+        await steps.invite_proj_member_popup.verify_ui_popup_displayed(
+            org_name=org.org_name, proj_name=proj1.project_name
         )
 
         add_user = self._users_manager.generate_user()

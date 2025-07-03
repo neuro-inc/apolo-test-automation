@@ -10,7 +10,7 @@ class NoProjPopupSteps:
         self._pm = page_manager
 
     @async_step("Verify No project popup displayed")
-    async def verify_ui_no_proj_popup_displayed(self, org_name: str) -> None:
+    async def verify_ui_popup_displayed(self, org_name: str) -> None:
         assert await self._pm.no_proj_popup.is_loaded(org_name=org_name), (
             "No project popup should be displayed!"
         )

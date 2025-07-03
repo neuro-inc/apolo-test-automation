@@ -10,7 +10,7 @@ class ProjPeoplePageSteps:
         self._pm = page_manager
 
     @async_step("Verify People page displayed")
-    async def verify_ui_proj_people_page_displayed(self) -> None:
+    async def verify_ui_page_displayed(self) -> None:
         assert await self._pm.project_people_page.is_loaded(), (
             "Project people page should be displayed!"
         )

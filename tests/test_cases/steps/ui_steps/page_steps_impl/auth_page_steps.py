@@ -14,7 +14,7 @@ class AuthPageSteps:
         await self._pm.auth_page.click_sign_up_button()
 
     @async_step("Verify that Auth page displayed")
-    async def verify_ui_auth_page_displayed(self) -> None:
+    async def verify_ui_page_displayed(self) -> None:
         assert await self._pm.auth_page.is_loaded(), "Auth page should be displayed!"
 
     @async_step("Click login button")

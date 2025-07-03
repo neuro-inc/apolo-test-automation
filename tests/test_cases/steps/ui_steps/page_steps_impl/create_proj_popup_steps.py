@@ -10,7 +10,7 @@ class CreateProjPopupSteps:
         self._pm = page_manager
 
     @async_step("Verify Create project popup displayed")
-    async def verify_ui_create_proj_popup_displayed(self, org_name: str) -> None:
+    async def verify_ui_popup_displayed(self, org_name: str) -> None:
         assert await self._pm.create_proj_popup.is_loaded(org_name=org_name), (
             "Create project popup should be displayed!"
         )
@@ -26,6 +26,7 @@ class CreateProjPopupSteps:
     @async_step("Click Create button")
     async def ui_click_create_button(self) -> None:
         await self._pm.create_proj_popup.click_create_button()
+        await self._pm.page.wait_for_timeout(500)
 
     @async_step("Click project default checkbox")
     async def ui_click_make_default_checkbox(self) -> None:
