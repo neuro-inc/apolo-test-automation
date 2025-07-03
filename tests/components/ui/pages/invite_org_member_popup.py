@@ -66,6 +66,7 @@ class InviteOrgMemberPopup(BasePage):
 
     async def click_invite_user_button(self, email: str) -> None:
         self.log(f"Click Invite user {email}")
+        await self.page.wait_for_timeout(300)
         await self._get_invite_user_button(email).click()
 
     def _get_cancel_button(self) -> BaseElement:

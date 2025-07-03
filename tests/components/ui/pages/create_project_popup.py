@@ -15,7 +15,7 @@ class CreateProjectPopup(BasePage):
         self.log("Check if page loaded")
         org_name = kwargs.get("org_name")
         if not isinstance(org_name, str):
-            raise ValueError("Expected 'org_na,e' to be a non-empty string in kwargs")
+            raise ValueError("Expected 'org_name' to be a non-empty string in kwargs")
 
         return (
             await self._get_create_proj_title().expect_to_be_loaded()
@@ -72,3 +72,4 @@ class CreateProjectPopup(BasePage):
     async def click_create_button(self) -> None:
         self.log("Click create button")
         await self._get_create_button().click()
+        await self.page.wait_for_timeout(300)

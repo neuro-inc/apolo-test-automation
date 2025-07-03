@@ -23,6 +23,8 @@ class UsersManager:
     def __init__(self) -> None:
         self._users: list[UserData] = []
         self._default_user: Optional[UserData] = None
+        self._second_user: Optional[UserData] = None
+        self._third_user: Optional[UserData] = None
 
     def _generate_email(self) -> str:
         suffix = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
@@ -67,3 +69,25 @@ class UsersManager:
     def default_user(self, user: UserData) -> None:
         logger.info(f"Setting default user to {user}")
         self._default_user = user
+
+    @property
+    def second_user(self) -> UserData:
+        if self._second_user is None:
+            raise ValueError("Second user is not set.")
+        return self._second_user
+
+    @second_user.setter
+    def second_user(self, user: UserData) -> None:
+        logger.info(f"Setting second user to {user}")
+        self._second_user = user
+
+    @property
+    def third_user(self) -> UserData:
+        if self._third_user is None:
+            raise ValueError("Third user is not set.")
+        return self._third_user
+
+    @third_user.setter
+    def third_user(self, user: UserData) -> None:
+        logger.info(f"Setting third user to {user}")
+        self._third_user = user

@@ -27,14 +27,27 @@ class UICommonSteps:
         await self._pm.page.reload()
 
     @async_step("Login via UI")
-    async def ui_login(self, email: str, password: str) -> None:
-        await self._pm.auth_page.click_log_in_button()
-        await self._pm.login_page.login(email, password)
-        assert await self._pm.welcome_new_user_page.is_loaded(email=email), (
-            "Welcome new user page should be displayed!"
-        )
-        token = await extract_access_token_from_local_storage(self._pm.login_page.page)
-        self._test_config.token = token
+    async def ui_login(self, email: str, password: str, admin: bool = False) -> None:
+        if admin:
+            await self._pm.auth_page.click_log_in_button()
+            await self._pm.login_page.login(email, password)
+            assert await self._pm.main_page.is_loaded(email=email), (
+                "Main page should be displayed!"
+            )
+            token = await extract_access_token_from_local_storage(
+                self._pm.login_page.page
+            )
+            self._test_config.cleanup_token = token
+        else:
+            await self._pm.auth_page.click_log_in_button()
+            await self._pm.login_page.login(email, password)
+            assert await self._pm.welcome_new_user_page.is_loaded(email=email), (
+                "Welcome new user page should be displayed!"
+            )
+            token = await extract_access_token_from_local_storage(
+                self._pm.login_page.page
+            )
+            self._test_config.token = token
 
     # ********************   Onboarding steps   ****************************
 
@@ -59,9 +72,9 @@ class UICommonSteps:
     async def ui_click_welcome_page_lets_do_it_button(self) -> None:
         await self._pm.welcome_new_user_page.click_lets_do_it_button()
 
-    @async_step("Click Create organization button on a join organization page")
-    async def ui_click_create_org_button(self) -> None:
-        await self._pm.join_organization_page.click_create_organization_button()
+    # @async_step("Click Create organization button on a join organization page")
+    # async def ui_click_create_org_button(self) -> None:
+    #     await self._pm.join_organization_page.click_create_organization_button()
 
     @async_step("Enter organization name")
     async def ui_enter_organization_name(self, org_name: str) -> None:
@@ -162,6 +175,64 @@ class UICommonSteps:
             email=add_user_email
         )
         await self._pm.invite_org_member_popup.click_send_invite_button()
+
+    # ********************   Accept invite to organization steps   ****************************
+    @async_step("Accept invite to organization via UI")
+    async def ui_accept_invite_to_org(
+        self, org_name: str, email: str, role: str
+    ) -> None:
+        await self.verify_ui_invite_to_org_displayed(org_name=org_name)
+
+        await self.ui_click_invite_to_org_button(org_name=org_name)
+        await self.verify_ui_invite_org_info_displayed(org_name=org_name)
+        await self.verify_ui_invite_to_org_role_is_valid(org_name=org_name, role=role)
+
+        await self.ui_click_accept_invite_to_org(org_name=org_name)
+        await self.ui_click_organization_settings_button(email=email)
+        await self.verify_ui_select_org_button_displayed(org_name=org_name)
+
+        await self.ui_reload_page()
+
+    @async_step("Verify that invitation to organization displayed on the left pane")
+    async def verify_ui_invite_to_org_displayed(self, org_name: str) -> None:
+        assert await self._pm.main_page.is_invite_to_org_button_displayed(
+            org_name=org_name
+        ), f"Invitation button to organization {org_name} should be displayed!"
+
+    @async_step("Click invite to organization button on the left pane")
+    async def ui_click_invite_to_org_button(self, org_name: str) -> None:
+        await self._pm.main_page.click_invite_to_org_button(org_name=org_name)
+
+    @async_step("Verify invite to organization info displayed on the main page")
+    async def verify_ui_invite_org_info_displayed(self, org_name: str) -> None:
+        await self._pm.main_page.is_invite_to_org_row_displayed(org_name=org_name)
+
+    @async_step("Verify invite to organization role is valid")
+    async def verify_ui_invite_to_org_role_is_valid(
+        self, org_name: str, role: str
+    ) -> None:
+        value = await self._pm.main_page.get_invite_to_org_role(org_name=org_name)
+        assert value.lower() == role.lower(), (
+            f"Wrong user role in invite to the organization {org_name}"
+        )
+
+    @async_step("Click Accept button for invitation to the organization")
+    async def ui_click_accept_invite_to_org(self, org_name: str) -> None:
+        await self._pm.main_page.click_accept_invite_to_org(org_name=org_name)
+
+    @async_step("Click User Organization settings button")
+    async def ui_click_organization_settings_button(self, email: str) -> None:
+        await self._pm.main_page.click_organization_settings_button(email)
+
+    @async_step(
+        "Verify that Organization select button is displayed in organization settings popup"
+    )
+    async def verify_ui_select_org_button_displayed(self, org_name: str) -> None:
+        assert (
+            await self._pm.organization_settings_popup.is_select_org_button_displayed(
+                org_name=org_name
+            )
+        ), f"Select organization {org_name} button should be displayed!"
 
     # ********************   Create project steps   ****************************
     @async_step("Create first project from main page")
