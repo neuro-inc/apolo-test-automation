@@ -5,8 +5,8 @@ from tests.reporting_hooks.reporting import async_step, async_suite, async_title
 from tests.test_cases.steps.common_steps.cli_steps.cli_common_steps import (
     CLICommonSteps,
 )
-from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
+from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.utils.api_helper import APIHelper
 from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.cli.apolo_cli import ApoloCLI
@@ -35,7 +35,7 @@ class TestHelloWorldJob:
         self._test_config = test_config
         self._users_manager = users_manager
         self._api_helper = api_helper
-        self.ui_common_steps = UICommonSteps(
+        self.ui_steps = UISteps(
             self._pm,
             self._test_config,
             self._data_manager,
@@ -53,8 +53,8 @@ class TestHelloWorldJob:
 
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
-        await self.ui_common_steps.ui_login(self._email, self._password)
-        await self.ui_common_steps.ui_pass_new_user_onboarding("default")
+        await self.ui_steps.ui_login(self._email, self._password)
+        await self.ui_steps.ui_pass_new_user_onboarding("default")
         await self.cli_common_steps.cli_login_with_token()
         await asyncio.sleep(2)
         await self.create_project("my-project")

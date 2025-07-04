@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Awaitable, Callable
-from typing import Any
 
 import pytest
 
 from tests.components.ui.page_manager import PageManager
-from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.test_data_management.users_manager import UsersManager
@@ -78,31 +77,10 @@ class BaseUITest:
         formatted_message = f"{':' * 15} {message}"
         self.logger.log(level, formatted_message)
 
-    async def init_test_steps(
-        self,
-        steps_class: type[Any],
-    ) -> tuple[Any, UICommonSteps]:
-        """
-        Return a tuple (custom_steps, ui_common_steps) bound to the same PageManager.
-
-        Parameters
-        ----------
-        steps_class : type
-            A class to instantiate test steps, e.g. UISignupSteps.
-
-        Returns
-        -------
-        tuple
-            A tuple: (instance of steps_class, instance of UICommonSteps).
-
-        Example
-        -------
-        steps1, ui1 = await self.init_test_steps(UISignupSteps)  # uses self._pm
-        steps2, ui2 = await self.init_test_steps(UISignupSteps)  # uses a new context
-        """
+    async def init_test_steps(self) -> UISteps:
         pm = await self._pick_pm()
 
-        steps_obj = steps_class(
+        steps = UISteps(
             pm,
             self._test_config,
             self._data_manager,
@@ -110,12 +88,4 @@ class BaseUITest:
             self._api_helper,
         )
 
-        ui_common = UICommonSteps(
-            pm,
-            self._test_config,
-            self._data_manager,
-            self._users_manager,
-            self._api_helper,
-        )
-
-        return steps_obj, ui_common
+        return steps

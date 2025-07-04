@@ -53,7 +53,7 @@ class MainPage(BasePage):
     # ******************************  LEFT PANE  **************************************************
 
     def _get_apps_button(self) -> BaseElement:
-        return BaseElement(self.page, 'a[href="/apps"]')
+        return BaseElement(self.page, 'a[href^="/apps?"]', has_text="Apps")
 
     async def click_apps_button(self) -> None:
         self.log("Click apps button")

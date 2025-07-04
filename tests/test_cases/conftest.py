@@ -14,7 +14,7 @@ from allure_commons.types import AttachmentType
 from playwright.async_api import async_playwright, Browser, BrowserContext
 
 from tests.components.ui.page_manager import PageManager
-from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
+from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.utils.api_helper import APIHelper
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.exception_handling.exception_manager import ExceptionManager
@@ -55,9 +55,7 @@ async def signup_default_user(
     logger.info("Signup default user...")
     pm = await _create_page_manager(test_config, request)
 
-    ui_common_steps = UICommonSteps(
-        pm, test_config, data_manager, users_manager, api_helper
-    )
+    ui_common_steps = UISteps(pm, test_config, data_manager, users_manager, api_helper)
     try:
         await ui_common_steps.ui_signup_new_user_ver_link()
     except Exception as e:

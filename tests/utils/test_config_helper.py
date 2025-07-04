@@ -33,6 +33,7 @@ class ConfigManager:
         self._config: DictConfig | ListConfig = config
         self._context: Optional[BrowserContext] = None
         self._token: Optional[str] = None
+        self._clean_up_token: Optional[str] = None
 
     @property
     def context(self) -> BrowserContext:
@@ -54,6 +55,17 @@ class ConfigManager:
     def token(self, value: str) -> None:
         if not self._token:
             self._token = value
+
+    @property
+    def cleanup_token(self) -> str:
+        if self._clean_up_token is None:
+            raise ValueError("Clean up token has not been set.")
+        return self._clean_up_token
+
+    @cleanup_token.setter
+    def cleanup_token(self, value: str) -> None:
+        if not self._clean_up_token:
+            self._clean_up_token = value
 
     @property
     def env(self) -> str:
