@@ -107,3 +107,37 @@ class BaseElement:
 
     async def wait_for_selector(self, timeout: Optional[int] = None) -> None:
         await self.page.wait_for_selector(self.selector, timeout=timeout)
+
+    async def wait_until_clickable(
+        self, timeout: int = 5000, interval: int = 500
+    ) -> bool:
+        """
+        Wait until the element is fully interactable:
+        - attached to DOM
+        - visible
+        - enabled
+        - pointer-events is not 'none'
+
+        Returns
+        -------
+        bool
+            True if element became clickable within timeout, otherwise False.
+        """
+        elapsed = 0
+        while elapsed < timeout:
+            try:
+                await self.locator.wait_for(state="attached", timeout=interval)
+                await expect(self.locator).to_be_visible(timeout=interval)
+                await expect(self.locator).to_be_enabled(timeout=interval)
+                pointer_events = await self.locator.evaluate(
+                    "el => getComputedStyle(el).pointerEvents"
+                )
+                if pointer_events != "none":
+                    return True
+            except Exception:
+                pass
+
+            await self.page.wait_for_timeout(interval)
+            elapsed += interval
+
+        return False

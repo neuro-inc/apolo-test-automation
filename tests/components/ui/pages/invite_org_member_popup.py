@@ -65,7 +65,7 @@ class InviteOrgMemberPopup(BasePage):
 
     async def is_invite_user_displayed(self, email: str) -> bool:
         self.log(f"Check if Invite user {email} button displayed")
-        return await self._get_invite_user_button(email).is_visible()
+        return await self._get_invite_user_button(email).wait_until_clickable()
 
     async def click_invite_user_button(self, email: str) -> None:
         self.log(f"Click Invite user {email}")
