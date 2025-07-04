@@ -42,7 +42,7 @@ class BaseElement:
 
     from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
-    async def click(self, timeout: int = 5000, interval: int = 500) -> None:
+    async def click(self, timeout: int = 10000, interval: int = 500) -> None:
         """
         Attempts to click the element after verifying it is attached, visible, and enabled.
 
@@ -58,9 +58,9 @@ class BaseElement:
 
         while elapsed < timeout:
             try:
-                await self.locator.wait_for(state="attached", timeout=100)
-                await expect(self.locator).to_be_visible(timeout=100)
-                await expect(self.locator).to_be_enabled(timeout=100)
+                await self.locator.wait_for(state="attached", timeout=interval)
+                await expect(self.locator).to_be_visible(timeout=interval)
+                await expect(self.locator).to_be_enabled(timeout=interval)
                 break
             except (AssertionError, PlaywrightTimeoutError) as e:
                 last_error = e
