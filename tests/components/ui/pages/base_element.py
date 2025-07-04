@@ -49,7 +49,7 @@ class BaseElement:
         Parameters
         ----------
         timeout : int
-            Max total wait time in milliseconds (default: 5000).
+            Max total wait time in milliseconds (default: 10000).
         interval : int
             Wait interval between checks in milliseconds (default: 500).
         """
@@ -58,10 +58,18 @@ class BaseElement:
 
         while elapsed < timeout:
             try:
+                # Re-resolve locator to avoid stale references
+                self.locator = self.page.locator(self.selector)
+
                 await self.locator.wait_for(state="attached", timeout=interval)
                 await expect(self.locator).to_be_visible(timeout=interval)
                 await expect(self.locator).to_be_enabled(timeout=interval)
-                break
+
+                pointer_events = await self.locator.evaluate(
+                    "el => getComputedStyle(el).pointerEvents"
+                )
+                if pointer_events != "none":
+                    break
             except (AssertionError, PlaywrightTimeoutError) as e:
                 last_error = e
                 await self.page.wait_for_timeout(interval)
