@@ -15,7 +15,7 @@ class AppsPage(BasePage):
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page loaded")
-        return await self._get_all_apps_btn().expect_to_be_loaded()
+        return await self._get_all_apps_btn().is_visible()
 
     def _get_all_apps_btn(self) -> BaseElement:
         return BaseElement(self.page, "a", has_text="All apps")

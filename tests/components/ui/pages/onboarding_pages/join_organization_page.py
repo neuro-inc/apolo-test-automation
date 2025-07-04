@@ -44,3 +44,4 @@ class JoinOrganizationPage(BasePage):
     async def click_create_organization_button(self) -> None:
         self.log("Click create organization button")
         await self._create_organization_button.click()
+        await self.page.wait_for_timeout(500)

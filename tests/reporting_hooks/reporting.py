@@ -77,11 +77,17 @@ def async_title(title_name: str) -> Callable[[ReportFunc], ReportFunc]:
     return decorator
 
 
-def async_suite(suite_name: str) -> Callable[[type[Any]], type[Any]]:
+def async_suite(
+    suite_name: str, parent: str | None = None
+) -> Callable[[type[Any]], type[Any]]:
     def decorator(cls: type[Any]) -> type[Any]:
         cls.__allure_suite__ = suite_name
         setattr(cls, "__suite_name__", suite_name)
         cls = allure.suite(suite_name)(cls)  # type: ignore[no-untyped-call]
+
+        if parent:
+            setattr(cls, "__allure_parent_suite__", parent)
+            cls = allure.parent_suite(parent)(cls)  # type: ignore[no-untyped-call]
 
         suite_logged = {"started": False}
         test_count = sum(1 for a in dir(cls) if a.startswith("test_"))

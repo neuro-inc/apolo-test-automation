@@ -1,7 +1,6 @@
 import pytest
 
 from tests.reporting_hooks.reporting import async_step, async_suite, async_title
-from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
 from tests.utils.api_helper import APIHelper
 from tests.utils.test_config_helper import ConfigManager
@@ -9,7 +8,7 @@ from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.test_data_management.users_manager import UsersManager
 
 
-@async_suite("UI Login")
+@async_suite("UI Login", parent="UI Tests")
 class TestUILogin:
     @pytest.fixture(autouse=True)
     async def setup(
@@ -28,13 +27,6 @@ class TestUILogin:
         self._test_config = test_config
         self._users_manager = users_manager
         self._api_helper = api_helper
-        self.ui_common_steps = UICommonSteps(
-            self._pm,
-            self._test_config,
-            self._data_manager,
-            self._users_manager,
-            self._api_helper,
-        )
 
         self._email = self._users_manager.default_user.email
         self._password = self._users_manager.default_user.password

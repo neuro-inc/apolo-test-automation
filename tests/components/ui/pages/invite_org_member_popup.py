@@ -1,4 +1,3 @@
-import re
 from typing import Any, cast
 from playwright.async_api import Page
 from tests.components.ui.pages.base_element import BaseElement
@@ -43,9 +42,12 @@ class InviteOrgMemberPopup(BasePage):
             self.page, 'select:has-text("User"):has-text("Manager"):has-text("Admin")'
         )
 
-    async def select_user_role(self) -> None:
-        self.log("Select user role")
-        await self._get_user_role_dropdown().select_option("user")
+    async def select_user_role(self, role: str) -> None:
+        roles = ("user", "manager", "admin")
+        if role.lower() not in roles:
+            raise ValueError(f"Expected role {role} to be in {roles}")
+        self.log(f"Select {role} role")
+        await self._get_user_role_dropdown().select_option(role.lower())
 
     async def select_manager_role(self) -> None:
         self.log("Select manager role")
@@ -56,13 +58,11 @@ class InviteOrgMemberPopup(BasePage):
         await self._get_user_role_dropdown().select_option("admin")
 
     def _get_invite_user_button(self, email: str) -> BaseElement:
-        return BaseElement(
-            self.page, by_role="button", name=re.compile(rf"Invite user.*{email}")
-        )
+        return BaseElement(self.page, f'button:has(p:text("{email}"))')
 
     async def is_invite_user_displayed(self, email: str) -> bool:
         self.log(f"Check if Invite user {email} button displayed")
-        return await self._get_invite_user_button(email).is_visible()
+        return await self._get_invite_user_button(email).wait_until_clickable()
 
     async def click_invite_user_button(self, email: str) -> None:
         self.log(f"Click Invite user {email}")
@@ -85,3 +85,4 @@ class InviteOrgMemberPopup(BasePage):
     async def click_send_invite_button(self) -> None:
         self.log("Click Send invite button")
         await self._get_send_invite_button().click()
+        await self.page.wait_for_timeout(500)

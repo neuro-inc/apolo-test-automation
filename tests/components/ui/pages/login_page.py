@@ -36,6 +36,7 @@ class LoginPage(BasePage):
         await self.enter_email(email)
         await self.enter_password(password)
         await self.click_continue_button()
+        await self.page.wait_for_timeout(300)
 
     async def click_continue_button(self) -> None:
         self.log("Click continue button")

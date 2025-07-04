@@ -4,8 +4,8 @@ from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.common_steps.cli_steps.cli_common_steps import (
     CLICommonSteps,
 )
-from tests.test_cases.steps.common_steps.ui_steps.ui_common_steps import UICommonSteps
 from tests.components.ui.page_manager import PageManager
+from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.utils.api_helper import APIHelper
 from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.cli.apolo_cli import ApoloCLI
@@ -34,7 +34,7 @@ class TestCLIOrganizationStructureSetup:
         self._test_config = test_config
         self._users_manager = users_manager
         self._api_helper = api_helper
-        self.ui_common_steps = UICommonSteps(
+        self.ui_steps = UISteps(
             self._page_manager,
             self._test_config,
             self._data_manager,
@@ -48,7 +48,7 @@ class TestCLIOrganizationStructureSetup:
         email = self._users_manager.default_user.email
         password = self._users_manager.default_user.password
         # Login via UI to get access token
-        await self.ui_common_steps.ui_login(email, password)
+        await self.ui_steps.ui_login(email, password)
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 
