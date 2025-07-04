@@ -35,6 +35,10 @@ class OrganizationSettingsPopup(BasePage):
     def _get_settings_button(self) -> BaseElement:
         return BaseElement(self.page, "a", has_text="Settings")
 
+    async def is_settings_btn_displayed(self) -> bool:
+        self.log("Check if settings button displayed")
+        return await self._get_settings_button().is_visible()
+
     async def click_settings_button(self) -> None:
         self.log("Click settings button")
         await self._get_settings_button().click()
@@ -48,6 +52,10 @@ class OrganizationSettingsPopup(BasePage):
 
     def _get_billing_button(self) -> BaseElement:
         return BaseElement(self.page, "a", has_text="Billing")
+
+    async def is_billing_btn_displayed(self) -> bool:
+        self.log("Check if billing button displayed")
+        return await self._get_billing_button().is_visible()
 
     async def click_billing_button(self) -> None:
         self.log("Click Billing button")

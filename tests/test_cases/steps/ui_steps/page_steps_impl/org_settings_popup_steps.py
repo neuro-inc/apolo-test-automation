@@ -28,3 +28,43 @@ class OrgSettingsPopupSteps:
                 org_name=org_name
             )
         ), f"Select organization {org_name} button should be displayed!"
+
+    @async_step(
+        "Verify that Settings button is not displayed in organization settings popup"
+    )
+    async def verify_ui_settings_btn_not_displayed(self) -> None:
+        assert (
+            not await self._pm.organization_settings_popup.is_settings_btn_displayed()
+        ), "Settings button should not be displayed!"
+
+    @async_step(
+        "Verify that Settings button is displayed in organization settings popup"
+    )
+    async def verify_ui_settings_btn_displayed(self) -> None:
+        assert await self._pm.organization_settings_popup.is_settings_btn_displayed(), (
+            "Settings button should be displayed!"
+        )
+
+    @async_step("Click Settings button")
+    async def ui_click_settings_btn(self) -> None:
+        await self._pm.organization_settings_popup.click_settings_button()
+
+    @async_step(
+        "Verify that Billing button is not displayed in organization settings popup"
+    )
+    async def verify_ui_billing_btn_not_displayed(self) -> None:
+        assert (
+            not await self._pm.organization_settings_popup.is_billing_btn_displayed()
+        ), "Billing button should not be displayed!"
+
+    @async_step(
+        "Verify that Billing button is displayed in organization settings popup"
+    )
+    async def verify_ui_billing_btn_displayed(self) -> None:
+        assert await self._pm.organization_settings_popup.is_billing_btn_displayed(), (
+            "Billing button should be displayed!"
+        )
+
+    @async_step("Click Billing button")
+    async def ui_click_billing_btn(self) -> None:
+        await self._pm.organization_settings_popup.click_billing_button()

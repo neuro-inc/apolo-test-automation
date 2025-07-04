@@ -3,6 +3,7 @@ from playwright.async_api import Page
 from tests.components.ui.pages.apps_page import AppsPage
 from tests.components.ui.pages.auth_page import AuthPage
 from tests.components.ui.pages.create_project_popup import CreateProjectPopup
+from tests.components.ui.pages.edit_org_user_popup import EditOrgUserPopup
 from tests.components.ui.pages.invite_org_member_popup import InviteOrgMemberPopup
 from tests.components.ui.pages.invite_project_memeber_popup import InviteProjMemberPopup
 from tests.components.ui.pages.jobs_page import JobsPage
@@ -22,12 +23,17 @@ from tests.components.ui.pages.onboarding_pages.thats_it_page import ThatsItPage
 from tests.components.ui.pages.onboarding_pages.welcome_new_user_page import (
     WelcomeNewUserPage,
 )
+from tests.components.ui.pages.organization_billing_page import OrganizationBillingPage
 from tests.components.ui.pages.organization_people_page import OrganizationPeoplePage
+from tests.components.ui.pages.organization_settings_page import (
+    OrganizationSettingsPage,
+)
 from tests.components.ui.pages.organization_settings_popup import (
     OrganizationSettingsPopup,
 )
 from tests.components.ui.pages.project_people_page import ProjectPeoplePage
 from tests.components.ui.pages.projects_info_popup import ProjectsInfoPopup
+from tests.components.ui.pages.remove_org_user_popup import RemoveOrgUserPopup
 from tests.components.ui.pages.signup_page import SignupPage
 from tests.components.ui.pages.signup_username_page import SignupUsernamePage
 
@@ -59,3 +65,7 @@ class PageManager:
         self.projects_info_popup = ProjectsInfoPopup(page)
         self.project_people_page = ProjectPeoplePage(page)
         self.invite_proj_member_popup = InviteProjMemberPopup(page)
+        self.organization_settings_page = OrganizationSettingsPage(page)
+        self.organization_billing_page = OrganizationBillingPage(page)
+        self.edit_org_user_popup = EditOrgUserPopup(page)
+        self.remove_org_user_popup = RemoveOrgUserPopup(page)

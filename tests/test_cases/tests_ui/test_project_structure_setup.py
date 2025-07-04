@@ -5,7 +5,7 @@ from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.test_cases.tests_ui.base_ui_test import BaseUITest
 
 
-@async_suite("UI Project Structure Setup")
+@async_suite("UI Project Structure Setup", parent="UI Tests")
 class TestUIProjectStructureSetup(BaseUITest):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:

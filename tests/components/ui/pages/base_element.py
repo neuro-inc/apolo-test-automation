@@ -4,7 +4,6 @@ from playwright.async_api import Page, Locator, expect
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
 
-
 class BaseElement:
     def __init__(
         self,
@@ -38,25 +37,44 @@ class BaseElement:
         try:
             await expect(self.locator).to_be_visible(timeout=timeout)
             return True
-        except TimeoutError as e:
+        except TimeoutError:
             return False
 
-    async def click(self) -> None:
-        timeout = 1000
-        await self.locator.wait_for(state="attached", timeout=timeout)
-        await expect(self.locator).to_be_visible(timeout=timeout)
-        await expect(self.locator).to_be_enabled(timeout=timeout)
-        await self.page.wait_for_timeout(200)
+    from playwright.async_api import TimeoutError as PlaywrightTimeoutError
+
+    async def click(self, timeout: int = 5000, interval: int = 500) -> None:
+        """
+        Attempts to click the element after verifying it is attached, visible, and enabled.
+
+        Parameters
+        ----------
+        timeout : int
+            Max total wait time in milliseconds (default: 5000).
+        interval : int
+            Wait interval between checks in milliseconds (default: 500).
+        """
+        elapsed = 0
+        last_error = None
+
+        while elapsed < timeout:
+            try:
+                await self.locator.wait_for(state="attached", timeout=100)
+                await expect(self.locator).to_be_visible(timeout=100)
+                await expect(self.locator).to_be_enabled(timeout=100)
+                break
+            except (AssertionError, PlaywrightTimeoutError) as e:
+                last_error = e
+                await self.page.wait_for_timeout(interval)
+                elapsed += interval
+        else:
+            raise TimeoutError(
+                f"Element not ready for click after {timeout}ms: {self.locator}\nLast error: {last_error}"
+            )
+
         try:
             await self.locator.click()
-        except Exception:
-            # Fallback: click via bounding box
-            box = await self.locator.bounding_box()
-            if box:
-                await self.page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
-            else:
-                raise Exception("Element found but not clickable, and no bounding box available.")
-
+        except PlaywrightTimeoutError:
+            await self.locator.click(force=True)
 
     async def check(self) -> None:
         await self.locator.check()
@@ -67,12 +85,19 @@ class BaseElement:
     async def select_option(self, option_name: str) -> None:
         await self.locator.select_option(option_name)
 
-    async def is_visible(self) -> bool:
-        try:
-            await expect(self.locator).to_be_visible(timeout=3000)
-            return True
-        except AssertionError:
-            return False
+    async def is_visible(self, timeout: int = 5000, interval: int = 500) -> bool:
+        """
+        Repeatedly checks if element is visible until timeout is reached.
+        """
+        elapsed = 0
+        while elapsed < timeout:
+            try:
+                await expect(self.locator).to_be_visible(timeout=interval)
+                return True
+            except AssertionError:
+                await self.page.wait_for_timeout(interval)
+                elapsed += interval
+        return False
 
     async def is_enabled(self) -> bool:
         return await self.locator.is_enabled()

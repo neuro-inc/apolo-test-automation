@@ -26,7 +26,7 @@ class InvitedToOrgPage(BasePage):
         return (
             await self._page_title.expect_to_be_loaded()
             and await self._get_org_name_field(org_name).expect_to_be_loaded()
-            and await self._get_user_role_field(user_role).expect_to_be_loaded()
+            and await self._get_user_role_field(user_role.lower()).expect_to_be_loaded()
             and await self._get_accept_and_go_button().expect_to_be_loaded()
         )
 
@@ -46,3 +46,4 @@ class InvitedToOrgPage(BasePage):
     async def click_accept_and_go_button(self) -> None:
         self.log("Click accept and Go button")
         await self._get_accept_and_go_button().click()
+        await self.page.wait_for_timeout(500)

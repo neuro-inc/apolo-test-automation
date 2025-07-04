@@ -43,9 +43,12 @@ class InviteOrgMemberPopup(BasePage):
             self.page, 'select:has-text("User"):has-text("Manager"):has-text("Admin")'
         )
 
-    async def select_user_role(self) -> None:
-        self.log("Select user role")
-        await self._get_user_role_dropdown().select_option("user")
+    async def select_user_role(self, role: str) -> None:
+        roles = ("user", "manager", "admin")
+        if role.lower() not in roles:
+            raise ValueError(f"Expected role {role} to be in {roles}")
+        self.log(f"Select {role} role")
+        await self._get_user_role_dropdown().select_option(role.lower())
 
     async def select_manager_role(self) -> None:
         self.log("Select manager role")
@@ -66,7 +69,6 @@ class InviteOrgMemberPopup(BasePage):
 
     async def click_invite_user_button(self, email: str) -> None:
         self.log(f"Click Invite user {email}")
-        await self.page.wait_for_timeout(300)
         await self._get_invite_user_button(email).click()
 
     def _get_cancel_button(self) -> BaseElement:
@@ -86,3 +88,4 @@ class InviteOrgMemberPopup(BasePage):
     async def click_send_invite_button(self) -> None:
         self.log("Click Send invite button")
         await self._get_send_invite_button().click()
+        await self.page.wait_for_timeout(500)

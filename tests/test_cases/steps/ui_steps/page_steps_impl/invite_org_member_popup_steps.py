@@ -19,9 +19,9 @@ class InviteOrgMemberPopupSteps:
     async def ui_enter_invite_email(self, email: str) -> None:
         await self._pm.invite_org_member_popup.enter_user_data(email=email)
 
-    @async_step("Select 'User' role")
-    async def ui_select_user_role(self) -> None:
-        await self._pm.invite_org_member_popup.select_user_role()
+    @async_step("Select User role in organization")
+    async def ui_select_user_role(self, role: str) -> None:
+        await self._pm.invite_org_member_popup.select_user_role(role=role)
 
     @async_step("Verify that Invite user button appeared")
     async def verify_ui_invite_user_button_displayed(self, email: str) -> None:

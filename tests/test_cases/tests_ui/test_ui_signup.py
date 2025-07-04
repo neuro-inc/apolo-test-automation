@@ -7,7 +7,7 @@ from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.test_cases.tests_ui.base_ui_test import BaseUITest
 
 
-@async_suite("UI Signup")
+@async_suite("UI Signup", parent="UI Tests")
 class TestUISignup(BaseUITest):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
@@ -45,9 +45,9 @@ class TestUISignup(BaseUITest):
     @async_title("Invite not registered user as user to organization")
     async def test_invite_not_registered_user_to_org(self) -> None:
         steps = self._steps
-        add_steps = await self.init_test_steps()
+        u2_steps = await self.init_test_steps()
         user = self._users_manager.default_user
-        add_user = self._users_manager.generate_user()
+        second_user = self._users_manager.generate_user()
 
         self.log("User1 login")
         await steps.ui_login(user.email, user.password)
@@ -58,48 +58,48 @@ class TestUISignup(BaseUITest):
         )
 
         await steps.ui_invite_user_to_org(
-            email=user.email, username=user.username, add_user_email=add_user.email
+            email=user.email, username=user.username, add_user_email=second_user.email
         )
 
         await steps.org_people_page.verify_ui_user_displayed_in_users_list(
-            add_user.email
+            second_user.email
         )
         await steps.org_people_page.verify_ui_valid_user_role_displayed(
-            add_user.email, "user"
+            second_user.email, "user"
         )
         await steps.org_people_page.verify_ui_valid_user_status_displayed(
-            add_user.email, "Invited"
+            second_user.email, "Invited"
         )
 
-        await add_steps.auth_page.ui_click_signup_button()
-        await add_steps.signup_page.ui_enter_email(add_user.email)
-        await add_steps.signup_page.ui_enter_password(add_user.password)
-        await add_steps.signup_page.ui_click_continue_button()
-        await add_steps.activate_email_verification_link(add_user.email)
-        await add_steps.ui_open_product_base_page()
-        await add_steps.auth_page.verify_ui_page_displayed()
+        await u2_steps.auth_page.ui_click_signup_button()
+        await u2_steps.signup_page.ui_enter_email(second_user.email)
+        await u2_steps.signup_page.ui_enter_password(second_user.password)
+        await u2_steps.signup_page.ui_click_continue_button()
+        await u2_steps.activate_email_verification_link(second_user.email)
+        await u2_steps.ui_open_product_base_page()
+        await u2_steps.auth_page.verify_ui_page_displayed()
 
-        await add_steps.auth_page.ui_click_login_button()
-        await add_steps.signup_username_page.verify_ui_page_displayed()
+        await u2_steps.auth_page.ui_click_login_button()
+        await u2_steps.signup_username_page.verify_ui_page_displayed()
 
-        await add_steps.signup_username_page.ui_enter_username(add_user.username)
-        await add_steps.signup_username_page.ui_click_signup_button()
-        await add_steps.main_page.verify_ui_terms_of_agreement_displayed()
+        await u2_steps.signup_username_page.ui_enter_username(second_user.username)
+        await u2_steps.signup_username_page.ui_click_signup_button()
+        await u2_steps.main_page.verify_ui_terms_of_agreement_displayed()
 
-        await add_steps.main_page.ui_check_agreement_checkbox()
-        await add_steps.main_page.ui_click_i_agree_button()
-        await add_steps.welcome_new_user_page.verify_ui_page_displayed(add_user.email)
+        await u2_steps.main_page.ui_check_agreement_checkbox()
+        await u2_steps.main_page.ui_click_i_agree_button()
+        await u2_steps.welcome_new_user_page.verify_ui_page_displayed(second_user.email)
 
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "user"
         )
 
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
-        await add_steps.main_page.verify_ui_create_project_button_displayed()
+        await u2_steps.main_page.verify_ui_create_project_button_displayed()
 
     @async_title(
         "Invite not registered user to organization with default project via UI"
@@ -107,8 +107,8 @@ class TestUISignup(BaseUITest):
     async def test_invite_not_registered_user_to_org_with_default_proj(self) -> None:
         user = self._users_manager.default_user
         steps = self._steps
-        add_steps = await self.init_test_steps()
-        add_user = self._users_manager.generate_user()
+        u2_steps = await self.init_test_steps()
+        second_user = self._users_manager.generate_user()
 
         await steps.ui_login(
             email=user.email,
@@ -129,32 +129,32 @@ class TestUISignup(BaseUITest):
         )
 
         await steps.ui_invite_user_to_org(
-            email=user.email, username=user.username, add_user_email=add_user.email
+            email=user.email, username=user.username, add_user_email=second_user.email
         )
 
-        await add_steps.auth_page.ui_click_signup_button()
-        await add_steps.signup_page.ui_enter_email(add_user.email)
-        await add_steps.signup_page.ui_enter_password(add_user.password)
-        await add_steps.signup_page.ui_click_continue_button()
-        await add_steps.activate_email_verification_link(add_user.email)
-        await add_steps.ui_open_product_base_page()
-        await add_steps.auth_page.verify_ui_page_displayed()
+        await u2_steps.auth_page.ui_click_signup_button()
+        await u2_steps.signup_page.ui_enter_email(second_user.email)
+        await u2_steps.signup_page.ui_enter_password(second_user.password)
+        await u2_steps.signup_page.ui_click_continue_button()
+        await u2_steps.activate_email_verification_link(second_user.email)
+        await u2_steps.ui_open_product_base_page()
+        await u2_steps.auth_page.verify_ui_page_displayed()
 
-        await add_steps.auth_page.ui_click_login_button()
-        await add_steps.signup_username_page.verify_ui_page_displayed()
+        await u2_steps.auth_page.ui_click_login_button()
+        await u2_steps.signup_username_page.verify_ui_page_displayed()
 
-        await add_steps.signup_username_page.ui_enter_username(add_user.username)
-        await add_steps.signup_username_page.ui_click_signup_button()
-        await add_steps.main_page.verify_ui_terms_of_agreement_displayed()
+        await u2_steps.signup_username_page.ui_enter_username(second_user.username)
+        await u2_steps.signup_username_page.ui_click_signup_button()
+        await u2_steps.main_page.verify_ui_terms_of_agreement_displayed()
 
-        await add_steps.main_page.ui_check_agreement_checkbox()
-        await add_steps.main_page.ui_click_i_agree_button()
-        await add_steps.welcome_new_user_page.verify_ui_page_displayed(add_user.email)
+        await u2_steps.main_page.ui_check_agreement_checkbox()
+        await u2_steps.main_page.ui_click_i_agree_button()
+        await u2_steps.welcome_new_user_page.verify_ui_page_displayed(second_user.email)
 
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "user"
         )
 
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.apps_page.verify_ui_page_displayed()
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.apps_page.verify_ui_page_displayed()

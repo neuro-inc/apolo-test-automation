@@ -8,7 +8,7 @@ from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.test_data_management.users_manager import UsersManager
 
 
-@async_suite("UI Login")
+@async_suite("UI Login", parent="UI Tests")
 class TestUILogin:
     @pytest.fixture(autouse=True)
     async def setup(

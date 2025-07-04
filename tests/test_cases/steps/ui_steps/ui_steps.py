@@ -132,7 +132,7 @@ class UISteps(PageSteps):
     # ********************   invite user to organization steps   ****************************
     @async_step("Invite user to organization via UI")
     async def ui_invite_user_to_org(
-        self, email: str, username: str, add_user_email: str
+        self, email: str, username: str, add_user_email: str, role: str = "User"
     ) -> None:
         await self.main_page.ui_click_organization_settings_button(email)
         await self.org_settings_popup.verify_ui_popup_displayed(
@@ -146,7 +146,7 @@ class UISteps(PageSteps):
         await self.invite_org_member_popup.verify_ui_popup_displayed()
 
         await self.invite_org_member_popup.ui_enter_invite_email(email=add_user_email)
-        await self.invite_org_member_popup.ui_select_user_role()
+        await self.invite_org_member_popup.ui_select_user_role(role=role)
         await self.invite_org_member_popup.verify_ui_invite_user_button_displayed(
             email=add_user_email
         )

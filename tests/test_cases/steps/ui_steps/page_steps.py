@@ -11,6 +11,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.apps_page_steps import (
 from tests.test_cases.steps.ui_steps.page_steps_impl.create_proj_popup_steps import (
     CreateProjPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.edit_org_user_popup_steps import (
+    EditOrgUserPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.invite_org_member_popup_steps import (
     InviteOrgMemberPopupSteps,
 )
@@ -29,8 +32,14 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.name_org_page_steps import 
 from tests.test_cases.steps.ui_steps.page_steps_impl.no_proj_popup_steps import (
     NoProjPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.org_billing_page_steps import (
+    OrgBillingPageSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.org_people_page_steps import (
     OrgPeoplePageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.org_settings_page_steps import (
+    OrgSettingsPageSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.org_settings_popup_steps import (
     OrgSettingsPopupSteps,
@@ -40,6 +49,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.proj_info_popup_steps impor
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.proj_people_page_steps import (
     ProjPeoplePageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.remove_org_user_popup_steps import (
+    RemoveOrgUserPopupSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.signup_page_steps import (
     SignupPageSteps,
@@ -83,3 +95,7 @@ class PageSteps:
         self.signup_username_page = SignupUsernamePageSteps(self._pm)
         self.thats_it_page = ThatsItPageSteps(self._pm)
         self.welcome_new_user_page = WelcomeNewUserPageSteps(self._pm)
+        self.org_settings_page = OrgSettingsPageSteps(self._pm)
+        self.org_billing_page = OrgBillingPageSteps(self._pm)
+        self.edit_org_user_popup = EditOrgUserPopupSteps(self._pm)
+        self.remove_org_user_popup = RemoveOrgUserPopupSteps(self._pm)
