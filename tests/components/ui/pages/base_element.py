@@ -17,17 +17,22 @@ class BaseElement:
         self.page: Page = page
         self.selector: str
         self.locator: Locator
+        self._resolve_method: str
+        self._resolve_args: dict[str, Any] = kwargs
 
         if by_label:
-            self.selector = f'get_by_label("{by_label}")'
+            self.selector = by_label
+            self._resolve_method = "label"
             self.locator = page.get_by_label(by_label, **kwargs)
 
         elif by_role:
-            self.selector = f'get_by_role("{by_role}", kwargs={kwargs})'
+            self.selector = by_role
+            self._resolve_method = "role"
             self.locator = page.get_by_role(cast("Any", by_role), **kwargs)
 
         elif selector:
             self.selector = selector
+            self._resolve_method = "locator"
             self.locator = page.locator(selector, **kwargs)
 
         else:
@@ -59,7 +64,7 @@ class BaseElement:
         while elapsed < timeout:
             try:
                 # Re-resolve locator to avoid stale references
-                self.locator = self.page.locator(self.selector)
+                self.re_resolve()
 
                 await self.locator.wait_for(state="attached", timeout=interval)
                 await expect(self.locator).to_be_visible(timeout=interval)
@@ -149,3 +154,13 @@ class BaseElement:
             elapsed += interval
 
         return False
+
+    def re_resolve(self) -> None:
+        if self._resolve_method == "label":
+            self.locator = self.page.get_by_label(self.selector, **self._resolve_args)
+        elif self._resolve_method == "role":
+            self.locator = self.page.get_by_role(
+                cast("Any", self.selector), **self._resolve_args
+            )
+        elif self._resolve_method == "locator":
+            self.locator = self.page.locator(self.selector, **self._resolve_args)
