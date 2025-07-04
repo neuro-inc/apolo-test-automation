@@ -1,0 +1,66 @@
+INFO     [🔧TEST CONFIG]:conftest.py:103 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:109 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:129 Creating Apolo CLI instance
+INFO     [🔧TEST CONFIG]:conftest.py:135 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:121 Creating API helper
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-extsa1jcos@apolo.us', username='regression-extsa1jcos', password='******')
+INFO     [🔧TEST CONFIG]:conftest.py:244 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:257 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:265 Navigating to: https://console.dev.apolo.us/
+INFO     [📘TEST_INFO]:reporting.py:61 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:62 📝 TEST started: Verify invited Manager can access organization settings
+INFO     [📘TEST_INFO]:reporting.py:63 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:244 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:257 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:265 Navigating to: https://console.dev.apolo.us/
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-tqemxpu8b4@apolo.us', username='regression-tqemxpu8b4', password='******')
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-tqemxpu8b4@apolo.us', username='regression-tqemxpu8b4', password='******')
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click sign up button
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter regression-tqemxpu8b4@apolo.us email
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Enter ********* password
+INFO     [🎭 Playwright]:base_page.py:15 <SignupPage>: Click continue button
+INFO     [🎭 Playwright]:base_page.py:15 <MainPage>: Check if verify email message displayed
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-tqemxpu8b4@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-tqemxpu8b4@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=EMm3w7BHBmxRoZvjCnrPwvbvcUrjsztY#'}
+INFO     [🌐API_helper]:api_helper.py:95 Checking if user regression-tqemxpu8b4@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:42 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-tqemxpu8b4@apolo.us
+INFO     [🌐API_helper]:api_helper.py:97 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Auth page displayed
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:39 ✅ STEP completed: <<User2>> :: Verify that Auth page displayed
+INFO     [📘TEST_INFO]:reporting.py:171 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_8d2ec5.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click login button
+INFO     [🎭 Playwright]:base_page.py:15 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:39 ✅ STEP completed: <<User2>> :: Click login button
+INFO     [📘TEST_INFO]:reporting.py:171 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_dfe965.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Signup username page displayed
+INFO     [🎭 Playwright]:base_page.py:15 <SignupUsernamePage>: Check if page is loaded
+ERROR    [📘TEST_INFO]:reporting.py:43 ❌ STEP failed: <<User2>> :: Verify that Signup username page displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:304 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-tqemxpu8b4
+Request Body:
+<not available>
+Response Body (first 100 chars):
+<unavailable>
+INFO     [📘TEST_INFO]:reporting.py:171 📸 Screenshot captured and attached (fail): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_fail_37440e.png
+ERROR    [📘TEST_INFO]:reporting.py:43 ❌ STEP failed: <<User2>> :: Signup new user via UI and activate email verification link
+INFO     [📘TEST_INFO]:reporting.py:171 📸 Screenshot captured and attached (fail): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_signup_new_user_ver_link_fail_b5f887.png
+ERROR    [📘TEST_INFO]:reporting.py:70 ❌ TEST failed: Verify invited Manager can access organization settings
+Exception: [AssertionError] during step: <<User2>> :: Signup new user via UI and activate email verification link
+Message: [AssertionError] during step: <<User2>> :: Verify that Signup username page displayed
+Message: Locator expected to be visible
+Actual value: None 
+Call log:
+  - Expect "to_be_visible" with timeout 5000ms
+  - waiting for locator("#input")
+    - waiting for" https://auth.dev.apolo.us/authorize?client_id=q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL&scope=openid+profile+email&audience=https%3A%2F%2Fapi.dev.apolo.us&redirect_uri=https%3A%2F%2Fconsole.dev.apolo.us&origi…" navigation to finish...
+
+INFO     [📘TEST_INFO]:reporting.py:73 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:185 Cleaning up 0 organisations
+INFO     [🔧TEST CONFIG]:conftest.py:219 Closing all browser sessions
+INFO     [🔧TEST CONFIG]:conftest.py:223 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:230 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:223 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:230 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:235 Closed all browser sessions
