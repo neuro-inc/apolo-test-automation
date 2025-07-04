@@ -26,8 +26,11 @@ class CreateProjPopupSteps:
     @async_step("Click Create button")
     async def ui_click_create_button(self) -> None:
         await self._pm.create_proj_popup.click_create_button()
-        await self._pm.page.wait_for_timeout(500)
 
     @async_step("Click project default checkbox")
     async def ui_click_make_default_checkbox(self) -> None:
         await self._pm.create_proj_popup.click_proj_default_checkbox()
+
+    @async_step("Wait for Create project popup disappear")
+    async def ui_wait_to_disappear(self, org_name: str) -> None:
+        await self._pm.create_proj_popup.wait_to_disappear(org_name=org_name)

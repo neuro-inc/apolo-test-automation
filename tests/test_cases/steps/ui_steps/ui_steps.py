@@ -194,5 +194,6 @@ class UISteps(PageSteps):
         if make_default:
             await self.create_proj_popup.ui_click_make_default_checkbox()
         await self.create_proj_popup.ui_click_create_button()
+        await self.create_proj_popup.ui_wait_to_disappear(org_name=org_name)
 
         await self.apps_page.verify_ui_page_displayed()

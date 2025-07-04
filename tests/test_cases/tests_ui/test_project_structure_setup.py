@@ -33,6 +33,7 @@ class TestUIProjectStructureSetup(BaseUITest):
         await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
         await steps.create_proj_popup.ui_select_role("Reader")
         await steps.create_proj_popup.ui_click_create_button()
+        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
 
         await steps.apps_page.verify_ui_page_displayed()
 
@@ -61,6 +62,7 @@ class TestUIProjectStructureSetup(BaseUITest):
         await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
         await steps.create_proj_popup.ui_select_role("Reader")
         await steps.create_proj_popup.ui_click_create_button()
+        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
 
         await steps.apps_page.verify_ui_page_displayed()
 
@@ -96,6 +98,7 @@ class TestUIProjectStructureSetup(BaseUITest):
         await steps.create_proj_popup.ui_enter_proj_name(proj2.project_name)
         await steps.create_proj_popup.ui_select_role("Reader")
         await steps.create_proj_popup.ui_click_create_button()
+        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
 
         await steps.apps_page.verify_ui_page_displayed()
 
