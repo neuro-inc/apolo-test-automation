@@ -1,4 +1,3 @@
-import re
 from typing import Any, cast
 from playwright.async_api import Page
 from tests.components.ui.pages.base_element import BaseElement
@@ -59,9 +58,7 @@ class InviteOrgMemberPopup(BasePage):
         await self._get_user_role_dropdown().select_option("admin")
 
     def _get_invite_user_button(self, email: str) -> BaseElement:
-        return BaseElement(
-            self.page, by_role="button", name=re.compile(rf"Invite user.*{email}")
-        )
+        return BaseElement(self.page, f'button:has(p:text("{email}"))')
 
     async def is_invite_user_displayed(self, email: str) -> bool:
         self.log(f"Check if Invite user {email} button displayed")
