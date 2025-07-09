@@ -4,6 +4,8 @@ from tests.components.ui.pages.apps_page import AppsPage
 from tests.components.ui.pages.auth_page import AuthPage
 from tests.components.ui.pages.create_project_popup import CreateProjectPopup
 from tests.components.ui.pages.edit_org_user_popup import EditOrgUserPopup
+from tests.components.ui.pages.edit_proj_member_popup import EditProjMemberPopup
+from tests.components.ui.pages.files_page import FilesPage
 from tests.components.ui.pages.invite_org_member_popup import InviteOrgMemberPopup
 from tests.components.ui.pages.invite_project_memeber_popup import InviteProjMemberPopup
 from tests.components.ui.pages.jobs_page import JobsPage
@@ -34,6 +36,7 @@ from tests.components.ui.pages.organization_settings_popup import (
 from tests.components.ui.pages.project_people_page import ProjectPeoplePage
 from tests.components.ui.pages.projects_info_popup import ProjectsInfoPopup
 from tests.components.ui.pages.remove_org_user_popup import RemoveOrgUserPopup
+from tests.components.ui.pages.remove_proj_member_popup import RemoveProjMemberPopup
 from tests.components.ui.pages.signup_page import SignupPage
 from tests.components.ui.pages.signup_username_page import SignupUsernamePage
 
@@ -69,3 +72,6 @@ class PageManager:
         self.organization_billing_page = OrganizationBillingPage(page)
         self.edit_org_user_popup = EditOrgUserPopup(page)
         self.remove_org_user_popup = RemoveOrgUserPopup(page)
+        self.remove_proj_member_popup = RemoveProjMemberPopup(page)
+        self.edit_proj_member_popup = EditProjMemberPopup(page)
+        self.files_page = FilesPage(page)

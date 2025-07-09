@@ -14,6 +14,12 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.create_proj_popup_steps imp
 from tests.test_cases.steps.ui_steps.page_steps_impl.edit_org_user_popup_steps import (
     EditOrgUserPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.edit_proj_member_popup_steps import (
+    EditProjMemberPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.files_page_steps import (
+    FilesPageSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.invite_org_member_popup_steps import (
     InviteOrgMemberPopupSteps,
 )
@@ -52,6 +58,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.proj_people_page_steps impo
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.remove_org_user_popup_steps import (
     RemoveOrgUserPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.remove_proj_member_popup_steps import (
+    RemoveProjMemberPopupSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.signup_page_steps import (
     SignupPageSteps,
@@ -99,3 +108,6 @@ class PageSteps:
         self.org_billing_page = OrgBillingPageSteps(self._pm)
         self.edit_org_user_popup = EditOrgUserPopupSteps(self._pm)
         self.remove_org_user_popup = RemoveOrgUserPopupSteps(self._pm)
+        self.remove_proj_member_popup = RemoveProjMemberPopupSteps(self._pm)
+        self.edit_proj_member_popup = EditProjMemberPopupSteps(self._pm)
+        self.files_page = FilesPageSteps(self._pm)

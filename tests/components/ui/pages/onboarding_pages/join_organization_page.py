@@ -27,6 +27,7 @@ class JoinOrganizationPage(BasePage):
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page loaded")
+        await self.page.wait_for_timeout(1000)
         username = kwargs.get("username")
         if not isinstance(username, str):
             raise ValueError("Expected 'username' to be a non-empty string in kwargs")

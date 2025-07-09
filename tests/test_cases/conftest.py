@@ -44,27 +44,42 @@ async def signup_default_user(
     """
     Signs up and verifies a default user before each test.
     - Reuses cached user if already available.
-    - Performs signup and email verification via UI steps.
-    - Aborts the test session if signup fails.
+    - Performs signup and email verification via UI steps (retrying once on failure).
+    - Aborts the test session if signup fails twice.
     - Ensures browser context is cleaned up after execution.
     """
     global _default_user
     if _default_user:
         users_manager.default_user = _default_user
         return
-    logger.info("Signup default user...")
-    pm = await _create_page_manager(test_config, request)
 
-    ui_common_steps = UISteps(pm, test_config, data_manager, users_manager, api_helper)
-    try:
-        await ui_common_steps.ui_signup_new_user_ver_link()
-    except Exception as e:
-        logger.error(f"❌ Failed to sign up default user: {e}")
-        pytest.exit(
-            "🚫 Aborting test session: default user signup failed.", returncode=11
-        )
-    else:
-        _default_user = users_manager.default_user
+    logger.info("Signup default user...")
+
+    max_attempts = 2
+    for attempt in range(1, max_attempts + 1):
+        logger.info(f"🔐 Signup attempt {attempt}...")
+
+        try:
+            pm = await _create_page_manager(test_config, request)
+            ui_common_steps = UISteps(
+                pm, test_config, data_manager, users_manager, api_helper
+            )
+
+            await ui_common_steps.ui_signup_new_user_ver_link()
+            _default_user = users_manager.default_user
+            return  # ✅ success
+        except Exception as e:
+            logger.warning(f"⚠️ Signup attempt {attempt} failed: {e}")
+            # ensure broken context is not reused
+            await _cleanup_browsers()
+
+            if attempt == max_attempts:
+                logger.error("❌ Failed to sign up default user after all retries.")
+                raise RuntimeError(
+                    "🚫 Aborting test session: default user signup failed."
+                )
+            else:
+                logger.info("🔁 Retrying with fresh browser context...")
 
 
 @pytest.fixture(scope="function")
@@ -298,7 +313,7 @@ async def _log_failed_requests(response: Any) -> None:
         log_msg = (
             f"[HTTP {status}] {method} {url}\n"
             f"Request Body:\n{request_body}\n"
-            f"Response Body (first 100 chars):\n{response_body[:100]}"
+            f"Response Body (first 200 chars):\n{response_body[:200]}"
         )
 
         logger.warning(log_msg)

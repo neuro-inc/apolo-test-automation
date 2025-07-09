@@ -17,6 +17,7 @@ class InvitedToOrgPage(BasePage):
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page loaded")
+        await self.page.wait_for_timeout(1000)
         org_name = kwargs.get("org_name")
         user_role = kwargs.get("user_role")
         if not isinstance(org_name, str) or not org_name:

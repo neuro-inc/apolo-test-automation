@@ -22,6 +22,7 @@ class ThatsItPage(BasePage):
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page loaded")
+        await self.page.wait_for_timeout(1000)
         return (
             await self._thats_it_title.expect_to_be_loaded()
             and await self._nice_text_field.expect_to_be_loaded()
