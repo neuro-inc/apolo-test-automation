@@ -49,7 +49,12 @@ logger = logging.getLogger("[🛠️TEST CONFIG]")
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
 _SUITE_OUTCOMES: dict[str, dict[str, int]] = defaultdict(
-    lambda: {"passed": 0, "failed": 0, "skipped": 0}
+    lambda: {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "rerun": 0,
+    }
 )
 
 
@@ -67,6 +72,12 @@ def pytest_runtest_makereport(
     report = cast(TestReport, outcome.get_result())  # type: ignore[attr-defined]
 
     if call.when == "call":
+        # Skip intermediate rerun attempts
+        if getattr(report, "rerun", False):
+            suite = getattr(getattr(item, "cls", item), "__suite_name__", "unknown")
+            _SUITE_OUTCOMES[suite]["rerun"] += 1
+            return
+
         cls = getattr(item, "cls", None)
         if cls:
             suite = getattr(cls, "__suite_name__", cls.__name__)
@@ -78,10 +89,14 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     passed = 0
     failed = 0
     skipped = 0
+    rerun = 0
+
     for suite, results in _SUITE_OUTCOMES.items():
         passed += results["passed"]
         failed += results["failed"]
         skipped += results["skipped"]
+        rerun += results["rerun"]
+
     summary_path = os.path.join(LOGS_DIR, "summary.log")
     try:
         with open(summary_path, "w") as f:
@@ -90,7 +105,10 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
             cleanup_note = getattr(session, "cleanup_warning", None)
             if cleanup_note:
                 f.write(cleanup_note)
-            f.write(f"    PASSED:{passed}   FAILED:{failed}.   SKIPPED:{skipped}\n")
+
+            f.write(
+                f"    PASSED: {passed}   FAILED: {failed}   SKIPPED: {skipped}   RERUNS: {rerun}\n"
+            )
             logger.info(f"📝 Summary written to: {summary_path}")
     except Exception as e:
         logger.error(f"❌ Failed to write summary.log: {e}")

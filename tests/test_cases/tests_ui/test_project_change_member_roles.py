@@ -1567,7 +1567,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         )
         await u2_steps.ui_reload_page()
         await u2_steps.proj_people_page.verify_ui_user_role(
-            username=third_user.username, role="Reader"
+            username=third_user.username, role="Writer"
         )
 
     @async_title("Verify Manager cannot demote Admin")
