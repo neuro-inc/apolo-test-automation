@@ -44,27 +44,35 @@ async def signup_default_user(
     """
     Signs up and verifies a default user before each test.
     - Reuses cached user if already available.
-    - Performs signup and email verification via UI steps.
-    - Aborts the test session if signup fails.
+    - Performs signup and email verification via UI steps (retrying once on failure).
+    - Aborts the test session if signup fails twice.
     - Ensures browser context is cleaned up after execution.
     """
     global _default_user
     if _default_user:
         users_manager.default_user = _default_user
         return
+
     logger.info("Signup default user...")
     pm = await _create_page_manager(test_config, request)
-
     ui_common_steps = UISteps(pm, test_config, data_manager, users_manager, api_helper)
-    try:
-        await ui_common_steps.ui_signup_new_user_ver_link()
-    except Exception as e:
-        logger.error(f"❌ Failed to sign up default user: {e}")
-        pytest.exit(
-            "🚫 Aborting test session: default user signup failed.", returncode=11
-        )
-    else:
-        _default_user = users_manager.default_user
+
+    max_attempts = 2
+    for attempt in range(1, max_attempts + 1):
+        try:
+            await ui_common_steps.ui_signup_new_user_ver_link()
+            _default_user = users_manager.default_user
+            return
+        except Exception as e:
+            logger.warning(f"⚠️ Signup attempt {attempt} failed: {e}")
+            if attempt == max_attempts:
+                logger.error("❌ Failed to sign up default user after 2 attempts.")
+                pytest.exit(
+                    "🚫 Aborting test session: default user signup failed.",
+                    returncode=11,
+                )
+            else:
+                logger.info("🔁 Retrying signup...")
 
 
 @pytest.fixture(scope="function")

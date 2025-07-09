@@ -74,9 +74,14 @@ def pytest_runtest_logreport(report: TestReport) -> None:
     if getattr(report, "rerun", False):
         _SUITE_OUTCOMES[suite_name]["rerun"] += 1
         logger.info(f"🔁 Rerun attempt for: {report.nodeid}")
-        return
 
-    _SUITE_OUTCOMES[suite_name][report.outcome] += 1
+    # Count final outcome (only appears once, after reruns)
+    if report.passed:
+        _SUITE_OUTCOMES[suite_name]["passed"] += 1
+    elif report.failed:
+        _SUITE_OUTCOMES[suite_name]["failed"] += 1
+    elif report.skipped:
+        _SUITE_OUTCOMES[suite_name]["skipped"] += 1
 
 
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
