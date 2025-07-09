@@ -19,6 +19,7 @@ class WelcomeNewUserPage(BasePage):
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page loaded")
+        await self.page.wait_for_timeout(1000)
         email = kwargs.get("email")
         if not isinstance(email, str):
             raise ValueError("Expected 'email' to be a non-empty string in kwargs")

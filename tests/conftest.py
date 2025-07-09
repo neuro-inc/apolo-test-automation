@@ -1,16 +1,11 @@
-from collections.abc import Generator
-
 import logging
 import os
 import subprocess
 from collections import defaultdict
-from typing import Any, cast
 
 import pytest
 from _pytest.config import Config
 from _pytest.reports import TestReport
-from _pytest.nodes import Item
-from _pytest.runner import CallInfo
 
 # --- Paths and Directories ---
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -20,16 +15,18 @@ SCREENSHOTS_DIR = os.path.join(BASE_REPORT_DIR, "screenshots")
 ALLURE_RESULTS_DIR = os.path.join(BASE_REPORT_DIR, "allure-results")
 ALLURE_REPORT_DIR = os.path.join(BASE_REPORT_DIR, "allure-report")
 
-LOG_FILE_PATH = os.path.join(LOGS_DIR, "test_run.log")
-
-# --- Prepare clean reporting environment ---
+# --- Create necessary directories ---
 for path in [LOGS_DIR, SCREENSHOTS_DIR, ALLURE_RESULTS_DIR, ALLURE_REPORT_DIR]:
     os.makedirs(path, exist_ok=True)
 
-if os.path.exists(BASE_REPORT_DIR):
-    for root, dirs, files in os.walk(BASE_REPORT_DIR):
-        for f in files:
-            os.remove(os.path.join(root, f))
+# --- Clean old report files ---
+for root, dirs, files in os.walk(BASE_REPORT_DIR):
+    for f in files:
+        os.remove(os.path.join(root, f))
+
+# --- Per-worker log file ---
+worker_id = os.getenv("PYTEST_XDIST_WORKER", "main")
+LOG_FILE_PATH = os.path.join(LOGS_DIR, f"test_run_{worker_id}.log")
 
 # --- Logging Configuration ---
 root_logger = logging.getLogger()
@@ -64,24 +61,22 @@ def pytest_configure(config: Config) -> None:
     config.option.alluredir = ALLURE_RESULTS_DIR
 
 
-@pytest.hookimpl(hookwrapper=True)
-def pytest_runtest_makereport(
-    item: Item, call: CallInfo[Any]
-) -> Generator[None, None, None]:
-    outcome = yield
-    report = cast(TestReport, outcome.get_result())  # type: ignore[attr-defined]
+@pytest.hookimpl
+def pytest_runtest_logreport(report: TestReport) -> None:
+    if report.when != "call":
+        return
 
-    if call.when == "call":
-        # Skip intermediate rerun attempts
-        if getattr(report, "rerun", False):
-            suite = getattr(getattr(item, "cls", item), "__suite_name__", "unknown")
-            _SUITE_OUTCOMES[suite]["rerun"] += 1
-            return
+    suite = getattr(getattr(report, "item", None), "cls", None)
+    suite_name = getattr(
+        suite, "__suite_name__", suite.__name__ if suite else "unknown"
+    )
 
-        cls = getattr(item, "cls", None)
-        if cls:
-            suite = getattr(cls, "__suite_name__", cls.__name__)
-            _SUITE_OUTCOMES[suite][report.outcome] += 1
+    if getattr(report, "rerun", False):
+        _SUITE_OUTCOMES[suite_name]["rerun"] += 1
+        logger.info(f"🔁 Rerun attempt for: {report.nodeid}")
+        return
+
+    _SUITE_OUTCOMES[suite_name][report.outcome] += 1
 
 
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
@@ -112,6 +107,21 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
             logger.info(f"📝 Summary written to: {summary_path}")
     except Exception as e:
         logger.error(f"❌ Failed to write summary.log: {e}")
+
+    # --- Merge per-worker logs into test_run.log ---
+    merged_log_path = os.path.join(LOGS_DIR, "test_run.log")
+    try:
+        with open(merged_log_path, "w") as outfile:
+            for fname in sorted(os.listdir(LOGS_DIR)):
+                if fname.startswith("test_run_") and fname.endswith(".log"):
+                    path = os.path.join(LOGS_DIR, fname)
+                    with open(path) as infile:
+                        outfile.write(f"--- {fname} ---\n")
+                        outfile.write(infile.read())
+                        outfile.write("\n")
+        logger.info(f"📦 Merged logs written to: {merged_log_path}")
+    except Exception as e:
+        logger.error(f"❌ Failed to merge logs: {e}")
 
     logger.info("📦 Generating Allure report...")
     try:
