@@ -298,7 +298,7 @@ async def _log_failed_requests(response: Any) -> None:
         log_msg = (
             f"[HTTP {status}] {method} {url}\n"
             f"Request Body:\n{request_body}\n"
-            f"Response Body (first 100 chars):\n{response_body[:100]}"
+            f"Response Body (first 200 chars):\n{response_body[:200]}"
         )
 
         logger.warning(log_msg)

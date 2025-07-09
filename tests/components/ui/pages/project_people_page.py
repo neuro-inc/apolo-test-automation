@@ -52,6 +52,10 @@ class ProjectPeoplePage(BasePage):
             f'tr:has(td:nth-child(1):has-text("{username}")) td:nth-child(5) button >> nth=0',
         )
 
+    async def is_row_edit_btn_enabled(self, username: str) -> bool:
+        self.log(f"Check if user {username} row edit btn enabled")
+        return await self._get_row_edit_btn(username).is_enabled()
+
     async def click_row_edit_btn(self, username: str) -> None:
         self.log(f"Click {username} row edit button")
         await self._get_row_edit_btn(username).click()
@@ -61,6 +65,10 @@ class ProjectPeoplePage(BasePage):
             self.page,
             f'tr:has(td:nth-child(1):has-text("{username}")) td:nth-child(5) button >> nth=1',
         )
+
+    async def is_row_delete_btn_enabled(self, username: str) -> bool:
+        self.log(f"Check if user {username} row delete button enabled")
+        return await self._get_row_delete_btn(username).is_enabled()
 
     async def click_row_delete_btn(self, username: str) -> None:
         self.log(f"Click {username} row delete button")

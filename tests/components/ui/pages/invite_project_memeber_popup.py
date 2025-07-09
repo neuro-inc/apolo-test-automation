@@ -101,3 +101,16 @@ class InviteProjMemberPopup(BasePage):
         self.log("Click Invite button")
         await self._get_invite_btn().click()
         await self.page.wait_for_timeout(500)
+
+    async def wait_to_disappear(self, org_name: str, proj_name: str) -> None:
+        """
+        Waits until key elements of the page disappear (popup is closed).
+        """
+        self.log("Wait for Remove organization user popup to disappear")
+
+        await self._get_invite_member_title().locator.wait_for(state="detached")
+        await self._get_invite_user_text_field(
+            org_name=org_name, proj_name=proj_name
+        ).locator.wait_for(state="detached")
+        await self._get_cancel_btn().locator.wait_for(state="detached")
+        await self._get_user_data_input().locator.wait_for(state="detached")

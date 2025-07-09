@@ -87,3 +87,7 @@ class MainPageSteps:
     @async_step("Click Project button on the top pane of the main page")
     async def ui_click_proj_button_top_pane(self) -> None:
         await self._pm.main_page.click_top_pane_proj_button()
+
+    @async_step("Click Files button on the left pane on the main page")
+    async def ui_click_files_btn(self) -> None:
+        await self._pm.main_page.click_files_button()

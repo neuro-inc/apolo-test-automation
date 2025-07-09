@@ -5,7 +5,7 @@ from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.test_cases.tests_ui.base_ui_test import BaseUITest
 
 
-@async_suite("UI Organization Remove Members", parent="UI Tests")
+@async_suite("UI Project Remove Members", parent="UI Tests")
 class TestUIProjectRemoveMembers(BaseUITest):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
@@ -872,7 +872,7 @@ class TestUIProjectRemoveMembers(BaseUITest):
         Invite member1 to organization with User role.
         Invite member2 to organization with User role.
         Invite member1 to project with Writer role.
-        Invite member2 to project with User role.
+        Invite member2 to project with Reader role.
         Verify that:
             - Writer cannot remove members from project
         """

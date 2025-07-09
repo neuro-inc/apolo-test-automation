@@ -7,8 +7,6 @@ from tests.components.ui.pages.base_page import BasePage
 class AppsPage(BasePage):
     def __init__(self, page: Page) -> None:
         super().__init__(page)
-        self._log_in_button = BaseElement(self.page, "button:text('Log in')")
-        self._sign_up_button = BaseElement(self.page, "button:text('Sign up')")
 
     async def is_loaded(self, **kwargs: Any) -> bool:
         """

@@ -71,7 +71,7 @@ class TestUIProjectStructureSetup(BaseUITest):
             proj_name=proj.project_name
         )
 
-    @async_title("Create Create second project via UI")
+    @async_title("Create second project via UI")
     async def test_create_second_proj_via_ui(self) -> None:
         user = self._user
         steps = self._steps
@@ -147,7 +147,7 @@ class TestUIProjectStructureSetup(BaseUITest):
 
         self.log(f"User1 invite User2 to project {proj1.project_name}")
         await steps.main_page.ui_click_proj_button_top_pane()
-        await steps.proj_info_popup.ui_click_people_btn_proj_info_popup()
+        await steps.proj_info_popup.ui_click_people_btn()
         await steps.proj_people_page.verify_ui_page_displayed()
 
         await steps.proj_people_page.ui_click_invite_people_proj_people_btn()
@@ -168,11 +168,14 @@ class TestUIProjectStructureSetup(BaseUITest):
         await steps.invite_proj_member_popup.verify_ui_invite_bth_enabled()
 
         await steps.invite_proj_member_popup.ui_click_invite_btn()
+        await steps.invite_proj_member_popup.ui_wait_to_disappear(
+            org_name=org.org_name, proj_name=proj1.project_name
+        )
         await steps.proj_people_page.verify_ui_page_displayed()
         await steps.proj_people_page.verify_ui_user_displayed_in_users_list(
             username=add_user.username
         )
-        await steps.proj_people_page.verify_ui_invited_user_role(
+        await steps.proj_people_page.verify_ui_user_role(
             username=add_user.username, role="Reader"
         )
         await steps.proj_people_page.verify_ui_invited_user_email(
@@ -203,7 +206,7 @@ class TestUIProjectStructureSetup(BaseUITest):
 
         self.log(f"User1 invite User2 to project {proj1.project_name}")
         await steps.main_page.ui_click_proj_button_top_pane()
-        await steps.proj_info_popup.ui_click_people_btn_proj_info_popup()
+        await steps.proj_info_popup.ui_click_people_btn()
         await steps.proj_people_page.verify_ui_page_displayed()
 
         await steps.proj_people_page.ui_click_invite_people_proj_people_btn()
@@ -239,7 +242,7 @@ class TestUIProjectStructureSetup(BaseUITest):
 
         self.log(f"User1 invite User2 to project {proj1.project_name}")
         await steps.main_page.ui_click_proj_button_top_pane()
-        await steps.proj_info_popup.ui_click_people_btn_proj_info_popup()
+        await steps.proj_info_popup.ui_click_people_btn()
         await steps.proj_people_page.verify_ui_page_displayed()
 
         await steps.proj_people_page.ui_click_invite_people_proj_people_btn()

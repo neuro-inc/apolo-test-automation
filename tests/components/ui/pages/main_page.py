@@ -56,14 +56,21 @@ class MainPage(BasePage):
         return BaseElement(self.page, 'a[href^="/apps?"]', has_text="Apps")
 
     async def click_apps_button(self) -> None:
-        self.log("Click apps button")
+        self.log("Click Apps button")
         await self._get_apps_button().click()
+
+    def _get_files_button(self) -> BaseElement:
+        return BaseElement(self.page, 'a[href*="/files?"]', has_text="Files")
+
+    async def click_files_button(self) -> None:
+        self.log("Click Files button")
+        await self._get_files_button().click()
 
     def _get_jobs_button(self) -> BaseElement:
         return BaseElement(self.page, 'a[href^="/jobs?cluster="]', has_text="Jobs")
 
     async def click_jobs_button(self) -> None:
-        self.log("Click jobs button")
+        self.log("Click Jobs button")
         await self._get_jobs_button().click()
 
     def _get_organization_settings_button(self, email: str) -> BaseElement:
