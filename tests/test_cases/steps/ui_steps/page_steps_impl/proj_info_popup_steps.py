@@ -22,7 +22,7 @@ class ProjInfoPopupSteps:
         ), f"Select {proj_name} button should be displayed!"
 
     @async_step("Click People button on the Projects info popup")
-    async def ui_click_people_btn_proj_info_popup(self) -> None:
+    async def ui_click_people_btn(self) -> None:
         await self._pm.projects_info_popup.click_people_btn()
 
     @async_step("Click Create new project button")

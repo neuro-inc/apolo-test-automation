@@ -197,3 +197,61 @@ class UISteps(PageSteps):
         await self.create_proj_popup.ui_wait_to_disappear(org_name=org_name)
 
         await self.apps_page.verify_ui_page_displayed()
+
+    @async_step("Invite member to project via UI")
+    async def ui_invite_user_to_proj(
+        self,
+        org_name: str,
+        proj_name: str,
+        user_email: str,
+        username: str,
+        role: str,
+    ) -> None:
+        await self.main_page.ui_click_proj_button_top_pane()
+        await self.proj_info_popup.ui_click_people_btn()
+        await self.proj_people_page.verify_ui_page_displayed()
+
+        await self.proj_people_page.ui_click_invite_people_proj_people_btn()
+        await self.invite_proj_member_popup.verify_ui_popup_displayed(
+            org_name=org_name, proj_name=proj_name
+        )
+
+        await self.invite_proj_member_popup.ui_enter_user_data(email=user_email)
+        await self.invite_proj_member_popup.ui_select_user_role(role=role)
+        await self.invite_proj_member_popup.verify_ui_invite_user_btn_displayed(
+            email=user_email
+        )
+        await self.invite_proj_member_popup.verify_ui_invite_bth_disabled()
+
+        await self.invite_proj_member_popup.ui_click_invite_user_btn(email=user_email)
+        await self.invite_proj_member_popup.verify_ui_invite_bth_enabled()
+
+        await self.invite_proj_member_popup.ui_click_invite_btn()
+        await self.invite_proj_member_popup.ui_wait_to_disappear(
+            org_name=org_name, proj_name=proj_name
+        )
+        await self.proj_people_page.verify_ui_page_displayed()
+        await self.proj_people_page.verify_ui_user_displayed_in_users_list(
+            username=username
+        )
+        await self.proj_people_page.verify_ui_user_role(username=username, role=role)
+
+    # ********************   Create project steps   ****************************
+
+    @async_step("Create first project from the top pane on main page")
+    async def ui_create_first_proj_from_top_pane(
+        self, org_name: str, proj_name: str
+    ) -> None:
+        await self.main_page.ui_click_proj_button_top_pane()
+        await self.no_proj_popup.verify_ui_popup_displayed(org_name)
+
+        await self.no_proj_popup.ui_click_create_new_proj_button()
+
+        await self.create_proj_popup.verify_ui_popup_displayed(org_name)
+
+        await self.create_proj_popup.ui_enter_proj_name(proj_name)
+        await self.create_proj_popup.ui_select_role("Reader")
+        await self.create_proj_popup.ui_click_create_button()
+        await self.create_proj_popup.ui_wait_to_disappear(org_name=org_name)
+
+        await self.main_page.verify_ui_page_displayed()
