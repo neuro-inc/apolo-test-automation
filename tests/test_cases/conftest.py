@@ -54,25 +54,32 @@ async def signup_default_user(
         return
 
     logger.info("Signup default user...")
-    pm = await _create_page_manager(test_config, request)
-    ui_common_steps = UISteps(pm, test_config, data_manager, users_manager, api_helper)
 
     max_attempts = 2
     for attempt in range(1, max_attempts + 1):
+        logger.info(f"🔐 Signup attempt {attempt}...")
+
         try:
+            pm = await _create_page_manager(test_config, request)
+            ui_common_steps = UISteps(
+                pm, test_config, data_manager, users_manager, api_helper
+            )
+
             await ui_common_steps.ui_signup_new_user_ver_link()
             _default_user = users_manager.default_user
-            return
+            return  # ✅ success
         except Exception as e:
             logger.warning(f"⚠️ Signup attempt {attempt} failed: {e}")
+            # ensure broken context is not reused
+            await _cleanup_browsers()
+
             if attempt == max_attempts:
-                logger.error("❌ Failed to sign up default user after 2 attempts.")
-                pytest.exit(
-                    "🚫 Aborting test session: default user signup failed.",
-                    returncode=11,
+                logger.error("❌ Failed to sign up default user after all retries.")
+                raise RuntimeError(
+                    "🚫 Aborting test session: default user signup failed."
                 )
             else:
-                logger.info("🔁 Retrying signup...")
+                logger.info("🔁 Retrying with fresh browser context...")
 
 
 @pytest.fixture(scope="function")
