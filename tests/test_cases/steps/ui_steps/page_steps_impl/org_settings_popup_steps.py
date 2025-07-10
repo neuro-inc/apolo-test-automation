@@ -29,6 +29,12 @@ class OrgSettingsPopupSteps:
             )
         ), f"Select organization {org_name} button should be displayed!"
 
+    @async_step("Select organization in Organization settings popup")
+    async def ui_select_org(self, org_name: str) -> None:
+        await self._pm.organization_settings_popup.click_select_organization_button(
+            org_name=org_name
+        )
+
     @async_step(
         "Verify that Settings button is not displayed in organization settings popup"
     )
@@ -68,3 +74,13 @@ class OrgSettingsPopupSteps:
     @async_step("Click Billing button")
     async def ui_click_billing_btn(self) -> None:
         await self._pm.organization_settings_popup.click_billing_button()
+
+    @async_step("Verify the Create new organization button displayed")
+    async def verify_ui_create_new_org_btn_displayed(self) -> None:
+        assert await self._pm.organization_settings_popup.is_create_new_organization_btn_displayed(), (
+            "Create new organization button should be displayed!"
+        )
+
+    @async_step("Click Create new organization button")
+    async def ui_click_create_new_org_btn(self) -> None:
+        await self._pm.organization_settings_popup.click_create_new_org_btn()

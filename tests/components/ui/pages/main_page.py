@@ -50,6 +50,17 @@ class MainPage(BasePage):
         await self._get_top_pane_proj_button().click()
         await self.page.wait_for_timeout(300)
 
+    def _get_credits_btn(self) -> BaseElement:
+        return BaseElement(self.page, "button:has(p:text('Credits')) p.capitalize")
+
+    async def is_credits_btn_enabled(self) -> bool:
+        self.log("Check if Credits button on the top pane enabled")
+        return await self._get_credits_btn().is_enabled()
+
+    async def click_credits_btn(self) -> None:
+        self.log("Click Credits button on the top pane")
+        await self._get_credits_btn().click()
+
     # ******************************  LEFT PANE  **************************************************
 
     def _get_apps_button(self) -> BaseElement:

@@ -8,6 +8,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.auth_page_steps import (
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps_page_steps import (
     AppsPageSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.create_org_popup_steps import (
+    CreateOrgPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.create_proj_popup_steps import (
     CreateProjPopupSteps,
 )
@@ -111,3 +114,4 @@ class PageSteps:
         self.remove_proj_member_popup = RemoveProjMemberPopupSteps(self._pm)
         self.edit_proj_member_popup = EditProjMemberPopupSteps(self._pm)
         self.files_page = FilesPageSteps(self._pm)
+        self.create_org_popup = CreateOrgPopupSteps(self._pm)

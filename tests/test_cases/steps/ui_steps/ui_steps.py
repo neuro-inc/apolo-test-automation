@@ -156,6 +156,22 @@ class UISteps(PageSteps):
         )
         await self.invite_org_member_popup.ui_click_send_invite_button()
 
+    # ********************   Create additional organization steps   ****************************
+    @async_step("Create additional organization via UI")
+    async def ui_create_add_org(self, email: str, org_name: str) -> None:
+        await self.main_page.ui_click_organization_settings_button(email=email)
+        await self.org_settings_popup.ui_click_create_new_org_btn()
+        await self.create_org_popup.verify_ui_popup_displayed()
+
+        await self.create_org_popup.ui_enter_org_name(org_name)
+        await self.create_org_popup.ui_click_create_button()
+        await self.create_org_popup.ui_wait_to_disappear()
+
+        await self.main_page.verify_ui_create_project_message_displayed(
+            org_name=org_name
+        )
+        await self.main_page.verify_ui_create_project_button_displayed()
+
     # ********************   Accept invite to organization steps   ****************************
     @async_step("Accept invite to organization via UI")
     async def ui_accept_invite_to_org(

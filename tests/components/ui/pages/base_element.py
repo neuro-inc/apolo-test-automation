@@ -89,6 +89,10 @@ class BaseElement:
         except PlaywrightTimeoutError:
             await self.locator.click(force=True)
 
+    async def hover(self) -> None:
+        await self.locator.hover()
+        await self.page.wait_for_timeout(200)
+
     async def check(self) -> None:
         await self.locator.check()
 
