@@ -25,5 +25,13 @@ class OrganizationSettingsPage(BasePage):
     def _get_credits_input(self) -> BaseElement:
         return BaseElement(self.page, 'input[name="credits"]')
 
+    async def enter_credits_amount(self, value: str) -> None:
+        self.log(f"Enter credits amount {value}")
+        await self._get_credits_input().fill(value)
+
     def _get_save_button(self) -> BaseElement:
         return BaseElement(self.page, by_role="button", name="Save")
+
+    async def click_save_button(self) -> None:
+        self.log("Click Save button")
+        await self._get_save_button().click()

@@ -14,3 +14,11 @@ class OrgSettingsPageSteps:
         assert await self._pm.organization_settings_page.is_loaded(), (
             "Organization settings page should be displayed!"
         )
+
+    @async_step("Enter credits amount")
+    async def ui_enter_credits_amount(self, value: str) -> None:
+        await self._pm.organization_settings_page.enter_credits_amount(value=value)
+
+    @async_step("Click Save button")
+    async def ui_click_save_button(self) -> None:
+        await self._pm.organization_settings_page.click_save_button()

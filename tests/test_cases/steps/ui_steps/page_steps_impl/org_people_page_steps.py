@@ -59,6 +59,17 @@ class OrgPeoplePageSteps:
             f"Invited user status should be {user_status}!"
         )
 
+    @async_step("Verify that user credits amount is valid")
+    async def verify_ui_valid_user_credits_displayed(
+        self, email: str, credits: str
+    ) -> None:
+        user_credits = await self._pm.organization_people_page.get_org_user_credits(
+            email
+        )
+        assert credits == user_credits.strip(), (
+            f"User credits should be {credits}, not {user_credits}!"
+        )
+
     @async_step("Click three dots button")
     async def ui_click_three_dots_btn(self, email: str) -> None:
         await self._pm.organization_people_page.click_three_dots_btn(email=email)
@@ -94,3 +105,7 @@ class OrgPeoplePageSteps:
     @async_step("Click Remove user button")
     async def ui_click_remove_user_btn(self) -> None:
         await self._pm.organization_people_page.click_remove_user_btn()
+
+    @async_step("Enter Search input value")
+    async def ui_enter_search_input_value(self, value: str) -> None:
+        await self._pm.organization_people_page.enter_search_value(value)

@@ -101,3 +101,16 @@ class OrganizationPeoplePage(BasePage):
         self.log(f"Get Org user {email} status")
         element = self._get_role_user_row_field(email, 4)
         return await element.text_content()
+
+    async def get_org_user_credits(self, email: str) -> str:
+        self.log(f"Get Org user {email} credits")
+        element = self._get_role_user_row_field(email, 5)
+        return await element.text_content()
+
+    def _get_search_input(self) -> BaseElement:
+        return BaseElement(self.page, "input[autocomplete='off'][placeholder=' ']")
+
+    async def enter_search_value(self, value: str) -> None:
+        self.log(f"Entering Search input: {value}")
+        await self._get_search_input().fill(value)
+        await self.page.wait_for_timeout(300)
