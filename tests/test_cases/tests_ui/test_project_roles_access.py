@@ -29,11 +29,9 @@ class TestUIProjectRolesAccess(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -92,11 +90,9 @@ class TestUIProjectRolesAccess(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -155,11 +151,9 @@ class TestUIProjectRolesAccess(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -221,11 +215,9 @@ class TestUIProjectRolesAccess(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -306,11 +298,9 @@ class TestUIProjectRolesAccess(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -391,11 +381,9 @@ class TestUIProjectRolesAccess(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -476,11 +464,9 @@ class TestUIProjectRolesAccess(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -558,7 +544,7 @@ class TestUIProjectRolesAccess(BaseUITest):
         await u2_steps.invite_proj_member_popup.verify_ui_invite_bth_enabled()
 
         await u2_steps.invite_proj_member_popup.ui_click_invite_btn()
-        await u2_steps._pm.page.wait_for_timeout(2000)
+        await u2_steps.ui_wait_for_timeout(2000)
         await u2_steps.invite_proj_member_popup.verify_ui_popup_displayed(
             org_name=org.org_name, proj_name=proj.project_name
         )

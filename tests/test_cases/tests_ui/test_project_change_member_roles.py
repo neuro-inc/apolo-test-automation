@@ -29,11 +29,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -109,11 +107,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -183,11 +179,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -257,11 +251,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -337,11 +329,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -411,11 +401,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -485,11 +473,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -565,11 +551,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -639,11 +623,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -713,11 +695,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -793,11 +773,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -867,11 +845,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -945,11 +921,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1031,7 +1005,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             username=third_user.username, role="Writer"
         )
 
-        await u3_steps._pm.page.wait_for_timeout(3000)
+        await u3_steps.ui_wait_for_timeout(3000)
         await u3_steps.ui_reload_page()
         await u3_steps.main_page.ui_click_files_btn()
         await u3_steps.files_page.verify_ui_page_displayed()
@@ -1056,11 +1030,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1160,11 +1132,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1239,7 +1209,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_proj_member_popup.ui_select_new_user_role(role="Admin")
         await u2_steps.edit_proj_member_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(2000)
+        await u2_steps.ui_wait_for_timeout(2000)
         await u2_steps.edit_proj_member_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -1266,11 +1236,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1352,7 +1320,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             username=third_user.username, role="Reader"
         )
 
-        await u3_steps._pm.page.wait_for_timeout(3000)
+        await u3_steps.ui_wait_for_timeout(3000)
         await u3_steps.ui_reload_page()
         await u3_steps.main_page.ui_click_files_btn()
         await u3_steps.files_page.verify_ui_page_displayed()
@@ -1377,11 +1345,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1481,11 +1447,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1560,7 +1524,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_proj_member_popup.ui_select_new_user_role(role="Admin")
         await u2_steps.edit_proj_member_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(2000)
+        await u2_steps.ui_wait_for_timeout(2000)
         await u2_steps.edit_proj_member_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -1587,11 +1551,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1666,7 +1628,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_proj_member_popup.ui_select_new_user_role(role="Manager")
         await u2_steps.edit_proj_member_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(2000)
+        await u2_steps.ui_wait_for_timeout(2000)
         await u2_steps.edit_proj_member_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -1693,11 +1655,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1785,11 +1745,9 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()

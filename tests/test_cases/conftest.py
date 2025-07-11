@@ -14,7 +14,6 @@ from allure_commons.types import AttachmentType
 from playwright.async_api import async_playwright, Browser, BrowserContext
 
 from tests.components.ui.page_manager import PageManager
-from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.utils.api_helper import APIHelper
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.exception_handling.exception_manager import ExceptionManager
@@ -30,49 +29,6 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
 _browser_context_pairs: list[tuple[Browser, BrowserContext]] = []
-
-
-@pytest.fixture(scope="function", autouse=True)
-async def signup_default_user(
-    test_config: ConfigManager,
-    data_manager: DataManager,
-    users_manager: UsersManager,
-    api_helper: APIHelper,
-    request: pytest.FixtureRequest,
-) -> None:
-    """
-    Signs up and verifies a default user before each test.
-    - Reuses cached user if already available.
-    - Performs signup and email verification via UI steps (retrying once on failure).
-    - Aborts the test session if signup fails twice.
-    - Ensures browser context is cleaned up after execution.
-    """
-    logger.info("Signup default user...")
-
-    max_attempts = 2
-    for attempt in range(1, max_attempts + 1):
-        logger.info(f"🔐 Signup attempt {attempt}...")
-
-        try:
-            pm = await _create_page_manager(test_config, request)
-            ui_common_steps = UISteps(
-                pm, test_config, data_manager, users_manager, api_helper
-            )
-
-            await ui_common_steps.ui_signup_new_user_ver_link()
-            return  # ✅ success
-        except Exception as e:
-            logger.warning(f"⚠️ Signup attempt {attempt} failed: {e}")
-            # ensure broken context is not reused
-            await _cleanup_browsers()
-
-            if attempt == max_attempts:
-                logger.error("❌ Failed to sign up default user after all retries.")
-                raise RuntimeError(
-                    "🚫 Aborting test session: default user signup failed."
-                )
-            else:
-                logger.info("🔁 Retrying with fresh browser context...")
 
 
 @pytest.fixture(scope="function")
