@@ -63,6 +63,14 @@ def pytest_configure(config: Config) -> None:
     logging.getLogger().info(f"📁 Logging initialized for worker: {worker_id}")
 
 
+def pytest_runtest_logstart(nodeid: str, location: tuple[str, int, str]) -> None:
+    """
+    Hook to log when a test is about to start.
+    """
+    worker_id = os.getenv("PYTEST_XDIST_WORKER", "main")
+    logging.getLogger().info(f"[{worker_id}] 🚀 Starting test: {nodeid}")
+
+
 @pytest.hookimpl
 def pytest_runtest_logreport(report: TestReport) -> None:
     if report.when != "call":
@@ -75,7 +83,6 @@ def pytest_runtest_logreport(report: TestReport) -> None:
 
     if getattr(report, "rerun", False):
         _SUITE_OUTCOMES[suite_name]["rerun"] += 1
-        logging.info(f"🔁 Rerun attempt for: {report.nodeid}")
 
     if report.passed:
         _SUITE_OUTCOMES[suite_name]["passed"] += 1

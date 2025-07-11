@@ -21,12 +21,15 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         user = await steps.ui_signup_new_user_ver_link()
         await steps.welcome_new_user_page.ui_click_lets_do_it_button()
         await steps.join_org_page.verify_ui_page_displayed(user.username)
+
         await steps.join_org_page.ui_click_create_organization_button()
         await steps.name_org_page.verify_ui_page_displayed()
+
         org = self._data_manager.add_organization("My-organization")
         await steps.name_org_page.ui_enter_organization_name(org.org_name)
         await steps.name_org_page.ui_click_next_button()
         await steps.thats_it_page.verify_ui_page_displayed()
+
         await steps.thats_it_page.ui_click_lets_do_it_button()
         await steps.main_page.verify_ui_page_displayed()
         await steps.main_page.verify_ui_create_project_message_displayed(org.org_name)

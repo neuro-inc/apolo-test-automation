@@ -119,6 +119,8 @@ class UISteps(PageSteps):
         await self.main_page.ui_wait_user_agreement_disappear()
         await self.ui_wait_for_timeout(3000)
         await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
+        token = await extract_access_token_from_local_storage(self._pm.login_page.page)
+        self._test_config.token = token
 
         return user
 
