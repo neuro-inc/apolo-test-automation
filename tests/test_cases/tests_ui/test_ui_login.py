@@ -22,7 +22,7 @@ class TestUILogin(BaseUITest):
     @async_title("New user successful login")
     async def test_new_user_login(self) -> None:
         add_steps = await self.init_test_steps()
-        await add_steps.login_page.ui_click_continue_button()
+        await add_steps.auth_page.ui_click_login_button()
         await add_steps.login_page.ui_enter_email(self._email)
         await add_steps.login_page.ui_enter_password(self._password)
         await add_steps.login_page.ui_click_continue_button()

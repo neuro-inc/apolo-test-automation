@@ -60,7 +60,7 @@ class TestCLILogin:
     async def test_login_with_token_cli(self) -> None:
         await self.cli_common_steps.cli_login_with_token()
         await self.cli_verify_login_successfull()
-        await self.cli_verify_login_output()
+        await self.cli_verify_login_output(check_org=True)
 
     @async_step("Verify CLI login successfull")
     async def cli_verify_login_successfull(self) -> None:
