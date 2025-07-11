@@ -36,4 +36,3 @@ class ThatsItPage(BasePage):
         await self.page.wait_for_load_state("networkidle")
         await self.page.wait_for_timeout(3000)
         await self.page.reload()
-        await self.page.wait_for_load_state("load")

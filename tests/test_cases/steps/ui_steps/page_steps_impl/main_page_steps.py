@@ -12,7 +12,7 @@ class MainPageSteps:
         self._pm = page_manager
         self._data_manager = data_manager
 
-    @async_step("Open url in browser")
+    @async_step("Navigate to URL")
     async def ui_open_url_in_browser(self, url: str) -> None:
         await self._pm.main_page.open_url(url)
 
