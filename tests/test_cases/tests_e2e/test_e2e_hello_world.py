@@ -55,7 +55,6 @@ class TestHelloWorldJob:
 
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
-        await self.ui_steps.ui_login(self._email, self._password)
         await self.ui_steps.ui_pass_new_user_onboarding(
             email=self._email, username=self._username, gherkin_name="default"
         )
@@ -66,11 +65,6 @@ class TestHelloWorldJob:
         await self.ui_steps.ui_reload_page()
         await self.ui_check_job_not_in_running()
         await self.verify_job_successful("Hello World")
-
-    @async_step("Log in via UI")
-    async def login(self) -> None:
-        await self._pm.auth_page.click_log_in_button()
-        await self._pm.login_page.login(self._email, self._password)
 
     @async_step("Create default organization")
     async def create_organization(self) -> None:

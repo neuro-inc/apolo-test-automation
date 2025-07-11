@@ -50,7 +50,7 @@ class TestCLILogin:
         self._password = user.password
         self._username = user.username
         # Login via UI to get access token
-        await self.ui_steps.ui_login(self._email, self._password)
+        await self.ui_steps.ui_pass_new_user_onboarding(email=self._email, username=self._username, gherkin_name="Default-org")
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 
