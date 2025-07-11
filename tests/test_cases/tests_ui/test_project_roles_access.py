@@ -14,7 +14,6 @@ class TestUIProjectRolesAccess(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify Reader cannot modify files")
     async def test_reader_modify_files(self) -> None:
@@ -25,8 +24,8 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Reader doesn't have access to modify Files
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -88,8 +87,8 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Writer has access to modify Files
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -151,8 +150,8 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager has access to modify Files
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -215,8 +214,8 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager can invite Reader to a project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -300,8 +299,8 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager can invite Writer to a project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -385,8 +384,8 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager can invite Manager to a project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -470,8 +469,8 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager cannot invite Admin to a project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()

@@ -46,7 +46,7 @@ class TestUISignup(BaseUITest):
     async def test_invite_not_registered_user_to_org(self) -> None:
         steps = self._steps
         u2_steps = await self.init_test_steps()
-        user = self._users_manager.default_user
+        user = await steps.ui_signup_new_user_ver_link()
         second_user = self._users_manager.generate_user()
 
         self.log("User1 login")
@@ -105,8 +105,8 @@ class TestUISignup(BaseUITest):
         "Invite not registered user to organization with default project via UI"
     )
     async def test_invite_not_registered_user_to_org_with_default_proj(self) -> None:
-        user = self._users_manager.default_user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = self._users_manager.generate_user()
 

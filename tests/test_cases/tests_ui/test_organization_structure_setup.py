@@ -14,12 +14,11 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Create First Organization via UI")
     async def test_create_first_organization_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.welcome_new_user_page.ui_click_lets_do_it_button()
         await steps.join_org_page.verify_ui_page_displayed(user.username)
@@ -36,8 +35,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Create Second Organization via UI")
     async def test_create_second_organization_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.ui_pass_new_user_onboarding(gherkin_name="Default-organization")
 
@@ -58,8 +57,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Switch between organization via UI")
     async def test_switch_org_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.ui_pass_new_user_onboarding(gherkin_name="Default-organization")
 
@@ -88,8 +87,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Set default organization credits via UI")
     async def test_set_default_credits_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
@@ -137,8 +136,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Search Member of organization via UI")
     async def test_search_org_member_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         u3_steps = await self.init_test_steps()
@@ -212,8 +211,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Invite registered user without organization to organization via UI")
     async def test_invite_registered_user_without_org_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -248,8 +247,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         "Invite registered user without organization to organization with default project via UI"
     )
     async def test_invite_registered_user_without_org_default_proj_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -285,8 +284,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Invite user with organization to organization via UI")
     async def test_invite_registered_user_with_org_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         self.log("User1 login")
         await steps.ui_login(

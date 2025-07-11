@@ -14,7 +14,6 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify Admin can remove User from organization")
     async def test_admin_remove_user_from_org(self) -> None:
@@ -24,8 +23,8 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Admin can remove User from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -89,8 +88,8 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Admin can remove Manager from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -154,8 +153,8 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Admin can remove Admin from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -219,8 +218,8 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Admin cannot remove himself from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -284,8 +283,8 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Manager can remove User from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -374,8 +373,8 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Manager can remove another Manager from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -464,8 +463,8 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Manager cannot remove another Admin from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -554,8 +553,8 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Manager cannot remove himself from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 

@@ -15,12 +15,10 @@ class TestUIProjectStructureSetup(BaseUITest):
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
 
-        self._user = self._users_manager.default_user
-
     @async_title("Create First Project from main page via UI")
     async def test_create_first_proj_main_page_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.ui_pass_new_user_onboarding(gherkin_name="Default-organization")
 
@@ -44,8 +42,8 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Create First Project from top pane of main via UI")
     async def test_create_first_proj_top_pane_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.ui_pass_new_user_onboarding(gherkin_name="Default-organization")
 
@@ -73,8 +71,8 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Create second project via UI")
     async def test_create_second_proj_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.ui_pass_new_user_onboarding(gherkin_name="Default-organization")
 
@@ -112,8 +110,8 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Invite member of organization to project via UI")
     async def test_invite_org_member_to_proj_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.ui_pass_new_user_onboarding(gherkin_name="Default-organization")
 
@@ -192,8 +190,8 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Invite member that NOT in organization to project via UI")
     async def test_invite_not_org_member_to_proj_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.ui_pass_new_user_onboarding(gherkin_name="Default-organization")
 
@@ -228,8 +226,8 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Invite not registered user to project via UI")
     async def test_invite_not_registered_to_proj_via_ui(self) -> None:
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         await steps.ui_login(user.email, user.password)
         await steps.ui_pass_new_user_onboarding(gherkin_name="Default-organization")
 

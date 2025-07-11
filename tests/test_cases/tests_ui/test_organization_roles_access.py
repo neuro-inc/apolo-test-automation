@@ -14,7 +14,6 @@ class TestUIOrganizationRolesAccess(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify invited User access")
     async def test_invited_user_access(self) -> None:
@@ -28,8 +27,8 @@ class TestUIOrganizationRolesAccess(BaseUITest):
             - Cannot delete members from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -81,8 +80,8 @@ class TestUIOrganizationRolesAccess(BaseUITest):
             - Can access organization Settings
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -132,8 +131,8 @@ class TestUIOrganizationRolesAccess(BaseUITest):
             - Can access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -183,8 +182,8 @@ class TestUIOrganizationRolesAccess(BaseUITest):
             - Can access organization Settings
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -234,8 +233,8 @@ class TestUIOrganizationRolesAccess(BaseUITest):
             - Can access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 

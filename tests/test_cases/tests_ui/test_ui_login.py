@@ -1,35 +1,24 @@
 import pytest
 
 from tests.reporting_hooks.reporting import async_step, async_suite, async_title
-from tests.components.ui.page_manager import PageManager
-from tests.utils.api_helper import APIHelper
-from tests.utils.test_config_helper import ConfigManager
-from tests.utils.test_data_management.test_data import DataManager
-from tests.utils.test_data_management.users_manager import UsersManager
+from tests.test_cases.steps.ui_steps.ui_steps import UISteps
+from tests.test_cases.tests_ui.base_ui_test import BaseUITest
 
 
 @async_suite("UI Login", parent="UI Tests")
-class TestUILogin:
+class TestUILogin(BaseUITest):
     @pytest.fixture(autouse=True)
-    async def setup(
-        self,
-        page_manager: PageManager,
-        data_manager: DataManager,
-        test_config: ConfigManager,
-        users_manager: UsersManager,
-        api_helper: APIHelper,
-    ) -> None:
+    @pytest.fixture(autouse=True)
+    async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        self._pm = page_manager
-        self._data_manager = data_manager
-        self._test_config = test_config
-        self._users_manager = users_manager
-        self._api_helper = api_helper
+        steps = await self.init_test_steps()
+        self._steps: UISteps = steps
+        user = await steps.ui_signup_new_user_ver_link()
 
-        self._email = self._users_manager.default_user.email
-        self._password = self._users_manager.default_user.password
+        self._email = user.email
+        self._password = user.password
 
     @async_title("New user successful login")
     async def test_new_user_login(self) -> None:

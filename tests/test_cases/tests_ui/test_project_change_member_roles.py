@@ -14,7 +14,6 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify Admin can promote Reader to Writer")
     async def test_admin_change_reader_to_writer(self) -> None:
@@ -25,8 +24,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Reader to Writer
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -105,8 +104,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Reader to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -179,8 +178,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Reader to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -253,8 +252,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Writer to Reader
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -333,8 +332,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Writer to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -407,8 +406,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Writer to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -481,8 +480,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Manager to Reader
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -561,8 +560,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Manager to Writer
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -635,8 +634,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Manager to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -709,8 +708,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Admin to Reader
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -789,8 +788,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Admin to Writer
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -863,8 +862,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Admin to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -939,8 +938,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager can promote Reader to Writer
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -1050,8 +1049,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager can promote Reader to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -1154,8 +1153,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager cannot promote Reader to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -1260,8 +1259,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager can demote Writer to Reader
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -1371,8 +1370,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager can promote Writer to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -1475,8 +1474,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager cannot promote Writer to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -1581,8 +1580,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager cannot demote Admin to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -1687,8 +1686,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Writer cannot change member roles
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -1779,8 +1778,8 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Reader cannot change member roles
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
