@@ -14,7 +14,6 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify Admin can remove Reader from project")
     async def test_admin_remove_reader_from_proj(self) -> None:
@@ -25,8 +24,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Admin can remove Reader from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -103,8 +102,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Admin can remove Writer from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -181,8 +180,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Admin can remove Manager from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -259,8 +258,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Admin can remove another Admin from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -335,8 +334,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Admin cannot remove himself from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
 
         await steps.ui_login(
             email=user.email,
@@ -371,8 +370,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Manager can remove Reader from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -481,8 +480,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Manager can remove Writer from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -591,8 +590,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Manager can remove another Manager from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -701,8 +700,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Manager cannot remove Admin from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -810,8 +809,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Manager cannot remove himself from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
@@ -877,8 +876,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Writer cannot remove members from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
@@ -971,8 +970,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
             - Reader cannot remove members from project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()

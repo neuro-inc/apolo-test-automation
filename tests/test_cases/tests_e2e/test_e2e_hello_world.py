@@ -45,8 +45,9 @@ class TestHelloWorldJob:
         self.cli_common_steps = CLICommonSteps(
             self._test_config, self._apolo_cli, self._data_manager
         )
-        self._email = self._users_manager.default_user.email
-        self._password = self._users_manager.default_user.password
+        user = await self.ui_steps.ui_signup_new_user_ver_link()
+        self._email = user.email
+        self._password = user.password
 
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
@@ -59,6 +60,7 @@ class TestHelloWorldJob:
         await asyncio.sleep(2)
         await self.create_project("my-project")
         await self.run_hello_world_job("my-project")
+        await self.ui_steps.ui_reload_page()
         await self.ui_check_job_not_in_running()
         await self.verify_job_successful("Hello World")
 

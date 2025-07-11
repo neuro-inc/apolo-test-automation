@@ -45,8 +45,9 @@ class TestCLIOrganizationStructureSetup:
             self._test_config, self._apolo_cli, self._data_manager
         )
 
-        email = self._users_manager.default_user.email
-        password = self._users_manager.default_user.password
+        user = await self.ui_steps.ui_signup_new_user_ver_link()
+        email = user.email
+        password = user.password
         # Login via UI to get access token
         await self.ui_steps.ui_login(email, password)
         # Verify CLI client installed

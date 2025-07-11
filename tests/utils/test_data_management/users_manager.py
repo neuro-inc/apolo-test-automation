@@ -16,7 +16,7 @@ class UserData:
     password: str
 
     def __repr__(self) -> str:
-        return f"UserData(email='{self.email}', username='{self.username}', password='******')"
+        return f"UserData(email='{self.email}', username='{self.username}', password='{self.password}')"
 
 
 class UsersManager:
