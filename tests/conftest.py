@@ -28,7 +28,7 @@ if os.getenv("PYTEST_XDIST_WORKER") in [None, "main"]:
 
 # --- Suite-level test outcome tracking ---
 _SUITE_OUTCOMES: dict[str, dict[str, int]] = defaultdict(
-    lambda: {"passed": 0, "failed": 0, "skipped": 0, "rerun": 0}
+    lambda: {"passed": 0, "failed": 0, "skipped": 0, "rerun": 0, "xfail": 0}
 )
 
 
@@ -63,14 +63,6 @@ def pytest_configure(config: Config) -> None:
     logging.getLogger().info(f"📁 Logging initialized for worker: {worker_id}")
 
 
-def pytest_runtest_logstart(nodeid: str, location: tuple[str, int, str]) -> None:
-    """
-    Hook to log when a test is about to start.
-    """
-    worker_id = os.getenv("PYTEST_XDIST_WORKER", "main")
-    logging.getLogger().info(f"[{worker_id}] 🚀 Starting test: {nodeid}")
-
-
 @pytest.hookimpl
 def pytest_runtest_logreport(report: TestReport) -> None:
     if report.when != "call":
@@ -89,19 +81,23 @@ def pytest_runtest_logreport(report: TestReport) -> None:
     elif report.failed:
         _SUITE_OUTCOMES[suite_name]["failed"] += 1
     elif report.skipped:
-        _SUITE_OUTCOMES[suite_name]["skipped"] += 1
+        if hasattr(report, "wasxfail") and report.wasxfail:
+            _SUITE_OUTCOMES[suite_name]["xfail"] += 1
+        else:
+            _SUITE_OUTCOMES[suite_name]["skipped"] += 1
 
 
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     logger = logging.getLogger()
     logger.info("=" * 60)
 
-    passed = failed = skipped = rerun = 0
+    passed = failed = skipped = rerun = xfail = 0
     for suite, results in _SUITE_OUTCOMES.items():
         passed += results["passed"]
         failed += results["failed"]
         skipped += results["skipped"]
         rerun += results["rerun"]
+        xfail += results["xfail"]
 
     summary_path = os.path.join(LOGS_DIR, "summary.log")
     try:
@@ -112,7 +108,7 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
             if cleanup_note:
                 f.write(cleanup_note)
             f.write(
-                f"    PASSED: {passed}   FAILED: {failed}   SKIPPED: {skipped}   RERUNS: {rerun}\n"
+                f"    PASSED: {passed}   FAILED: {failed}   SKIPPED: {skipped}   XFAIL: {xfail}   RERUNS: {rerun}\n"
             )
         logger.info(f"📝 Summary written to: {summary_path}")
     except Exception as e:
