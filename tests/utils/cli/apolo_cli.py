@@ -166,11 +166,11 @@ class ApoloCLI:
         return True
 
     async def verify_login_output(
-            self,
-            expected_url: str,
-            expected_user: str,
-            expected_org: str | None = None,
-            expected_project: str | None = None,
+        self,
+        expected_url: str,
+        expected_user: str,
+        expected_org: str | None = None,
+        expected_project: str | None = None,
     ) -> bool:
         """
         Verify CLI login output contains expected user/org/project info.
@@ -220,7 +220,9 @@ class ApoloCLI:
         if actual_org != expected_org:
             errors.append(f"Expected org '{expected_org}', got '{actual_org}'")
         if actual_project != expected_project:
-            errors.append(f"Expected project '{expected_project}', got '{actual_project}'")
+            errors.append(
+                f"Expected project '{expected_project}', got '{actual_project}'"
+            )
 
         if errors:
             raise AssertionError("Login verification failed:\n" + "\n".join(errors))
