@@ -12,6 +12,10 @@ class MainPageSteps:
         self._pm = page_manager
         self._data_manager = data_manager
 
+    @async_step("Open url in browser")
+    async def ui_open_url_in_browser(self, url: str) -> None:
+        await self._pm.main_page.open_url(url)
+
     @async_step("Verify that Verify email message displayed")
     async def verify_ui_email_message_displayed(self) -> None:
         assert await self._pm.main_page.is_verify_email_message_displayed(), (
@@ -23,6 +27,10 @@ class MainPageSteps:
         assert await self._pm.main_page.is_user_agreement_title_displayed(), (
             "User agreement popup should be displayed!"
         )
+
+    @async_step("Wait for User Agreement popup to disappear")
+    async def ui_wait_user_agreement_disappear(self) -> None:
+        await self._pm.main_page.wait_for_agreement_popup_to_disappear()
 
     @async_step("Check agreement checkbox")
     async def ui_check_agreement_checkbox(self) -> None:

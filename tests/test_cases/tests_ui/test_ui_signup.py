@@ -49,10 +49,12 @@ class TestUISignup(BaseUITest):
         user = await steps.ui_signup_new_user_ver_link()
         second_user = self._users_manager.generate_user()
 
-        self.log("User1 login")
-        await steps.ui_login(user.email, user.password)
         self.log("User1 pass onboarding and create organization")
-        await steps.ui_pass_new_user_onboarding("default_organization")
+        await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
+            gherkin_name="default_organization",
+        )
         org = self._data_manager.get_organization_by_gherkin_name(
             gherkin_name="default_organization"
         )
@@ -110,11 +112,9 @@ class TestUISignup(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = self._users_manager.generate_user()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(

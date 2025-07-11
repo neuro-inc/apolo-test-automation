@@ -48,6 +48,7 @@ class TestHelloWorldJob:
         user = await self.ui_steps.ui_signup_new_user_ver_link()
         self._email = user.email
         self._password = user.password
+        self._username = user.username
 
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
@@ -55,7 +56,9 @@ class TestHelloWorldJob:
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
         await self.ui_steps.ui_login(self._email, self._password)
-        await self.ui_steps.ui_pass_new_user_onboarding("default")
+        await self.ui_steps.ui_pass_new_user_onboarding(
+            email=self._email, username=self._username, gherkin_name="default"
+        )
         await self.cli_common_steps.cli_login_with_token()
         await asyncio.sleep(2)
         await self.create_project("my-project")

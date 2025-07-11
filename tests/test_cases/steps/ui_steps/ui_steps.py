@@ -28,6 +28,10 @@ class UISteps(PageSteps):
     async def ui_reload_page(self) -> None:
         await self._pm.page.reload()
 
+    @async_step("Wait for timeout")
+    async def ui_wait_for_timeout(self, timeout: int) -> None:
+        await self._pm.page.wait_for_timeout(timeout)
+
     @async_step("Verify user email with the activation link")
     async def activate_email_verification_link(self, email: str) -> None:
         needs_verification, url = await self._api_helper.check_user_needs_verification(
@@ -35,42 +39,47 @@ class UISteps(PageSteps):
         )
         assert needs_verification, f"User {email} does not need verification!!!!"
 
-        await self._pm.page.goto(url)
+        await self.main_page.ui_open_url_in_browser(url)
+
+        (
+            needs_verification,
+            response,
+        ) = await self._api_helper.check_user_needs_verification(
+            email,
+        )
+        assert not needs_verification, f"User {email} still needs verification!!!!"
+        assert response == "Email already verified", (
+            f"User {email} still needs verification!!!!"
+        )
 
     @async_step("Open product base page")
     async def ui_open_product_base_page(self) -> None:
         base_url = self._test_config.base_url
-        await self._pm.page.goto(base_url)
+        await self.main_page.ui_open_url_in_browser(base_url)
         await self._pm.page.wait_for_load_state("networkidle")
 
     @async_step("Login via UI")
-    async def ui_login(self, email: str, password: str, admin: bool = False) -> None:
-        if admin:
-            await self.auth_page.ui_click_login_button()
-            await self._pm.login_page.login(email, password)
-            await self.main_page.verify_ui_page_displayed()
-            token = await extract_access_token_from_local_storage(
-                self._pm.login_page.page
-            )
-            self._test_config.cleanup_token = token
-        else:
-            await self.auth_page.ui_click_login_button()
-            await self._pm.login_page.login(email, password)
-            await self.welcome_new_user_page.verify_ui_page_displayed(email=email)
-            token = await extract_access_token_from_local_storage(
-                self._pm.login_page.page
-            )
-            self._test_config.token = token
+    async def ui_login(self, email: str, password: str) -> None:
+        await self.auth_page.ui_click_login_button()
+        await self.login_page.ui_login(email=email, password=password)
+        await self.welcome_new_user_page.verify_ui_page_displayed(email=email)
+        token = await extract_access_token_from_local_storage(self._pm.login_page.page)
+        self._test_config.token = token
 
     # ********************   Onboarding steps   ****************************
 
     @async_step("Pass new user onboarding and create first organization via UI")
-    async def ui_pass_new_user_onboarding(self, gherkin_name: str) -> None:
+    async def ui_pass_new_user_onboarding(
+        self, email: str, username: str, gherkin_name: str
+    ) -> None:
         token = await extract_access_token_from_local_storage(self._pm.login_page.page)
         self._test_config.token = token
 
         await self.welcome_new_user_page.ui_click_lets_do_it_button()
+        await self.join_org_page.verify_ui_page_displayed(username=username)
+
         await self.join_org_page.ui_click_create_organization_button()
+        await self.name_org_page.verify_ui_page_displayed()
 
         organization = self._data_manager.add_organization(gherkin_name=gherkin_name)
         org_name = organization.org_name
@@ -86,34 +95,16 @@ class UISteps(PageSteps):
     @async_step("Signup new user via UI and activate email verification link")
     async def ui_signup_new_user_ver_link(self) -> UserData:
         user = self._users_manager.generate_user()
-        await self._pm.auth_page.click_sign_up_button()
-        await self._pm.signup_page.enter_email(user.email)
-        await self._pm.signup_page.enter_password(user.password)
-        await self._pm.signup_page.click_continue_button()
-        assert await self._pm.main_page.is_verify_email_message_displayed(), (
-            "Verify email message is not displayed!!!"
-        )
+        await self.auth_page.ui_click_signup_button()
+        await self.signup_page.ui_enter_email(user.email)
+        await self.signup_page.ui_enter_password(user.password)
+        await self.signup_page.ui_click_continue_button()
+        await self.main_page.verify_ui_email_message_displayed()
 
-        needs_verification, url = await self._api_helper.check_user_needs_verification(
-            user.email,
-        )
-        assert needs_verification, f"User {user.email} does not need verification!!!!"
-
-        await self._pm.page.goto(url)
-
-        (
-            needs_verification,
-            response,
-        ) = await self._api_helper.check_user_needs_verification(
-            user.email,
-        )
-        assert not needs_verification, f"User {user.email} still needs verification!!!!"
-        assert response == "Email already verified", (
-            f"User {user.email} still needs verification!!!!"
-        )
+        await self.activate_email_verification_link(email=user.email)
 
         base_url = self._test_config.base_url
-        await self._pm.page.goto(base_url)
+        await self.main_page.ui_open_url_in_browser(base_url)
         await self.auth_page.verify_ui_page_displayed()
 
         await self.auth_page.ui_click_login_button()
@@ -125,6 +116,8 @@ class UISteps(PageSteps):
 
         await self.main_page.ui_check_agreement_checkbox()
         await self.main_page.ui_click_i_agree_button()
+        await self.main_page.ui_wait_user_agreement_disappear()
+        await self.ui_wait_for_timeout(3000)
         await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
 
         return user

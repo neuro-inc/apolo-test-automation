@@ -18,6 +18,10 @@ class MainPage(BasePage):
             and await self._get_jobs_button().expect_to_be_loaded()
         )
 
+    async def open_url(self, url: str) -> None:
+        self.log(f"Opening page {url}")
+        await self.page.goto(url)
+
     # **************************  NO PROJECT CREATED  *********************************************
 
     def _get_create_first_project_text_field(self, org_name: str) -> BaseElement:
@@ -118,6 +122,9 @@ class MainPage(BasePage):
     async def is_user_agreement_title_displayed(self) -> bool:
         self.log("Check if user_agreement pop up displayed")
         return await self._get_user_agreement_title().is_visible()
+
+    async def wait_for_agreement_popup_to_disappear(self) -> None:
+        await self._get_user_agreement_title().locator.wait_for(state="detached")
 
     def _get_user_agreement_checkbox(self) -> BaseElement:
         return BaseElement(
