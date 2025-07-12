@@ -20,18 +20,8 @@ jobs:
         run: |
             echo "DEST=run-test-latest" >> "$GITHUB_ENV"
 
-      - name: Check disk usage before checkout
-        run: |
-          echo "Disk space before checkout:"
-          df -h
-
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Check disk usage after checkout
-        run: |
-          echo "Disk space after checkout:"
-          df -h
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -41,20 +31,8 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6
 
-      - name: Check disk usage before installing playwright
-        run: |
-          df -h
-
       - name: Install Playwright browsers
         run: uv run python -m playwright install --with-deps
-
-      - name: Check disk usage after installing playwright
-        run: |
-          df -h
-
-      - name: Check disk usage before installing allure
-        run: |
-          df -h
 
       - name: Install Allure
         run: |
@@ -65,30 +43,10 @@ jobs:
           export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
           allure --version
 
-      - name: Check disk usage after install allure
-        run: |
-          df -h
-
-      - name: Check disk usage before restoring allure history
-        run: |
-          df -h
-
-      - name: Restore previous Allure history
-        run: |
-          git clone --depth=1 --branch=gh-pages https://github.com/${{ github.repository }} gh-pages
-          mkdir -p reports/allure-results/history
-          cp -r gh-pages/run-test-latest/history reports/allure-results/history || echo "No previous history found"
-
-      - name: Check disk usage after restoring allure history
-        run: |
-          df -h
-
       - name: Run tests
         id: run_tests
         continue-on-error: true
         run: |
-          echo "Disk space before running tests:"
-          df -h
           uv run pytest tests -n 3 --dist loadfile --testmon
           echo "Disk space after running tests:"
           df -h
