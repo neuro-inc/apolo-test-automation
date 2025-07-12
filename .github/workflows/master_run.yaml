@@ -53,7 +53,11 @@ jobs:
         id: run_tests
         continue-on-error: true
         run: |
+          echo "Disk space before running tests:"
+          df -h
           uv run pytest tests -n 3 --testmon
+          echo "Disk space after running tests:"
+          df -h
 
       - name: Save .testmondata to branch
         if: always()
