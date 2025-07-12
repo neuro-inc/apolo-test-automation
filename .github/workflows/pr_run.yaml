@@ -143,6 +143,9 @@ jobs:
               body: comment
             });
 
+      - name: Clean test artifacts to save space
+        run: rm -rf reports/logs reports/screenshots reports/allure-results
+
       - name: Fail job if tests failed
         if: steps.run_tests.outcome != 'success'
         run: exit 1
