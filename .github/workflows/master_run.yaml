@@ -20,8 +20,18 @@ jobs:
         run: |
             echo "DEST=run-test-latest" >> "$GITHUB_ENV"
 
+      - name: Check disk usage before checkout
+        run: |
+          echo "Disk space before checkout:"
+          df -h
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Check disk usage after checkout
+        run: |
+          echo "Disk space after checkout:"
+          df -h
 
       - name: Cleanup large temporary Git pack files
         run: |
