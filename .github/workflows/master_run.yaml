@@ -3,7 +3,6 @@ name: Nightly Tests Run Workflow
 on:
   schedule:
     - cron: '0 1 * * *'
-  workflow_dispatch:
 permissions:
   contents: write
   pages: write
@@ -11,5 +10,98 @@ permissions:
 
 jobs:
   test:
-    uses: ./.github/workflows/run_test.yaml
-    secrets: inherit
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set destination directory
+        id: set-destination
+        run: |
+            echo "DEST=run-test-latest" >> "$GITHUB_ENV"
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install Playwright browsers
+        run: uv run python -m playwright install --with-deps
+
+      - name: Install Allure
+        run: |
+          mkdir -p allure-bin
+          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+          unzip -q allure.zip -d allure-bin
+          echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
+          export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
+          allure --version
+
+      - name: Restore previous Allure history
+        run: |
+          git clone --depth=1 --branch=gh-pages https://github.com/${{ github.repository }} gh-pages
+          mkdir -p reports/allure-results/history
+          cp -r gh-pages/run-test-latest/history reports/allure-results/history || echo "No previous history found"
+
+      - name: Run tests
+        id: run_tests
+        continue-on-error: true
+        run: |
+          uv run pytest tests -n 3 --testmon
+
+      - name: Save .testmondata to branch
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "ci@github.com"
+
+          git fetch
+          git checkout -B testmon-cache origin/testmon-cache || git checkout --orphan testmon-cache
+
+          cp .testmondata . || echo "No testmondata found"
+          git add .testmondata
+          git commit -m "Update testmondata from nightly run" || echo "No changes"
+          git push origin testmon-cache --force
+
+      - name: Read test summary
+        if: always()
+        id: summary
+        run: |
+          echo "summary_text<<EOF" >> $GITHUB_OUTPUT
+          cat reports/logs/summary.log >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+            REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
+
+            {
+              echo "*📊 Nightly Test Report*"
+              echo '```'
+              cat reports/logs/summary.log || echo "No summary found"
+              echo '```'
+              echo "<$REPORT_URL|View Report>"
+            } > slack_message.txt
+
+            jq -Rs '{text: .}' < slack_message.txt > slack_payload.json
+            curl -X POST -H 'Content-type: application/json' --data @slack_payload.json "$SLACK_WEBHOOK_URL"
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports/allure-report
+          publish_branch: gh-pages
+          destination_dir: ${{ env.DEST }}

@@ -21,10 +21,14 @@ CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 if os.getenv("PYTEST_XDIST_WORKER") in [None, "main"]:
     for path in [LOGS_DIR, SCREENSHOTS_DIR, ALLURE_RESULTS_DIR, ALLURE_REPORT_DIR]:
         os.makedirs(path, exist_ok=True)
-    # Clean old report files
-    for root, dirs, files in os.walk(BASE_REPORT_DIR):
-        for f in files:
-            os.remove(os.path.join(root, f))
+        # Clean old report files (except history)
+        for root, dirs, files in os.walk(BASE_REPORT_DIR):
+            for f in files:
+                full_path = os.path.join(root, f)
+                # Skip deleting history
+                if "allure-results/history" in full_path.replace("\\", "/"):
+                    continue
+                os.remove(full_path)
 
 # --- Suite-level test outcome tracking ---
 _SUITE_OUTCOMES: dict[str, dict[str, int]] = defaultdict(

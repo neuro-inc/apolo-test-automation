@@ -17,11 +17,11 @@ jobs:
           ref: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Delete reports older than 3 moths (~90 days)
+      - name: Delete reports older than 3 days
         run: |
           echo "Checking for old folders to delete..."
           now=$(date +%s)
-          keep_days=90
+          keep_days=3
           deleted_any=false
 
           for dir in run-*; do
