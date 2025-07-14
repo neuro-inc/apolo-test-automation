@@ -11,9 +11,9 @@ permissions:
 
 jobs:
   pre-commit:
+    if: !endsWith(github.actor, '[bot]')
     name: Pre-commit checks
     runs-on: ubuntu-latest
-    if: !endsWith(github.actor, '[bot]')
     timeout-minutes: 10
     steps:
       - name: Checkout commit
@@ -34,9 +34,9 @@ jobs:
           uv run pre-commit run --all-files
 
   mypy:
+    if: !endsWith(github.actor, '[bot]')
     name: Mypy
     runs-on: ubuntu-latest
-    if: !endsWith(github.actor, '[bot]')
     timeout-minutes: 10
     steps:
       - name: Checkout commit
@@ -56,9 +56,9 @@ jobs:
           uv run mypy
 
   run-tests:
+    if: !endsWith(github.actor, '[bot]')
     name: Run Tests
     runs-on: ubuntu-latest
-    if: !endsWith(github.actor, '[bot]')
 
     steps:
       - name: Set destination directory
