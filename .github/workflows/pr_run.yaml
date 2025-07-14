@@ -94,7 +94,7 @@ jobs:
         id: run_tests
         run: |
           set +e
-          uv run pytest tests -n 3 --testmon --testmon-nocollect --tb=short | tee result.log
+          uv run pytest tests -n 3 --testmon --tb=short -o testmon_verbose=2 | tee result.log
           exit_code=${PIPESTATUS[0]}
 
           if [[ "$exit_code" == 5 ]]; then
