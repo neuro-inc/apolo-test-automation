@@ -13,6 +13,7 @@ jobs:
   pre-commit:
     name: Pre-commit checks
     runs-on: ubuntu-latest
+    if: !endsWith(github.actor, '[bot]')
     timeout-minutes: 10
     steps:
       - name: Checkout commit
@@ -35,6 +36,7 @@ jobs:
   mypy:
     name: Mypy
     runs-on: ubuntu-latest
+    if: !endsWith(github.actor, '[bot]')
     timeout-minutes: 10
     steps:
       - name: Checkout commit
@@ -56,6 +58,7 @@ jobs:
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
+    if: !endsWith(github.actor, '[bot]')
 
     steps:
       - name: Set destination directory
