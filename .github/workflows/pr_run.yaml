@@ -85,25 +85,28 @@ jobs:
           export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
           allure --version
 
-      - name: Run changed tests only
+      - name: Install pytest-testmon-lite from GitHub
+        run: uv pip install git+https://github.com/wkeeling/pytest-testmon-lite.git
+
+      - name: Run changed tests with pytest-testmon-lite
         id: run_tests
         run: |
           set +e
           git fetch origin master
 
-          # Get list of changed test files only
-          changed_files=$(git diff --name-only origin/master...HEAD | grep '^tests/.*test_.*\.py$' || true)
+          echo "Collecting changed tests with pytest-testmon-lite:"
+          changed=$(uv run pytest --testmon-lite --testmon-lite-diff=origin/master --collect-only -q)
 
-          if [[ -z "$changed_files" ]]; then
-            echo "✅ No changed test files found. Skipping test execution."
+          if [[ -z "$changed" ]]; then
+            echo "✅ No changed tests found."
             echo "no_tests=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          echo "Running tests in changed files:"
-          echo "$changed_files"
+          echo "Running changed tests:"
+          echo "$changed"
 
-          uv run pytest -n 3 --tb=short $changed_files | tee result.log
+          uv run pytest --testmon-lite --testmon-lite-diff=origin/master -n 3 --tb=short | tee result.log
           exit_code=${PIPESTATUS[0]}
 
           if [[ "$exit_code" != 0 ]]; then
@@ -122,7 +125,7 @@ jobs:
         run: |
           if [[ "${{ steps.run_tests.outputs.no_tests }}" == "true" ]]; then
             echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-            echo "✅ No changed test files in this PR." >> $GITHUB_OUTPUT
+            echo "✅ No changed tests found in this PR." >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           else
             echo "summary_text<<EOF" >> $GITHUB_OUTPUT
@@ -176,6 +179,7 @@ jobs:
       - name: Fail if tests failed
         if: steps.run_tests.outputs.no_tests == 'false' && steps.run_tests.outcome != 'success'
         run: exit 1
+
 
   check:
     name: Check

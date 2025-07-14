@@ -45,7 +45,23 @@ jobs:
       - name: Run tests
         id: run_tests
         run: |
-          uv run pytest tests -n 3 --dist loadfile
+          uv run pytest tests -n 3 --dist loadfile --testmon
+          echo "Disk space after running tests:"
+          df -h
+
+      - name: Save .testmondata to branch
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "ci@github.com"
+
+          git fetch
+          git checkout -B testmon-cache origin/testmon-cache || git checkout --orphan testmon-cache
+
+          cp .testmondata . || echo "No testmondata found"
+          git add .testmondata
+          git commit -m "Update testmondata from nightly run" || echo "No changes"
+          git push origin testmon-cache --force
 
       - name: Read test summary
         if: always()
