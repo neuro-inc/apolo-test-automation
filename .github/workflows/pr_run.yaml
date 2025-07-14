@@ -90,11 +90,26 @@ jobs:
           git fetch origin testmon-cache
           git checkout origin/testmon-cache -- .testmondata || echo "No testmondata found"
 
+      - name: Confirm testmondata presence
+        run: |
+          if [ -f .testmondata ]; then
+            echo "✅ .testmondata exists and will be used"
+            file .testmondata
+            head -n 10 .testmondata || true
+          else
+            echo "❌ .testmondata not found!"
+          fi
+
+
       - name: Run tests
         id: run_tests
         run: |
           set +e
+          echo "Testmon env debug:"
+          uv run python -c "from testmon.process_code_change import get_environment_id; print('env hash:', get_environment_id())"
+
           uv run pytest tests -n 3 --testmon --tb=short -o testmon_verbose=2 | tee result.log
+
           exit_code=${PIPESTATUS[0]}
 
           if [[ "$exit_code" == 5 ]]; then
