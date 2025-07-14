@@ -41,6 +41,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.main_page_steps import (
 from tests.test_cases.steps.ui_steps.page_steps_impl.name_org_page_steps import (
     NameOrgPageSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.new_folder_popup_steps import (
+    NewFolderPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.no_proj_popup_steps import (
     NoProjPopupSteps,
 )
@@ -119,3 +122,4 @@ class PageSteps:
         self.edit_proj_member_popup = EditProjMemberPopupSteps(self._pm)
         self.files_page = FilesPageSteps(self._pm)
         self.create_org_popup = CreateOrgPopupSteps(self._pm)
+        self.new_folder_popup = NewFolderPopupSteps(self._pm)

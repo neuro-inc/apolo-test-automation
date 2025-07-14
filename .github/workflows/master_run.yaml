@@ -7,7 +7,6 @@ on:
 permissions:
   contents: write
   pages: write
-  pull-requests: write
 
 jobs:
   test:
@@ -45,7 +44,6 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        continue-on-error: true
         run: |
           uv run pytest tests -n 3 --dist loadfile --testmon
           echo "Disk space after running tests:"
@@ -104,4 +102,5 @@ jobs:
           destination_dir: ${{ env.DEST }}
 
       - name: Clean test artifacts to save space
+        if: always()
         run: rm -rf reports/logs reports/screenshots reports/allure-results
