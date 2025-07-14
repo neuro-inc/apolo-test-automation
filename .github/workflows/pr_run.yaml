@@ -33,26 +33,25 @@ jobs:
           uv run pre-commit run --all-files
 
   mypy:
-      name: Mypy
-      runs-on: ubuntu-latest
-      timeout-minutes: 10
-      steps:
-        - name: Checkout commit
-          uses: actions/checkout@v4
-        - name: Install Python
-          uses: actions/setup-python@v5
-          with:
-            python-version-file: .python-version
-        - name: Install uv
-          uses: astral-sh/setup-uv@v6
-          with:
-            enable-cache: true
-        - name: Sync
-          run: uv sync
-        - name: Mypy
-          run: |
-            uv run mypy
-
+    name: Mypy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v4
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Sync
+        run: uv sync
+      - name: Mypy
+        run: |
+          uv run mypy
 
   run-tests:
     name: Run Tests
@@ -61,8 +60,7 @@ jobs:
     steps:
       - name: Set destination directory
         id: set-destination
-        run: |
-            echo "DEST=run-$(date +'%Y-%m-%d')-${{ github.run_number }}" >> "$GITHUB_ENV"
+        run: echo "DEST=run-$(date +'%Y-%m-%d')-${{ github.run_number }}" >> "$GITHUB_ENV"
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -94,15 +92,38 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        run: uv run pytest tests -n 3 --testmon
+        run: |
+          set +e
+          uv run pytest tests -n 3 --testmon --testmon-nocollect --tb=short | tee result.log
+          exit_code=${PIPESTATUS[0]}
+
+          if [[ "$exit_code" == 5 ]]; then
+            echo "✅ No affected tests found. Marking successful."
+            echo "no_tests=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          elif [[ "$exit_code" != 0 ]]; then
+            echo "❌ Tests failed."
+            echo "no_tests=false" >> "$GITHUB_OUTPUT"
+            exit $exit_code
+          else
+            echo "✅ Tests passed."
+            echo "no_tests=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
       - name: Read test summary
         if: always()
         id: summary
         run: |
-          echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-          cat reports/logs/summary.log >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          if [[ "${{ steps.run_tests.outputs.no_tests }}" == "true" ]]; then
+            echo "summary_text<<EOF" >> $GITHUB_OUTPUT
+            echo "✅ No tests were affected by this change." >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "summary_text<<EOF" >> $GITHUB_OUTPUT
+            cat reports/logs/summary.log || echo "No summary found" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
 
       - name: Deploy to GitHub Pages
         if: always()
@@ -147,6 +168,9 @@ jobs:
         if: always()
         run: rm -rf reports/logs reports/screenshots reports/allure-results
 
+      - name: Fail if tests failed
+        if: steps.run_tests.outputs.no_tests == 'false' && steps.run_tests.outcome != 'success'
+        run: exit 1
 
   check:
     name: Check
