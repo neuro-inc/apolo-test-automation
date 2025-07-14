@@ -32,6 +32,6 @@ class ThatsItPage(BasePage):
     async def click_lets_do_it_button(self) -> None:
         self.log("Click let's do it button")
         await self._lets_do_it_button.click()
-        await self.page.wait_for_load_state("networkidle")
-        await self.page.wait_for_timeout(3000)
+        await self.page.wait_for_timeout(2000)
+        await self.page.wait_for_load_state("networkidle", timeout=10000)
         await self.page.reload()
