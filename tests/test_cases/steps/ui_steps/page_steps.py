@@ -8,6 +8,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.auth_page_steps import (
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps_page_steps import (
     AppsPageSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.create_org_popup_steps import (
+    CreateOrgPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.create_proj_popup_steps import (
     CreateProjPopupSteps,
 )
@@ -29,11 +32,17 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.invite_proj_member_popup_st
 from tests.test_cases.steps.ui_steps.page_steps_impl.join_org_page_steps import (
     JoinOrgPageSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.login_page_steps import (
+    LoginPageSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.main_page_steps import (
     MainPageSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.name_org_page_steps import (
     NameOrgPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.new_folder_popup_steps import (
+    NewFolderPopupSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.no_proj_popup_steps import (
     NoProjPopupSteps,
@@ -88,6 +97,7 @@ class PageSteps:
 
         self.apps_page = AppsPageSteps(self._pm)
         self.auth_page = AuthPageSteps(self._pm)
+        self.login_page = LoginPageSteps(self._pm)
         self.create_proj_popup = CreateProjPopupSteps(self._pm)
         self.invite_org_member_popup = InviteOrgMemberPopupSteps(self._pm)
         self.invite_proj_member_popup = InviteProjMemberPopupSteps(self._pm)
@@ -111,3 +121,5 @@ class PageSteps:
         self.remove_proj_member_popup = RemoveProjMemberPopupSteps(self._pm)
         self.edit_proj_member_popup = EditProjMemberPopupSteps(self._pm)
         self.files_page = FilesPageSteps(self._pm)
+        self.create_org_popup = CreateOrgPopupSteps(self._pm)
+        self.new_folder_popup = NewFolderPopupSteps(self._pm)

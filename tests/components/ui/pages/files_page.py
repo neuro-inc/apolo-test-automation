@@ -36,6 +36,9 @@ class FilesPage(BasePage):
             has_text="Folder up",
         )
 
+    def _get_folder_btn(self, name: str) -> BaseElement:
+        return BaseElement(self.page, f'button:has(p[title="{name}"]:text("{name}"))')
+
     async def is_add_folder_btn_enabled(self) -> bool:
         self.log("Check if Add folder button is enabled")
         return await self._get_add_folder_btn().is_enabled()
@@ -51,3 +54,7 @@ class FilesPage(BasePage):
     async def click_upload_btn(self) -> None:
         self.log("Click Upload button")
         await self._get_upload_btn().click()
+
+    async def is_folder_btn_displayed(self, name: str) -> bool:
+        self.log(f"Check if Folder {name} button is displayed")
+        return await self._get_folder_btn(name).is_visible()

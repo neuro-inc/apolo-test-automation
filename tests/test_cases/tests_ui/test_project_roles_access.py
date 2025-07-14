@@ -14,7 +14,6 @@ class TestUIProjectRolesAccess(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify Reader cannot modify files")
     async def test_reader_modify_files(self) -> None:
@@ -25,16 +24,14 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Reader doesn't have access to modify Files
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -88,16 +85,14 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Writer has access to modify Files
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -151,16 +146,14 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager has access to modify Files
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -215,18 +208,16 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager can invite Reader to a project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -300,18 +291,16 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager can invite Writer to a project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -385,18 +374,16 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager can invite Manager to a project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -470,18 +457,16 @@ class TestUIProjectRolesAccess(BaseUITest):
             - Manager cannot invite Admin to a project
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -559,7 +544,7 @@ class TestUIProjectRolesAccess(BaseUITest):
         await u2_steps.invite_proj_member_popup.verify_ui_invite_bth_enabled()
 
         await u2_steps.invite_proj_member_popup.ui_click_invite_btn()
-        await u2_steps._pm.page.wait_for_timeout(2000)
+        await u2_steps.ui_wait_for_timeout(2000)
         await u2_steps.invite_proj_member_popup.verify_ui_popup_displayed(
             org_name=org.org_name, proj_name=proj.project_name
         )

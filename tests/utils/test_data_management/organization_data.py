@@ -18,7 +18,7 @@ class OrganizationData:
         return f"Organization(org_name={self._org_name}, gherkin_name={self._gherkin_name})"
 
     @staticmethod
-    def generate_random_name(prefix: str = "regression-org-", length: int = 10) -> str:
+    def generate_random_name(prefix: str = "regression-org-", length: int = 12) -> str:
         characters = string.ascii_lowercase + string.digits
         return f"{prefix}{''.join(random.choices(characters, k=length))}"
 

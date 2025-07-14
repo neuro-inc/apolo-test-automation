@@ -18,7 +18,6 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify Admin can change User role to Manager")
     async def test_admin_change_user_to_manager(self) -> None:
@@ -31,16 +30,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
                 - Can access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         add_steps = await self.init_test_steps()
         add_user = await add_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -99,16 +96,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
                 - Can access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         add_steps = await self.init_test_steps()
         add_user = await add_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -167,16 +162,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
                 - Cannot access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         add_steps = await self.init_test_steps()
         add_user = await add_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -236,16 +229,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
                 - Can access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         add_steps = await self.init_test_steps()
         add_user = await add_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -306,16 +297,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
                 - Cannot access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         add_steps = await self.init_test_steps()
         add_user = await add_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -376,16 +365,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
                 - Can access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         add_steps = await self.init_test_steps()
         add_user = await add_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -443,16 +430,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
             - Admin cannot demote himself to User
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -494,7 +479,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_org_user_popup.ui_select_new_user_role(role="User")
         await u2_steps.edit_org_user_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.edit_org_user_popup.verify_ui_popup_displayed(
             username=second_user.username
         )
@@ -511,16 +496,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
             - Admin cannot demote himself to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -562,7 +545,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_org_user_popup.ui_select_new_user_role(role="Manager")
         await u2_steps.edit_org_user_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.edit_org_user_popup.verify_ui_popup_displayed(
             username=second_user.username
         )
@@ -582,17 +565,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
                 - Can access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -676,17 +657,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
             - Manager cannot change user role from User to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -747,7 +726,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_org_user_popup.ui_select_new_user_role(role="Admin")
         await u2_steps.edit_org_user_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.edit_org_user_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -775,17 +754,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
                 - Cannot access organization Billing
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -869,17 +846,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
             - Manager cannot change user role from Manager to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -940,7 +915,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_org_user_popup.ui_select_new_user_role(role="Admin")
         await u2_steps.edit_org_user_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.edit_org_user_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -965,17 +940,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
             - Manager cannot change user role from Admin to User
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1036,7 +1009,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_org_user_popup.ui_select_new_user_role(role="User")
         await u2_steps.edit_org_user_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.edit_org_user_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -1061,17 +1034,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
             - Manager cannot change user role from Admin to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1132,7 +1103,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_org_user_popup.ui_select_new_user_role(role="Manager")
         await u2_steps.edit_org_user_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.edit_org_user_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -1157,16 +1128,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
             - Manager cannot demote himself to User
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1208,7 +1177,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_org_user_popup.ui_select_new_user_role(role="User")
         await u2_steps.edit_org_user_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.edit_org_user_popup.verify_ui_popup_displayed(
             username=second_user.username
         )

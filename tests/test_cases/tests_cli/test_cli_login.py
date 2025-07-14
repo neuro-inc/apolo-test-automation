@@ -45,11 +45,14 @@ class TestCLILogin:
             self._test_config, self._apolo_cli, self._data_manager
         )
 
-        self._email = self._users_manager.default_user.email
-        self._password = self._users_manager.default_user.password
-        self._username = self._users_manager.default_user.username
+        user = await self.ui_steps.ui_signup_new_user_ver_link()
+        self._email = user.email
+        self._password = user.password
+        self._username = user.username
         # Login via UI to get access token
-        await self.ui_steps.ui_login(self._email, self._password)
+        await self.ui_steps.ui_pass_new_user_onboarding(
+            email=self._email, username=self._username, gherkin_name="Default-org"
+        )
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 
@@ -57,7 +60,7 @@ class TestCLILogin:
     async def test_login_with_token_cli(self) -> None:
         await self.cli_common_steps.cli_login_with_token()
         await self.cli_verify_login_successfull()
-        await self.cli_verify_login_output()
+        await self.cli_verify_login_output(check_org=True)
 
     @async_step("Verify CLI login successfull")
     async def cli_verify_login_successfull(self) -> None:

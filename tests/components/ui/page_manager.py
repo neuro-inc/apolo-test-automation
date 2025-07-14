@@ -2,6 +2,7 @@ from playwright.async_api import Page
 
 from tests.components.ui.pages.apps_page import AppsPage
 from tests.components.ui.pages.auth_page import AuthPage
+from tests.components.ui.pages.create_organization_popup import CreateOrganizationPopup
 from tests.components.ui.pages.create_project_popup import CreateProjectPopup
 from tests.components.ui.pages.edit_org_user_popup import EditOrgUserPopup
 from tests.components.ui.pages.edit_proj_member_popup import EditProjMemberPopup
@@ -11,6 +12,7 @@ from tests.components.ui.pages.invite_project_memeber_popup import InviteProjMem
 from tests.components.ui.pages.jobs_page import JobsPage
 from tests.components.ui.pages.login_page import LoginPage
 from tests.components.ui.pages.main_page import MainPage
+from tests.components.ui.pages.new_folder_popup import NewFolderPopup
 from tests.components.ui.pages.no_project_popup import NoProjectPopup
 from tests.components.ui.pages.onboarding_pages.invited_to_org_page import (
     InvitedToOrgPage,
@@ -75,3 +77,5 @@ class PageManager:
         self.remove_proj_member_popup = RemoveProjMemberPopup(page)
         self.edit_proj_member_popup = EditProjMemberPopup(page)
         self.files_page = FilesPage(page)
+        self.create_org_popup = CreateOrganizationPopup(page)
+        self.new_folder_popup = NewFolderPopup(page)

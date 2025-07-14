@@ -64,7 +64,11 @@ class OrganizationSettingsPopup(BasePage):
     def _get_create_new_organization_button(self) -> BaseElement:
         return BaseElement(self.page, "button", has_text="Create new organization")
 
-    async def click_create_new_organization_button(self) -> None:
+    async def is_create_new_organization_btn_displayed(self) -> bool:
+        self.log("Check if Create new organization button displayed")
+        return await self._get_create_new_organization_button().is_visible()
+
+    async def click_create_new_org_btn(self) -> None:
         self.log("Click Create new organization button")
         await self._get_create_new_organization_button().click()
 

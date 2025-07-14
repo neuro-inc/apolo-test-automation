@@ -169,19 +169,48 @@ class ApoloCLI:
         self,
         expected_url: str,
         expected_user: str,
-        expected_org: str | None,
-        expected_project: str | None,
+        expected_org: str | None = None,
+        expected_project: str | None = None,
     ) -> bool:
+        """
+        Verify CLI login output contains expected user/org/project info.
+
+        Parameters
+        ----------
+        expected_url : str
+            The expected base URL shown in the CLI output.
+        expected_user : str
+            Username to match in CLI output.
+        expected_org : str | None, default=None
+            Expected organization (or None if not assigned).
+        expected_project : str | None, default=None
+            Expected project (or None if not assigned).
+
+        Returns
+        -------
+        bool
+            True if all fields match; raises AssertionError otherwise.
+        """
+
+        def _normalize(value: str | None) -> str | None:
+            if value is None or value.strip(".,") == "None":
+                return None
+            return value.strip(".,").strip()
+
         output = self._last_command_output or ""
+
         url_match = re.search(r"Logged into (\S+)", output)
         user_match = re.search(r"as (\S+)", output)
-        org_match = re.search(r"org is ([\w-]+)", output)
-        project_match = re.search(r"project is ([\w-]+)", output)
+        org_match = re.search(r"org is ([\w\-]+)", output)
+        project_match = re.search(r"project is ([\w\-]+)", output)
 
-        actual_url = url_match.group(1) if url_match else None
-        actual_user = user_match.group(1) if user_match else None
-        actual_org = org_match.group(1) if org_match else None
-        actual_project = project_match.group(1) if project_match else None
+        actual_url = _normalize(url_match.group(1) if url_match else None)
+        actual_user = _normalize(user_match.group(1) if user_match else None)
+        actual_org = _normalize(org_match.group(1) if org_match else None)
+        actual_project = _normalize(project_match.group(1) if project_match else None)
+
+        expected_org = _normalize(expected_org)
+        expected_project = _normalize(expected_project)
 
         errors: list[str] = []
         if actual_url != expected_url:
@@ -199,6 +228,6 @@ class ApoloCLI:
             raise AssertionError("Login verification failed:\n" + "\n".join(errors))
 
         logger.info(
-            f"\nLogin verification passed for user '{actual_user}' with org '{actual_org}' and project '{actual_project}'"
+            f"✅ Login verification passed for user '{actual_user}' with org '{actual_org}' and project '{actual_project}'"
         )
         return True

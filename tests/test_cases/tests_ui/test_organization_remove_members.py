@@ -14,7 +14,6 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify Admin can remove User from organization")
     async def test_admin_remove_user_from_org(self) -> None:
@@ -24,16 +23,14 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Admin can remove User from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -89,16 +86,14 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Admin can remove Manager from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -154,16 +149,14 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Admin can remove Admin from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -219,16 +212,14 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Admin cannot remove himself from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -267,7 +258,7 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         )
 
         await u2_steps.remove_org_user_popup.ui_click_remove_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.remove_org_user_popup.verify_ui_popup_displayed(
             username=second_user.username
         )
@@ -284,17 +275,15 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Manager can remove User from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -374,17 +363,15 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Manager can remove another Manager from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -464,17 +451,15 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Manager cannot remove another Admin from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -554,16 +539,14 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
             - Manager cannot remove himself from organization
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -602,7 +585,7 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         )
 
         await u2_steps.remove_org_user_popup.ui_click_remove_button()
-        await u2_steps._pm.page.wait_for_timeout(1000)
+        await u2_steps.ui_wait_for_timeout(1000)
         await u2_steps.remove_org_user_popup.verify_ui_popup_displayed(
             username=second_user.username
         )

@@ -14,7 +14,6 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
         """
         steps = await self.init_test_steps()
         self._steps: UISteps = steps
-        self._user = self._users_manager.default_user
 
     @async_title("Verify Admin can promote Reader to Writer")
     async def test_admin_change_reader_to_writer(self) -> None:
@@ -25,16 +24,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Reader to Writer
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -105,16 +102,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Reader to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -179,16 +174,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Reader to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -253,16 +246,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Writer to Reader
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -333,16 +324,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Writer to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -407,16 +396,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Writer to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -481,16 +468,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Manager to Reader
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -561,16 +546,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Manager to Writer
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -635,16 +618,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can promote Manager to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -709,16 +690,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Admin to Reader
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -789,16 +768,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Admin to Writer
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -863,16 +840,14 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Admin can demote Admin to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -939,18 +914,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager can promote Reader to Writer
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1032,7 +1005,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             username=third_user.username, role="Writer"
         )
 
-        await u3_steps._pm.page.wait_for_timeout(3000)
+        await u3_steps.ui_wait_for_timeout(3000)
         await u3_steps.ui_reload_page()
         await u3_steps.main_page.ui_click_files_btn()
         await u3_steps.files_page.verify_ui_page_displayed()
@@ -1050,18 +1023,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager can promote Reader to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1154,18 +1125,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager cannot promote Reader to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1240,7 +1209,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_proj_member_popup.ui_select_new_user_role(role="Admin")
         await u2_steps.edit_proj_member_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(2000)
+        await u2_steps.ui_wait_for_timeout(2000)
         await u2_steps.edit_proj_member_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -1260,18 +1229,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager can demote Writer to Reader
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1353,7 +1320,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             username=third_user.username, role="Reader"
         )
 
-        await u3_steps._pm.page.wait_for_timeout(3000)
+        await u3_steps.ui_wait_for_timeout(3000)
         await u3_steps.ui_reload_page()
         await u3_steps.main_page.ui_click_files_btn()
         await u3_steps.files_page.verify_ui_page_displayed()
@@ -1371,18 +1338,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager can promote Writer to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1475,18 +1440,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager cannot promote Writer to Admin
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1561,7 +1524,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_proj_member_popup.ui_select_new_user_role(role="Admin")
         await u2_steps.edit_proj_member_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(2000)
+        await u2_steps.ui_wait_for_timeout(2000)
         await u2_steps.edit_proj_member_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -1581,18 +1544,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Manager cannot demote Admin to Manager
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1667,7 +1628,7 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
 
         await u2_steps.edit_proj_member_popup.ui_select_new_user_role(role="Manager")
         await u2_steps.edit_proj_member_popup.ui_click_save_button()
-        await u2_steps._pm.page.wait_for_timeout(2000)
+        await u2_steps.ui_wait_for_timeout(2000)
         await u2_steps.edit_proj_member_popup.verify_ui_popup_displayed(
             username=third_user.username
         )
@@ -1687,18 +1648,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Writer cannot change member roles
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1779,18 +1738,16 @@ class TestUIProjectChangeMemberRoles(BaseUITest):
             - Reader cannot change member roles
         """
 
-        user = self._user
         steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         third_user = await u3_steps.ui_signup_new_user_ver_link()
 
-        await steps.ui_login(
-            email=user.email,
-            password=user.password,
-        )
         await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()

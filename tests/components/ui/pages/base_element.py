@@ -45,8 +45,6 @@ class BaseElement:
         except TimeoutError:
             return False
 
-    from playwright.async_api import TimeoutError as PlaywrightTimeoutError
-
     async def click(self, timeout: int = 10000, interval: int = 500) -> None:
         """
         Attempts to click the element after verifying it is attached, visible, and enabled.
@@ -64,6 +62,7 @@ class BaseElement:
         while elapsed < timeout:
             try:
                 # Re-resolve locator to avoid stale references
+                await self.page.wait_for_timeout(interval)
                 self.re_resolve()
 
                 await self.locator.wait_for(state="attached", timeout=interval)
@@ -89,11 +88,17 @@ class BaseElement:
         except PlaywrightTimeoutError:
             await self.locator.click(force=True)
 
+    async def hover(self) -> None:
+        await self.locator.hover()
+        await self.page.wait_for_timeout(200)
+
     async def check(self) -> None:
         await self.locator.check()
 
     async def fill(self, value: str) -> None:
-        await self.locator.fill(value)
+        await self.locator.click()
+        await self.locator.fill("")
+        await self.locator.type(value, delay=100)
 
     async def select_option(self, option_name: str) -> None:
         await self.locator.select_option(option_name)

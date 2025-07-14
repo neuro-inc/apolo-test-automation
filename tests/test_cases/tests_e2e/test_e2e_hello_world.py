@@ -45,27 +45,26 @@ class TestHelloWorldJob:
         self.cli_common_steps = CLICommonSteps(
             self._test_config, self._apolo_cli, self._data_manager
         )
-        self._email = self._users_manager.default_user.email
-        self._password = self._users_manager.default_user.password
+        user = await self.ui_steps.ui_signup_new_user_ver_link()
+        self._email = user.email
+        self._password = user.password
+        self._username = user.username
 
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
-        await self.ui_steps.ui_login(self._email, self._password)
-        await self.ui_steps.ui_pass_new_user_onboarding("default")
+        await self.ui_steps.ui_pass_new_user_onboarding(
+            email=self._email, username=self._username, gherkin_name="default"
+        )
         await self.cli_common_steps.cli_login_with_token()
         await asyncio.sleep(2)
         await self.create_project("my-project")
         await self.run_hello_world_job("my-project")
+        await self.ui_steps.ui_reload_page()
         await self.ui_check_job_not_in_running()
         await self.verify_job_successful("Hello World")
-
-    @async_step("Log in via UI")
-    async def login(self) -> None:
-        await self._pm.auth_page.click_log_in_button()
-        await self._pm.login_page.login(self._email, self._password)
 
     @async_step("Create default organization")
     async def create_organization(self) -> None:
