@@ -50,4 +50,6 @@ class InvitedToOrgPage(BasePage):
         await btn.hover()
         await self.page.wait_for_timeout(500)
         await btn.click()
-        await self.page.wait_for_timeout(500)
+        self.log("Wait for network idle")
+        await self.page.wait_for_load_state("networkidle")
+        self.log("Network idle done")
