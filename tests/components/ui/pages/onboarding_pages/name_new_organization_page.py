@@ -34,7 +34,9 @@ class NameNewOrganizationPage(BasePage):
     async def click_next_button(self) -> None:
         self.log("Click next button")
         btn = self._next_button
-        await self.page.wait_for_timeout(500)
         await btn.hover()
         await btn.click()
         await self.page.wait_for_timeout(1000)
+        self.log("Wait for network idle")
+        await self.page.wait_for_load_state("networkidle")
+        self.log("Network idle done")
