@@ -94,7 +94,7 @@ jobs:
         id: run_tests
         run: |
           set +e
-          uv run pytest tests -n 3 --testmon --testmon-nocollect --tb=short | tee result.log
+          uv run pytest tests -n 4 --testmon --tb=short | tee result.log
           exit_code=${PIPESTATUS[0]}
 
           if [[ "$exit_code" == 5 ]]; then
@@ -199,3 +199,8 @@ jobs:
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Enable auto-merge for bot PRs
+        run: gh pr merge --auto --squash --delete-branch "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
