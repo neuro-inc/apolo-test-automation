@@ -85,39 +85,32 @@ jobs:
           export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
           allure --version
 
-      - name: Download .testmondata from testmon-cache
-        run: |
-          git fetch origin testmon-cache
-          git checkout origin/testmon-cache -- .testmondata || echo "No testmondata found"
+      - name: Install pytest-testmon-lite from GitHub
+        run: uv pip install git+https://github.com/wkeeling/pytest-testmon-lite.git
 
-      - name: Confirm testmondata presence
-        run: |
-          if [ -f .testmondata ]; then
-            echo "✅ .testmondata exists and will be used"
-            file .testmondata
-            head -n 10 .testmondata || true
-          else
-            echo "❌ .testmondata not found!"
-          fi
-
-
-      - name: Run tests
+      - name: Run changed tests with pytest-testmon-lite
         id: run_tests
         run: |
           set +e
-          echo "Testmon env debug:"
-          uv run python -c "from testmon.process_code_change import get_environment_id; print('env hash:', get_environment_id())"
+          git fetch origin master
 
-          uv run pytest tests -n 3 --testmon --tb=short -o testmon_verbose=2 | tee result.log
+          echo "Collecting changed tests with pytest-testmon-lite:"
+          changed=$(uv run pytest --testmon-lite --testmon-lite-diff=origin/master --collect-only -q)
 
-          exit_code=${PIPESTATUS[0]}
-
-          if [[ "$exit_code" == 5 ]]; then
-            echo "✅ No affected tests found. Marking successful."
+          if [[ -z "$changed" ]]; then
+            echo "✅ No changed tests found."
             echo "no_tests=true" >> "$GITHUB_OUTPUT"
             exit 0
-          elif [[ "$exit_code" != 0 ]]; then
-            echo "❌ Tests failed."
+          fi
+
+          echo "Running changed tests:"
+          echo "$changed"
+
+          uv run pytest --testmon-lite --testmon-lite-diff=origin/master -n 3 --tb=short | tee result.log
+          exit_code=${PIPESTATUS[0]}
+
+          if [[ "$exit_code" != 0 ]]; then
+            echo "❌ Some tests failed."
             echo "no_tests=false" >> "$GITHUB_OUTPUT"
             exit $exit_code
           else
@@ -132,7 +125,7 @@ jobs:
         run: |
           if [[ "${{ steps.run_tests.outputs.no_tests }}" == "true" ]]; then
             echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-            echo "✅ No tests were affected by this change." >> $GITHUB_OUTPUT
+            echo "✅ No changed tests found in this PR." >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           else
             echo "summary_text<<EOF" >> $GITHUB_OUTPUT
@@ -186,6 +179,7 @@ jobs:
       - name: Fail if tests failed
         if: steps.run_tests.outputs.no_tests == 'false' && steps.run_tests.outcome != 'success'
         run: exit 1
+
 
   check:
     name: Check
