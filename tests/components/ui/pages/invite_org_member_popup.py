@@ -86,3 +86,14 @@ class InviteOrgMemberPopup(BasePage):
         self.log("Click Send invite button")
         await self._get_send_invite_button().click()
         await self.page.wait_for_timeout(500)
+
+    async def wait_to_disappear(self) -> None:
+        """
+        Waits until key elements of the page disappear (popup is closed).
+        """
+        self.log("Wait for Invite organization member popup to disappear")
+
+        await self._get_user_data_input().locator.wait_for(state="detached")
+        await self._get_user_role_dropdown().locator.wait_for(state="detached")
+        await self._get_cancel_button().locator.wait_for(state="detached")
+        await self._get_send_invite_button().locator.wait_for(state="detached")

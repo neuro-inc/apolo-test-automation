@@ -42,6 +42,14 @@ jobs:
           export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
           allure --version
 
+      - name: Copy Allure history from previous run
+        run: |
+          git fetch origin gh-pages
+          mkdir -p reports/allure-report/history
+          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages-temp
+          cp -r gh-pages-temp/run-test-latest/history reports/allure-report/history || echo "No history found"
+          rm -rf gh-pages-temp
+
       - name: Run tests
         id: run_tests
         run: |

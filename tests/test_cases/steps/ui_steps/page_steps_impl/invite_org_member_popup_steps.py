@@ -48,3 +48,7 @@ class InviteOrgMemberPopupSteps:
     @async_step("Click Send invite button")
     async def ui_click_send_invite_button(self) -> None:
         await self._pm.invite_org_member_popup.click_send_invite_button()
+
+    @async_step("Wait for Invite organization member popup to disappear")
+    async def ui_wait_to_disappear(self) -> None:
+        await self._pm.invite_org_member_popup.wait_to_disappear()

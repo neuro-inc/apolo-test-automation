@@ -41,6 +41,8 @@ class EditProjMemberPopup(BasePage):
     async def click_save_btn(self) -> None:
         self.log("Click Save button")
         await self._get_save_btn().click()
+        await self.page.wait_for_timeout(500)
+        await self.page.wait_for_load_state("networkidle", timeout=10000)
 
     async def wait_to_disappear(self, username: str) -> None:
         """

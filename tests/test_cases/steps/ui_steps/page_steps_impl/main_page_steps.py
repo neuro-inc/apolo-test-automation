@@ -15,6 +15,7 @@ class MainPageSteps:
     @async_step("Navigate to URL")
     async def ui_open_url_in_browser(self, url: str) -> None:
         await self._pm.main_page.open_url(url)
+        await self._pm.page.wait_for_load_state("networkidle", timeout=10000)
 
     @async_step("Verify that Verify email message displayed")
     async def verify_ui_email_message_displayed(self) -> None:
