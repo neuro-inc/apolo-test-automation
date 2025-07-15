@@ -48,6 +48,8 @@ jobs:
           mkdir -p reports/allure-results/history
           git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages-temp
           cp -r gh-pages-temp/run-test-latest/history reports/allure-results/history || echo "No history found"
+          ls -l reports/allure-results/history
+          ls -l reports/allure-results/
           rm -rf gh-pages-temp
 
       - name: Run tests
@@ -97,7 +99,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
-          
+
           {
             echo "*📊 Nightly Test Report*"
             echo '```'
@@ -105,7 +107,7 @@ jobs:
             echo '```'
             echo "<$REPORT_URL|View Report>"
           } > slack_message.txt
-          
+
           jq -Rs '{text: .}' < slack_message.txt > slack_payload.json
           curl -X POST -H 'Content-type: application/json' --data @slack_payload.json "$SLACK_WEBHOOK_URL"
 
