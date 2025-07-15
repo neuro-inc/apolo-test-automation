@@ -45,6 +45,10 @@ class EditOrgUserPopup(BasePage):
     async def click_save_btn(self) -> None:
         self.log("Click Save button")
         await self._get_save_btn().click()
+        await self.page.wait_for_timeout(500)
+        self.log("Wait for network idle")
+        await self.page.wait_for_load_state("networkidle", timeout=10000)
+        self.log("Network idle done")
 
     async def wait_to_disappear(self, username: str) -> None:
         """

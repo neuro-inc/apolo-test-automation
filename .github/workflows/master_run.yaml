@@ -45,9 +45,9 @@ jobs:
       - name: Copy Allure history from previous run
         run: |
           git fetch origin gh-pages
-          mkdir -p reports/allure-report/history
+          mkdir -p reports/allure-results/history
           git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages-temp
-          cp -r gh-pages-temp/run-test-latest/history reports/allure-report/history || echo "No history found"
+          cp -r gh-pages-temp/run-test-latest/history reports/allure-results/history || echo "No history found"
           rm -rf gh-pages-temp
 
       - name: Run tests
@@ -82,24 +82,6 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Notify Slack
-        if: always()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-            REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
-
-            {
-              echo "*📊 Nightly Test Report*"
-              echo '```'
-              cat reports/logs/summary.log || echo "No summary found"
-              echo '```'
-              echo "<$REPORT_URL|View Report>"
-            } > slack_message.txt
-
-            jq -Rs '{text: .}' < slack_message.txt > slack_payload.json
-            curl -X POST -H 'Content-type: application/json' --data @slack_payload.json "$SLACK_WEBHOOK_URL"
-
       - name: Deploy to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
@@ -108,6 +90,24 @@ jobs:
           publish_dir: ./reports/allure-report
           publish_branch: gh-pages
           destination_dir: ${{ env.DEST }}
+
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
+          
+          {
+            echo "*📊 Nightly Test Report*"
+            echo '```'
+            cat reports/logs/summary.log || echo "No summary found"
+            echo '```'
+            echo "<$REPORT_URL|View Report>"
+          } > slack_message.txt
+          
+          jq -Rs '{text: .}' < slack_message.txt > slack_payload.json
+          curl -X POST -H 'Content-type: application/json' --data @slack_payload.json "$SLACK_WEBHOOK_URL"
 
       - name: Clean test artifacts to save space
         if: always()
