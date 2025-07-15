@@ -42,15 +42,14 @@ jobs:
           export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
           allure --version
 
-      - name: Copy Allure history from previous run
+      - name: Copy Allure history from qa-regression-history branch
         run: |
-          git fetch origin gh-pages
-          mkdir -p reports/allure-results/history
-          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages-temp
-          cp -r gh-pages-temp/run-test-latest/history reports/allure-results/history || echo "No history found"
-          ls -l reports/allure-results/history
-          ls -l reports/allure-results/
-          rm -rf gh-pages-temp
+            git fetch origin qa-regression-history
+            mkdir -p reports/allure-results/history
+            git clone --depth 1 --branch qa-regression-history https://github.com/${{ github.repository }} history-temp
+            cp -r history-temp/history/* reports/allure-results/history/ || echo "No history found"
+            ls -l reports/allure-results/history
+            rm -rf history-temp
 
       - name: Run tests
         id: run_tests
@@ -110,6 +109,22 @@ jobs:
 
           jq -Rs '{text: .}' < slack_message.txt > slack_payload.json
           curl -X POST -H 'Content-type: application/json' --data @slack_payload.json "$SLACK_WEBHOOK_URL"
+
+      - name: Push Allure history to qa-regression-history branch
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "ci@github.com"
+
+          git fetch
+          git checkout -B qa-regression-history origin/qa-regression-history || git checkout --orphan qa-regression-history
+
+          mkdir -p history
+          cp -r reports/allure-results/history/* history/ || echo "No history to copy"
+
+          git add history
+          git commit -m "Update Allure history from nightly run" || echo "No changes to commit"
+          git push origin qa-regression-history --force
 
       - name: Clean test artifacts to save space
         if: always()
