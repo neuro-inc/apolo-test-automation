@@ -55,7 +55,7 @@ class InviteProjMemberPopupSteps:
     async def ui_click_invite_btn(self) -> None:
         await self._pm.invite_proj_member_popup.click_invite_btn()
 
-    @async_step("Wait for Remove project member popup to disappear")
+    @async_step("Wait for Invite project member popup to disappear")
     async def ui_wait_to_disappear(self, org_name: str, proj_name: str) -> None:
         await self._pm.invite_proj_member_popup.wait_to_disappear(
             org_name=org_name, proj_name=proj_name

@@ -150,6 +150,7 @@ class UISteps(PageSteps):
             email=add_user_email
         )
         await self.invite_org_member_popup.ui_click_send_invite_button()
+        await self.invite_org_member_popup.ui_wait_to_disappear()
 
     # ********************   Create additional organization steps   ****************************
     @async_step("Create additional organization via UI")

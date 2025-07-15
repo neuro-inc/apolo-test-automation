@@ -4,11 +4,9 @@ import subprocess
 import time
 from collections import defaultdict
 
-import allure
 import pytest
 from _pytest.config import Config
 from _pytest.reports import TestReport
-from allure_commons.types import AttachmentType
 
 # --- Paths and Directories ---
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -135,8 +133,6 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     except Exception as e:
         logger.error(f"❌ Failed to merge logs: {e}")
 
-    _attach_slowest_steps_to_allure()
-
     # --- Generate Allure report ---
     logger.info("📦 Generating Allure report...")
     try:
@@ -171,26 +167,3 @@ def delay_worker_start() -> None:
     if delay > 0:
         logging.getLogger().info(f"[{worker_id}] ⏳ Delaying test start by {delay}s")
         time.sleep(delay)
-
-
-def _attach_slowest_steps_to_allure() -> None:
-    path = os.path.join(LOGS_DIR, "step_durations.log")
-    if not os.path.exists(path):
-        return
-
-    try:
-        with open(path) as f:
-            lines = sorted(
-                (line.strip() for line in f if " - " in line),
-                key=lambda line: float(line.split(" - ")[-1][:-1]),
-                reverse=True,
-            )
-
-        top_steps = "\n".join(lines[:5])
-        allure.attach(
-            top_steps,
-            name="🐢 Top 5 Slowest Steps",
-            attachment_type=AttachmentType.TEXT,
-        )
-    except Exception as e:
-        logging.getLogger().warning(f"Could not attach slowest steps: {e}")

@@ -1,8 +1,7 @@
 from __future__ import annotations
 from collections.abc import Awaitable
 from collections.abc import Callable
-import time
-from threading import Lock
+
 import os
 import uuid
 import logging
@@ -23,11 +22,6 @@ exception_manager = ExceptionManager(logger=logger)
 
 ReportFunc = TypeVar("ReportFunc", bound=Callable[..., Awaitable[Any]])
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-SLOWEST_STEPS_LOG = os.path.join(PROJECT_ROOT, "reports", "logs", "step_durations.log")
-
-_lock = Lock()
-
 
 def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
     def decorator(func: ReportFunc) -> ReportFunc:
@@ -37,40 +31,23 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
             resolved_name, page = _resolve_step_name(func, args, step_name)
 
             logger.info(f"▶️ STEP started: {resolved_name}")
-            start_time = time.perf_counter()
             with allure.step(resolved_name):
                 try:
                     result = await func(*args, **kwargs)
                     if page:
                         await page.wait_for_load_state("networkidle")
+                    logger.info(f"✅ STEP completed: {resolved_name}")
                     return result
                 except Exception as e:
                     is_failed = True
+                    logger.error(f"❌ STEP failed: {resolved_name}")
                     formatted_msg = exception_manager.handle(e, context=resolved_name)
                     raise AssertionError(formatted_msg) from e
                 finally:
-                    duration = time.perf_counter() - start_time
-                    logger.info(
-                        f"✅ STEP completed: {resolved_name} in {duration:.2f}s"
-                    )
-
-                    # Log to central file for session analysis
-                    with _lock:
-                        with open(SLOWEST_STEPS_LOG, "a") as f:
-                            f.write(f"{resolved_name} - {duration:.2f}s\n")
-
-                    allure.attach(
-                        f"{duration:.2f} seconds",
-                        name=f"Step duration - {resolved_name}",
-                        attachment_type=allure.attachment_type.TEXT,
-                    )
-
                     if page:
                         await _capture_screenshot(
                             page, resolved_name, func.__name__, is_failed
                         )
-
-            return result
 
         return cast(ReportFunc, wrapper)
 
