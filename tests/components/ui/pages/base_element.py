@@ -98,7 +98,7 @@ class BaseElement:
     async def fill(self, value: str) -> None:
         await self.locator.click()
         await self.locator.fill("")
-        await self.locator.type(value, delay=100)
+        await self.locator.fill(value)
 
     async def select_option(self, option_name: str) -> None:
         await self.locator.select_option(option_name)
