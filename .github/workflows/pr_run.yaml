@@ -124,16 +124,22 @@ jobs:
       - name: Read test summary
         if: always()
         id: summary
+        env:
+          NO_TESTS: ${{ steps.run_tests.outputs.no_tests }}
         run: |
-          if [[ "${{ steps.run_tests.outputs.no_tests }}" == "true" ]]; then
-            echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-            echo "No tests were affected by this change." >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-          else
-            echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-            cat reports/logs/summary.log || echo "No summary found" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-          fi
+            if [[ "$NO_TESTS" == "true" ]]; then
+              {
+                echo "summary_text<<EOF"
+                echo "✅ No tests were affected by this change."
+                echo "EOF"
+              } >> $GITHUB_OUTPUT
+            else
+              {
+                echo "summary_text<<EOF"
+                cat reports/logs/summary.log || echo "No summary found"
+                echo "EOF"
+              } >> $GITHUB_OUTPUT
+            fi
 
       - name: Deploy to GitHub Pages
         if: steps.run_tests.outputs.no_tests == 'false' && always()
