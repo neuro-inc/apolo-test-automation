@@ -34,6 +34,3 @@ class SignupUsernamePage(BasePage):
         self.log("Network idle done")
         await self.page.reload()
         await self.page.wait_for_timeout(500)
-        self.log("Wait for network idle")
-        await self.page.wait_for_load_state("networkidle", timeout=10000)
-        self.log("Network idle done")
