@@ -1,5 +1,3 @@
-import asyncio
-
 from tests.components.ui.page_manager import PageManager
 from tests.test_cases.steps.ui_steps.page_steps_impl.Invited_to_org_page_steps import (
     InvitedToOrgPageSteps,
@@ -94,7 +92,6 @@ class PageSteps:
         page_manager: PageManager,
         data_manager: DataManager,
     ) -> None:
-        self._step_method_lock = asyncio.Lock()
         self._pm = page_manager
         self._data_manager = data_manager
 

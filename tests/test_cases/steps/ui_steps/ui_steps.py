@@ -94,38 +94,35 @@ class UISteps(PageSteps):
     # ********************   New user signup steps   ****************************
     @async_step("Signup new user via UI and activate email verification link")
     async def ui_signup_new_user_ver_link(self) -> UserData:
-        async with self._step_method_lock:
-            user = self._users_manager.generate_user()
-            await self.auth_page.ui_click_signup_button()
-            await self.signup_page.ui_enter_email(user.email)
-            await self.signup_page.ui_enter_password(user.password)
-            await self.signup_page.ui_click_continue_button()
-            await self.main_page.verify_ui_email_message_displayed()
+        user = self._users_manager.generate_user()
+        await self.auth_page.ui_click_signup_button()
+        await self.signup_page.ui_enter_email(user.email)
+        await self.signup_page.ui_enter_password(user.password)
+        await self.signup_page.ui_click_continue_button()
+        await self.main_page.verify_ui_email_message_displayed()
 
-            await self.activate_email_verification_link(email=user.email)
+        await self.activate_email_verification_link(email=user.email)
 
-            base_url = self._test_config.base_url
-            await self.main_page.ui_open_url_in_browser(base_url)
-            await self.auth_page.verify_ui_page_displayed()
+        base_url = self._test_config.base_url
+        await self.main_page.ui_open_url_in_browser(base_url)
+        await self.auth_page.verify_ui_page_displayed()
 
-            await self.auth_page.ui_click_login_button()
-            await self.signup_username_page.verify_ui_page_displayed()
+        await self.auth_page.ui_click_login_button()
+        await self.signup_username_page.verify_ui_page_displayed()
 
-            await self.signup_username_page.ui_enter_username(user.username)
-            await self.signup_username_page.ui_click_signup_button()
-            await self.main_page.verify_ui_terms_of_agreement_displayed()
+        await self.signup_username_page.ui_enter_username(user.username)
+        await self.signup_username_page.ui_click_signup_button()
+        await self.main_page.verify_ui_terms_of_agreement_displayed()
 
-            await self.main_page.ui_check_agreement_checkbox()
-            await self.main_page.ui_click_i_agree_button()
-            await self.main_page.ui_wait_user_agreement_disappear()
-            await self.ui_wait_for_timeout(3000)
-            await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
-            token = await extract_access_token_from_local_storage(
-                self._pm.login_page.page
-            )
-            self._test_config.token = token
+        await self.main_page.ui_check_agreement_checkbox()
+        await self.main_page.ui_click_i_agree_button()
+        await self.main_page.ui_wait_user_agreement_disappear()
+        await self.ui_wait_for_timeout(3000)
+        await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
+        token = await extract_access_token_from_local_storage(self._pm.login_page.page)
+        self._test_config.token = token
 
-            return user
+        return user
 
     # ********************   invite user to organization steps   ****************************
     @async_step("Invite user to organization via UI")
