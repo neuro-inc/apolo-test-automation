@@ -228,4 +228,4 @@ class TestUIFiles(BaseUITest):
         DUMMY TEST TO VERIFY PR WORKFLOW LOGIC
         """
 
-        assert 1 == 1
+        assert 1 == 1, "equal"
