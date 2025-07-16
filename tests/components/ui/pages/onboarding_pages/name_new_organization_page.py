@@ -30,13 +30,17 @@ class NameNewOrganizationPage(BasePage):
     async def enter_organization_name(self, value: str) -> None:
         self.log(f"Enter {value} organization name")
         await self._organization_name_input.fill(value)
+        await self.page.wait_for_timeout(500)
+        self.log("Wait for network idle")
+        await self.page.wait_for_load_state("networkidle", timeout=10000)
+        self.log("Network idle done")
 
     async def click_next_button(self) -> None:
         self.log("Click next button")
         btn = self._next_button
         await btn.hover()
         await btn.click()
-        await self.page.wait_for_timeout(2000)
+        await self.page.wait_for_timeout(500)
         self.log("Wait for network idle")
         await self.page.wait_for_load_state("networkidle", timeout=10000)
         self.log("Network idle done")

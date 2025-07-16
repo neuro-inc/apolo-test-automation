@@ -16,6 +16,7 @@ class MainPageSteps:
     async def ui_open_url_in_browser(self, url: str) -> None:
         await self._pm.main_page.open_url(url)
 
+
     @async_step("Verify that Verify email message displayed")
     async def verify_ui_email_message_displayed(self) -> None:
         assert await self._pm.main_page.is_verify_email_message_displayed(), (
