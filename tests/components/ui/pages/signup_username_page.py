@@ -27,3 +27,7 @@ class SignupUsernamePage(BasePage):
     async def click_signup_button(self) -> None:
         self.log("Click signup button")
         await self._signup_button.click()
+        await self.page.reload()
+        self.log("Wait for network idle")
+        await self.page.wait_for_load_state("networkidle", timeout=10000)
+        self.log("Network idle done")
