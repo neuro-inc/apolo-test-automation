@@ -70,13 +70,14 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Deploy to GitHub Pages
-        if: always()
+        if: steps.check-no-tests.outputs.no_tests == 'false' && always()
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./reports/allure-report
-          publish_branch: gh-pages
-          destination_dir: ${{ env.DEST }}
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./reports/allure-report
+            publish_branch: gh-pages
+            destination_dir: ${{ env.DEST }}
+            force: true
 
       - name: Wait for GitHub Pages to become available
         if: always()
@@ -133,7 +134,7 @@ jobs:
           git checkout -B qa-regression-history origin/qa-regression-history || git checkout --orphan qa-regression-history
 
           mkdir -p history
-          cp -r reports/allure-results/history/* history/ || echo "No history to copy"
+          cp -r reports/allure-report/history/* history/ || echo "No history to copy"
 
           git add history
           git commit -m "Update Allure history from nightly run" || echo "No changes to commit"
