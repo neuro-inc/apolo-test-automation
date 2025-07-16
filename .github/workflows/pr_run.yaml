@@ -13,7 +13,6 @@ jobs:
   pre-commit:
     name: Pre-commit checks
     runs-on: ubuntu-latest
-    if: ${{ !endsWith(github.actor, '[bot]') }}
     timeout-minutes: 10
     steps:
       - name: Checkout commit
@@ -36,7 +35,6 @@ jobs:
   mypy:
     name: Mypy
     runs-on: ubuntu-latest
-    if: ${{ !endsWith(github.actor, '[bot]') }}
     timeout-minutes: 10
     steps:
       - name: Checkout commit
@@ -58,8 +56,6 @@ jobs:
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
-    if: ${{ !endsWith(github.actor, '[bot]') }}
-
     steps:
       - name: Set destination directory
         id: set-destination
@@ -67,6 +63,8 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -88,31 +86,33 @@ jobs:
           export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
           allure --version
 
-      - name: Download .testmondata from testmon-cache
+      - name: Find changed test files
+        id: changed-tests
         run: |
-          git fetch origin testmon-cache
-          git checkout origin/testmon-cache -- .testmondata || echo "No testmondata found"
+          git fetch origin master
+          TEST_FILES=$(git diff --name-only origin/master | grep '^tests/.*test_.*\.py$' || true)
+          echo "Changed test files:"
+          echo "$TEST_FILES"
+          echo "files=$(echo "$TEST_FILES" | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
-      - name: Run tests
+      - name: Run pytest on changed test files
         id: run_tests
         run: |
-          set +e
-          uv run pytest tests -n 2 --testmon --tb=short --capture=tee-sys | tee result.log
-          exit_code=${PIPESTATUS[0]}
-
-          if [[ "$exit_code" == 5 ]]; then
-            echo "✅ No affected tests found. Marking successful."
+          FILES="${{ steps.changed-tests.outputs.files }}"
+          if [[ -z "$FILES" ]]; then
+            echo "✅ No relevant test files changed. Skipping test run."
             echo "no_tests=true" >> "$GITHUB_OUTPUT"
             exit 0
-          elif [[ "$exit_code" != 0 ]]; then
-            echo "❌ Tests failed."
-            echo "no_tests=false" >> "$GITHUB_OUTPUT"
-            exit $exit_code
-          else
-            echo "✅ Tests passed."
-            echo "no_tests=false" >> "$GITHUB_OUTPUT"
-            exit 0
           fi
+
+          echo "🧪 Running pytest on:"
+          echo "$FILES"
+          set +e
+          uv run pytest $FILES -n 2 --tb=short --capture=tee-sys | tee result.log
+          exit_code=${PIPESTATUS[0]}
+          echo "no_tests=false" >> "$GITHUB_OUTPUT"
+
+          exit $exit_code
 
       - name: Read test summary
         if: always()
@@ -129,13 +129,13 @@ jobs:
           fi
 
       - name: Deploy to GitHub Pages
-        if: always()
+        if: steps.run_tests.outputs.no_tests == 'false' && always()
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./reports/allure-report
-          publish_branch: gh-pages
-          destination_dir: ${{ env.DEST }}
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./reports/allure-report
+            publish_branch: gh-pages
+            destination_dir: ${{ env.DEST }}
 
       - name: Comment on PR with Allure Report
         if: always()
@@ -143,22 +143,32 @@ jobs:
         env:
           SUMMARY_TEXT: ${{ steps.summary.outputs.summary_text }}
           DEST: ${{ env.DEST }}
+          NO_TESTS: ${{ steps.run_tests.outputs.no_tests }}
+          test_outcome: ${{ steps.run_tests.outcome }}
         with:
           script: |
             const pr = context.payload.pull_request;
             const runNumber = context.runNumber;
-            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/${process.env.DEST}/index.html`;
             const summary = process.env.SUMMARY_TEXT;
-            const success = "${{ steps.run_tests.outcome }}" === "success";
-            const statusEmoji = success ? "✅" : "❌";
-            const statusText = success ? "complete" : "failed";
+            const noTests = process.env.NO_TESTS === "true";
+            const testOutcome = process.env.test_outcome || "success";
+            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/${process.env.DEST}/index.html`;
 
-            const comment = [
+            const statusEmoji = noTests ? "✅" : (testOutcome === "success" ? "✅" : "❌");
+            const statusText = noTests ? "skipped (no tests)" : (testOutcome === "success" ? "complete" : "failed");
+
+            const commentLines = [
               `${statusEmoji} **Test run #${runNumber} ${statusText}**`,
-              `📊 **Allure Report:** [View Report](${url})`,
-              ``,
-              `📝 **Summary:**\n\`\`\`\n${summary.trim()}\n\`\`\``
-            ].join('\n');
+            ];
+
+            if (!noTests) {
+              commentLines.push(`📊 **Allure Report:** [View Report](${url})`);
+            }
+
+            commentLines.push("");
+            commentLines.push(`📝 **Summary:**\n\`\`\`\n${summary.trim()}\n\`\`\``);
+
+            const comment = commentLines.join("\n");
 
             github.rest.issues.createComment({
               issue_number: pr.number,
@@ -175,13 +185,13 @@ jobs:
         if: steps.run_tests.outputs.no_tests == 'false' && steps.run_tests.outcome != 'success'
         run: exit 1
 
+
   check:
     name: Check
     needs:
       - pre-commit
       - mypy
       - run-tests
-    if: ${{ !endsWith(github.actor, '[bot]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Validate job results
@@ -191,10 +201,7 @@ jobs:
 
   approve:
     name: Approve Pull Request
-    # Conditional logic: check must pass OR it's a bot PR
-    if: github.event_name == 'pull_request' && always() && (
-      (needs.check.result == 'success') || endsWith(github.actor, '[bot]')
-      )
+    if: endsWith(github.actor, '[bot]')
     runs-on: ubuntu-latest
     needs: [ check ]
     permissions:

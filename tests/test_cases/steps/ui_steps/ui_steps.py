@@ -27,6 +27,8 @@ class UISteps(PageSteps):
     @async_step("Reload page")
     async def ui_reload_page(self) -> None:
         await self._pm.page.reload()
+        await self._pm.page.wait_for_timeout(500)
+        await self._pm.page.wait_for_load_state("networkidle", timeout=10000)
 
     @async_step("Wait for timeout")
     async def ui_wait_for_timeout(self, timeout: int) -> None:
@@ -41,16 +43,16 @@ class UISteps(PageSteps):
 
         await self.main_page.ui_open_url_in_browser(url)
 
-        # (
-        #     needs_verification,
-        #     response,
-        # ) = await self._api_helper.check_user_needs_verification(
-        #     email,
-        # )
-        # assert not needs_verification, f"User {email} still needs verification!!!!"
-        # assert response == "Email already verified", (
-        #     f"User {email} still needs verification!!!!"
-        # )
+        (
+            needs_verification,
+            response,
+        ) = await self._api_helper.check_user_needs_verification(
+            email,
+        )
+        assert not needs_verification, f"User {email} still needs verification!!!!"
+        assert response == "Email already verified", (
+            f"User {email} still needs verification!!!!"
+        )
 
     @async_step("Open product base page")
     async def ui_open_product_base_page(self) -> None:
