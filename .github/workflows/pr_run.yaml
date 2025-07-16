@@ -66,26 +66,6 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version-file: .python-version
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
-
-      - name: Install Playwright browsers
-        run: uv run python -m playwright install --with-deps
-
-      - name: Install Allure
-        run: |
-          mkdir -p allure-bin
-          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
-          unzip -q allure.zip -d allure-bin
-          echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
-          export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
-          allure --version
-
       - name: Find changed test files
         id: changed-tests
         run: |
@@ -95,23 +75,47 @@ jobs:
           echo "$TEST_FILES"
           echo "files=$(echo "$TEST_FILES" | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
+      - name: Exit early if no test files changed
+        if: steps.changed-tests.outputs.files == ''
+        run: |
+          echo "✅ No relevant test files changed. Skipping test run."
+          echo "no_tests=true" >> $GITHUB_OUTPUT
+
+      - name: Set up Python
+        if: steps.changed-tests.outputs.files != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+
+      - name: Install uv
+        if: steps.changed-tests.outputs.files != ''
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install Playwright browsers
+        if: steps.changed-tests.outputs.files != ''
+        run: uv run python -m playwright install --with-deps
+
+      - name: Install Allure
+        if: steps.changed-tests.outputs.files != ''
+        run: |
+          mkdir -p allure-bin
+          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+          unzip -q allure.zip -d allure-bin
+          echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
+          export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
+          allure --version
+
       - name: Run pytest on changed test files
+        if: steps.changed-tests.outputs.files != ''
         id: run_tests
         run: |
           FILES="${{ steps.changed-tests.outputs.files }}"
-          if [[ -z "$FILES" ]]; then
-            echo "✅ No relevant test files changed. Skipping test run."
-            echo "no_tests=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          echo "🧪 Running pytest on:"
+          echo "Running pytest on:"
           echo "$FILES"
           set +e
-          uv run pytest $FILES -n 2 --tb=short --capture=tee-sys | tee result.log
+          uv run pytest $FILES --tb=short --capture=tee-sys
           exit_code=${PIPESTATUS[0]}
           echo "no_tests=false" >> "$GITHUB_OUTPUT"
-
           exit $exit_code
 
       - name: Read test summary
@@ -120,7 +124,7 @@ jobs:
         run: |
           if [[ "${{ steps.run_tests.outputs.no_tests }}" == "true" ]]; then
             echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-            echo "✅ No tests were affected by this change." >> $GITHUB_OUTPUT
+            echo "No tests were affected by this change." >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           else
             echo "summary_text<<EOF" >> $GITHUB_OUTPUT
@@ -132,10 +136,10 @@ jobs:
         if: steps.run_tests.outputs.no_tests == 'false' && always()
         uses: peaceiris/actions-gh-pages@v4
         with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./reports/allure-report
-            publish_branch: gh-pages
-            destination_dir: ${{ env.DEST }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports/allure-report
+          publish_branch: gh-pages
+          destination_dir: ${{ env.DEST }}
 
       - name: Comment on PR with Allure Report
         if: always()
@@ -166,7 +170,7 @@ jobs:
             }
 
             commentLines.push("");
-            commentLines.push(`📝 **Summary:**\n\`\`\`\n${summary.trim()}\n\`\`\``);
+            commentLines.push(`📝 **Summary:**\n\`\`\`\n${summary}\n\`\`\``);
 
             const comment = commentLines.join("\n");
 
@@ -184,7 +188,6 @@ jobs:
       - name: Fail if tests failed
         if: steps.run_tests.outputs.no_tests == 'false' && steps.run_tests.outcome != 'success'
         run: exit 1
-
 
   check:
     name: Check
