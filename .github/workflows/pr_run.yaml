@@ -69,11 +69,14 @@ jobs:
       - name: Find changed test files
         id: changed-tests
         run: |
-          git fetch origin master
-          TEST_FILES=$(git diff --name-only origin/master | grep '^tests/.*test_.*\.py$' || true)
-          echo "Changed test files:"
-          echo "$TEST_FILES"
-          echo "files=$(echo "$TEST_FILES" | tr '\n' ' ')" >> $GITHUB_OUTPUT
+            git fetch origin master
+            TEST_FILES=$(git diff --name-only origin/master | grep '^tests/.*test_.*\.py$' || true)
+            echo "Changed test files:"
+            echo "$TEST_FILES"
+            
+            # Set output to space-separated string or empty string
+            echo "files=$(echo "$TEST_FILES" | tr '\n' ' ' | xargs)" >> $GITHUB_OUTPUT
+      
 
       - name: Exit early if no test files changed
         if: steps.changed-tests.outputs.files == ''
