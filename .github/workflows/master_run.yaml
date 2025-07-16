@@ -67,10 +67,11 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Install jq
+        if: always()
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Deploy to GitHub Pages
-        if: steps.check-no-tests.outputs.no_tests == 'false' && always()
+        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
