@@ -7,6 +7,7 @@ from collections.abc import Coroutine
 import logging
 import os
 from typing import Any
+from urllib.parse import urlparse
 
 import allure
 import pytest
@@ -221,7 +222,7 @@ async def _create_page_manager(
     page = await context.new_page()
 
     # Attach HTTP response logging
-    page.on("response", _log_failed_requests)
+    page.on("response", lambda response: _log_failed_requests(test_config, response))
 
     logger.info(f"Navigating to: {test_config.base_url}")
     await page.goto(test_config.base_url)
@@ -233,18 +234,27 @@ async def _create_page_manager(
     return pm
 
 
-async def _log_failed_requests(response: Any) -> None:
+async def _log_failed_requests(test_config: ConfigManager, response: Any) -> None:
     """
-    Logs failed HTTP responses (status 4xx and 5xx), including:
+    Logs HTTP responses within product hostname, including:
     - Request method and URL
     - Request body (if available)
     - Response body (truncated)
     """
     status = response.status
-    if status >= 400:
-        request = response.request
+    request = response.request
+    url = request.url
+
+    cli_login_url = test_config.cli_login_url
+    product_hostname = urlparse(cli_login_url).hostname
+
+    # Parse URL and check hostname
+    parsed_url = urlparse(url)
+    if parsed_url.hostname != product_hostname:
+        return
+
+    if status >= 200:
         method = request.method
-        url = request.url
 
         try:
             request_body = await request.post_data()
