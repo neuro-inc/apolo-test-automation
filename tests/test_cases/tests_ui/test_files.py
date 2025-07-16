@@ -221,3 +221,11 @@ class TestUIFiles(BaseUITest):
         await u2_steps.new_folder_popup.ui_wait_to_disappear()
 
         await u2_steps.files_page.verify_ui_folder_displayed(name="New Folder 1")
+
+    @async_title("Dummy test to verify PR")
+    async def test_dummy(self) -> None:
+        """
+        DUMMY TEST TO VERIFY PR WORKFLOW LOGIC
+        """
+
+        assert 1 == 1
