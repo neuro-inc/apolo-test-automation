@@ -24,6 +24,10 @@ class SignupUsernamePage(BasePage):
     async def enter_username(self, text: str) -> None:
         self.log(f"Enter {text} username")
         await self._username_input.fill(text)
+        await self.page.wait_for_timeout(500)
+        self.log("Wait for network idle")
+        await self.page.wait_for_load_state("networkidle", timeout=10000)
+        self.log("Network idle done")
 
     async def click_signup_button(self) -> None:
         self.log("Click signup button")
