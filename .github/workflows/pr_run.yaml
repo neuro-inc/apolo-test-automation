@@ -29,8 +29,8 @@ jobs:
         run: uv sync
       - name: Run pre-commit
         run: |
+          echo "Actor is: ${{ github.actor }}"
           echo "::add-matcher::.github/actionlint-matcher.json"
-          run: echo "Actor is: ${{ github.actor }}"
           uv run pre-commit run --all-files
 
   mypy:
