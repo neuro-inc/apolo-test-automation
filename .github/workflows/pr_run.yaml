@@ -69,37 +69,38 @@ jobs:
       - name: Find changed test files
         id: changed-tests
         run: |
-            git fetch origin master
-            TEST_FILES=$(git diff --name-only origin/master | grep '^tests/.*test_.*\.py$' || true)
-            echo "Changed test files:"
-            echo "$TEST_FILES"
-            
-            # Set output to space-separated string or empty string
-            echo "files=$(echo "$TEST_FILES" | tr '\n' ' ' | xargs)" >> $GITHUB_OUTPUT
-      
+          git fetch origin master
+          TEST_FILES=$(git diff --name-only origin/master | grep '^tests/.*test_.*\.py$' || true)
+          echo "Changed test files:"
+          echo "$TEST_FILES"
+          echo "files=$(echo "$TEST_FILES" | tr '\n' ' ' | xargs)" >> $GITHUB_OUTPUT
 
-      - name: Exit early if no test files changed
-        if: steps.changed-tests.outputs.files == ''
+      - name: Set no_tests=true if no test files changed
+        id: check-no-tests
         run: |
-          echo "✅ No relevant test files changed. Skipping test run."
-          echo "no_tests=true" >> $GITHUB_OUTPUT
+          if [[ "${{ steps.changed-tests.outputs.files }}" == "" ]]; then
+            echo "✅ No relevant test files changed. Skipping test run."
+            echo "no_tests=true" >> $GITHUB_OUTPUT
+          else
+            echo "no_tests=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Set up Python
-        if: steps.changed-tests.outputs.files != ''
+        if: steps.check-no-tests.outputs.no_tests == 'false'
         uses: actions/setup-python@v5
         with:
           python-version-file: .python-version
 
       - name: Install uv
-        if: steps.changed-tests.outputs.files != ''
+        if: steps.check-no-tests.outputs.no_tests == 'false'
         uses: astral-sh/setup-uv@v6
 
       - name: Install Playwright browsers
-        if: steps.changed-tests.outputs.files != ''
+        if: steps.check-no-tests.outputs.no_tests == 'false'
         run: uv run python -m playwright install --with-deps
 
       - name: Install Allure
-        if: steps.changed-tests.outputs.files != ''
+        if: steps.check-no-tests.outputs.no_tests == 'false'
         run: |
           mkdir -p allure-bin
           curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
@@ -109,7 +110,7 @@ jobs:
           allure --version
 
       - name: Run pytest on changed test files
-        if: steps.changed-tests.outputs.files != ''
+        if: steps.check-no-tests.outputs.no_tests == 'false'
         id: run_tests
         run: |
           FILES="${{ steps.changed-tests.outputs.files }}"
@@ -118,31 +119,29 @@ jobs:
           set +e
           uv run pytest $FILES --tb=short --capture=tee-sys
           exit_code=${PIPESTATUS[0]}
-          echo "no_tests=false" >> "$GITHUB_OUTPUT"
           exit $exit_code
 
       - name: Read test summary
         if: always()
         id: summary
         env:
-          NO_TESTS: ${{ steps.run_tests.outputs.no_tests }}
+          NO_TESTS: ${{ steps.check-no-tests.outputs.no_tests }}
         run: |
-            if [[ "$NO_TESTS" == "true" ]]; then
-              {
-                echo "summary_text<<EOF"
-                echo "✅ No tests were affected by this change."
-                echo "EOF"
-              } >> $GITHUB_OUTPUT
-            else
-              {
-                echo "summary_text<<EOF"
-                cat reports/logs/summary.log || echo "No summary found"
-                echo "EOF"
-              } >> $GITHUB_OUTPUT
-            fi
+          if [[ "$NO_TESTS" == "true" ]]; then
+            {
+              echo "summary_text<<EOF"
+              echo "✅ No tests were affected by this change."
+              echo "EOF"
+            } >> $GITHUB_OUTPUT
+          else
+            {
+              echo "summary_text<<EOF"
+              cat reports/logs/summary.log || echo "No summary found"
+              echo "EOF"
+            } >> $GITHUB_OUTPUT
 
       - name: Deploy to GitHub Pages
-        if: steps.run_tests.outputs.no_tests == 'false' && always()
+        if: steps.check-no-tests.outputs.no_tests == 'false' && always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -156,7 +155,7 @@ jobs:
         env:
           SUMMARY_TEXT: ${{ steps.summary.outputs.summary_text }}
           DEST: ${{ env.DEST }}
-          NO_TESTS: ${{ steps.run_tests.outputs.no_tests }}
+          NO_TESTS: ${{ steps.check-no-tests.outputs.no_tests }}
           test_outcome: ${{ steps.run_tests.outcome }}
         with:
           script: |
@@ -179,7 +178,7 @@ jobs:
             }
 
             commentLines.push("");
-            commentLines.push(`📝 **Summary:**\n\`\`\`\n${summary}\n\`\`\``);
+            commentLines.push(`📝 **Summary:**\n\`\`\`\n${summary.trim()}\n\`\`\``);
 
             const comment = commentLines.join("\n");
 
@@ -195,7 +194,7 @@ jobs:
         run: rm -rf reports/logs reports/screenshots reports/allure-results
 
       - name: Fail if tests failed
-        if: steps.run_tests.outputs.no_tests == 'false' && steps.run_tests.outcome != 'success'
+        if: steps.check-no-tests.outputs.no_tests == 'false' && steps.run_tests.outcome != 'success'
         run: exit 1
 
   check:
