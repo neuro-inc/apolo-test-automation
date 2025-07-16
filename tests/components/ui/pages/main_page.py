@@ -19,8 +19,14 @@ class MainPage(BasePage):
         )
 
     async def open_url(self, url: str) -> None:
-        self.log(f"Opening page {url}")
         await self.page.goto(url)
+        self.log(f"Navigated to: {url}")
+
+        await self.page.wait_for_timeout(500)
+
+        self.log("Waiting for network idle...")
+        await self.page.wait_for_load_state("networkidle", timeout=10000)
+        self.log("Page is idle (networkidle state reached)")
 
     # **************************  NO PROJECT CREATED  *********************************************
 

@@ -58,20 +58,6 @@ jobs:
           echo "Disk space after running tests:"
           df -h
 
-      - name: Save .testmondata to branch
-        if: always()
-        run: |
-          git config user.name "github-actions"
-          git config user.email "ci@github.com"
-
-          git fetch
-          git checkout -B testmon-cache origin/testmon-cache || git checkout --orphan testmon-cache
-
-          cp .testmondata . || echo "No testmondata found"
-          git add .testmondata
-          git commit -m "Update testmondata from nightly run" || echo "No changes"
-          git push origin testmon-cache --force
-
       - name: Read test summary
         if: always()
         id: summary
@@ -92,6 +78,24 @@ jobs:
           publish_branch: gh-pages
           destination_dir: ${{ env.DEST }}
 
+      - name: Wait for GitHub Pages to become available
+        if: always()
+        run: |
+            REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
+
+            echo "Waiting for GitHub Pages to become available at: $REPORT_URL"
+
+            for i in {1..20}; do
+              status=$(curl -o /dev/null -s -w "%{http_code}" "$REPORT_URL")
+              if [[ "$status" == "200" ]]; then
+                echo "✅ GitHub Pages is available!"
+                break
+              else
+                echo "Waiting... (attempt $i/20), status: $status"
+                sleep 30
+              fi
+            done
+
       - name: Notify Slack
         if: always()
         env:
@@ -99,8 +103,16 @@ jobs:
         run: |
           REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
 
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            TRIGGER="🕒 Scheduled run (by GitHub Actions)"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            TRIGGER="👤 Manually triggered by ${{ github.actor }}"
+          else
+            TRIGGER="🔁 Triggered by event: ${{ github.event_name }} (actor: ${{ github.actor }})"
+          fi
+
           {
-            echo "*📊 Nightly Test Report*"
+            echo "*📊 Regression Test Report* :: $TRIGGER"
             echo '```'
             cat reports/logs/summary.log || echo "No summary found"
             echo '```'
@@ -109,6 +121,7 @@ jobs:
 
           jq -Rs '{text: .}' < slack_message.txt > slack_payload.json
           curl -X POST -H 'Content-type: application/json' --data @slack_payload.json "$SLACK_WEBHOOK_URL"
+
 
       - name: Push Allure history to qa-regression-history branch
         if: always()

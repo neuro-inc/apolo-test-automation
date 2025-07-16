@@ -15,6 +15,7 @@ class SignupUsernamePage(BasePage):
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page is loaded")
+        await self.page.wait_for_timeout(1000)
         return (
             await self._username_input.expect_to_be_loaded()
             and await self._signup_button.expect_to_be_loaded()
@@ -23,7 +24,14 @@ class SignupUsernamePage(BasePage):
     async def enter_username(self, text: str) -> None:
         self.log(f"Enter {text} username")
         await self._username_input.fill(text)
+        await self.page.wait_for_timeout(500)
+        self.log("Wait for network idle")
+        await self.page.wait_for_load_state("networkidle", timeout=10000)
+        self.log("Network idle done")
 
     async def click_signup_button(self) -> None:
         self.log("Click signup button")
         await self._signup_button.click()
+        await self.page.wait_for_timeout(1000)
+        await self.page.reload()
+        await self.page.wait_for_timeout(500)
