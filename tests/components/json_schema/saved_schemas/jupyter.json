@@ -1,0 +1,472 @@
+{
+  "name": "jupyter",
+  "title": "Jupyter",
+  "pub_date": "2025-04-23T00:00:00Z",
+  "description": "JupyterLab is the latest web-based interactive development environment for notebooks, code, and data. Its flexible interface allows users to configure and arrange workflows in data science, scientific computing, computational journalism, and machine learning. A modular design invites extensions to expand and enrich functionality.",
+  "short_description": "Web-based interactive development environment for notebooks, code, and data",
+  "schema_version": 1,
+  "version": "master",
+  "input": {
+    "$defs": {
+      "ApoloFilesMount": {
+        "properties": {
+          "storage_uri": {
+            "$ref": "#/$defs/ApoloFilesPath"
+          },
+          "mount_path": {
+            "$ref": "#/$defs/MountPath"
+          },
+          "mode": {
+            "$ref": "#/$defs/ApoloMountMode",
+            "default": {
+              "mode": "rw"
+            }
+          }
+        },
+        "required": [
+          "storage_uri",
+          "mount_path"
+        ],
+        "title": "ApoloFilesMount",
+        "type": "object",
+        "x-description": "Configure Apolo Files mount within the application workloads.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Apolo Files Mount"
+      },
+      "ApoloFilesPath": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Storage Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "ApoloFilesPath",
+        "type": "object",
+        "x-description": "Specify the path within the Apolo Files application to read from or write to.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Apolo Files Path"
+      },
+      "ApoloMountMode": {
+        "properties": {
+          "mode": {
+            "$ref": "#/$defs/ApoloMountModes",
+            "default": "rw",
+            "x-description": "Select the access mode for the mount, such as read-only or read-write.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Mount Mode"
+          }
+        },
+        "title": "ApoloMountMode",
+        "type": "object",
+        "x-description": "Configure how Apolo Files should be mounted into the application’s workload environment.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Apolo Files Mount"
+      },
+      "ApoloMountModes": {
+        "enum": [
+          "r",
+          "rw"
+        ],
+        "title": "ApoloMountModes",
+        "type": "string"
+      },
+      "JupyterSpecificAppInputs": {
+        "properties": {
+          "jupyter_type": {
+            "$ref": "#/$defs/JupyterTypes",
+            "default": "lab",
+            "x-description": "Set the type of Jupyter application (lab or notebook).",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Jupyter Type"
+          },
+          "code_storage_mount": {
+            "$ref": "#/$defs/ApoloFilesMount",
+            "default": {
+              "storage_uri": {
+                "path": "storage:.apps/jupyter/jupyter-app/code"
+              },
+              "mount_path": {
+                "path": "/root/notebooks"
+              },
+              "mode": {
+                "mode": "rw"
+              }
+            },
+            "x-description": "Configure Apolo Files mount within the application workloads. If not set, Apolo will automatically assign a mount to the storage.",
+            "x-meta-type": "inline",
+            "x-title": "Code Storage Mount"
+          }
+        },
+        "title": "JupyterSpecificAppInputs",
+        "type": "object",
+        "x-description": "Configure the Jupyter App.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Jupyter App"
+      },
+      "JupyterTypes": {
+        "enum": [
+          "lab",
+          "notebook"
+        ],
+        "title": "JupyterTypes",
+        "type": "string"
+      },
+      "MLFlowAppOutputs": {
+        "properties": {
+          "internal_web_app_url": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/RestAPI"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "x-description": "Internal URL to access the MLFlow web app and API from inside the cluster. This route is not protected by platform authorization and only workloads from the same project can access it.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Internal MLFlow URL"
+          },
+          "external_web_app_url": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/RestAPI"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "x-description": "External URL for accessing the MLFlow web application and API from outside the cluster. This route is secured by platform authorization and is accessible from any network with a valid platform authorization token that has appropriate permissions.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "External MLFlow URL"
+          }
+        },
+        "title": "MLFlowAppOutputs",
+        "type": "object"
+      },
+      "MountPath": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Specify the absolute path inside the container where the volume should be mounted.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "MountPath",
+        "type": "object",
+        "x-description": "Specify the absolute path.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Mount Path"
+      },
+      "Networking": {
+        "properties": {
+          "http_auth": {
+            "default": true,
+            "title": "Http Auth",
+            "type": "boolean",
+            "x-description": "Enable platform provided HTTP authentication.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "HTTP Authentication"
+          }
+        },
+        "title": "Networking",
+        "type": "object",
+        "x-description": "Network settings",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Networking Settings"
+      },
+      "Preset": {
+        "properties": {
+          "name": {
+            "description": "The name of the preset.",
+            "title": "Preset name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Preset",
+        "type": "object",
+        "x-description": "Select the resource preset used per service replica.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Resource Preset"
+      },
+      "RestAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "RestAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      },
+      "StorageMounts": {
+        "properties": {
+          "mounts": {
+            "description": "List of ApoloStorageMount objects to mount external storage paths",
+            "items": {
+              "$ref": "#/$defs/ApoloFilesMount"
+            },
+            "title": "Mounts",
+            "type": "array"
+          }
+        },
+        "title": "StorageMounts",
+        "type": "object",
+        "x-description": "Mount external storage paths",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Storage Mounts"
+      }
+    },
+    "properties": {
+      "preset": {
+        "$ref": "#/$defs/Preset"
+      },
+      "jupyter_specific": {
+        "$ref": "#/$defs/JupyterSpecificAppInputs"
+      },
+      "extra_storage_mounts": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/StorageMounts"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Attach additional storage volumes to the Jupyter application.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Extra Storage Mounts"
+      },
+      "networking": {
+        "$ref": "#/$defs/Networking",
+        "default": {
+          "http_auth": true
+        },
+        "x-description": "Configure network access, HTTP authentication, and related connectivity options."
+      },
+      "mlflow_integration": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/MLFlowAppOutputs"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Enable integration with MLFlow for experiment tracking and model management.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "MLFlow Integration"
+      }
+    },
+    "required": [
+      "preset",
+      "jupyter_specific"
+    ],
+    "title": "JupyterAppInputs",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "RestAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "RestAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      }
+    },
+    "properties": {
+      "internal_web_app_url": {
+        "$ref": "#/$defs/RestAPI"
+      },
+      "external_web_app_url": {
+        "$ref": "#/$defs/RestAPI"
+      }
+    },
+    "required": [
+      "internal_web_app_url",
+      "external_web_app_url"
+    ],
+    "title": "JupyterAppOutputs",
+    "type": "object"
+  },
+  "tags": [
+    "jupyter",
+    "notebooks",
+    "python"
+  ],
+  "git_url": "https://github.com/neuro-inc/mlops-custom-deployment-app",
+  "helm_path": "charts/custom-deployment",
+  "type": "mlops",
+  "logo": "https://jupyter.org/assets/homepage/main-logo.svg",
+  "assets": [
+    {
+      "type": "image",
+      "url": "https://jupyter.org/assets/homepage/main-logo.svg"
+    }
+  ],
+  "documentation_urls": [
+    {
+      "text": "JupyterLab Documentation",
+      "url": "https://jupyterlab.readthedocs.io/en/latest/"
+    }
+  ],
+  "external_urls": [
+    {
+      "text": "Jupyter Official Docs",
+      "url": "https://jupyter.org/"
+    }
+  ],
+  "mlops_app_type": "jupyter",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}

@@ -1,0 +1,658 @@
+{
+  "name": "private-gpt",
+  "title": "Private GPT",
+  "pub_date": "2025-04-21T00:00:00Z",
+  "description": "PrivateGPT is a production-ready AI project that allows you to ask questions about your documents using the power of Large Language Models (LLMs), even in scenarios without an Internet connection. 100% private, no data leaves your execution environment at any point.",
+  "short_description": "PrivateGPT provides an API containing all the building blocks required to build private, context-aware AI applications.",
+  "schema_version": 1,
+  "version": "master",
+  "input": {
+    "$defs": {
+      "ApoloSecret": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "title": "ApoloSecret",
+        "type": "object",
+        "x-description": "Apolo Secret Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Secret"
+      },
+      "CrunchyPostgresUserCredentials": {
+        "properties": {
+          "user": {
+            "title": "User",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "host": {
+            "title": "Host",
+            "type": "string"
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer"
+          },
+          "pgbouncer_host": {
+            "title": "Pgbouncer Host",
+            "type": "string"
+          },
+          "pgbouncer_port": {
+            "title": "Pgbouncer Port",
+            "type": "integer"
+          },
+          "dbname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Dbname"
+          },
+          "jdbc_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Jdbc Uri"
+          },
+          "pgbouncer_jdbc_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pgbouncer Jdbc Uri"
+          },
+          "pgbouncer_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pgbouncer Uri"
+          },
+          "uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Uri"
+          },
+          "postgres_uri": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/PostgresURI"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "user",
+          "password",
+          "host",
+          "port",
+          "pgbouncer_host",
+          "pgbouncer_port"
+        ],
+        "title": "CrunchyPostgresUserCredentials",
+        "type": "object",
+        "x-description": "Configuration for Crunchy Postgres user credentials.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Postgres User Credentials"
+      },
+      "HuggingFaceModel": {
+        "properties": {
+          "model_hf_name": {
+            "title": "Model Hf Name",
+            "type": "string",
+            "x-description": "The name of the Hugging Face model.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hugging Face Model Name"
+          },
+          "hf_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/ApoloSecret"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Hf Token",
+            "x-description": "The Hugging Face API token.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hugging Face Token"
+          }
+        },
+        "required": [
+          "model_hf_name"
+        ],
+        "title": "HuggingFaceModel",
+        "type": "object",
+        "x-description": "Hugging Face Model Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Hugging Face Model"
+      },
+      "IngressHttp": {
+        "properties": {
+          "auth": {
+            "default": true,
+            "title": "Auth",
+            "type": "boolean",
+            "x-description": "Require authenticated user credentials with appropriate permissions for all incoming HTTPS requests to the application.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Enable Authentication and Authorization"
+          }
+        },
+        "title": "IngressHttp",
+        "type": "object",
+        "x-description": "Enable access to your application over the internet using HTTPS.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Enable HTTP Ingress"
+      },
+      "OpenAICompatChatAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          },
+          "api_base_path": {
+            "default": "/v1",
+            "title": "Api Base Path",
+            "type": "string"
+          },
+          "openai_api_type": {
+            "const": "chat",
+            "default": "chat",
+            "title": "Openai Api Type",
+            "type": "string"
+          },
+          "endpoint_url": {
+            "const": "/v1/chat",
+            "default": "/v1/chat",
+            "title": "Endpoint Url",
+            "type": "string"
+          },
+          "hf_model": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/HuggingFaceModel"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "x-description": "Hugging Face Model Configuration.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "integration",
+            "x-title": "Hugging Face Model"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "OpenAICompatChatAPI",
+        "type": "object",
+        "x-description": "Configuration for OpenAI compatible chat API.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "OpenAI Compatible Chat API"
+      },
+      "OpenAICompatEmbeddingsAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          },
+          "api_base_path": {
+            "default": "/v1",
+            "title": "Api Base Path",
+            "type": "string"
+          },
+          "openai_api_type": {
+            "const": "embeddings",
+            "default": "embeddings",
+            "title": "Openai Api Type",
+            "type": "string"
+          },
+          "endpoint_url": {
+            "const": "/v1/embeddings",
+            "default": "/v1/embeddings",
+            "title": "Endpoint Url",
+            "type": "string"
+          },
+          "hf_model": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/HuggingFaceModel"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "x-description": "Hugging Face Model Configuration.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "integration",
+            "x-title": "Hugging Face Model"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "OpenAICompatEmbeddingsAPI",
+        "type": "object",
+        "x-description": "Configuration for OpenAI compatible embeddings API.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "OpenAI Compatible Embeddings API"
+      },
+      "PostgresURI": {
+        "description": "Configuration for the Postgres connection URI.",
+        "properties": {
+          "uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Uri",
+            "x-description": "Specify full Postgres connection URI. E.g. 'postgresql://user:pass@host:5432/db'",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "URI"
+          }
+        },
+        "title": "PostgresURI",
+        "type": "object",
+        "x-description": "Full Postgres connection URI configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Postgres URI"
+      },
+      "Preset": {
+        "properties": {
+          "name": {
+            "description": "The name of the preset.",
+            "title": "Preset name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Preset",
+        "type": "object",
+        "x-description": "Select the resource preset used per service replica.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Resource Preset"
+      },
+      "PrivateGptSpecific": {
+        "properties": {
+          "llm_temperature": {
+            "default": 0.1,
+            "title": "Llm Temperature",
+            "type": "number",
+            "x-description": "Configure temperature for LLM inference.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "LLM Temperature"
+          },
+          "embeddings_dimension": {
+            "default": 768,
+            "title": "Embeddings Dimension",
+            "type": "integer",
+            "x-description": "Configure dimension of embeddings.The number can be found on the Hugging Face model card or model configuration file.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Embeddings Dimension"
+          },
+          "llm_max_new_tokens": {
+            "default": 5000,
+            "title": "Llm Max New Tokens",
+            "type": "integer",
+            "x-description": "Configure maximum number of new tokens (limited by GPU memory and model size).",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "LLM Max New Tokens"
+          },
+          "llm_context_window": {
+            "default": 8192,
+            "title": "Llm Context Window",
+            "type": "integer",
+            "x-description": "Configure context window for LLM inference (defined by model architecture).",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "LLM Context Window"
+          },
+          "llm_tokenizer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Llm Tokenizer Name",
+            "x-description": "Configure tokenizer name for LLM inference.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "LLM Tokenizer Name"
+          }
+        },
+        "title": "PrivateGptSpecific",
+        "type": "object",
+        "x-description": "Configure PrivateGPT additional parameters.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "PrivateGPT Specific"
+      }
+    },
+    "properties": {
+      "preset": {
+        "$ref": "#/$defs/Preset"
+      },
+      "ingress_http": {
+        "$ref": "#/$defs/IngressHttp"
+      },
+      "pgvector_user": {
+        "$ref": "#/$defs/CrunchyPostgresUserCredentials"
+      },
+      "embeddings_api": {
+        "$ref": "#/$defs/OpenAICompatEmbeddingsAPI"
+      },
+      "llm_chat_api": {
+        "$ref": "#/$defs/OpenAICompatChatAPI"
+      },
+      "private_gpt_specific": {
+        "$ref": "#/$defs/PrivateGptSpecific"
+      }
+    },
+    "required": [
+      "preset",
+      "ingress_http",
+      "pgvector_user",
+      "embeddings_api",
+      "llm_chat_api"
+    ],
+    "title": "PrivateGPTAppInputs",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "RestAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "RestAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      }
+    },
+    "description": "PrivateGPT outputs:\n  - internal_web_app_url\n  - external_web_app_url",
+    "properties": {
+      "internal_web_app_url": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "external_web_app_url": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "title": "PrivateGPTAppOutputs",
+    "type": "object"
+  },
+  "tags": [
+    "embeddings",
+    "text",
+    "gpt",
+    "ui",
+    "chat"
+  ],
+  "git_url": "https://github.com/neuro-inc/mlops-custom-deployment-app",
+  "helm_path": "charts/custom-deployment",
+  "type": "mlops",
+  "logo": "https://files.buildwithfern.com/privategpt.docs.buildwithfern.com/2024-08-07T10:16:37.815Z/docs/assets/logo_dark.png",
+  "assets": [],
+  "documentation_urls": [
+    {
+      "text": "PrivateGPT doc",
+      "url": "https://docs.privategpt.dev/"
+    }
+  ],
+  "external_urls": [
+    {
+      "text": "PrivateGPT GitHub",
+      "url": "https://github.com/zylon-ai/private-gpt"
+    }
+  ],
+  "mlops_app_type": "private-gpt",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}
