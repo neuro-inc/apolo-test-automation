@@ -14,6 +14,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.create_org_popup_steps impo
 from tests.test_cases.steps.ui_steps.page_steps_impl.create_proj_popup_steps import (
     CreateProjPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.delete_file_popup_steps import (
+    DeleteFilePopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.edit_org_user_popup_steps import (
     EditOrgUserPopupSteps,
 )
@@ -71,6 +74,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.remove_org_user_popup_steps
 from tests.test_cases.steps.ui_steps.page_steps_impl.remove_proj_member_popup_steps import (
     RemoveProjMemberPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.rename_file_popup_steps import (
+    RenameFilePopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.signup_page_steps import (
     SignupPageSteps,
 )
@@ -123,3 +129,5 @@ class PageSteps:
         self.files_page = FilesPageSteps(self._pm)
         self.create_org_popup = CreateOrgPopupSteps(self._pm)
         self.new_folder_popup = NewFolderPopupSteps(self._pm)
+        self.rename_file_popup = RenameFilePopupSteps(self._pm)
+        self.delete_file_popup = DeleteFilePopupSteps(self._pm)

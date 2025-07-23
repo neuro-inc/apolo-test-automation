@@ -14,6 +14,11 @@ class BasePage(ABC):
         full_message = f"<{class_name}>: {message}"
         self.logger.log(level, full_message)
 
+    @property
+    async def current_url(self) -> str:
+        """Return the current page URL."""
+        return self.page.url
+
     @abstractmethod
     async def is_loaded(self, **kwargs: Any) -> bool:
         """

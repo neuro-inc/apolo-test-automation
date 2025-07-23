@@ -1,3 +1,5 @@
+from urllib.parse import urlparse, unquote
+
 from tests.reporting_hooks.reporting import async_step
 from tests.components.ui.page_manager import PageManager
 
@@ -41,8 +43,60 @@ class FilesPageSteps:
             "Upload button should be disabled!"
         )
 
-    @async_step("Verify Folder is displayed")
-    async def verify_ui_folder_displayed(self, name: str) -> None:
-        assert await self._pm.files_page.is_folder_btn_displayed(name=name), (
-            f"Folder {name} button should be displayed!"
+    @async_step("Verify Folder up button is displayed")
+    async def verify_ui_folder_up_btn_displayed(self) -> None:
+        assert await self._pm.files_page.is_folder_up_btn_displayed(), (
+            "Folder up button should be displayed!"
         )
+
+    @async_step("Verify File button is displayed")
+    async def verify_ui_file_displayed(self, name: str) -> None:
+        assert await self._pm.files_page.is_file_btn_displayed(name=name), (
+            f"File {name} button should be displayed!"
+        )
+
+    @async_step("Verify File button is not displayed")
+    async def verify_ui_file_not_displayed(self, name: str) -> None:
+        assert not await self._pm.files_page.is_file_btn_displayed(name=name), (
+            f"File {name} button should not be displayed!"
+        )
+
+    @async_step("Click File button")
+    async def ui_click_file_btn(self, name: str) -> None:
+        await self._pm.files_page.click_file_btn(name=name)
+
+    @async_step("Double click File button")
+    async def ui_double_click_file_btn(self, name: str) -> None:
+        await self._pm.files_page.double_click_file_btn(name=name)
+
+    @async_step("Verify File info section displayed")
+    async def verify_ui_file_info_section_displayed(self, name: str, path: str) -> None:
+        assert await self._pm.files_page.is_file_info_section_displayed(
+            name=name, path=path
+        ), f"File info section for {name} should be displayed!"
+
+    @async_step("Verify File action bar displayed")
+    async def verify_ui_file_action_bar_displayed(self, name: str) -> None:
+        assert await self._pm.files_page.is_file_action_bar_displayed(), (
+            f"File action bar for {name} should be displayed!"
+        )
+
+    @async_step("Verify Files page URL path is valid")
+    async def verify_ui_file_url_path_is_valid(self, expected_path: str) -> None:
+        """Verify that the current Files page URL path matches the expected value."""
+        url = await self._pm.files_page.current_url
+        actual_path = unquote(urlparse(url).path.lstrip("/"))
+
+        assert actual_path == expected_path, (
+            f"URL path mismatch:\n"
+            f"- Expected: {expected_path}\n"
+            f"- Actual:   {actual_path}"
+        )
+
+    @async_step("Click Rename File button")
+    async def ui_click_rename_file_btn(self) -> None:
+        await self._pm.files_page.click_file_action_bar_rename_btn()
+
+    @async_step("Click Delete File button")
+    async def ui_click_delete_file_btn(self) -> None:
+        await self._pm.files_page.click_file_action_bar_delete_btn()

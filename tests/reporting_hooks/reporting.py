@@ -33,16 +33,29 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
             logger.info(f"▶️ STEP started: {resolved_name}")
             with allure.step(resolved_name):
                 try:
+                    # Attach URL if available
+                    if page:
+                        url = page.url
+                        allure.attach(
+                            url,
+                            name="Page URL",
+                            attachment_type=allure.attachment_type.TEXT,
+                        )
+
                     result = await func(*args, **kwargs)
+
                     if page:
                         await page.wait_for_load_state("networkidle")
+
                     logger.info(f"✅ STEP completed: {resolved_name}")
                     return result
+
                 except Exception as e:
                     is_failed = True
                     logger.error(f"❌ STEP failed: {resolved_name}")
                     formatted_msg = exception_manager.handle(e, context=resolved_name)
                     raise AssertionError(formatted_msg) from e
+
                 finally:
                     if page:
                         await _capture_screenshot(
