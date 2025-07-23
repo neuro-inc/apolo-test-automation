@@ -269,7 +269,7 @@ async def _log_failed_requests(test_config: ConfigManager, response: Any) -> Non
         log_msg = (
             f"[HTTP {status}] {method} {url}\n"
             f"Request Body:\n{request_body}\n"
-            f"Response Body (first 200 chars):\n{response_body[:200]}"
+            f"Response Body (first 1000 chars):\n{response_body[:1000]}"
         )
 
         logger.warning(log_msg)
