@@ -29,7 +29,17 @@ exception_manager = ExceptionManager(logger=logger)
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
 
+STORAGE_OBJECTS_PATH = os.path.join(PROJECT_ROOT, "storage_objects")
+GENERATED_DATA_PATH = os.path.join(STORAGE_OBJECTS_PATH, "generated_objects")
+DOWNLOAD_PATH = os.path.join(STORAGE_OBJECTS_PATH, "downloads")
+
 _browser_context_pairs: list[tuple[Browser, BrowserContext]] = []
+
+
+@pytest.fixture(scope="session", autouse=True)
+def ensure_storage_directories() -> None:
+    for path in (STORAGE_OBJECTS_PATH, GENERATED_DATA_PATH, DOWNLOAD_PATH):
+        os.makedirs(path, exist_ok=True)
 
 
 @pytest.fixture(scope="function")
@@ -72,7 +82,7 @@ def test_config() -> ConfigManager:
 @pytest.fixture(scope="function")
 def data_manager() -> DataManager:
     logger.info("Creating data manager")
-    return DataManager()
+    return DataManager(gen_obj_path=GENERATED_DATA_PATH, download_path=DOWNLOAD_PATH)
 
 
 @pytest.fixture
@@ -217,7 +227,7 @@ async def _create_page_manager(
 ) -> PageManager:
     browser = await _start_browser()
     logger.info("Initializing new browser context")
-    context = await browser.new_context(no_viewport=True)
+    context = await browser.new_context(no_viewport=True, accept_downloads=True)
     _browser_context_pairs.append((browser, context))
     page = await context.new_page()
 

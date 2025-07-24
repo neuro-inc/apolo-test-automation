@@ -58,6 +58,7 @@ class FilesPage(BasePage):
     async def click_upload_btn(self) -> None:
         self.log("Click Upload button")
         await self._get_upload_btn().click()
+        await self.page.wait_for_timeout(1000)
 
     async def is_file_btn_displayed(self, name: str) -> bool:
         self.log(f"Check if File {name} button is displayed")

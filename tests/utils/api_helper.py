@@ -1,4 +1,6 @@
 import logging
+import os
+
 import aiohttp
 from typing import Any, Optional, Union
 
@@ -62,14 +64,21 @@ class APIHelper:
     async def _put(
         self,
         endpoint: str,
-        data: Optional[Union[dict[str, Any], list[Any]]] = None,
+        data: Optional[Union[dict[str, Any], list[Any], bytes]] = None,
         token: Optional[str] = None,
+        is_json: bool = True,
     ) -> Any:
         assert self._session is not None, "ClientSession is not initialized"
-        async with self._session.put(
-            endpoint, headers=self._headers(token), json=data
-        ) as response:
-            return await response.json()
+        if is_json and isinstance(data, (dict, list)):
+            async with self._session.put(
+                endpoint, headers=self._headers(token), json=data
+            ) as response:
+                return await response.json()
+        else:
+            async with self._session.put(
+                endpoint, headers=self._headers(token), data=data
+            ) as response:
+                return response
 
     async def _delete(self, endpoint: str, token: Optional[str] = None) -> Any:
         assert self._session is not None, "ClientSession is not initialized"
@@ -107,3 +116,15 @@ class APIHelper:
             raise ValueError(response)
         else:
             raise RuntimeError(f"Unexpected response: {status}, {response}")
+
+    async def upload_file(
+        self, token: str, organization: str, project_name: str, file_path: str
+    ) -> Any:
+        file_name = os.path.basename(file_path)
+        url = self._config.get_file_upload_url(organization, project_name, file_name)
+        with open(file_path, "rb") as f:
+            file_bytes = f.read()
+            response = await self._put(url, data=file_bytes, token=token)
+            logger.info(f"File upload response: {response}")
+
+        return response
