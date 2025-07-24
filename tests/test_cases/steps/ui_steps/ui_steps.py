@@ -1,3 +1,5 @@
+import os
+
 from tests.reporting_hooks.reporting import async_step
 from tests.test_cases.steps.ui_steps.page_steps import PageSteps
 from tests.utils.api_helper import APIHelper
@@ -269,3 +271,39 @@ class UISteps(PageSteps):
         await self.create_proj_popup.ui_wait_to_disappear(org_name=org_name)
 
         await self.main_page.verify_ui_page_displayed()
+
+    # ********************   Upload/Download file steps   ****************************
+    @async_step("Upload file via API and reload page")
+    async def ui_upload_file(
+        self, org_name: str, proj_name: str, file_path: str
+    ) -> None:
+        response = await self._api_helper.upload_file(
+            token=self._test_config.token,
+            organization=org_name,
+            project_name=proj_name,
+            file_path=file_path,
+        )
+        assert response.status == 201, (
+            f"Expected HTTP 201 response but got {response.status_code}!"
+        )
+        await self.ui_reload_page()
+
+    @async_step("Download file via UI")
+    async def ui_download_file(self) -> str:
+        async with self._pm.files_page.page.expect_download() as download_info:
+            await self._pm.files_page.click_file_action_bar_download_btn()
+        download = await download_info.value
+
+        file_path = os.path.join(
+            self._data_manager.download_path, download.suggested_filename
+        )
+        await download.save_as(file_path)
+        return file_path
+
+    @async_step("Validate if downloaded file matches expected file")
+    async def validate_file_matches_expected_file(
+        self, file_path_1: str, file_path_2: str
+    ) -> None:
+        assert self._data_manager.compare_files_md5(file_path_1, file_path_2), (
+            "MD5 hash does not match!"
+        )

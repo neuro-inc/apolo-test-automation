@@ -401,3 +401,289 @@ class TestUIFiles(BaseUITest):
         await steps.delete_file_popup.ui_wait_to_disappear(name="New Folder 1")
 
         await steps.files_page.verify_ui_file_not_displayed(name="New Folder 1")
+
+    @async_title("User upload bin file")
+    async def test_upload_bin_file(self) -> None:
+        """
+        Verify that user can upload bin file via UI.
+        """
+
+        steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
+
+        await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        proj = org.add_project("Project-1")
+
+        await steps.ui_create_first_proj_from_top_pane(
+            org_name=org.org_name, proj_name=proj.project_name
+        )
+
+        await steps.main_page.ui_click_files_btn()
+        await steps.files_page.verify_ui_page_displayed()
+        await steps.files_page.verify_ui_add_folder_btn_enabled()
+
+        file_path, file_name = await steps.files_page.generate_bin_file()
+        await steps.ui_upload_file(
+            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+        )
+        await steps.files_page.verify_ui_file_displayed(name=file_name)
+
+    @async_title("User upload txt file")
+    async def test_upload_txt_file(self) -> None:
+        """
+        Verify that user can upload txt file via UI.
+        """
+
+        steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
+
+        await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        proj = org.add_project("Project-1")
+
+        await steps.ui_create_first_proj_from_top_pane(
+            org_name=org.org_name, proj_name=proj.project_name
+        )
+
+        await steps.main_page.ui_click_files_btn()
+        await steps.files_page.verify_ui_page_displayed()
+        await steps.files_page.verify_ui_add_folder_btn_enabled()
+
+        file_path, file_name = await steps.files_page.generate_txt_file()
+        await steps.ui_upload_file(
+            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+        )
+        await steps.files_page.verify_ui_file_displayed(name=file_name)
+
+    @async_title("User make single click on File")
+    async def test_file_single_click(self) -> None:
+        """
+        User uploaded txt file.
+        Verify that after single click on file following elements appear:
+            - File info section
+            - File action bar
+        """
+
+        steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
+
+        await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        proj = org.add_project("Project-1")
+
+        await steps.ui_create_first_proj_from_top_pane(
+            org_name=org.org_name, proj_name=proj.project_name
+        )
+
+        await steps.main_page.ui_click_files_btn()
+        await steps.files_page.verify_ui_page_displayed()
+        await steps.files_page.verify_ui_add_folder_btn_enabled()
+
+        file_path, file_name = await steps.files_page.generate_txt_file()
+        await steps.ui_upload_file(
+            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+        )
+        await steps.files_page.verify_ui_file_displayed(name=file_name)
+
+        await steps.files_page.ui_click_file_btn(name=file_name)
+
+        path = f"/{org.org_name}/{proj.project_name}"
+        await steps.files_page.verify_ui_file_info_section_displayed(
+            name=file_name, path=path
+        )
+        await steps.files_page.verify_ui_file_action_bar_displayed(name=file_name)
+
+    @async_title("User download bin file")
+    async def test_download_bin_file(self) -> None:
+        """
+        User uploaded bin file.
+        Verify that:
+            - user can download bin file via UI.
+            - downloaded bin file md5 hash matches expected file.
+        """
+
+        steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
+
+        await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        proj = org.add_project("Project-1")
+
+        await steps.ui_create_first_proj_from_top_pane(
+            org_name=org.org_name, proj_name=proj.project_name
+        )
+
+        await steps.main_page.ui_click_files_btn()
+        await steps.files_page.verify_ui_page_displayed()
+        await steps.files_page.verify_ui_add_folder_btn_enabled()
+
+        file_path, file_name = await steps.files_page.generate_bin_file()
+        await steps.ui_upload_file(
+            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+        )
+        await steps.files_page.verify_ui_file_displayed(name=file_name)
+
+        await steps.files_page.ui_click_file_btn(name=file_name)
+        await steps.files_page.verify_ui_file_action_bar_displayed(name=file_name)
+
+        downloaded_file_path = await steps.ui_download_file()
+        await steps.validate_file_matches_expected_file(file_path, downloaded_file_path)
+
+    @async_title("User download txt file")
+    async def test_download_txt_file(self) -> None:
+        """
+        User uploaded txt file.
+        Verify that:
+            - user can download txt file via UI.
+            - downloaded bin file md5 hash matches expected file.
+        """
+
+        steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
+
+        await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        proj = org.add_project("Project-1")
+
+        await steps.ui_create_first_proj_from_top_pane(
+            org_name=org.org_name, proj_name=proj.project_name
+        )
+
+        await steps.main_page.ui_click_files_btn()
+        await steps.files_page.verify_ui_page_displayed()
+        await steps.files_page.verify_ui_add_folder_btn_enabled()
+
+        file_path, file_name = await steps.files_page.generate_txt_file()
+        await steps.ui_upload_file(
+            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+        )
+        await steps.files_page.verify_ui_file_displayed(name=file_name)
+
+        await steps.files_page.ui_click_file_btn(name=file_name)
+        await steps.files_page.verify_ui_file_action_bar_displayed(name=file_name)
+
+        downloaded_file_path = await steps.ui_download_file()
+        await steps.validate_file_matches_expected_file(file_path, downloaded_file_path)
+
+    @async_title("User rename File")
+    async def test_rename_file(self) -> None:
+        """
+        User uploaded txt file.
+        Verify that user can rename a file with Rename button from File action bar.
+        """
+
+        steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
+
+        await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        proj = org.add_project("Project-1")
+
+        await steps.ui_create_first_proj_from_top_pane(
+            org_name=org.org_name, proj_name=proj.project_name
+        )
+
+        await steps.main_page.ui_click_files_btn()
+        await steps.files_page.verify_ui_page_displayed()
+        await steps.files_page.verify_ui_add_folder_btn_enabled()
+
+        file_path, file_name = await steps.files_page.generate_txt_file()
+        await steps.ui_upload_file(
+            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+        )
+        await steps.files_page.verify_ui_file_displayed(name=file_name)
+
+        await steps.files_page.ui_click_file_btn(name=file_name)
+        await steps.files_page.verify_ui_file_action_bar_displayed(name=file_name)
+
+        await steps.files_page.ui_click_rename_file_btn()
+        await steps.rename_file_popup.verify_ui_popup_displayed()
+
+        await steps.rename_file_popup.ui_enter_new_file_name(name="New-file_name.txt")
+        await steps.rename_file_popup.ui_click_rename_button()
+        await steps.rename_file_popup.ui_wait_to_disappear()
+
+        await steps.files_page.verify_ui_file_not_displayed(name=file_name)
+        await steps.files_page.verify_ui_file_displayed(name="New-file_name.txt")
+
+    @async_title("User delete File")
+    async def test_delete_file(self) -> None:
+        """
+        User uploaded txt file.
+        Verify that user can delete a file with Delete button from File action bar.
+        """
+
+        steps = self._steps
+        user = await steps.ui_signup_new_user_ver_link()
+
+        await steps.ui_pass_new_user_onboarding(
+            email=user.email,
+            username=user.username,
+            gherkin_name="Default-organization",
+        )
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        proj = org.add_project("Project-1")
+
+        await steps.ui_create_first_proj_from_top_pane(
+            org_name=org.org_name, proj_name=proj.project_name
+        )
+
+        await steps.main_page.ui_click_files_btn()
+        await steps.files_page.verify_ui_page_displayed()
+        await steps.files_page.verify_ui_add_folder_btn_enabled()
+
+        file_path, file_name = await steps.files_page.generate_txt_file()
+        await steps.ui_upload_file(
+            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+        )
+        await steps.files_page.verify_ui_file_displayed(name=file_name)
+
+        await steps.files_page.ui_click_file_btn(name=file_name)
+        await steps.files_page.verify_ui_file_action_bar_displayed(name=file_name)
+
+        await steps.files_page.ui_click_delete_file_btn()
+        await steps.delete_file_popup.verify_ui_popup_displayed(name=file_name)
+
+        await steps.delete_file_popup.ui_click_delete_button()
+        await steps.delete_file_popup.ui_wait_to_disappear(name=file_name)
+
+        await steps.files_page.verify_ui_file_not_displayed(name=file_name)

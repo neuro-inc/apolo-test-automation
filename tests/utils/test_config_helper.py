@@ -90,3 +90,10 @@ class ConfigManager:
 
     def get_signup_status_url(self, email: str) -> str:
         return str(self._endpoints.signup_status).format(email=email)
+
+    def get_file_upload_url(
+        self, organization: str, project_name: str, file_name: str
+    ) -> str:
+        return str(self._endpoints.file_upload).format(
+            organization=organization, project=project_name, file_name=file_name
+        )

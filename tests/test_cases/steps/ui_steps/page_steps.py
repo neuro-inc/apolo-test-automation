@@ -126,7 +126,7 @@ class PageSteps:
         self.remove_org_user_popup = RemoveOrgUserPopupSteps(self._pm)
         self.remove_proj_member_popup = RemoveProjMemberPopupSteps(self._pm)
         self.edit_proj_member_popup = EditProjMemberPopupSteps(self._pm)
-        self.files_page = FilesPageSteps(self._pm)
+        self.files_page = FilesPageSteps(self._pm, self._data_manager)
         self.create_org_popup = CreateOrgPopupSteps(self._pm)
         self.new_folder_popup = NewFolderPopupSteps(self._pm)
         self.rename_file_popup = RenameFilePopupSteps(self._pm)
