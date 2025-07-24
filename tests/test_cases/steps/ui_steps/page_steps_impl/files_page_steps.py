@@ -2,14 +2,13 @@ from urllib.parse import urlparse, unquote
 
 from tests.reporting_hooks.reporting import async_step
 from tests.components.ui.page_manager import PageManager
+from tests.utils.test_data_management.test_data import DataManager
 
 
 class FilesPageSteps:
-    def __init__(
-        self,
-        page_manager: PageManager,
-    ) -> None:
+    def __init__(self, page_manager: PageManager, data_manager: DataManager) -> None:
         self._pm = page_manager
+        self._data_manager = data_manager
 
     @async_step("Verify that Files page displayed")
     async def verify_ui_page_displayed(self) -> None:
@@ -100,3 +99,19 @@ class FilesPageSteps:
     @async_step("Click Delete File button")
     async def ui_click_delete_file_btn(self) -> None:
         await self._pm.files_page.click_file_action_bar_delete_btn()
+
+    @async_step("Generate bin file")
+    async def generate_bin_file(self) -> tuple[str, str]:
+        return self._data_manager.generate_dummy_bin_file()
+
+    @async_step("Generate txt file")
+    async def generate_txt_file(self) -> tuple[str, str]:
+        return self._data_manager.generate_dummy_txt_file()
+
+    @async_step("Upload file")
+    async def ui_upload_file(self, file_path: str) -> None:
+        async with self._pm.files_page.page.expect_file_chooser() as fc_info:
+            await self._pm.files_page.click_upload_btn()
+        file_chooser = await fc_info.value
+        await file_chooser.set_files(file_path)
+        await self._pm.main_page.page.wait_for_timeout(500)
