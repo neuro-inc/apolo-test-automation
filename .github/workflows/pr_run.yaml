@@ -71,7 +71,7 @@ jobs:
         id: changed-tests
         run: |
           git fetch origin master
-          TEST_FILES=$(git diff --name-only origin/master | grep '^tests/.*test_.*\.py$' || true)
+          TEST_FILES=$(git diff --name-only origin/master | grep '^tests/test_cases/tests_[^/]*/test_.*\.py$' || true)
           echo "Changed test files:"
           echo "$TEST_FILES"
           echo "files=$(echo "$TEST_FILES" | tr '\n' ' ' | xargs)" >> $GITHUB_OUTPUT

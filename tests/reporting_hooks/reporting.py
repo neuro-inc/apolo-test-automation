@@ -44,9 +44,6 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
 
                     result = await func(*args, **kwargs)
 
-                    if page:
-                        await page.wait_for_load_state("networkidle")
-
                     logger.info(f"✅ STEP completed: {resolved_name}")
                     return result
 

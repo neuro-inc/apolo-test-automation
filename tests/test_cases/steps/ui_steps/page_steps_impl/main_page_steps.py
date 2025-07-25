@@ -99,3 +99,32 @@ class MainPageSteps:
     @async_step("Click Files button on the left pane on the main page")
     async def ui_click_files_btn(self) -> None:
         await self._pm.main_page.click_files_button()
+
+    @async_step("Verify Credits button on the top pane of the main page is disabled")
+    async def verify_ui_credits_button_disabled(self) -> None:
+        assert not await self._pm.main_page.is_credits_btn_enabled(), (
+            "Credits button should be disabled!"
+        )
+
+    @async_step("Verify Credits button on the top pane of the main page is enabled")
+    async def verify_ui_credits_button_enabled(self) -> None:
+        assert await self._pm.main_page.is_credits_btn_enabled(), (
+            "Credits button should be enabled!"
+        )
+
+    @async_step("Click Credits button on the top pane of the main page")
+    async def ui_click_credits_btn(self) -> None:
+        await self._pm.main_page.click_credits_btn()
+
+    @async_step("Get current credits amount")
+    async def ui_get_current_credits_amount(self) -> float:
+        return await self._pm.main_page.get_current_credits_amount()
+
+    @async_step("Verify current credits amount is valid")
+    async def verify_ui_current_credits_amount_is_valid(
+        self, expected_amount: int | float
+    ) -> None:
+        actual_amount = await self._pm.main_page.get_current_credits_amount()
+        assert actual_amount == expected_amount, (
+            f"Expected {expected_amount} credits amount but got {actual_amount}"
+        )
