@@ -2,6 +2,7 @@ from playwright.async_api import Page
 
 from tests.components.ui.pages.apps_page import AppsPage
 from tests.components.ui.pages.auth_page import AuthPage
+from tests.components.ui.pages.buy_credits_popup import BuyCreditsPopup
 from tests.components.ui.pages.create_organization_popup import CreateOrganizationPopup
 from tests.components.ui.pages.create_project_popup import CreateProjectPopup
 from tests.components.ui.pages.delete_file_popup import DeleteFilePopup
@@ -36,6 +37,7 @@ from tests.components.ui.pages.organization_settings_page import (
 from tests.components.ui.pages.organization_settings_popup import (
     OrganizationSettingsPopup,
 )
+from tests.components.ui.pages.payment_page import PaymentPage
 from tests.components.ui.pages.project_people_page import ProjectPeoplePage
 from tests.components.ui.pages.projects_info_popup import ProjectsInfoPopup
 from tests.components.ui.pages.remove_org_user_popup import RemoveOrgUserPopup
@@ -83,3 +85,5 @@ class PageManager:
         self.new_folder_popup = NewFolderPopup(page)
         self.rename_file_popup = RenameFilePopup(page)
         self.delete_file_popup = DeleteFilePopup(page)
+        self.buy_credits_popup = BuyCreditsPopup(page)
+        self.payment_page = PaymentPage(page)

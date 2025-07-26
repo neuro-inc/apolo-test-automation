@@ -8,6 +8,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.auth_page_steps import (
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps_page_steps import (
     AppsPageSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.buy_credits_popup_steps import (
+    BuyCreditsPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.create_org_popup_steps import (
     CreateOrgPopupSteps,
 )
@@ -61,6 +64,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.org_settings_page_steps imp
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.org_settings_popup_steps import (
     OrgSettingsPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.payment_page_steps import (
+    PaymentPageSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.proj_info_popup_steps import (
     ProjInfoPopupSteps,
@@ -131,3 +137,5 @@ class PageSteps:
         self.new_folder_popup = NewFolderPopupSteps(self._pm)
         self.rename_file_popup = RenameFilePopupSteps(self._pm)
         self.delete_file_popup = DeleteFilePopupSteps(self._pm)
+        self.buy_credits_popup = BuyCreditsPopupSteps(self._pm)
+        self.payment_page = PaymentPageSteps(self._pm)
