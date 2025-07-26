@@ -20,8 +20,6 @@ class PaymentPage(BasePage):
         res = await self.is_payment_form_visible(email=email)
         if not res:
             await self.handle_us_view()
-            # html = await self.page.content()
-            # self.log(f"[PAYMENT page HTML]\n{html}")
         return await self.is_payment_form_visible(email=email)
 
     async def is_payment_form_visible(self, email: str) -> bool:
@@ -45,8 +43,6 @@ class PaymentPage(BasePage):
             await zip_code_input.fill("94105")
             phone_number_input = BaseElement(self.page, "#phoneNumber")
             await phone_number_input.fill("2015550123")
-            html = await self.page.content()
-            self.log(f"[PAYMENT page HTML]\n{html}")
 
     def _get_email_field(self, email: str) -> BaseElement:
         return BaseElement(self.page, "div.ReadOnlyFormField-title", has_text=email)
