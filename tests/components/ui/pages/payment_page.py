@@ -18,9 +18,9 @@ class PaymentPage(BasePage):
             raise ValueError("Expected 'email' to be a non-empty string in kwargs")
 
         ###########################
-        locator = self.page.locator("form#payment-form")
-        html = await locator.evaluate("el => el.outerHTML")
-        self.log(f"[PAYMENT FORM HTML]\n{html}")
+        # locator = self.page.locator("form#payment-form")
+        html = await self.page.content()
+        self.log(f"[PAYMENT page HTML]\n{html}")
         ###########################
 
         return (
