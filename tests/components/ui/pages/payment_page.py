@@ -35,22 +35,18 @@ class PaymentPage(BasePage):
         )
 
     async def handle_us_view(self) -> None:
-        cash_app_checkbox = BaseElement(
-            self.page, 'input[type="radio"][value="cashapp"]'
-        )
         card_checkbox = BaseElement(self.page, 'input[type="radio"][value="card"]')
-        affirm_checkbox = BaseElement(self.page, 'input[type="radio"][value="affirm"]')
-        klarna_checkbox = BaseElement(self.page, 'input[type="radio"][value="klarna"]')
 
         options_visible = (
-            # await cash_app_checkbox.is_visible()
             await card_checkbox.is_visible()
-            # and await affirm_checkbox.is_visible()
-            # and await klarna_checkbox.is_visible()
         )
 
         if options_visible:
             await card_checkbox.click()
+            zip_code_input = BaseElement(self.page, '#billingPostalCode')
+            await zip_code_input.fill("94105")
+            phone_number_input = BaseElement(self.page, '#phoneNumber')
+            await phone_number_input.fill("2015550123")
             html = await self.page.content()
             self.log(f"[PAYMENT page HTML]\n{html}")
 
