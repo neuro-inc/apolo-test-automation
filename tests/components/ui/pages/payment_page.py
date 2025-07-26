@@ -17,20 +17,19 @@ class PaymentPage(BasePage):
         if not isinstance(email, str):
             raise ValueError("Expected 'email' to be a non-empty string in kwargs")
 
-        ###########################
-        # locator = self.page.locator("form#payment-form")
-        html = await self.page.content()
-        self.log(f"[PAYMENT page HTML]\n{html}")
-        ###########################
-
-        return (
-            await self._get_email_field(email).is_visible()
-            and await self._get_card_number_input().is_visible()
-            and await self._get_card_expiry_input().is_visible()
-            and await self._get_card_cvv_input().is_visible()
-            and await self._get_card_name_input().is_visible()
-            and await self._get_pay_btn().is_visible()
-        )
+        try:
+            return (
+                await self._get_email_field(email).is_visible()
+                and await self._get_card_number_input().is_visible()
+                and await self._get_card_expiry_input().is_visible()
+                and await self._get_card_cvv_input().is_visible()
+                and await self._get_card_name_input().is_visible()
+                and await self._get_pay_btn().is_visible()
+            )
+        except Exception:
+            html = await self.page.content()
+            self.log(f"[PAYMENT page HTML]\n{html}")
+            return False
 
     def _get_email_field(self, email: str) -> BaseElement:
         return BaseElement(self.page, "div.ReadOnlyFormField-title", has_text=email)
