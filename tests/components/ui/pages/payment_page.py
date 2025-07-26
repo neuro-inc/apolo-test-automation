@@ -50,7 +50,7 @@ class PaymentPage(BasePage):
         )
 
         if options_visible:
-            await card_checkbox.check()
+            await card_checkbox.click()
 
     def _get_email_field(self, email: str) -> BaseElement:
         return BaseElement(self.page, "div.ReadOnlyFormField-title", has_text=email)
