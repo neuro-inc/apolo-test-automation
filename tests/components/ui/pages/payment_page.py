@@ -20,8 +20,6 @@ class PaymentPage(BasePage):
         res = await self.is_payment_form_visible(email=email)
         if not res:
             await self.handle_us_view()
-            # html = await self.page.content()
-            # self.log(f"[PAYMENT page HTML]\n{html}")
         return await self.is_payment_form_visible(email=email)
 
     async def is_payment_form_visible(self, email: str) -> bool:
@@ -35,22 +33,17 @@ class PaymentPage(BasePage):
         )
 
     async def handle_us_view(self) -> None:
-        cash_app_checkbox = BaseElement(
-            self.page, 'input[type="radio"][value="cashapp"]'
+        card_checkbox = BaseElement(
+            self.page, 'button[data-testid="card-accordion-item-button"]'
         )
-        card_checkbox = BaseElement(self.page, 'input[type="radio"][value="card"]')
-        affirm_checkbox = BaseElement(self.page, 'input[type="radio"][value="affirm"]')
-        klarna_checkbox = BaseElement(self.page, 'input[type="radio"][value="klarna"]')
+        phone_required_checkbox = BaseElement(self.page, "#enableStripePass")
 
-        options_visible = (
-            # await cash_app_checkbox.is_visible()
-            await card_checkbox.is_visible()
-            # and await affirm_checkbox.is_visible()
-            # and await klarna_checkbox.is_visible()
-        )
-
-        if options_visible:
+        if await card_checkbox.is_visible():
             await card_checkbox.click()
+            html = await self.page.content()
+            self.log(html)
+            if await phone_required_checkbox.is_visible():
+                await phone_required_checkbox.click()
 
     def _get_email_field(self, email: str) -> BaseElement:
         return BaseElement(self.page, "div.ReadOnlyFormField-title", has_text=email)
