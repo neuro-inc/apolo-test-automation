@@ -16,6 +16,13 @@ class PaymentPage(BasePage):
         email = kwargs.get("email")
         if not isinstance(email, str):
             raise ValueError("Expected 'email' to be a non-empty string in kwargs")
+
+        ###########################
+        locator = self.page.locator("form#payment-form")
+        html = await locator.evaluate("el => el.outerHTML")
+        self.log(f"[PAYMENT FORM HTML]\n{html}")
+        ###########################
+
         return (
             await self._get_email_field(email).is_visible()
             and await self._get_card_number_input().is_visible()
