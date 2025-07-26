@@ -36,12 +36,13 @@ class PaymentPage(BasePage):
         card_checkbox = BaseElement(
             self.page, 'button[data-testid="card-accordion-item-button"]'
         )
-        phone_required_checkbox = BaseElement(self.page, "#enableStripePass")
 
         if await card_checkbox.is_visible():
             await card_checkbox.click()
+            self.log("Card checkbox clicked")
             html = await self.page.content()
             self.log(html)
+            phone_required_checkbox = BaseElement(self.page, "#enableStripePass")
             if await phone_required_checkbox.is_visible():
                 await phone_required_checkbox.click()
 
