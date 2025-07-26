@@ -17,8 +17,7 @@ class PaymentPage(BasePage):
         if not isinstance(email, str):
             raise ValueError("Expected 'email' to be a non-empty string in kwargs")
 
-        res = await self.is_payment_form_visible(email=email)
-        if not res:
+        if not self.is_payment_form_visible(email=email):
             await self.handle_us_view()
         return await self.is_payment_form_visible(email=email)
 
@@ -33,9 +32,7 @@ class PaymentPage(BasePage):
         )
 
     async def handle_us_view(self) -> None:
-        card_checkbox = BaseElement(
-            self.page, 'button[data-testid="card-accordion-item-button"]'
-        )
+        card_checkbox = BaseElement(self.page, 'input[type="radio"][value="card"]')
 
         if await card_checkbox.is_visible():
             await card_checkbox.click()
