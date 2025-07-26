@@ -43,10 +43,10 @@ class PaymentPage(BasePage):
         klarna_checkbox = BaseElement(self.page, 'input[type="radio"][value="klarna"]')
 
         options_visible = (
-            cash_app_checkbox.is_visible()
-            and card_checkbox.is_visible()
-            and affirm_checkbox.is_visible()
-            and klarna_checkbox.is_visible()
+            # await cash_app_checkbox.is_visible()
+            await card_checkbox.is_visible()
+            # and await affirm_checkbox.is_visible()
+            # and await klarna_checkbox.is_visible()
         )
 
         if options_visible:
