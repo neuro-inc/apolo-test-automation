@@ -61,7 +61,12 @@ class MainPage(BasePage):
         await self.page.wait_for_timeout(300)
 
     def _get_credits_btn(self) -> BaseElement:
-        return BaseElement(self.page, "button:has(p:text('Credits')) p.capitalize")
+        return BaseElement(self.page, "button", has_text="Credits")
+
+    def _get_credit_amount_field(self) -> BaseElement:
+        return BaseElement(
+            self.page, 'button:has-text("Credits") p.truncate.capitalize'
+        )
 
     async def is_credits_btn_enabled(self) -> bool:
         self.log("Check if Credits button on the top pane enabled")
@@ -70,6 +75,18 @@ class MainPage(BasePage):
     async def click_credits_btn(self) -> None:
         self.log("Click Credits button on the top pane")
         await self._get_credits_btn().click()
+
+    async def get_current_credits_amount(self) -> float:
+        self.log("Get current credits amount")
+        amount_str = await self._get_credit_amount_field().text_content()
+
+        def assert_float(value: str) -> float:
+            try:
+                return float(value)
+            except ValueError:
+                raise AssertionError(f'Value "{value}" cannot be converted to float')
+
+        return assert_float(amount_str)
 
     # ******************************  LEFT PANE  **************************************************
 
