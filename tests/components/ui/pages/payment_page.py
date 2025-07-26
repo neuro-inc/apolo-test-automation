@@ -37,15 +37,13 @@ class PaymentPage(BasePage):
     async def handle_us_view(self) -> None:
         card_checkbox = BaseElement(self.page, 'input[type="radio"][value="card"]')
 
-        options_visible = (
-            await card_checkbox.is_visible()
-        )
+        options_visible = await card_checkbox.is_visible()
 
         if options_visible:
             await card_checkbox.click()
-            zip_code_input = BaseElement(self.page, '#billingPostalCode')
+            zip_code_input = BaseElement(self.page, "#billingPostalCode")
             await zip_code_input.fill("94105")
-            phone_number_input = BaseElement(self.page, '#phoneNumber')
+            phone_number_input = BaseElement(self.page, "#phoneNumber")
             await phone_number_input.fill("2015550123")
             html = await self.page.content()
             self.log(f"[PAYMENT page HTML]\n{html}")
