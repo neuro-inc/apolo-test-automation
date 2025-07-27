@@ -11,6 +11,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.apps_page_steps import (
 from tests.test_cases.steps.ui_steps.page_steps_impl.buy_credits_popup_steps import (
     BuyCreditsPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.create_disk_popup_steps import (
+    CreateDiskPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.create_org_popup_steps import (
     CreateOrgPopupSteps,
 )
@@ -20,11 +23,17 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.create_proj_popup_steps imp
 from tests.test_cases.steps.ui_steps.page_steps_impl.create_secret_popup_steps import (
     CreateSecretPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.delete_disk_popup_steps import (
+    DeleteDiskPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.delete_file_popup_steps import (
     DeleteFilePopupSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.delete_secret_popup_steps import (
     DeleteSecretPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.disks_page_steps import (
+    DisksPageSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.edit_org_user_popup_steps import (
     EditOrgUserPopupSteps,
@@ -151,3 +160,6 @@ class PageSteps:
         self.secrets_page = SecretsPageSteps(self._pm)
         self.create_secret_popup = CreateSecretPopupSteps(self._pm)
         self.delete_secret_popup = DeleteSecretPopupSteps(self._pm)
+        self.disks_page = DisksPageSteps(self._pm)
+        self.create_disk_popup = CreateDiskPopupSteps(self._pm)
+        self.delete_disk_popup = DeleteDiskPopupSteps(self._pm)
