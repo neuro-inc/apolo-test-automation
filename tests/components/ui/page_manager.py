@@ -3,11 +3,14 @@ from playwright.async_api import Page
 from tests.components.ui.pages.apps_page import AppsPage
 from tests.components.ui.pages.auth_page import AuthPage
 from tests.components.ui.pages.buy_credits_popup import BuyCreditsPopup
+from tests.components.ui.pages.create_disk_popup import CreateDiskPopup
 from tests.components.ui.pages.create_organization_popup import CreateOrganizationPopup
 from tests.components.ui.pages.create_project_popup import CreateProjectPopup
 from tests.components.ui.pages.create_secret_popup import CreateSecretPopup
+from tests.components.ui.pages.delete_disk_popup import DeleteDiskPopup
 from tests.components.ui.pages.delete_file_popup import DeleteFilePopup
 from tests.components.ui.pages.delete_secret_popup import DeleteSecretPopup
+from tests.components.ui.pages.disks_page import DisksPage
 from tests.components.ui.pages.edit_org_user_popup import EditOrgUserPopup
 from tests.components.ui.pages.edit_proj_member_popup import EditProjMemberPopup
 from tests.components.ui.pages.files_page import FilesPage
@@ -93,3 +96,6 @@ class PageManager:
         self.secrets_page = SecretsPage(page)
         self.create_secret_popup = CreateSecretPopup(page)
         self.delete_secret_popup = DeleteSecretPopup(page)
+        self.disks_page = DisksPage(page)
+        self.create_disk_popup = CreateDiskPopup(page)
+        self.delete_disk_popup = DeleteDiskPopup(page)
