@@ -308,8 +308,8 @@ class UISteps(PageSteps):
             "MD5 hash does not match!"
         )
 
-    # ********************   Upload/Download file steps   ****************************
-    @async_step("Create Secret via API")
+    # ********************   Secrets steps   ****************************
+    @async_step("Create Secret via UI")
     async def ui_create_secret(
         self, secret_name: str, secret_value: str, first_secret: bool = True
     ) -> None:
@@ -326,3 +326,28 @@ class UISteps(PageSteps):
         await self.create_secret_popup.ui_click_create_secret_btn()
         await self.create_secret_popup.ui_wait_to_disappear()
         await self.secrets_page.verify_ui_no_secrets_message_not_displayed()
+
+    # ********************   Secrets steps   ****************************
+    @async_step("Create Disk via UI")
+    async def ui_create_disk(
+        self,
+        disk_name: str,
+        storage_value: str,
+        storage_units: str,
+        lifespan_value: str,
+        first_disk: bool = True,
+    ) -> None:
+        await self.main_page.ui_click_disks_btn()
+        await self.disks_page.verify_ui_page_displayed()
+        if first_disk:
+            await self.disks_page.verify_ui_no_disks_message_displayed()
+
+        await self.disks_page.ui_click_create_new_disk_btn()
+        await self.create_disk_popup.verify_ui_popup_displayed()
+
+        await self.create_disk_popup.ui_enter_disk_storage_value(storage_value)
+        await self.create_disk_popup.ui_select_disk_storage_units(storage_units)
+        await self.create_disk_popup.ui_enter_disk_name(disk_name)
+        await self.create_disk_popup.ui_enter_disk_lifespan_value(lifespan_value)
+        await self.create_disk_popup.ui_click_create_disk_btn()
+        await self.create_disk_popup.ui_wait_to_disappear()

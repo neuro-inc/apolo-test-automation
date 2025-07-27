@@ -104,6 +104,10 @@ class MainPageSteps:
     async def ui_click_secrets_btn(self) -> None:
         await self._pm.main_page.click_secrets_button()
 
+    @async_step("Click Disks button on the left pane on the main page")
+    async def ui_click_disks_btn(self) -> None:
+        await self._pm.main_page.click_disks_button()
+
     @async_step("Verify Credits button on the top pane of the main page is disabled")
     async def verify_ui_credits_button_disabled(self) -> None:
         assert not await self._pm.main_page.is_credits_btn_enabled(), (

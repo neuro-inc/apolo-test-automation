@@ -113,15 +113,10 @@ def users_manager() -> UsersManager:
 
 @pytest.fixture(autouse=True)
 async def clean_up(
-    test_config: ConfigManager,
-    data_manager: DataManager,
-    apolo_cli: ApoloCLI,
     request: pytest.FixtureRequest,
 ) -> AsyncGenerator[None, None]:
     """
     Post-test cleanup:
-    - logs in to Apolo CLI,
-    - removes all organisations recorded in the DataManager,
     - closes all browser sessions,
     - logs any cleanup errors without failing the test run.
     """
@@ -129,8 +124,6 @@ async def clean_up(
 
     with allure.step("Post-test cleanup"):
         try:
-            await _cleanup_orgs(test_config, data_manager, apolo_cli)
-
             await _cleanup_browsers()
 
         except Exception as exc:
@@ -149,42 +142,6 @@ async def clean_up(
             )
 
             logger.warning(f"Post-test cleanup failed: {formatted_msg}", RuntimeWarning)
-
-
-async def _cleanup_orgs(
-    test_config: ConfigManager,
-    data_manager: DataManager,
-    apolo_cli: ApoloCLI,
-) -> None:
-    organisations = data_manager.get_all_organizations()
-    logger.info("Cleaning up %d organisations", len(organisations))
-
-    if not organisations:
-        allure.attach(
-            "No organisations to clean up.",
-            name="Cleanup note",
-            attachment_type=AttachmentType.TEXT,
-        )
-        return
-
-    with allure.step("CLI login for cleanup"):
-        await apolo_cli.login_with_token(
-            test_config.token,
-            test_config.cli_login_url,
-        )
-
-    for org in organisations:
-        with allure.step(f"Delete organisation: {org.org_name}"):
-            try:
-                await apolo_cli.remove_organization(org.org_name)
-                data_manager.remove_organization(org.org_name)
-            except Exception as exc:
-                formatted_msg = exception_manager.handle(
-                    exc, context="Post-test cleanup"
-                )
-                logger.warning("Can not delete org: %s", formatted_msg)
-            else:
-                logger.info("Removed organisation: %s", org.org_name)
 
 
 async def _cleanup_browsers() -> None:
