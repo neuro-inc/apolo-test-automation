@@ -2,6 +2,7 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Any
 from playwright.async_api import Page
+from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
 
 class BasePage(ABC):
@@ -13,6 +14,21 @@ class BasePage(ABC):
         class_name = self.__class__.__name__
         full_message = f"<{class_name}>: {message}"
         self.logger.log(level, full_message)
+
+    async def wait_for_spinner(self, timeout: int = 5000) -> None:
+        try:
+            spinner_selector = ".chase-spinner"
+            self.log("Waiting for spinner")
+            await self.page.wait_for_selector(
+                spinner_selector, state="visible", timeout=timeout
+            )
+            self.log("Waiting for spinner to disappear")
+            await self.page.wait_for_selector(
+                spinner_selector, state="hidden", timeout=timeout
+            )
+        except PlaywrightTimeoutError:
+            self.log("Timeout error for spinner")
+            pass
 
     @property
     async def current_url(self) -> str:

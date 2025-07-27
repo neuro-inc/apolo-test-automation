@@ -307,3 +307,22 @@ class UISteps(PageSteps):
         assert self._data_manager.compare_files_md5(file_path_1, file_path_2), (
             "MD5 hash does not match!"
         )
+
+    # ********************   Upload/Download file steps   ****************************
+    @async_step("Create Secret via API")
+    async def ui_create_secret(
+        self, secret_name: str, secret_value: str, first_secret: bool = True
+    ) -> None:
+        await self.main_page.ui_click_secrets_btn()
+        await self.secrets_page.verify_ui_page_displayed()
+        if first_secret:
+            await self.secrets_page.verify_ui_no_secrets_message_displayed()
+
+        await self.secrets_page.ui_click_create_new_secret_btn()
+        await self.create_secret_popup.verify_ui_popup_displayed()
+
+        await self.create_secret_popup.ui_enter_secret_name(secret_name)
+        await self.create_secret_popup.ui_enter_secret_value(secret_value)
+        await self.create_secret_popup.ui_click_create_secret_btn()
+        await self.create_secret_popup.ui_wait_to_disappear()
+        await self.secrets_page.verify_ui_no_secrets_message_not_displayed()
