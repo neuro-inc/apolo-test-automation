@@ -17,8 +17,14 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.create_org_popup_steps impo
 from tests.test_cases.steps.ui_steps.page_steps_impl.create_proj_popup_steps import (
     CreateProjPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.create_secret_popup_steps import (
+    CreateSecretPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.delete_file_popup_steps import (
     DeleteFilePopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.delete_secret_popup_steps import (
+    DeleteSecretPopupSteps,
 )
 from tests.test_cases.steps.ui_steps.page_steps_impl.edit_org_user_popup_steps import (
     EditOrgUserPopupSteps,
@@ -83,6 +89,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.remove_proj_member_popup_st
 from tests.test_cases.steps.ui_steps.page_steps_impl.rename_file_popup_steps import (
     RenameFilePopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.secrets_page_steps import (
+    SecretsPageSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.signup_page_steps import (
     SignupPageSteps,
 )
@@ -139,3 +148,6 @@ class PageSteps:
         self.delete_file_popup = DeleteFilePopupSteps(self._pm)
         self.buy_credits_popup = BuyCreditsPopupSteps(self._pm)
         self.payment_page = PaymentPageSteps(self._pm)
+        self.secrets_page = SecretsPageSteps(self._pm)
+        self.create_secret_popup = CreateSecretPopupSteps(self._pm)
+        self.delete_secret_popup = DeleteSecretPopupSteps(self._pm)
