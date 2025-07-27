@@ -111,6 +111,15 @@ class MainPage(BasePage):
         self.log("Click Jobs button")
         await self._get_jobs_button().click()
 
+    def _get_secrets_button(self) -> BaseElement:
+        return BaseElement(
+            self.page, 'a[href^="/secrets?cluster="]', has_text="Secrets"
+        )
+
+    async def click_secrets_button(self) -> None:
+        self.log("Click Secrets button")
+        await self._get_secrets_button().click()
+
     def _get_organization_settings_button(self, email: str) -> BaseElement:
         return BaseElement(self.page, "div[slot='trigger']", has_text=email)
 

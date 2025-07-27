@@ -5,7 +5,9 @@ from tests.components.ui.pages.auth_page import AuthPage
 from tests.components.ui.pages.buy_credits_popup import BuyCreditsPopup
 from tests.components.ui.pages.create_organization_popup import CreateOrganizationPopup
 from tests.components.ui.pages.create_project_popup import CreateProjectPopup
+from tests.components.ui.pages.create_secret_popup import CreateSecretPopup
 from tests.components.ui.pages.delete_file_popup import DeleteFilePopup
+from tests.components.ui.pages.delete_secret_popup import DeleteSecretPopup
 from tests.components.ui.pages.edit_org_user_popup import EditOrgUserPopup
 from tests.components.ui.pages.edit_proj_member_popup import EditProjMemberPopup
 from tests.components.ui.pages.files_page import FilesPage
@@ -43,6 +45,7 @@ from tests.components.ui.pages.projects_info_popup import ProjectsInfoPopup
 from tests.components.ui.pages.remove_org_user_popup import RemoveOrgUserPopup
 from tests.components.ui.pages.remove_proj_member_popup import RemoveProjMemberPopup
 from tests.components.ui.pages.rename_file_popup import RenameFilePopup
+from tests.components.ui.pages.secrets_page import SecretsPage
 from tests.components.ui.pages.signup_page import SignupPage
 from tests.components.ui.pages.signup_username_page import SignupUsernamePage
 
@@ -87,3 +90,6 @@ class PageManager:
         self.delete_file_popup = DeleteFilePopup(page)
         self.buy_credits_popup = BuyCreditsPopup(page)
         self.payment_page = PaymentPage(page)
+        self.secrets_page = SecretsPage(page)
+        self.create_secret_popup = CreateSecretPopup(page)
+        self.delete_secret_popup = DeleteSecretPopup(page)
