@@ -1,0 +1,432 @@
+INFO     [🔧TEST CONFIG]:conftest.py:78 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:173 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:186 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:194 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🔧TEST CONFIG]:conftest.py:84 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:110 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:96 Creating API helper
+INFO     [📘TEST_INFO]:reporting.py:112 ============================================================
+INFO     [📘TEST_INFO]:reporting.py:113 📁 SUITE STARTED: UI Project Remove Members
+INFO     [📘TEST_INFO]:reporting.py:114 ============================================================
+INFO     [📘TEST_INFO]:reporting.py:71 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:72 📝 TEST started: Verify Admin can remove Reader from project
+INFO     [📘TEST_INFO]:reporting.py:73 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-3zbzfc72o3@apolo.us', username='regression-3zbzfc72o3', password='fZZ!8jwVr$Dq')
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-3zbzfc72o3@apolo.us', username='regression-3zbzfc72o3', password='fZZ!8jwVr$Dq')
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click signup button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click sign up button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click signup button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_3c7fce.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter regression-3zbzfc72o3@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter email
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_10a9c9.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter password
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_33e573.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click continue button
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_c27399.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Verify email message displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if verify email message displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Verify email message displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_email_message_displayed_success_7356c5.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user email with the activation link
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-3zbzfc72o3@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-3zbzfc72o3@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=qBCMlnsmosa13asDdEXO9NINRjHfOSZ2#'}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://auth.dev.apolo.us/u/email-verification?ticket=qBCMlnsmosa13asDdEXO9NINRjHfOSZ2#
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_db7343.png
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-3zbzfc72o3@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-3zbzfc72o3@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user email with the activation link
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://console.dev.apolo.us/
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_e49c53.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Auth page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Auth page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_cc3dfb.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click login button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_19466b.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Signup username page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Check if page is loaded
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-3zbzfc72o3
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Signup username page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_7748b9.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter username
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Enter regression-3zbzfc72o3 username
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-3zbzfc72o3
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter username
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_username_success_9d5ce7.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click signup button on Signup username page
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Click signup button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-3zbzfc72o3/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-3zbzfc72o3?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-3zbzfc72o3", "email": "regression-3zbzfc72o3@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-29T01:58:01.609649+00:00", "terms_accepted": false, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-3zbzfc72o3?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-3zbzfc72o3", "email": "regression-3zbzfc72o3@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-29T01:58:01.609649+00:00", "terms_accepted": false, "orgs": []}
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-3zbzfc72o3/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-3zbzfc72o3?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-3zbzfc72o3", "email": "regression-3zbzfc72o3@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-29T01:58:01.609649+00:00", "terms_accepted": false, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-3zbzfc72o3?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-3zbzfc72o3", "email": "regression-3zbzfc72o3@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-29T01:58:01.609649+00:00", "terms_accepted": false, "orgs": []}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click signup button on Signup username page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_3692d6.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that User agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if user_agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that User agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_terms_of_agreement_displayed_success_7504a5.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Check agreement checkbox
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check user agreement checkbox
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Check agreement checkbox
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_check_agreement_checkbox_success_3eb8d9.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click I Agree button
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click user agreement I Agree button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click I Agree button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_i_agree_button_success_54a036.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for User Agreement popup to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 204] PUT https://api.dev.apolo.us/apis/admin/v1/users/regression-3zbzfc72o3/profile
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for User Agreement popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_user_agreement_disappear_success_7aef1d.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for timeout
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for timeout
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_for_timeout_success_a2f9e8.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Welcome new user page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Welcome new user page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_d07d04.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Signup new user via UI and activate email verification link
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_signup_new_user_ver_link_success_c279e4.png
+INFO     [🔧TEST CONFIG]:conftest.py:173 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:186 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:194 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-viwup9pqye@apolo.us', username='regression-viwup9pqye', password='i8Ldk^kt^4l9')
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click signup button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click sign up button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click signup button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_af0703.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter regression-viwup9pqye@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Enter email
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_205be8.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Enter password
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_f96c9b.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click continue button
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_21ed76.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Verify email message displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if verify email message displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that Verify email message displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_email_message_displayed_success_1f79dc.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user email with the activation link
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-viwup9pqye@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-viwup9pqye@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=OxvVYjSIFukyY5HZhppySgmcnXUPM3LQ#'}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://auth.dev.apolo.us/u/email-verification?ticket=OxvVYjSIFukyY5HZhppySgmcnXUPM3LQ#
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_e71a8d.png
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-viwup9pqye@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-viwup9pqye@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user email with the activation link
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://console.dev.apolo.us/
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_69fb08.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Auth page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that Auth page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_24da10.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click login button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_634e56.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Signup username page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Check if page is loaded
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-viwup9pqye
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that Signup username page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_97d6c3.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Enter username
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Enter regression-viwup9pqye username
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Enter username
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_username_success_f182e2.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click signup button on Signup username page
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Click signup button
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Timeout error for spinner
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click signup button on Signup username page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_209f95.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that User agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if user_agreement pop up displayed
+ERROR    [📘TEST_INFO]:reporting.py:52 ❌ STEP failed: <<User2>> :: Verify that User agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (fail): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_terms_of_agreement_displayed_fail_e7bcf5.png
+ERROR    [📘TEST_INFO]:reporting.py:52 ❌ STEP failed: <<User2>> :: Signup new user via UI and activate email verification link
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (fail): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_signup_new_user_ver_link_fail_547e45.png
+ERROR    [📘TEST_INFO]:reporting.py:80 ❌ TEST failed: Verify Admin can remove Reader from project
+Exception: [AssertionError] during step: <<User2>> :: Signup new user via UI and activate email verification link
+Message: [AssertionError] during step: <<User2>> :: Verify that User agreement pop up displayed
+Message: User agreement popup should be displayed!
+INFO     [📘TEST_INFO]:reporting.py:83 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:148 Closing all browser sessions
+INFO     [🔧TEST CONFIG]:conftest.py:152 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:159 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:152 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:159 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:164 Closed all browser sessions
+INFO     [🔧TEST CONFIG]:conftest.py:78 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:173 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:186 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:194 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🔧TEST CONFIG]:conftest.py:84 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:110 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:96 Creating API helper
+INFO     [📘TEST_INFO]:reporting.py:71 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:72 📝 TEST started: Verify Admin can remove Reader from project
+INFO     [📘TEST_INFO]:reporting.py:73 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-qv0d6c0xdz@apolo.us', username='regression-qv0d6c0xdz', password='*5E4hMwBg97S')
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-qv0d6c0xdz@apolo.us', username='regression-qv0d6c0xdz', password='*5E4hMwBg97S')
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click signup button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click sign up button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click signup button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_4cb2cd.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter regression-qv0d6c0xdz@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter email
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_631c25.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter password
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_ec74ab.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click continue button
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_54de3f.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Verify email message displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if verify email message displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Verify email message displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_email_message_displayed_success_faeafc.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user email with the activation link
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-qv0d6c0xdz@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-qv0d6c0xdz@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=CPW07VeohHfxiKc20Uk9RxMUmYEyIIJN#'}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://auth.dev.apolo.us/u/email-verification?ticket=CPW07VeohHfxiKc20Uk9RxMUmYEyIIJN#
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_c8b678.png
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-qv0d6c0xdz@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-qv0d6c0xdz@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user email with the activation link
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://console.dev.apolo.us/
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_e92e66.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Auth page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Auth page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_b7f7ca.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click login button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_9741d8.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Signup username page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Check if page is loaded
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-qv0d6c0xdz
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Signup username page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_4abf79.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter username
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Enter regression-qv0d6c0xdz username
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-qv0d6c0xdz
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter username
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_username_success_5dec1d.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click signup button on Signup username page
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Click signup button
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Timeout error for spinner
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click signup button on Signup username page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_433bc1.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that User agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if user_agreement pop up displayed
+ERROR    [📘TEST_INFO]:reporting.py:52 ❌ STEP failed: Verify that User agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (fail): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_terms_of_agreement_displayed_fail_2eaa25.png
+ERROR    [📘TEST_INFO]:reporting.py:52 ❌ STEP failed: Signup new user via UI and activate email verification link
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (fail): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_signup_new_user_ver_link_fail_627958.png
+ERROR    [📘TEST_INFO]:reporting.py:80 ❌ TEST failed: Verify Admin can remove Reader from project
+Exception: [AssertionError] during step: Signup new user via UI and activate email verification link
+Message: [AssertionError] during step: Verify that User agreement pop up displayed
+Message: User agreement popup should be displayed!
+INFO     [📘TEST_INFO]:reporting.py:83 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:148 Closing all browser sessions
+INFO     [🔧TEST CONFIG]:conftest.py:152 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:159 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:164 Closed all browser sessions
