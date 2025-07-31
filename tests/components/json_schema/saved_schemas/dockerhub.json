@@ -1,0 +1,132 @@
+{
+  "name": "dockerhub",
+  "title": "DockerHub Integration",
+  "pub_date": "2025-01-01T00:00:00Z",
+  "description": "This app allows users to use container images from their private DockerHub repositories in Custom Deployments",
+  "short_description": "",
+  "schema_version": 1,
+  "version": "MLO-137",
+  "input": {
+    "$defs": {
+      "ApoloSecret": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "title": "ApoloSecret",
+        "type": "object",
+        "x-description": "Apolo Secret Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Secret"
+      },
+      "DockerHubModel": {
+        "properties": {
+          "registry_url": {
+            "default": "https://index.docker.io/v1/",
+            "title": "Registry Url",
+            "type": "string",
+            "x-description": "Set the Docker registry URL to pull container images from.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Registry URL"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string",
+            "x-description": "Provide the DockerHub username used to authenticate with the registry.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Username"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/ApoloSecret"
+              }
+            ],
+            "title": "Password",
+            "x-description": "Enter the password or secret used to authenticate with DockerHub.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Password"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "DockerHubModel",
+        "type": "object",
+        "x-description": "Configure access to DockerHub for pulling container images.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "DockerHub"
+      }
+    },
+    "properties": {
+      "dockerhub": {
+        "$ref": "#/$defs/DockerHubModel"
+      }
+    },
+    "required": [
+      "dockerhub"
+    ],
+    "title": "DockerHubInputs",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "DockerConfigModel": {
+        "properties": {
+          "filecontents": {
+            "title": "Filecontents",
+            "type": "string",
+            "x-description": "The contents of the Docker config file.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Docker Config File Contents"
+          }
+        },
+        "required": [
+          "filecontents"
+        ],
+        "title": "DockerConfigModel",
+        "type": "object",
+        "x-description": "Docker configuration content.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Docker Config"
+      }
+    },
+    "properties": {
+      "dockerconfigjson": {
+        "$ref": "#/$defs/DockerConfigModel"
+      }
+    },
+    "required": [
+      "dockerconfigjson"
+    ],
+    "title": "DockerHubOutputs",
+    "type": "object"
+  },
+  "tags": [],
+  "git_url": "https://github.com/neuro-inc/app-external-container-registry",
+  "helm_path": "chart/app-external-container-registry",
+  "type": "mlops",
+  "logo": "",
+  "assets": [],
+  "documentation_urls": [],
+  "external_urls": [],
+  "mlops_app_type": "dockerhub",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}
