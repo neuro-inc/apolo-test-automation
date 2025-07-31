@@ -1,0 +1,1266 @@
+INFO     [🔧TEST CONFIG]:conftest.py:78 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:173 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:186 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:194 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🔧TEST CONFIG]:conftest.py:84 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:110 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:96 Creating API helper
+INFO     [📘TEST_INFO]:reporting.py:71 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:72 📝 TEST started: Verify Writer cannot change member roles
+INFO     [📘TEST_INFO]:reporting.py:73 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-elov8c11dy@apolo.us', username='regression-elov8c11dy', password='5NCA#0Q0r79@')
+INFO     [👤UsersManager]:users_manager.py:68 Setting default user to UserData(email='regression-elov8c11dy@apolo.us', username='regression-elov8c11dy', password='5NCA#0Q0r79@')
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click signup button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click sign up button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click signup button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_ca74ea.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter regression-elov8c11dy@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter email
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_157d88.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter password
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_3a76a0.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click continue button
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_a135a0.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Verify email message displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if verify email message displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Verify email message displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_email_message_displayed_success_8a221a.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user email with the activation link
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-elov8c11dy@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-elov8c11dy@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=QLhvIBZ7OrLtXy3Prlk90GEcgHVvIuW0#'}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://auth.dev.apolo.us/u/email-verification?ticket=QLhvIBZ7OrLtXy3Prlk90GEcgHVvIuW0#
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_6fc026.png
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-elov8c11dy@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-elov8c11dy@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user email with the activation link
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://console.dev.apolo.us/
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_d7ca21.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Auth page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Auth page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_48b96d.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click login button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_9a20b4.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Signup username page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Check if page is loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Signup username page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_a008c7.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter username
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Enter regression-elov8c11dy username
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter username
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_username_success_644b33.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click signup button on Signup username page
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Click signup button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-elov8c11dy/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-elov8c11dy", "email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00", "terms_accepted": false, "orgs": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-elov8c11dy", "email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00", "terms_accepted": false, "clusters": []}
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-elov8c11dy/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-elov8c11dy", "email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00", "terms_accepted": false, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-elov8c11dy", "email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00", "terms_accepted": false, "orgs": []}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click signup button on Signup username page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_c2db50.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that User agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if user_agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that User agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_terms_of_agreement_displayed_success_14f830.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Check agreement checkbox
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check user agreement checkbox
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Check agreement checkbox
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_check_agreement_checkbox_success_55b505.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click I Agree button
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click user agreement I Agree button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click I Agree button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 204] PUT https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy/profile
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_i_agree_button_success_767b88.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for User Agreement popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for User Agreement popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_user_agreement_disappear_success_b0afa7.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for timeout
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for timeout
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_for_timeout_success_aa8dc0.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Welcome new user page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Welcome new user page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_899eb0.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Signup new user via UI and activate email verification link
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_signup_new_user_ver_link_success_ef97e3.png
+INFO     [🔧TEST CONFIG]:conftest.py:173 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:186 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:194 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🔧TEST CONFIG]:conftest.py:173 Starting browser in a headless mode...
+INFO     [🔧TEST CONFIG]:conftest.py:186 Initializing new browser context
+INFO     [🔧TEST CONFIG]:conftest.py:194 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-0ulgcucblv@apolo.us', username='regression-0ulgcucblv', password='Y7FaXuWlfwP@')
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click signup button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click sign up button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click signup button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_7193f3.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter regression-0ulgcucblv@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Enter email
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_b3d970.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Enter password
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_084103.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click continue button
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_093bca.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Verify email message displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if verify email message displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that Verify email message displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_email_message_displayed_success_40c073.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user email with the activation link
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-0ulgcucblv@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-0ulgcucblv@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=4vw3Z9mpxo2ibseWg1O8SbWQgedjmstY#'}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://auth.dev.apolo.us/u/email-verification?ticket=4vw3Z9mpxo2ibseWg1O8SbWQgedjmstY#
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_e8e007.png
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-0ulgcucblv@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-0ulgcucblv@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user email with the activation link
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://console.dev.apolo.us/
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_9f6770.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Auth page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that Auth page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_c64fec.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click login button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_aea8dd.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Signup username page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Check if page is loaded
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that Signup username page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_fa5b9b.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Enter username
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Enter regression-0ulgcucblv username
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Enter username
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_username_success_aad2ad.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click signup button on Signup username page
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Click signup button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-0ulgcucblv/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-0ulgcucblv", "email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00", "terms_accepted": false, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-0ulgcucblv", "email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00", "terms_accepted": false, "orgs": []}
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Timeout error for spinner
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click signup button on Signup username page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_bfc643.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that User agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if user_agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that User agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_terms_of_agreement_displayed_success_74c811.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Check agreement checkbox
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check user agreement checkbox
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Check agreement checkbox
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_check_agreement_checkbox_success_e1de8c.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click I Agree button
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click user agreement I Agree button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click I Agree button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_i_agree_button_success_0bf34b.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Wait for User Agreement popup to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 204] PUT https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv/profile
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Wait for User Agreement popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_user_agreement_disappear_success_001568.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Wait for timeout
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Wait for timeout
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_for_timeout_success_e680c8.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Welcome new user page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that Welcome new user page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_c4645e.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Signup new user via UI and activate email verification link
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_signup_new_user_ver_link_success_01acf9.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Signup new user via UI and activate email verification link
+INFO     [👤UsersManager]:users_manager.py:54 Generated new user: UserData(email='regression-hym5pico3r@apolo.us', username='regression-hym5pico3r', password='%BzCepD#HI9d')
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Click signup button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click sign up button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Click signup button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_145372.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter regression-hym5pico3r@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Enter email
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_f0c10f.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Enter password
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_b3c5f9.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Click continue button
+INFO     [🎭 Playwright]:base_page.py:16 <SignupPage>: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Click continue button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_1f5bc2.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Verify that Verify email message displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if verify email message displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Verify that Verify email message displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_email_message_displayed_success_a52957.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user email with the activation link
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-hym5pico3r@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-hym5pico3r@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'ticket': 'https://auth.dev.apolo.us/u/email-verification?ticket=1Cz0brWSvpgHWPLj5h8gQJh2oN2pfX2m#'}
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://auth.dev.apolo.us/u/email-verification?ticket=1Cz0brWSvpgHWPLj5h8gQJh2oN2pfX2m#
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_64c826.png
+INFO     [🌐API_helper]:api_helper.py:104 Checking if user regression-hym5pico3r@apolo.us needs verification...
+INFO     [🌐API_helper]:api_helper.py:44 GET https://api.dev.apolo.us/apis/admin/v1/users/auth0-email-verify-ticket?email=regression-hym5pico3r@apolo.us
+INFO     [🌐API_helper]:api_helper.py:106 Status: 200. Response: {'detail': 'Email already verified'}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user email with the activation link
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://console.dev.apolo.us/
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_1017ab.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Verify that Auth page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Verify that Auth page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_b3bb8d.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Click login button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_60d50f.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Verify that Signup username page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Check if page is loaded
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Verify that Signup username page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_baf421.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Enter username
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Enter regression-hym5pico3r username
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] HEAD https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Enter username
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_username_success_535a62.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Click signup button on Signup username page
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Click signup button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-hym5pico3r/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+<unavailable>
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <SignupUsernamePage>: Waiting for spinner to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-hym5pico3r/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-hym5pico3r", "email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00", "terms_accepted": false, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-hym5pico3r", "email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00", "terms_accepted": false, "orgs": []}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Click signup button on Signup username page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_signup_button_success_284bca.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Verify that User agreement pop up displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if user_agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Verify that User agreement pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_terms_of_agreement_displayed_success_595cd7.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Check agreement checkbox
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check user agreement checkbox
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Check agreement checkbox
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_check_agreement_checkbox_success_8acd41.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Click I Agree button
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click user agreement I Agree button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Click I Agree button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 204] PUT https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r/profile
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_i_agree_button_success_5ebf55.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Wait for User Agreement popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Wait for User Agreement popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_user_agreement_disappear_success_201ca5.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Wait for timeout
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Wait for timeout
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_for_timeout_success_c85121.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Verify that Welcome new user page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Verify that Welcome new user page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_abf8ff.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Signup new user via UI and activate email verification link
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_signup_new_user_ver_link_success_b7cd53.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Pass new user onboarding and create first organization via UI
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click the let's do it button on Welcome page
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Click lets do it button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click the let's do it button on Welcome page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_lets_do_it_button_success_56e75c.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Join organization page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <JoinOrganizationPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Join organization page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_21afda.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click create organization button
+INFO     [🎭 Playwright]:base_page.py:16 <JoinOrganizationPage>: Click create organization button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click create organization button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_create_organization_button_success_935f30.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Name organization page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <NameNewOrganizationPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Name organization page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_e1a1c1.png
+INFO     [🔧DATA MANAGER]:test_data.py:46 Added organization: org_name=regression-org-5f62zrw7yzfv, gherkin_name=Default-organization
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter organization name
+INFO     [🎭 Playwright]:base_page.py:16 <NameNewOrganizationPage>: Enter regression-org-5f62zrw7yzfv organization name
+INFO     [🎭 Playwright]:base_page.py:16 <NameNewOrganizationPage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <NameNewOrganizationPage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter organization name
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_organization_name_success_31da0c.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click next button
+INFO     [🎭 Playwright]:base_page.py:16 <NameNewOrganizationPage>: Click next button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-5f62zrw7yzfv
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"error": "Org 'regression-org-5f62zrw7yzfv' not found"}
+INFO     [🎭 Playwright]:base_page.py:16 <NameNewOrganizationPage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <NameNewOrganizationPage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click next button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_next_button_success_b75379.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click lets do it button on That's it page
+INFO     [🎭 Playwright]:base_page.py:16 <ThatsItPage>: Click let's do it button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 201] POST https://api.dev.apolo.us/apis/admin/v1/orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-org-5f62zrw7yzfv", "balance": {"credits": "500", "spent_credits": "0"}, "user_default_credits": null, "notification_intervals": {"balance_projection_seconds": [604800, 259200, 86400], "balance_amount": [0], "balance_depletion_seconds": [86400, 604800]}}
+INFO     [🎭 Playwright]:base_page.py:16 <ThatsItPage>: Waiting for spinner
+INFO     [🎭 Playwright]:base_page.py:16 <ThatsItPage>: Timeout error for spinner
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click lets do it button on That's it page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_lets_do_it_button_success_a0b611.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Main page is displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if page loaded
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [{"name": "regression-org-5f62zrw7yzfv", "role": "admin"}], "clusters": [{"name": "default", "registry_url": "https://registry.api.dev.apolo.us", "storage_url": "https://api.dev.apolo.us/api/v1/storage", "monitoring_url": "https://monitoring.api.dev.apolo.us/api/v1/jobs", "secrets_url": "https://api.dev.apolo.us/api/v1/secrets", "metrics_url": "https://grafana.dev.apolo.us", "disks_url": "https://api.dev.apolo.us/api/v1/disk", "buckets_url": "https://api.dev.apolo.us/api/v1/buckets", "resource_pool_types": [{"name": "default", "min_size": 1, "max_size": 20, "cpu": 4, "available_cpu": 3.3, "memory": 16106127360, "available_memory": 11813676647, "disk_size": 161061273600, "available_disk_size": 150000000000}, {"name": "g2-standard-4", "min_size": 0, "max_size": 5, "cpu": 4, "available_cpu": 3, "memory": 17179869184, "available_memory": 16106127360, "disk_size": 322122547200, "available_disk_size": 150000000000, "nvidia_gpu": 1, "nvidia_gpu_model": "nvidia-l4"
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-elov8c11dy/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"uri": "blob://default/regression-org-5f62zrw7yzfv", "action": "manage"}]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-5f62zrw7yzfv
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-org-5f62zrw7yzfv", "balance": {"credits": "500", "spent_credits": "0"}, "user_default_credits": null, "notification_intervals": {"balance_projection_seconds": [604800, 259200, 86400], "balance_amount": [0], "balance_depletion_seconds": [86400, 604800]}}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-elov8c11dy", "email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00", "terms_accepted": true, "orgs": [{"org_name": "regression-org-5f62zrw7yzfv", "role": "admin", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-elov8c11dy?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-elov8c11dy", "email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00", "terms_accepted": true, "clusters": [{"cluster_name": "default", "role": "admin", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}}]}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Main page is displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_7aeb22.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Pass new user onboarding and create first organization via UI
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_pass_new_user_onboarding_success_b8d760.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click the let's do it button on Welcome page
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Click lets do it button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click the let's do it button on Welcome page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_lets_do_it_button_success_42d9aa.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Click the let's do it button on Welcome page
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Click lets do it button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Click the let's do it button on Welcome page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_lets_do_it_button_success_674f89.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Invite user to organization via UI
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click User Organization settings button
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click organization settings button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click User Organization settings button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_organization_settings_button_success_40ff3c.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Organization settings pop up displayed
+INFO     [🎭 Playwright]:base_page.py:16 <OrganizationSettingsPopup>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Organization settings pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_popup_displayed_success_ac5b60.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click People button
+INFO     [🎭 Playwright]:base_page.py:16 <OrganizationSettingsPopup>: Click People button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click People button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_people_button_success_468894.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Organization people page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <OrganizationPeoplePage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Organization people page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_a5b0be.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Invite people button
+INFO     [🎭 Playwright]:base_page.py:16 <OrganizationPeoplePage>: Click Invite people button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-5f62zrw7yzfv/users/regression-elov8c11dy
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"user_name": "regression-elov8c11dy", "role": "admin", "balance": {"spent_credits": "0"}}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Invite people button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_people_button_success_397838.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Invite member popup displayed
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Invite member popup displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_popup_displayed_success_977ebd.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Enter regression-0ulgcucblv@apolo.us
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter email
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_invite_email_success_91f502.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Select User role in organization
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Select User role
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Select User role in organization
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_select_user_role_success_68d3fc.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Invite user button appeared
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Check if Invite user regression-0ulgcucblv@apolo.us button displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Invite user button appeared
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_invite_user_button_displayed_success_aa8152.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Invite user button
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Click Invite user regression-0ulgcucblv@apolo.us
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Invite user button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_user_button_success_c5b343.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Send invite button
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Click Send invite button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-5f62zrw7yzfv/users?with_user_info=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"user_name": "regression-elov8c11dy", "role": "admin", "balance": {"spent_credits": "0"}, "user_info": {"email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00"}}]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users?lookup=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name": "regression-mbobymm206", "email": "regression-mbobymm206@apolo.us"}, {"name": "regression-0mex0aohuq", "email": "regression-0mex0aohuq@apolo.us"}, {"name": "regression-bhdzaiz03o", "email": "regression-bhdzaiz03o@apolo.us"}, {"name": "regression-lty6yyd3l2", "email": "regression-lty6yyd3l2@apolo.us"}, {"name": "ihorsosnovskyie1", "email": "ihor.sosnovskyi+e1@sandbx.co"}, {"name": "regression-gkqg0p0s6q", "email": "regression-gkqg0p0s6q@apolo.us"}, {"name": "regression-5wi1zufj9q", "email": "regression-5wi1zufj9q@apolo.us"}, {"name": "regression-yf6yslw27i", "email": "regression-yf6yslw27i@apolo.us"}, {"name": "regression-7hztlr4240", "email": "regression-7hztlr4240@apolo.us"}, {"name": "regression-d8jvb2a4vr", "email": "regression-d8jvb2a4vr@apolo.us"}, {"name": "regression-k96stzzxw2", "email": "regression-k96stzzxw2@apolo.us"}, {"name": "regression-f45yikn2kc", "email": "regression-f45yikn2kc@apolo.us"}, {"name": "regression-pz4wto7mm9", "email": "regression-pz4wto7mm9@apol
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Send invite button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_send_invite_button_success_d0ef0a.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for Invite organization member popup to disappear
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Wait for Invite organization member popup to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 201] POST https://api.dev.apolo.us/apis/admin/v1/invites
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"email": "regression-0ulgcucblv@apolo.us", "org_name": "regression-org-5f62zrw7yzfv", "status": "pending", "role_name": "user", "created_at": "2025-07-31T02:45:27.400099", "expired_at": "2025-08-07T02:45:27.400099", "id": "c889186bcf26474f95459645574b87b0"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"email": "regression-0ulgcucblv@apolo.us", "org_name": "regression-org-5f62zrw7yzfv", "status": "pending", "role_name": "user", "created_at": "2025-07-31T02:45:27.400099+00:00", "expired_at": "2025-08-07T02:45:27.400099+00:00", "id": "c889186bcf26474f95459645574b87b0"}]
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for Invite organization member popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_to_disappear_success_55df77.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Invite user to organization via UI
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_invite_user_to_org_success_49a37a.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Invite user to organization via UI
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click User Organization settings button
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click organization settings button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click User Organization settings button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_organization_settings_button_success_6a634f.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Organization settings pop up displayed
+INFO     [🎭 Playwright]:base_page.py:16 <OrganizationSettingsPopup>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Organization settings pop up displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_popup_displayed_success_db0cdc.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click People button
+INFO     [🎭 Playwright]:base_page.py:16 <OrganizationSettingsPopup>: Click People button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click People button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_people_button_success_4a848c.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Organization people page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <OrganizationPeoplePage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Organization people page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_b1687a.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Invite people button
+INFO     [🎭 Playwright]:base_page.py:16 <OrganizationPeoplePage>: Click Invite people button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Invite people button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_people_button_success_0fc484.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Invite member popup displayed
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Invite member popup displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_popup_displayed_success_48fe5d.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Enter regression-hym5pico3r@apolo.us
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter email
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_invite_email_success_62844d.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Select User role in organization
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Select User role
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Select User role in organization
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_select_user_role_success_0a7ea1.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify that Invite user button appeared
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Check if Invite user regression-hym5pico3r@apolo.us button displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify that Invite user button appeared
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_invite_user_button_displayed_success_1e076a.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Invite user button
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Click Invite user regression-hym5pico3r@apolo.us
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Invite user button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_user_button_success_a9e446.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Send invite button
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Click Send invite button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users?lookup=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name": "regression-mbobymm206", "email": "regression-mbobymm206@apolo.us"}, {"name": "regression-0mex0aohuq", "email": "regression-0mex0aohuq@apolo.us"}, {"name": "regression-bhdzaiz03o", "email": "regression-bhdzaiz03o@apolo.us"}, {"name": "regression-lty6yyd3l2", "email": "regression-lty6yyd3l2@apolo.us"}, {"name": "ihorsosnovskyie1", "email": "ihor.sosnovskyi+e1@sandbx.co"}, {"name": "regression-gkqg0p0s6q", "email": "regression-gkqg0p0s6q@apolo.us"}, {"name": "regression-5wi1zufj9q", "email": "regression-5wi1zufj9q@apolo.us"}, {"name": "regression-yf6yslw27i", "email": "regression-yf6yslw27i@apolo.us"}, {"name": "regression-7hztlr4240", "email": "regression-7hztlr4240@apolo.us"}, {"name": "regression-d8jvb2a4vr", "email": "regression-d8jvb2a4vr@apolo.us"}, {"name": "regression-k96stzzxw2", "email": "regression-k96stzzxw2@apolo.us"}, {"name": "regression-f45yikn2kc", "email": "regression-f45yikn2kc@apolo.us"}, {"name": "regression-pz4wto7mm9", "email": "regression-pz4wto7mm9@apol
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 201] POST https://api.dev.apolo.us/apis/admin/v1/invites
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"email": "regression-hym5pico3r@apolo.us", "org_name": "regression-org-5f62zrw7yzfv", "status": "pending", "role_name": "user", "created_at": "2025-07-31T02:45:46.760747", "expired_at": "2025-08-07T02:45:46.760747", "id": "920af1f3ac1f484a8245ff9f5f65c773"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"email": "regression-0ulgcucblv@apolo.us", "org_name": "regression-org-5f62zrw7yzfv", "status": "pending", "role_name": "user", "created_at": "2025-07-31T02:45:27.400099+00:00", "expired_at": "2025-08-07T02:45:27.400099+00:00", "id": "c889186bcf26474f95459645574b87b0"}, {"email": "regression-hym5pico3r@apolo.us", "org_name": "regression-org-5f62zrw7yzfv", "status": "pending", "role_name": "user", "created_at": "2025-07-31T02:45:46.760747+00:00", "expired_at": "2025-08-07T02:45:46.760747+00:00", "id": "920af1f3ac1f484a8245ff9f5f65c773"}]
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Send invite button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_send_invite_button_success_a3286c.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for Invite organization member popup to disappear
+INFO     [🎭 Playwright]:base_page.py:16 <InviteOrgMemberPopup>: Wait for Invite organization member popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for Invite organization member popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_to_disappear_success_833ba1.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Invite user to organization via UI
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_invite_user_to_org_success_7188aa.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Reload page
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-0ulgcucblv/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-0ulgcucblv", "email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00", "terms_accepted": true, "orgs": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"email": "regression-0ulgcucblv@apolo.us", "org_name": "regression-org-5f62zrw7yzfv", "status": "pending", "role_name": "user", "created_at": "2025-07-31T02:45:27.400099+00:00", "expired_at": "2025-08-07T02:45:27.400099+00:00", "id": "c889186bcf26474f95459645574b87b0"}]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-0ulgcucblv", "email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00", "terms_accepted": true, "clusters": []}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Reload page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_reload_page_success_6c53f1.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Reload page
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-hym5pico3r/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-hym5pico3r", "email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00", "terms_accepted": true, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"email": "regression-hym5pico3r@apolo.us", "org_name": "regression-org-5f62zrw7yzfv", "status": "pending", "role_name": "user", "created_at": "2025-07-31T02:45:46.760747+00:00", "expired_at": "2025-08-07T02:45:46.760747+00:00", "id": "920af1f3ac1f484a8245ff9f5f65c773"}]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-hym5pico3r", "email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00", "terms_accepted": true, "orgs": []}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Reload page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_reload_page_success_9de450.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify that Invited to organization page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <InvitedToOrgPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify that Invited to organization page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_00660e.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click Accept and Go button
+INFO     [🎭 Playwright]:base_page.py:16 <InvitedToOrgPage>: Click accept and Go button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 204] POST https://api.dev.apolo.us/apis/admin/v1/invites/c889186bcf26474f95459645574b87b0/accept
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [{"name": "regression-org-5f62zrw7yzfv", "role": "user"}], "clusters": [{"name": "default", "registry_url": "https://registry.api.dev.apolo.us", "storage_url": "https://api.dev.apolo.us/api/v1/storage", "monitoring_url": "https://monitoring.api.dev.apolo.us/api/v1/jobs", "secrets_url": "https://api.dev.apolo.us/api/v1/secrets", "metrics_url": "https://grafana.dev.apolo.us", "disks_url": "https://api.dev.apolo.us/api/v1/disk", "buckets_url": "https://api.dev.apolo.us/api/v1/buckets", "resource_pool_types": [{"name": "default", "min_size": 1, "max_size": 20, "cpu": 4, "available_cpu": 3.3, "memory": 16106127360, "available_memory": 11813676647, "disk_size": 161061273600, "available_disk_size": 150000000000}, {"name": "g2-standard-4", "min_size": 0, "max_size": 5, "cpu": 4, "available_cpu": 3, "memory": 17179869184, "available_memory": 16106127360, "disk_size": 322122547200, "available_disk_size": 150000000000, "nvidia_gpu": 1, "nvidia_gpu_model": "nvidia-l4"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-0ulgcucblv", "email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00", "terms_accepted": true, "orgs": [{"org_name": "regression-org-5f62zrw7yzfv", "role": "user", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-0ulgcucblv", "email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00", "terms_accepted": true, "clusters": [{"cluster_name": "default", "role": "user", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-0ulgcucblv/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+INFO     [🎭 Playwright]:base_page.py:16 <InvitedToOrgPage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <InvitedToOrgPage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click Accept and Go button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-5f62zrw7yzfv
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-org-5f62zrw7yzfv", "balance": {"credits": "500", "spent_credits": "0"}, "user_default_credits": null, "notification_intervals": {"balance_projection_seconds": [604800, 259200, 86400], "balance_amount": [0], "balance_depletion_seconds": [86400, 604800]}}
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_accept_and_go_button_success_a21c14.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify project creation message is displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if create project text field displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify project creation message is displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_create_project_message_displayed_success_28363e.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Verify that Invited to organization page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <InvitedToOrgPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Verify that Invited to organization page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_aafc74.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Click Accept and Go button
+INFO     [🎭 Playwright]:base_page.py:16 <InvitedToOrgPage>: Click accept and Go button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 204] POST https://api.dev.apolo.us/apis/admin/v1/invites/920af1f3ac1f484a8245ff9f5f65c773/accept
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+
+INFO     [🎭 Playwright]:base_page.py:16 <InvitedToOrgPage>: Wait for network idle
+INFO     [🎭 Playwright]:base_page.py:16 <InvitedToOrgPage>: Network idle done
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Click Accept and Go button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [{"name": "regression-org-5f62zrw7yzfv", "role": "user"}], "clusters": [{"name": "default", "registry_url": "https://registry.api.dev.apolo.us", "storage_url": "https://api.dev.apolo.us/api/v1/storage", "monitoring_url": "https://monitoring.api.dev.apolo.us/api/v1/jobs", "secrets_url": "https://api.dev.apolo.us/api/v1/secrets", "metrics_url": "https://grafana.dev.apolo.us", "disks_url": "https://api.dev.apolo.us/api/v1/disk", "buckets_url": "https://api.dev.apolo.us/api/v1/buckets", "resource_pool_types": [{"name": "default", "min_size": 1, "max_size": 20, "cpu": 4, "available_cpu": 3.3, "memory": 16106127360, "available_memory": 11813676647, "disk_size": 161061273600, "available_disk_size": 150000000000}, {"name": "g2-standard-4", "min_size": 0, "max_size": 5, "cpu": 4, "available_cpu": 3, "memory": 17179869184, "available_memory": 16106127360, "disk_size": 322122547200, "available_disk_size": 150000000000, "nvidia_gpu": 1, "nvidia_gpu_model": "nvidia-l4"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-hym5pico3r", "email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00", "terms_accepted": true, "clusters": [{"cluster_name": "default", "role": "user", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-hym5pico3r", "email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00", "terms_accepted": true, "orgs": [{"org_name": "regression-org-5f62zrw7yzfv", "role": "user", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-hym5pico3r/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_accept_and_go_button_success_24430c.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Verify project creation message is displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if create project text field displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Verify project creation message is displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-5f62zrw7yzfv
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-org-5f62zrw7yzfv", "balance": {"credits": "500", "spent_credits": "0"}, "user_default_credits": null, "notification_intervals": {"balance_projection_seconds": [604800, 259200, 86400], "balance_amount": [0], "balance_depletion_seconds": [86400, 604800]}}
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_create_project_message_displayed_success_b6c111.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Create first project from the top pane on main page
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Project button on the top pane of the main page
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click create project button on the top pane
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Project button on the top pane of the main page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_proj_button_top_pane_success_10560f.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify No project popup displayed
+INFO     [🎭 Playwright]:base_page.py:16 <NoProjectPopup>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify No project popup displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_popup_displayed_success_7149a4.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Create new project button
+INFO     [🎭 Playwright]:base_page.py:16 <NoProjectPopup>: Click create project button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Create new project button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_create_new_proj_button_success_571373.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Create project popup displayed
+INFO     [🎭 Playwright]:base_page.py:16 <CreateProjectPopup>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Create project popup displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_popup_displayed_success_0f96f6.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter project name
+INFO     [🎭 Playwright]:base_page.py:16 <CreateProjectPopup>: Enter new project name regression-proj-k92sa5mha1
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter project name
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_proj_name_success_0c5be3.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Select user role
+INFO     [🎭 Playwright]:base_page.py:16 <CreateProjectPopup>: Select default role Reader
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Select user role
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_select_role_success_b4da42.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Create button
+INFO     [🎭 Playwright]:base_page.py:16 <CreateProjectPopup>: Click create button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 404] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"error": "Project 'regression-proj-k92sa5mha1' not found in cluster 'default' in org 'regression-org-5f62zrw7yzfv'"}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Create button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_create_button_success_1441ae.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for Create project popup disappear
+INFO     [🎭 Playwright]:base_page.py:16 <CreateProjectPopup>: Wait for Create project popup to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 201] POST https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "is_default": false, "default_role": "reader"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[],"total":0,"page":1,"size":100,"pages":0}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/templates
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"integration","x-title":"Secret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"type":"string"},{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null,"title":"Secret Key"}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":[
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [{"name": "regression-org-5f62zrw7yzfv", "role": "admin"}], "clusters": [{"name": "default", "registry_url": "https://registry.api.dev.apolo.us", "storage_url": "https://api.dev.apolo.us/api/v1/storage", "monitoring_url": "https://monitoring.api.dev.apolo.us/api/v1/jobs", "secrets_url": "https://api.dev.apolo.us/api/v1/secrets", "metrics_url": "https://grafana.dev.apolo.us", "disks_url": "https://api.dev.apolo.us/api/v1/disk", "buckets_url": "https://api.dev.apolo.us/api/v1/buckets", "resource_pool_types": [{"name": "default", "min_size": 1, "max_size": 20, "cpu": 4, "available_cpu": 3.3, "memory": 16106127360, "available_memory": 11813676647, "disk_size": 161061273600, "available_disk_size": 150000000000}, {"name": "g2-standard-4", "min_size": 0, "max_size": 5, "cpu": 4, "available_cpu": 3, "memory": 17179869184, "available_memory": 16106127360, "disk_size": 322122547200, "available_disk_size": 150000000000, "nvidia_gpu": 1, "nvidia_gpu_model": "nvidia-l4"
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for Create project popup disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_to_disappear_success_a87e57.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Main page is displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Main page is displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_433995.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Create first project from the top pane on main page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_create_first_proj_from_top_pane_success_68a40a.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Invite member to project via UI
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Project button on the top pane of the main page
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click create project button on the top pane
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Project button on the top pane of the main page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_proj_button_top_pane_success_65f399.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click People button on the Projects info popup
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectsInfoPopup>: Click People button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click People button on the Projects info popup
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "is_default": false, "default_role": "reader"}
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_people_btn_success_c3b428.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify People page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify People page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_647747.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Invite people button
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Click Invite People button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1/users?with_user_info=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"user_name": "regression-elov8c11dy", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "admin", "user_info": {"email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00"}}]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/users?with_user_info=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"user_name": "regression-elov8c11dy", "role": "admin", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}, "user_info": {"email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00"}}, {"user_name": "regression-0ulgcucblv", "role": "user", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}, "user_info": {"email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00"}}, {"user_name": "regression-hym5pico3r", "role": "user", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}, "user_info": {"email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00"}}]
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Invite people button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_people_proj_people_btn_success_2c8b7f.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Invite project member popup displayed
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Invite project member popup displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_popup_displayed_success_dd6bc5.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter user email/username
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Enter regression-0ulgcucblv@apolo.us
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter user email/username
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_user_data_success_7af069.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Select user role
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Select user role Writer
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Select user role
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_select_user_role_success_39a29f.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Invite user button displayed
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Check if invite user regression-0ulgcucblv@apolo.us button displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Invite user button displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_invite_user_btn_displayed_success_ab309b.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Invite button disabled
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Invite button disabled
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_invite_bth_disabled_success_66378d.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click invite user button
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Click invite user regression-0ulgcucblv@apolo.us button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click invite user button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_user_btn_success_1cd1af.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Invite button enabled
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Invite button enabled
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_invite_bth_enabled_success_2504a2.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Invite button
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Click Invite button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 201] POST https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1/users
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"user_name": "regression-0ulgcucblv", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "writer"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1/users?with_user_info=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"user_name": "regression-0ulgcucblv", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "writer", "user_info": {"email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00"}}, {"user_name": "regression-elov8c11dy", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "admin", "user_info": {"email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00"}}]
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Invite button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_btn_success_697c04.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for Invite project member popup to disappear
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Wait for Remove organization user popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for Invite project member popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_to_disappear_success_b83703.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify People page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify People page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_6a7f1b.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user displayed in users list
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Check if user regression-0ulgcucblv row displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user displayed in users list
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_user_displayed_in_users_list_success_405490.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user role is valid
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user role is valid
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_user_role_success_cdf5be.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Invite member to project via UI
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_invite_user_to_proj_success_c7c00e.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Invite member to project via UI
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Project button on the top pane of the main page
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click create project button on the top pane
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Project button on the top pane of the main page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_proj_button_top_pane_success_f12684.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click People button on the Projects info popup
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectsInfoPopup>: Click People button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click People button on the Projects info popup
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_people_btn_success_a0f9d4.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify People page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify People page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_36a115.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Invite people button
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Click Invite People button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/users?with_user_info=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"user_name": "regression-elov8c11dy", "role": "admin", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}, "user_info": {"email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00"}}, {"user_name": "regression-0ulgcucblv", "role": "user", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}, "user_info": {"email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00"}}, {"user_name": "regression-hym5pico3r", "role": "user", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}, "user_info": {"email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00"}}]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[],"total":0,"page":1,"size":100,"pages":0}
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Invite people button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_people_proj_people_btn_success_d50447.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Invite project member popup displayed
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Invite project member popup displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_popup_displayed_success_962127.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Enter user email/username
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Enter regression-hym5pico3r@apolo.us
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Enter user email/username
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_user_data_success_74fea9.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Select user role
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Select user role Reader
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Select user role
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_select_user_role_success_49772f.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Invite user button displayed
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Check if invite user regression-hym5pico3r@apolo.us button displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Invite user button displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_invite_user_btn_displayed_success_99bc93.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Invite button disabled
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Invite button disabled
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_invite_bth_disabled_success_e7fd75.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click invite user button
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Click invite user regression-hym5pico3r@apolo.us button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click invite user button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_user_btn_success_f97168.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify Invite button enabled
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify Invite button enabled
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_invite_bth_enabled_success_ecb5b6.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Click Invite button
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Click Invite button
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 201] POST https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1/users
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"user_name": "regression-hym5pico3r", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "reader"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1/users?with_user_info=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"user_name": "regression-0ulgcucblv", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "writer", "user_info": {"email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00"}}, {"user_name": "regression-hym5pico3r", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "reader", "user_info": {"email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00"}}, {"user_name": "regression-elov8c11dy", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "admin", "user_info": {"email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00"}}]
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Click Invite button
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_invite_btn_success_ecab86.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Wait for Invite project member popup to disappear
+INFO     [🎭 Playwright]:base_page.py:16 <InviteProjMemberPopup>: Wait for Remove organization user popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Wait for Invite project member popup to disappear
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_wait_to_disappear_success_d24622.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify People page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify People page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_70d0ad.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user displayed in users list
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Check if user regression-hym5pico3r row displayed
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user displayed in users list
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_user_displayed_in_users_list_success_e7d605.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: Verify user role is valid
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Verify user role is valid
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_user_role_success_19b764.png
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: Invite member to project via UI
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_invite_user_to_proj_success_c250c4.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Reload page
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [{"name": "regression-org-5f62zrw7yzfv", "role": "user"}], "clusters": [{"name": "default", "registry_url": "https://registry.api.dev.apolo.us", "storage_url": "https://api.dev.apolo.us/api/v1/storage", "monitoring_url": "https://monitoring.api.dev.apolo.us/api/v1/jobs", "secrets_url": "https://api.dev.apolo.us/api/v1/secrets", "metrics_url": "https://grafana.dev.apolo.us", "disks_url": "https://api.dev.apolo.us/api/v1/disk", "buckets_url": "https://api.dev.apolo.us/api/v1/buckets", "resource_pool_types": [{"name": "default", "min_size": 1, "max_size": 20, "cpu": 4, "available_cpu": 3.3, "memory": 16106127360, "available_memory": 11813676647, "disk_size": 161061273600, "available_disk_size": 150000000000}, {"name": "g2-standard-4", "min_size": 0, "max_size": 5, "cpu": 4, "available_cpu": 3, "memory": 17179869184, "available_memory": 16106127360, "disk_size": 322122547200, "available_disk_size": 150000000000, "nvidia_gpu": 1, "nvidia_gpu_model": "nvidia-l4"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-0ulgcucblv/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"uri": "blob://default/regression-org-5f62zrw7yzfv/regression-proj-k92sa5mha1", "action": "manage"}]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[],"total":0,"page":1,"size":100,"pages":0}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-5f62zrw7yzfv
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-org-5f62zrw7yzfv", "balance": {"credits": "500", "spent_credits": "0"}, "user_default_credits": null, "notification_intervals": {"balance_projection_seconds": [604800, 259200, 86400], "balance_amount": [0], "balance_depletion_seconds": [86400, 604800]}}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-0ulgcucblv", "email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00", "terms_accepted": true, "orgs": [{"org_name": "regression-org-5f62zrw7yzfv", "role": "user", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/templates
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"integration","x-title":"Secret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"type":"string"},{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null,"title":"Secret Key"}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":[
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-0ulgcucblv?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-0ulgcucblv", "email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00", "terms_accepted": true, "clusters": [{"cluster_name": "default", "role": "user", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/templates?limit=50&offset=0
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"integration","x-title":"Secret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"type":"string"},{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null,"title":"Secret Key"}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":[
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Reload page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_reload_page_success_44d387.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify Apps page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AppsPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify Apps page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_5e0cfc.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Reload page
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [{"name": "regression-org-5f62zrw7yzfv", "role": "user"}], "clusters": [{"name": "default", "registry_url": "https://registry.api.dev.apolo.us", "storage_url": "https://api.dev.apolo.us/api/v1/storage", "monitoring_url": "https://monitoring.api.dev.apolo.us/api/v1/jobs", "secrets_url": "https://api.dev.apolo.us/api/v1/secrets", "metrics_url": "https://grafana.dev.apolo.us", "disks_url": "https://api.dev.apolo.us/api/v1/disk", "buckets_url": "https://api.dev.apolo.us/api/v1/buckets", "resource_pool_types": [{"name": "default", "min_size": 1, "max_size": 20, "cpu": 4, "available_cpu": 3.3, "memory": 16106127360, "available_memory": 11813676647, "disk_size": 161061273600, "available_disk_size": 150000000000}, {"name": "g2-standard-4", "min_size": 0, "max_size": 5, "cpu": 4, "available_cpu": 3, "memory": 17179869184, "available_memory": 16106127360, "disk_size": 322122547200, "available_disk_size": 150000000000, "nvidia_gpu": 1, "nvidia_gpu_model": "nvidia-l4"}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-5f62zrw7yzfv
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-org-5f62zrw7yzfv", "balance": {"credits": "500", "spent_credits": "0"}, "user_default_credits": null, "notification_intervals": {"balance_projection_seconds": [604800, 259200, 86400], "balance_amount": [0], "balance_depletion_seconds": [86400, 604800]}}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-hym5pico3r/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"uri": "blob://default/regression-org-5f62zrw7yzfv/regression-proj-k92sa5mha1", "action": "read"}]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[],"total":0,"page":1,"size":100,"pages":0}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-hym5pico3r", "email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00", "terms_accepted": true, "orgs": [{"org_name": "regression-org-5f62zrw7yzfv", "role": "user", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/templates
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"integration","x-title":"Secret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"type":"string"},{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null,"title":"Secret Key"}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":[
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-hym5pico3r?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-hym5pico3r", "email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00", "terms_accepted": true, "clusters": [{"cluster_name": "default", "role": "user", "org_name": "regression-org-5f62zrw7yzfv", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-5f62zrw7yzfv/project/regression-proj-k92sa5mha1/templates?limit=50&offset=0
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"integration","x-title":"Secret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"type":"string"},{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null,"title":"Secret Key"}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":[
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Reload page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_reload_page_success_8601d7.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User3>> :: Verify Apps page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AppsPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User3>> :: Verify Apps page displayed
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_b3a06d.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click Project button on the top pane of the main page
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click create project button on the top pane
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click Project button on the top pane of the main page
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_proj_button_top_pane_success_4c1bdc.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Click People button on the Projects info popup
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectsInfoPopup>: Click People button
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Click People button on the Projects info popup
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "is_default": false, "default_role": "reader"}
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_people_btn_success_8ce5f5.png
+INFO     [📘TEST_INFO]:reporting.py:33 ▶️ STEP started: <<User2>> :: Verify edit member button disabled
+INFO     [🎭 Playwright]:base_page.py:16 <ProjectPeoplePage>: Check if user regression-hym5pico3r row edit btn enabled
+WARNING  [🔧TEST CONFIG]:conftest.py:242 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-5f62zrw7yzfv/projects/regression-proj-k92sa5mha1/users?with_user_info=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"user_name": "regression-0ulgcucblv", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "writer", "user_info": {"email": "regression-0ulgcucblv@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:54.503131+00:00"}}, {"user_name": "regression-hym5pico3r", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "reader", "user_info": {"email": "regression-hym5pico3r@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:44:19.345118+00:00"}}, {"user_name": "regression-elov8c11dy", "project_name": "regression-proj-k92sa5mha1", "cluster_name": "default", "org_name": "regression-org-5f62zrw7yzfv", "role": "admin", "user_info": {"email": "regression-elov8c11dy@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-07-31T02:43:26.045186+00:00"}}]
+INFO     [📘TEST_INFO]:reporting.py:47 ✅ STEP completed: <<User2>> :: Verify edit member button disabled
+INFO     [📘TEST_INFO]:reporting.py:181 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_edit_member_btn_disabled_success_bdffbb.png
+INFO     [📘TEST_INFO]:reporting.py:77 ✅ TEST completed: Verify Writer cannot change member roles
+INFO     [📘TEST_INFO]:reporting.py:83 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:148 Closing all browser sessions
+INFO     [🔧TEST CONFIG]:conftest.py:152 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:159 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:152 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:159 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:152 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:159 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:164 Closed all browser sessions
