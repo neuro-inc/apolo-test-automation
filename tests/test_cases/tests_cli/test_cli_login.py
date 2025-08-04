@@ -45,13 +45,12 @@ class TestCLILogin:
             self._test_config, self._apolo_cli, self._data_manager
         )
 
-        user = await self.ui_steps.ui_signup_new_user_ver_link()
-        self._email = user.email
-        self._password = user.password
-        self._username = user.username
+        user = self._users_manager.main_user
+        self._user = user
         # Login via UI to get access token
+        await self.ui_steps.ui_login(user)
         await self.ui_steps.ui_pass_new_user_onboarding(
-            email=self._email, username=self._username, gherkin_name="Default-org"
+            user=user, gherkin_name="Default-org"
         )
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
@@ -82,5 +81,5 @@ class TestCLILogin:
         )
 
         assert await self._apolo_cli.verify_login_output(
-            url, self._username, organization_name, project_name
+            url, self._user.username, organization_name, project_name
         ), "CLI login output should be valid!"

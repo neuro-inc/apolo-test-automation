@@ -46,13 +46,13 @@ class TestUISignup(BaseUITest):
     async def test_invite_not_registered_user_to_org(self) -> None:
         steps = self._steps
         u2_steps = await self.init_test_steps()
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         second_user = self._users_manager.generate_user()
 
         self.log("User1 pass onboarding and create organization")
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="default_organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -108,13 +108,13 @@ class TestUISignup(BaseUITest):
     )
     async def test_invite_not_registered_user_to_org_with_default_proj(self) -> None:
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         second_user = self._users_manager.generate_user()
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(

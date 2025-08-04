@@ -25,13 +25,15 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -94,13 +96,14 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -163,13 +166,14 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -232,11 +236,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -275,11 +279,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -316,11 +320,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -364,11 +368,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -409,11 +413,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -431,7 +435,10 @@ class TestUIFiles(BaseUITest):
 
         file_path, file_name = await steps.files_page.generate_bin_file()
         await steps.ui_upload_file(
-            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            file_path=file_path,
         )
         await steps.files_page.verify_ui_file_displayed(name=file_name)
 
@@ -442,11 +449,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -464,7 +471,10 @@ class TestUIFiles(BaseUITest):
 
         file_path, file_name = await steps.files_page.generate_txt_file()
         await steps.ui_upload_file(
-            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            file_path=file_path,
         )
         await steps.files_page.verify_ui_file_displayed(name=file_name)
 
@@ -478,11 +488,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -500,7 +510,10 @@ class TestUIFiles(BaseUITest):
 
         file_path, file_name = await steps.files_page.generate_txt_file()
         await steps.ui_upload_file(
-            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            file_path=file_path,
         )
         await steps.files_page.verify_ui_file_displayed(name=file_name)
 
@@ -522,11 +535,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -544,7 +557,10 @@ class TestUIFiles(BaseUITest):
 
         file_path, file_name = await steps.files_page.generate_bin_file()
         await steps.ui_upload_file(
-            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            file_path=file_path,
         )
         await steps.files_page.verify_ui_file_displayed(name=file_name)
 
@@ -564,11 +580,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -586,7 +602,10 @@ class TestUIFiles(BaseUITest):
 
         file_path, file_name = await steps.files_page.generate_txt_file()
         await steps.ui_upload_file(
-            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            file_path=file_path,
         )
         await steps.files_page.verify_ui_file_displayed(name=file_name)
 
@@ -604,11 +623,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -626,7 +645,10 @@ class TestUIFiles(BaseUITest):
 
         file_path, file_name = await steps.files_page.generate_txt_file()
         await steps.ui_upload_file(
-            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            file_path=file_path,
         )
         await steps.files_page.verify_ui_file_displayed(name=file_name)
 
@@ -651,11 +673,11 @@ class TestUIFiles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -673,7 +695,10 @@ class TestUIFiles(BaseUITest):
 
         file_path, file_name = await steps.files_page.generate_txt_file()
         await steps.ui_upload_file(
-            org_name=org.org_name, proj_name=proj.project_name, file_path=file_path
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            file_path=file_path,
         )
         await steps.files_page.verify_ui_file_displayed(name=file_name)
 

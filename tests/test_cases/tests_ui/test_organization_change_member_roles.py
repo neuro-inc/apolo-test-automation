@@ -31,59 +31,62 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        add_steps = await self.init_test_steps()
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        u2_steps = await self.init_test_steps()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
             email=user.email,
             username=user.username,
-            add_user_email=add_user.email,
+            add_user_email=second_user.email,
             role="User",
         )
 
-        await add_steps.ui_reload_page()
+        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "User"
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
 
         await steps.ui_reload_page()
-        await steps.org_people_page.ui_click_three_dots_btn(email=add_user.email)
+        await steps.org_people_page.ui_click_three_dots_btn(email=second_user.email)
         await steps.org_people_page.verify_ui_edit_user_btn_enabled()
 
         await steps.org_people_page.ui_click_edit_user_btn()
         await steps.edit_org_user_popup.verify_ui_popup_displayed(
-            username=add_user.username
+            username=second_user.username
         )
 
         await steps.edit_org_user_popup.ui_select_new_user_role(role="Manager")
         await steps.edit_org_user_popup.ui_click_save_button()
-        await steps.edit_org_user_popup.ui_wait_to_disappear(username=add_user.username)
+        await steps.edit_org_user_popup.ui_wait_to_disappear(
+            username=second_user.username
+        )
         await steps.org_people_page.verify_ui_valid_user_role_displayed(
-            email=add_user.email, role="Manager"
+            email=second_user.email, role="Manager"
         )
 
-        await add_steps.ui_reload_page()
-        await add_steps.main_page.ui_click_organization_settings_button(
-            email=add_user.email
+        await u2_steps.ui_reload_page()
+        await u2_steps.main_page.ui_click_organization_settings_button(
+            email=second_user.email
         )
-        await add_steps.org_settings_popup.verify_ui_settings_btn_displayed()
-        await add_steps.org_settings_popup.verify_ui_billing_btn_displayed()
+        await u2_steps.org_settings_popup.verify_ui_settings_btn_displayed()
+        await u2_steps.org_settings_popup.verify_ui_billing_btn_displayed()
 
     @async_title("Verify Admin can change User role to Admin")
     async def test_admin_change_user_to_admin(self) -> None:
@@ -97,59 +100,62 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        add_steps = await self.init_test_steps()
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        u2_steps = await self.init_test_steps()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
             email=user.email,
             username=user.username,
-            add_user_email=add_user.email,
+            add_user_email=second_user.email,
             role="User",
         )
 
-        await add_steps.ui_reload_page()
+        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "User"
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
 
         await steps.ui_reload_page()
-        await steps.org_people_page.ui_click_three_dots_btn(email=add_user.email)
+        await steps.org_people_page.ui_click_three_dots_btn(email=second_user.email)
         await steps.org_people_page.verify_ui_edit_user_btn_enabled()
 
         await steps.org_people_page.ui_click_edit_user_btn()
         await steps.edit_org_user_popup.verify_ui_popup_displayed(
-            username=add_user.username
+            username=second_user.username
         )
 
         await steps.edit_org_user_popup.ui_select_new_user_role(role="Admin")
         await steps.edit_org_user_popup.ui_click_save_button()
-        await steps.edit_org_user_popup.ui_wait_to_disappear(username=add_user.username)
+        await steps.edit_org_user_popup.ui_wait_to_disappear(
+            username=second_user.username
+        )
         await steps.org_people_page.verify_ui_valid_user_role_displayed(
-            email=add_user.email, role="Admin"
+            email=second_user.email, role="Admin"
         )
 
-        await add_steps.ui_reload_page()
-        await add_steps.main_page.ui_click_organization_settings_button(
-            email=add_user.email
+        await u2_steps.ui_reload_page()
+        await u2_steps.main_page.ui_click_organization_settings_button(
+            email=second_user.email
         )
-        await add_steps.org_settings_popup.verify_ui_settings_btn_displayed()
-        await add_steps.org_settings_popup.verify_ui_billing_btn_displayed()
+        await u2_steps.org_settings_popup.verify_ui_settings_btn_displayed()
+        await u2_steps.org_settings_popup.verify_ui_billing_btn_displayed()
 
     @async_title("Verify Admin can change Manager role to User")
     async def test_admin_change_manager_to_user(self) -> None:
@@ -163,60 +169,63 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        add_steps = await self.init_test_steps()
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        u2_steps = await self.init_test_steps()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
             email=user.email,
             username=user.username,
-            add_user_email=add_user.email,
+            add_user_email=second_user.email,
             role="Manager",
         )
 
-        await add_steps.ui_reload_page()
+        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "Manager"
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
 
         await steps.ui_reload_page()
-        await steps.org_people_page.ui_click_three_dots_btn(email=add_user.email)
+        await steps.org_people_page.ui_click_three_dots_btn(email=second_user.email)
         await steps.org_people_page.verify_ui_edit_user_btn_enabled()
 
         await steps.org_people_page.ui_click_edit_user_btn()
         await steps.edit_org_user_popup.verify_ui_popup_displayed(
-            username=add_user.username
+            username=second_user.username
         )
 
         await steps.edit_org_user_popup.ui_select_new_user_role(role="User")
         await steps.edit_org_user_popup.ui_click_save_button()
-        await steps.edit_org_user_popup.ui_wait_to_disappear(username=add_user.username)
+        await steps.edit_org_user_popup.ui_wait_to_disappear(
+            username=second_user.username
+        )
         await steps.org_people_page.verify_ui_valid_user_role_displayed(
-            email=add_user.email, role="User"
+            email=second_user.email, role="User"
         )
 
-        await add_steps.ui_reload_page()
-        await add_steps.main_page.ui_click_organization_settings_button(
-            email=add_user.email
+        await u2_steps.ui_reload_page()
+        await u2_steps.main_page.ui_click_organization_settings_button(
+            email=second_user.email
         )
-        await add_steps.org_settings_popup.verify_ui_settings_btn_not_displayed()
-        await add_steps.org_settings_popup.verify_ui_billing_btn_not_displayed()
+        await u2_steps.org_settings_popup.verify_ui_settings_btn_not_displayed()
+        await u2_steps.org_settings_popup.verify_ui_billing_btn_not_displayed()
 
     @async_title("Verify Admin can change Manager role to Admin")
     async def test_admin_change_manager_to_admin(self) -> None:
@@ -230,61 +239,64 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        add_steps = await self.init_test_steps()
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        u2_steps = await self.init_test_steps()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
             email=user.email,
             username=user.username,
-            add_user_email=add_user.email,
+            add_user_email=second_user.email,
             role="Manager",
         )
 
-        await add_steps.ui_reload_page()
+        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "Manager"
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
 
         await steps.ui_reload_page()
-        await steps.org_people_page.ui_click_three_dots_btn(email=add_user.email)
+        await steps.org_people_page.ui_click_three_dots_btn(email=second_user.email)
         await steps.org_people_page.verify_ui_edit_user_btn_enabled()
 
         await steps.org_people_page.ui_click_edit_user_btn()
         await steps.edit_org_user_popup.verify_ui_popup_displayed(
-            username=add_user.username
+            username=second_user.username
         )
 
         await steps.edit_org_user_popup.ui_select_new_user_role(role="Admin")
         await steps.edit_org_user_popup.ui_click_save_button()
-        await steps.edit_org_user_popup.ui_wait_to_disappear(username=add_user.username)
+        await steps.edit_org_user_popup.ui_wait_to_disappear(
+            username=second_user.username
+        )
         await steps.org_people_page.verify_ui_valid_user_role_displayed(
-            email=add_user.email, role="Admin"
+            email=second_user.email, role="Admin"
         )
 
-        await add_steps.ui_reload_page()
-        await add_steps.main_page.ui_click_organization_settings_button(
-            email=add_user.email
+        await u2_steps.ui_reload_page()
+        await u2_steps.main_page.ui_click_organization_settings_button(
+            email=second_user.email
         )
 
-        await add_steps.org_settings_popup.verify_ui_settings_btn_displayed()
-        await add_steps.org_settings_popup.verify_ui_billing_btn_displayed()
+        await u2_steps.org_settings_popup.verify_ui_settings_btn_displayed()
+        await u2_steps.org_settings_popup.verify_ui_billing_btn_displayed()
 
     @async_title("Verify Admin can change Admin role to User")
     async def test_admin_change_admin_to_user(self) -> None:
@@ -298,61 +310,64 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        add_steps = await self.init_test_steps()
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        u2_steps = await self.init_test_steps()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
             email=user.email,
             username=user.username,
-            add_user_email=add_user.email,
+            add_user_email=second_user.email,
             role="Admin",
         )
 
-        await add_steps.ui_reload_page()
+        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "Admin"
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
 
         await steps.ui_reload_page()
-        await steps.org_people_page.ui_click_three_dots_btn(email=add_user.email)
+        await steps.org_people_page.ui_click_three_dots_btn(email=second_user.email)
         await steps.org_people_page.verify_ui_edit_user_btn_enabled()
 
         await steps.org_people_page.ui_click_edit_user_btn()
         await steps.edit_org_user_popup.verify_ui_popup_displayed(
-            username=add_user.username
+            username=second_user.username
         )
 
         await steps.edit_org_user_popup.ui_select_new_user_role(role="User")
         await steps.edit_org_user_popup.ui_click_save_button()
-        await steps.edit_org_user_popup.ui_wait_to_disappear(username=add_user.username)
+        await steps.edit_org_user_popup.ui_wait_to_disappear(
+            username=second_user.username
+        )
         await steps.org_people_page.verify_ui_valid_user_role_displayed(
-            email=add_user.email, role="User"
+            email=second_user.email, role="User"
         )
 
-        await add_steps.ui_reload_page()
-        await add_steps.main_page.ui_click_organization_settings_button(
-            email=add_user.email
+        await u2_steps.ui_reload_page()
+        await u2_steps.main_page.ui_click_organization_settings_button(
+            email=second_user.email
         )
 
-        await add_steps.org_settings_popup.verify_ui_settings_btn_not_displayed()
-        await add_steps.org_settings_popup.verify_ui_billing_btn_not_displayed()
+        await u2_steps.org_settings_popup.verify_ui_settings_btn_not_displayed()
+        await u2_steps.org_settings_popup.verify_ui_billing_btn_not_displayed()
 
     @async_title("Verify Admin can change Admin role to Manager")
     async def test_admin_change_admin_to_manager(self) -> None:
@@ -366,61 +381,64 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        add_steps = await self.init_test_steps()
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        u2_steps = await self.init_test_steps()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
             email=user.email,
             username=user.username,
-            add_user_email=add_user.email,
+            add_user_email=second_user.email,
             role="Admin",
         )
 
-        await add_steps.ui_reload_page()
+        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "Admin"
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
 
         await steps.ui_reload_page()
-        await steps.org_people_page.ui_click_three_dots_btn(email=add_user.email)
+        await steps.org_people_page.ui_click_three_dots_btn(email=second_user.email)
         await steps.org_people_page.verify_ui_edit_user_btn_enabled()
 
         await steps.org_people_page.ui_click_edit_user_btn()
         await steps.edit_org_user_popup.verify_ui_popup_displayed(
-            username=add_user.username
+            username=second_user.username
         )
 
         await steps.edit_org_user_popup.ui_select_new_user_role(role="Manager")
         await steps.edit_org_user_popup.ui_click_save_button()
-        await steps.edit_org_user_popup.ui_wait_to_disappear(username=add_user.username)
+        await steps.edit_org_user_popup.ui_wait_to_disappear(
+            username=second_user.username
+        )
         await steps.org_people_page.verify_ui_valid_user_role_displayed(
-            email=add_user.email, role="Manager"
+            email=second_user.email, role="Manager"
         )
 
-        await add_steps.ui_reload_page()
-        await add_steps.main_page.ui_click_organization_settings_button(
-            email=add_user.email
+        await u2_steps.ui_reload_page()
+        await u2_steps.main_page.ui_click_organization_settings_button(
+            email=second_user.email
         )
 
-        await add_steps.org_settings_popup.verify_ui_settings_btn_displayed()
-        await add_steps.org_settings_popup.verify_ui_billing_btn_displayed()
+        await u2_steps.org_settings_popup.verify_ui_settings_btn_displayed()
+        await u2_steps.org_settings_popup.verify_ui_billing_btn_displayed()
 
     @async_title("Verify Admin cannot demote himself to User")
     async def test_admin_demote_himself_to_user(self) -> None:
@@ -431,13 +449,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -497,13 +516,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -566,14 +586,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -598,7 +619,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
@@ -658,14 +680,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -690,7 +713,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
@@ -755,14 +779,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -787,7 +812,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
@@ -847,14 +873,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -879,7 +906,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
@@ -941,14 +969,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -973,7 +1002,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
@@ -1035,14 +1065,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -1067,7 +1098,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         await steps.ui_invite_user_to_org(
@@ -1129,13 +1161,14 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()

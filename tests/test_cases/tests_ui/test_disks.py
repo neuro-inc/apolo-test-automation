@@ -22,10 +22,10 @@ class TestUIDisks(BaseUITest):
             - User cannot create first Disk if no project created yet
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
 
@@ -45,10 +45,10 @@ class TestUIDisks(BaseUITest):
             - User can create first Disk after project created
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
 
@@ -80,10 +80,10 @@ class TestUIDisks(BaseUITest):
             - User can create second Disk
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
 
@@ -125,10 +125,10 @@ class TestUIDisks(BaseUITest):
             - User can search for Disk
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
 
@@ -176,10 +176,10 @@ class TestUIDisks(BaseUITest):
             - After click on disk button Disk info view appears
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
 
@@ -219,10 +219,10 @@ class TestUIDisks(BaseUITest):
             - User can delete Disk
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
 

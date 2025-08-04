@@ -85,7 +85,7 @@ class APIHelper:
         async with self._session.delete(
             endpoint, headers=self._headers(token)
         ) as response:
-            return await response.json()
+            return response
 
     async def _close(self) -> None:
         if self._session:
@@ -126,5 +126,17 @@ class APIHelper:
             file_bytes = f.read()
             response = await self._put(url, data=file_bytes, token=token)
             logger.info(f"File upload response: {response}")
+
+        return response
+
+    async def get_orgs(self, token: str) -> Any:
+        url = self._config.get_orgs_url()
+        status, response = await self._get(url, token=token)
+        logger.info(f"Status: {status}. Response: {response}")
+
+    async def delete_org(self, token: str, org_name: str) -> Any:
+        url = self._config.get_delete_org_url(org_name=org_name)
+        response = await self._delete(url, token=token)
+        logger.info(f"Delete organization response: {response}")
 
         return response

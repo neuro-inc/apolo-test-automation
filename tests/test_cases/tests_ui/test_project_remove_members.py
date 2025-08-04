@@ -25,13 +25,14 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -101,13 +102,14 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -177,13 +179,14 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -253,13 +256,14 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -327,11 +331,11 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         org = self._data_manager.get_organization_by_gherkin_name(
@@ -361,15 +365,17 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -469,15 +475,17 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -577,15 +585,17 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -685,15 +695,17 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -792,13 +804,14 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -857,15 +870,17 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
@@ -949,15 +964,17 @@ class TestUIProjectRemoveMembers(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
         u2_steps = await self.init_test_steps()
         u3_steps = await self.init_test_steps()
-        second_user = await u2_steps.ui_signup_new_user_ver_link()
-        third_user = await u3_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
+        third_user = await u3_steps.ui_get_third_user()
+        await u3_steps.ui_login(third_user)
 
         await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
+            user=user,
             gherkin_name="Default-organization",
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()

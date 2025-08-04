@@ -16,8 +16,8 @@ class AuthPage(BasePage):
         """
         self.log("Check if page loaded")
         return (
-            await self._log_in_button.expect_to_be_loaded()
-            and await self._sign_up_button.expect_to_be_loaded()
+            await self._log_in_button.is_visible()
+            and await self._sign_up_button.is_visible()
         )
 
     async def click_log_in_button(self) -> None:

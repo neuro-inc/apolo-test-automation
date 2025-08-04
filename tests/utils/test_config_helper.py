@@ -97,3 +97,9 @@ class ConfigManager:
         return str(self._endpoints.file_upload).format(
             organization=organization, project=project_name, file_name=file_name
         )
+
+    def get_orgs_url(self) -> str:
+        return str(self._endpoints.get_orgs)
+
+    def get_delete_org_url(self, org_name: str) -> str:
+        return str(self._endpoints.delete_org).format(org_name=org_name)
