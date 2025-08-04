@@ -140,3 +140,11 @@ class APIHelper:
         logger.info(f"Delete organization response: {response}")
 
         return response
+
+    async def add_user_to_org(
+        self, token: str, org_name: str, username: str, role: str
+    ) -> Any:
+        url = self._config.get_add_user_to_org_url(org_name=org_name)
+        data = {"user_name": username, "role": role}
+        response = await self._post(url, token=token, data=data)
+        logger.info(f"Add user {username} to org response: {response}")

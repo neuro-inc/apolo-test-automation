@@ -56,7 +56,7 @@ class TestHelloWorldJob:
         await self.ui_steps.ui_pass_new_user_onboarding(
             user=self._user, gherkin_name="default"
         )
-        await self.cli_common_steps.cli_login_with_token()
+        await self.cli_common_steps.cli_login_with_token(token=self._user.token)
         await asyncio.sleep(2)
         await self.create_project("my-project")
         await self.run_hello_world_job("my-project")

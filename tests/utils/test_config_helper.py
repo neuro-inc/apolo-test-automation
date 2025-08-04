@@ -103,3 +103,6 @@ class ConfigManager:
 
     def get_delete_org_url(self, org_name: str) -> str:
         return str(self._endpoints.delete_org).format(org_name=org_name)
+
+    def get_add_user_to_org_url(self, org_name: str) -> str:
+        return str(self._endpoints.add_user_to_org).format(org_name=org_name)

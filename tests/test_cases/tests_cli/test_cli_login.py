@@ -57,7 +57,7 @@ class TestCLILogin:
 
     @async_title("User logs in to Apolo CLI with auth token and verifies login success")
     async def test_login_with_token_cli(self) -> None:
-        await self.cli_common_steps.cli_login_with_token()
+        await self.cli_common_steps.cli_login_with_token(token=self._user.token)
         await self.cli_verify_login_successfull()
         await self.cli_verify_login_output(check_org=True)
 

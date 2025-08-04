@@ -14,10 +14,11 @@ class CLICommonSteps:
         self._test_config = test_config
         self._apolo_cli = apolo_cli
         self._data_manager = data_manager
+        self._current_token = ""
 
     @async_step("Login to apolo CLI with access token")
-    async def cli_login_with_token(self) -> None:
-        token = self._test_config.token
+    async def cli_login_with_token(self, token: str) -> None:
+        self._current_token = token
         url = self._test_config.cli_login_url
         await self._apolo_cli.login_with_token(token, url)
         assert self._apolo_cli.login_successful, "Login via CLI should be successful!"
@@ -46,7 +47,7 @@ class CLICommonSteps:
                 "ERROR: There are no clusters available. Please logout and login again."
                 in msg
             ):
-                await self.cli_login_with_token()
+                await self.cli_login_with_token(self._current_token)
             else:
                 raise
 

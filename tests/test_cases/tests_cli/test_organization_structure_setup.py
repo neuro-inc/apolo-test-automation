@@ -52,7 +52,7 @@ class TestCLIOrganizationStructureSetup:
     async def test_create_first_organization_cli(self) -> None:
         user = self._users_manager.main_user
         await self.ui_steps.ui_login(user=user)
-        await self.cli_common_steps.cli_login_with_token()
+        await self.cli_common_steps.cli_login_with_token(token=user.token)
         await self.cli_common_steps.verify_cli_organization_count(0)
         await self.cli_common_steps.cli_add_new_organization("My-organization")
         await self.cli_common_steps.verify_cli_organization_count(1)
@@ -62,7 +62,7 @@ class TestCLIOrganizationStructureSetup:
     async def test_create_second_organization_cli(self) -> None:
         user = self._users_manager.main_user
         await self.ui_steps.ui_login(user=user)
-        await self.cli_common_steps.cli_login_with_token()
+        await self.cli_common_steps.cli_login_with_token(token=user.token)
         await self.cli_common_steps.verify_cli_organization_count(0)
         await self.cli_common_steps.cli_add_new_organization("My-organization")
         await self.cli_common_steps.verify_cli_organization_count(1)
@@ -79,7 +79,7 @@ class TestCLIOrganizationStructureSetup:
     async def test_remove_organization_cli(self) -> None:
         user = self._users_manager.main_user
         await self.ui_steps.ui_login(user=user)
-        await self.cli_common_steps.cli_login_with_token()
+        await self.cli_common_steps.cli_login_with_token(token=user.token)
         await self.cli_common_steps.verify_cli_organization_count(0)
 
         await self.cli_common_steps.cli_add_new_organization("My-organization")
