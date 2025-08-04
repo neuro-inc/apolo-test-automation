@@ -24,9 +24,8 @@ class TestUISecrets(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         await steps.main_page.ui_click_secrets_btn()
@@ -47,9 +46,8 @@ class TestUISecrets(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -81,9 +79,8 @@ class TestUISecrets(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -123,9 +120,8 @@ class TestUISecrets(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -175,9 +171,8 @@ class TestUISecrets(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization

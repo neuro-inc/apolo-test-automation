@@ -59,7 +59,7 @@ class APIHelper:
         async with self._session.post(
             endpoint, headers=self._headers(token), json=data
         ) as response:
-            return await response.json()
+            return response
 
     async def _put(
         self,
@@ -134,6 +134,8 @@ class APIHelper:
         status, response = await self._get(url, token=token)
         logger.info(f"Status: {status}. Response: {response}")
 
+        return response
+
     async def delete_org(self, token: str, org_name: str) -> Any:
         url = self._config.get_delete_org_url(org_name=org_name)
         response = await self._delete(url, token=token)
@@ -148,3 +150,13 @@ class APIHelper:
         data = {"user_name": username, "role": role}
         response = await self._post(url, token=token, data=data)
         logger.info(f"Add user {username} to org response: {response}")
+
+        return response
+
+    async def add_org(self, token: str, org_name: str) -> Any:
+        url = self._config.get_add_org_url()
+        data = {"name": org_name}
+        response = await self._post(url, token=token, data=data)
+        logger.info(f"Add org {org_name} response: {response}")
+
+        return response

@@ -30,28 +30,22 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=second_user.email,
-            role="User",
-        )
-
-        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "User"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="User",
         )
-        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+
+        await u2_steps.ui_reload_page()
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -94,28 +88,22 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=second_user.email,
-            role="Manager",
-        )
-
-        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Manager"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="Manager",
         )
-        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+
+        await u2_steps.ui_reload_page()
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -158,28 +146,22 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=second_user.email,
-            role="Admin",
-        )
-
-        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Admin"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="Admin",
         )
-        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+
+        await u2_steps.ui_reload_page()
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -222,28 +204,22 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=second_user.email,
-            role="Admin",
-        )
-
-        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Admin"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="Admin",
         )
-        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+
+        await u2_steps.ui_reload_page()
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -287,29 +263,22 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=second_user.email,
-            role="Manager",
-        )
-
-        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Manager"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="Manager",
         )
-        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+
+        await u2_steps.ui_reload_page()
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -317,19 +286,14 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=third_user.email,
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=third_user.username,
             role="User",
         )
 
         await u3_steps.ui_reload_page()
-        await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await u3_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "User"
-        )
-        await u3_steps.invited_to_org_page.ui_click_accept_and_go_button()
         await u3_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -377,29 +341,22 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=second_user.email,
-            role="Manager",
-        )
-
-        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Manager"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="Manager",
         )
-        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+
+        await u2_steps.ui_reload_page()
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -407,19 +364,14 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=third_user.email,
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=third_user.username,
             role="Manager",
         )
 
         await u3_steps.ui_reload_page()
-        await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await u3_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Manager"
-        )
-        await u3_steps.invited_to_org_page.ui_click_accept_and_go_button()
         await u3_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -467,29 +419,22 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=second_user.email,
-            role="Manager",
-        )
-
-        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Manager"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="Manager",
         )
-        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+
+        await u2_steps.ui_reload_page()
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -497,19 +442,14 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         await u3_steps.ui_login(third_user)
         await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=third_user.email,
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=third_user.username,
             role="Manager",
         )
 
         await u3_steps.ui_reload_page()
-        await u3_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await u3_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Manager"
-        )
-        await u3_steps.invited_to_org_page.ui_click_accept_and_go_button()
         await u3_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
@@ -556,28 +496,22 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=second_user.email,
-            role="Manager",
-        )
-
-        await u2_steps.ui_reload_page()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Manager"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="Manager",
         )
-        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+
+        await u2_steps.ui_reload_page()
         await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )

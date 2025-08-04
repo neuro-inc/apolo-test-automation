@@ -214,7 +214,8 @@ async def _cleanup_orgs(
     if not main_user:
         logger.info("Main user is None. Nothing to cleanup.")
         return
-    organizations = main_user.orgs[:]
+    org_data = await api_helper.get_orgs(token=main_user.token)
+    organizations = [org["name"] for org in org_data if "name" in org]
     token = main_user.token
     logger.info("Cleaning up %d organisations", len(organizations))
 
@@ -229,7 +230,6 @@ async def _cleanup_orgs(
     for org_name in organizations:
         with allure.step(f"Delete organisation: {org_name}"):
             try:
-                await api_helper.get_orgs(token=token)
                 await api_helper.delete_org(token=token, org_name=org_name)
 
                 data_manager.remove_organization(org_name)
@@ -244,7 +244,6 @@ async def _cleanup_orgs(
                 third_user = None
             else:
                 logger.info("Removed organisation: %s", org_name)
-                main_user.orgs.remove(org_name)  # type: ignore[union-attr]
 
 
 async def _cleanup_browsers() -> None:

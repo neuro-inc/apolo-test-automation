@@ -51,12 +51,11 @@ class TestUISignup(BaseUITest):
         second_user = self._users_manager.generate_user()
 
         self.log("User1 pass onboarding and create organization")
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="default_organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         org = self._data_manager.get_organization_by_gherkin_name(
-            gherkin_name="default_organization"
+            gherkin_name="Default-organization"
         )
 
         await steps.ui_invite_user_to_org(
@@ -113,9 +112,8 @@ class TestUISignup(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = self._users_manager.generate_user()
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         org = self._data_manager.get_organization_by_gherkin_name(
             gherkin_name="Default-organization"

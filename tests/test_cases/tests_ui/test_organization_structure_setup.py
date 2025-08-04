@@ -41,9 +41,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org2 = self._data_manager.add_organization(gherkin_name="Second-organization")
@@ -66,9 +65,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -102,9 +100,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         u2_steps = await self.init_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -159,9 +156,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         third_user = await u3_steps.ui_get_third_user()
         await u3_steps.ui_login(third_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -236,9 +232,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
@@ -271,9 +266,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
         org = self._data_manager.default_organization
         proj = org.add_project("First-project")
@@ -306,9 +300,8 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         u2_steps = await self.init_test_steps()
 
         self.log("User1 pass new user onboarding and create organization")
-        await steps.ui_pass_new_user_onboarding(
-            user=user,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         self.log("User2 Login")

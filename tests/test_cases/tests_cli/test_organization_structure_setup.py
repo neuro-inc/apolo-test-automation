@@ -54,7 +54,9 @@ class TestCLIOrganizationStructureSetup:
         await self.ui_steps.ui_login(user=user)
         await self.cli_common_steps.cli_login_with_token(token=user.token)
         await self.cli_common_steps.verify_cli_organization_count(0)
-        await self.cli_common_steps.cli_add_new_organization("My-organization")
+        await self.cli_common_steps.cli_add_new_organization(
+            "My-organization", user=user
+        )
         await self.cli_common_steps.verify_cli_organization_count(1)
         await self.cli_common_steps.verify_cli_organization_listed("My-organization")
 
@@ -64,11 +66,15 @@ class TestCLIOrganizationStructureSetup:
         await self.ui_steps.ui_login(user=user)
         await self.cli_common_steps.cli_login_with_token(token=user.token)
         await self.cli_common_steps.verify_cli_organization_count(0)
-        await self.cli_common_steps.cli_add_new_organization("My-organization")
+        await self.cli_common_steps.cli_add_new_organization(
+            "My-organization", user=user
+        )
         await self.cli_common_steps.verify_cli_organization_count(1)
         await self.cli_common_steps.verify_cli_organization_listed("My-organization")
 
-        await self.cli_common_steps.cli_add_new_organization("Second-organization")
+        await self.cli_common_steps.cli_add_new_organization(
+            "Second-organization", user=user
+        )
         await self.cli_common_steps.verify_cli_organization_count(2)
         await self.cli_common_steps.verify_cli_organization_listed("My-organization")
         await self.cli_common_steps.verify_cli_organization_listed(
@@ -82,7 +88,9 @@ class TestCLIOrganizationStructureSetup:
         await self.cli_common_steps.cli_login_with_token(token=user.token)
         await self.cli_common_steps.verify_cli_organization_count(0)
 
-        await self.cli_common_steps.cli_add_new_organization("My-organization")
+        await self.cli_common_steps.cli_add_new_organization(
+            "My-organization", user=user
+        )
         await self.cli_common_steps.verify_cli_organization_count(1)
         await self.cli_common_steps.verify_cli_organization_listed("My-organization")
 

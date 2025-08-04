@@ -2,6 +2,7 @@ from tests.reporting_hooks.reporting import async_step
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.test_data import DataManager
+from tests.utils.test_data_management.users_manager import UserData
 
 
 class CLICommonSteps:
@@ -37,10 +38,11 @@ class CLICommonSteps:
         )
 
     @async_step("Add new organization via apolo CLI")
-    async def cli_add_new_organization(self, gherkin_name: str) -> None:
+    async def cli_add_new_organization(self, gherkin_name: str, user: UserData) -> None:
         organization = self._data_manager.add_organization(gherkin_name=gherkin_name)
         try:
             await self._apolo_cli.create_organization(org_name=organization.org_name)
+            user.orgs.append(organization.org_name)
         except Exception as ex:
             msg = str(ex)
             if (
