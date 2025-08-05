@@ -648,7 +648,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
             user=user,
             org_name=org.org_name,
             username=third_user.username,
-            role="Manager",
+            role="User",
         )
 
         await u3_steps.ui_reload_page()
