@@ -74,3 +74,62 @@ class CLICommonSteps:
         org_name = org.org_name
         await self._apolo_cli.remove_organization(org_name=org_name)
         self._data_manager.remove_organization(org_name=org_name)
+
+    @async_step("Run config show command via CLI")
+    async def cli_show_config(self) -> None:
+        assert await self._apolo_cli.config_show(), (
+            "Run config show command via CLI failed!"
+        )
+
+    @async_step("Switch organization via CLI")
+    async def cli_switch_org(self, org_name: str) -> None:
+        assert await self._apolo_cli.switch_org(org_name=org_name), (
+            "Run config switch-org command via CLI failed!"
+        )
+
+    @async_step("Add user to organization via CLI")
+    async def cli_add_user_to_org(
+        self, org_name: str, username: str, role: str = "user"
+    ) -> None:
+        assert await self._apolo_cli.add_user_to_org(
+            org_name=org_name, username=username, role=role.lower()
+        ), "Run config add-user-to-org command via CLI failed!"
+
+    @async_step("Get organization users via CLI")
+    async def cli_get_org_users(self, org_name: str) -> None:
+        assert await self._apolo_cli.get_org_users(org_name=org_name), (
+            "Run admin get-org-users command via CLI failed!"
+        )
+
+    @async_step("Verify admin get-org-users command output")
+    async def verify_cli_admin_get_orgs_users_output(
+        self, username: str, role: str, email: str, credits: str | float | int
+    ) -> None:
+        await self._apolo_cli.verify_get_org_users_output(
+            username=username, role=role, email=email, credits=credits
+        )
+
+    @async_step("Set organization credits via CLI")
+    async def cli_set_org_default_credits(
+        self, org_name: str, credits_amount: int
+    ) -> None:
+        assert await self._apolo_cli.set_org_default_credits(
+            org_name=org_name, credits_amount=credits_amount
+        ), "Run config set-org-defaults command via CLI failed!"
+
+    @async_step("Verify config show command output")
+    async def verify_cli_show_command_output(
+        self,
+        expected_username: str,
+        expected_org: str,
+        expected_cluster: str = "default",
+        expected_project: str = "<no-project>",
+        expected_org_credits: int = 500,
+    ) -> None:
+        assert await self._apolo_cli.verify_config_show_output(
+            expected_username=expected_username,
+            expected_org=expected_org,
+            expected_cluster=expected_cluster,
+            expected_project=expected_project,
+            expected_org_credit=expected_org_credits,
+        ), "Verify config show command output failed!"
