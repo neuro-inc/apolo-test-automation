@@ -12,8 +12,9 @@ class ApoloCLI:
         self._binary: str = "apolo"
         self._manager: CLICommandManager = CLICommandManager(binary=self._binary)
         self._login_success: bool = False
-        self._last_command_output: Optional[str] = None
+        self._last_command_output: str = ""
         self._parsed_get_orgs_output: list[str] = []
+        self._parsed_get_org_users_output: list[dict[str, str]] = []
 
     @property
     def parsed_get_orgs_output(self) -> list[str]:
@@ -94,6 +95,79 @@ class ApoloCLI:
         logger.info(f"Fetched organizations: {organizations}")
         return organizations
 
+    async def config_show(self) -> bool:
+        return await self._run_command("config", "show", action="show config info")
+
+    async def switch_org(self, org_name: str) -> bool:
+        return await self._run_command(
+            "config", "switch-org", org_name, action=f"switch org to {org_name}"
+        )
+
+    async def add_user_to_org(self, org_name: str, username: str, role: str) -> bool:
+        return await self._run_command(
+            "admin",
+            "add-org-user",
+            org_name,
+            username,
+            role,
+            action=f"add user {username} to organization {org_name} as {role}",
+        )
+
+    async def get_org_users(self, org_name: str) -> bool:
+        result = await self._run_command(
+            "admin", "get-org-users", org_name, action="get org users"
+        )
+        self._parsed_get_org_users_output = self._parse_get_org_users_output()
+        return result
+
+    def _parse_get_org_users_output(self) -> list[dict[str, str]]:
+        """
+        Parse CLI table output using '│' as column delimiter.
+        Returns a list of dicts with username, email, role, credits.
+        """
+        lines = self._last_command_output.strip().splitlines()
+        data_rows = []
+
+        for i, line in enumerate(lines):
+            if "Role" in line and "Email" in line and "Credits" in line:
+                header_index = i
+                break
+        else:
+            raise ValueError("Table header not found.")
+
+        for row in lines[header_index + 2 :]:
+            if (
+                not row.strip()
+                or row.strip().startswith("╺")
+                or row.strip().startswith("━")
+            ):
+                continue
+
+            cols = [col.strip() for col in row.strip(" │").split("│")]
+            if len(cols) < 7:
+                continue
+
+            data_rows.append(
+                {
+                    "username": cols[0],
+                    "role": cols[1],
+                    "email": cols[2],
+                    "credits": cols[5],
+                }
+            )
+
+        return data_rows
+
+    async def set_org_default_credits(self, org_name: str, credits_amount: int) -> bool:
+        return await self._run_command(
+            "admin",
+            "set-org-defaults",
+            "--user-default-credits",
+            f"{credits_amount}",
+            org_name,
+            action=f"set default credits to {credits_amount} for {org_name}",
+        )
+
     async def create_project(
         self, project_name: str, cluster_name: str = "default"
     ) -> bool:
@@ -115,6 +189,100 @@ class ApoloCLI:
             *args,
             action=f"remove project '{project_name}' from cluster '{cluster_name}'",
         )
+
+    async def verify_config_show_output(
+        self,
+        expected_username: str,
+        expected_org: str,
+        expected_cluster: str = "default",
+        expected_project: str = "<no-project>",
+        expected_org_credit: int = 500,
+    ) -> bool:
+        """
+        Verify CLI config show output contains expected fields.
+
+        Parameters
+        ----------
+        expected_username : str
+            Expected user name in CLI output.
+        expected_cluster : str, default="default"
+            Expected cluster name.
+        expected_org : str
+            Expected organization name.
+        expected_project : str, default="<no-project>"
+            Expected project name.
+        expected_org_credit : int, default=500
+            Expected org credits quota (will match integer or float).
+
+        Returns
+        -------
+        bool
+            True if all fields match; raises AssertionError otherwise.
+        """
+
+        def _normalize(val: str) -> str:
+            if val == "":
+                return ""
+            return val.strip()
+
+        output = self._last_command_output or ""
+
+        user_match = re.search(r"User Name\s+([^\n]+)", output)
+        cluster_match = re.search(r"Current Cluster\s+([^\n]+)", output)
+        org_match = re.search(r"Current Org\s+([^\n]+)", output)
+        project_match = re.search(r"Current Project\s+([^\n]+)", output)
+        org_credit_match = re.search(r"Org Credits Quota\s+([^\n]+)", output)
+
+        actual_username = _normalize(user_match.group(1)) if user_match else None
+        actual_cluster = _normalize(cluster_match.group(1)) if cluster_match else None
+        actual_org = _normalize(org_match.group(1)) if org_match else None
+        actual_project = _normalize(project_match.group(1)) if project_match else None
+        actual_org_credit = None
+        if org_credit_match:
+            raw = org_credit_match.group(1).replace(",", "").strip()
+            try:
+                val = float(raw) if raw.lower() != "unlimited" else None
+                actual_org_credit = int(val) if val is not None else None
+            except ValueError:
+                actual_org_credit = None
+
+        expected_username = _normalize(expected_username)
+        expected_cluster = _normalize(expected_cluster)
+        expected_org = _normalize(expected_org)
+        expected_project = _normalize(expected_project)
+        expected_org_credit = (
+            int(expected_org_credit) if expected_org_credit is not None else None
+        )
+
+        errors: list[str] = []
+        if actual_username != expected_username:
+            errors.append(
+                f"Expected user name '{expected_username}', got '{actual_username}'"
+            )
+        if actual_cluster != expected_cluster:
+            errors.append(
+                f"Expected cluster '{expected_cluster}', got '{actual_cluster}'"
+            )
+        if actual_org != expected_org:
+            errors.append(f"Expected org '{expected_org}', got '{actual_org}'")
+        if actual_project != expected_project:
+            errors.append(
+                f"Expected project '{expected_project}', got '{actual_project}'"
+            )
+        if actual_org_credit != expected_org_credit:
+            errors.append(
+                f"Expected org credits quota '{expected_org_credit}', got '{actual_org_credit}'"
+            )
+
+        if errors:
+            raise AssertionError(
+                "Config show verification failed:\n" + "\n".join(errors)
+            )
+
+        logger.info(
+            f"✅ Config show verification passed for user '{actual_username}', cluster '{actual_cluster}', org '{actual_org}', project '{actual_project}', org_credits '{actual_org_credit}'"
+        )
+        return True
 
     async def _run_command(
         self, *args: str, action: str, timeout: Optional[int] = None
@@ -231,3 +399,68 @@ class ApoloCLI:
             f"✅ Login verification passed for user '{actual_user}' with org '{actual_org}' and project '{actual_project}'"
         )
         return True
+
+    async def verify_get_org_users_output(
+        self, username: str, role: str, email: str, credits: str | float | int
+    ) -> bool:
+        """
+        Assert a user with matching fields is present in the list.
+        Raises AssertionError with mismatches if not found.
+        """
+
+        def _credits_equal(a, b) -> bool:  # type: ignore
+            def _norm(x: str | float | int) -> None | str | float:
+                if x is None:
+                    return None
+                if isinstance(x, str) and x.strip().lower() == "unlimited":
+                    return "unlimited"
+                try:
+                    return float(x)
+                except (ValueError, TypeError):
+                    return str(x).strip().lower()
+
+            return _norm(a) == _norm(b)
+
+        for user in self._parsed_get_org_users_output:
+            errors = []
+            if user.get("username") != username:
+                errors.append(
+                    f"Expected username '{username}', got '{user.get('username')}'"
+                )
+            if user.get("role") != role.lower():
+                errors.append(f"Expected role '{role}', got '{user.get('role')}'")
+            if user.get("email") != email:
+                errors.append(f"Expected email '{email}', got '{user.get('email')}'")
+            if not _credits_equal(user.get("credits"), credits):
+                errors.append(
+                    f"Expected credits '{credits}', got '{user.get('credits')}'"
+                )
+            if not errors:
+                logger.info(
+                    f"✅ User present: username='{username}', role='{role}', email='{email}', credits='{credits}'"
+                )
+                return True
+
+        debug_msg = []
+        for user in self._parsed_get_org_users_output:
+            diff = []
+            if user.get("username") != username:
+                diff.append(
+                    f"username (expected '{username}', got '{user.get('username')}')"
+                )
+            if user.get("role") != role:
+                diff.append(f"role (expected '{role}', got '{user.get('role')}')")
+            if user.get("email") != email:
+                diff.append(f"email (expected '{email}', got '{user.get('email')}')")
+            if not _credits_equal(user.get("credits"), credits):
+                diff.append(
+                    f"credits (expected '{credits}', got '{user.get('credits')}')"
+                )
+            if diff:
+                debug_msg.append("{" + "; ".join(diff) + "}")
+
+        raise AssertionError(
+            "User not found in list with all expected fields!\n"
+            f"username='{username}', role='{role}', email='{email}', credits='{credits}'\n"
+            f"Closest mismatches:\n" + "\n".join(debug_msg)
+        )

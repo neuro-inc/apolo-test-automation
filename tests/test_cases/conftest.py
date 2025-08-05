@@ -36,9 +36,7 @@ DOWNLOAD_PATH = os.path.join(STORAGE_OBJECTS_PATH, "downloads")
 
 _browser_context_pairs: list[tuple[Browser, BrowserContext]] = []
 main_user: UserData | None = None
-# main_user: UserData | None = UserData(email='regression-1rjt86vnpl@apolo.us', username='regression-1rjt86vnpl', password='pa^l3#TT70Rs')
 second_user: UserData | None = None
-# second_user: UserData | None = UserData(email='regression-cxeo13y4g6@apolo.us', username='regression-cxeo13y4g6', password='7o$T!NQKRO@I')
 third_user: UserData | None = None
 
 

@@ -14,7 +14,7 @@ from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.users_manager import UsersManager
 
 
-@async_suite("Apolo CLI Hello World Job Verification")
+@async_suite("Apolo CLI Hello World Job Verification", parent="E2E Tests")
 class TestHelloWorldJob:
     @pytest.fixture(autouse=True)
     async def setup(
