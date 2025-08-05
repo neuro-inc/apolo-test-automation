@@ -30,7 +30,7 @@ class UISteps(PageSteps):
     async def ui_reload_page(self) -> None:
         await self._pm.page.reload()
         await self._pm.page.wait_for_timeout(500)
-        await self._pm.page.wait_for_load_state("networkidle", timeout=10000)
+        await self._pm.main_page.wait_for_spinner()
 
     @async_step("Wait for timeout")
     async def ui_wait_for_timeout(self, timeout: int) -> None:
@@ -63,24 +63,25 @@ class UISteps(PageSteps):
         await self._pm.page.wait_for_load_state("networkidle")
 
     @async_step("Login via UI")
-    async def ui_login(self, email: str, password: str) -> None:
-        await self.auth_page.ui_click_login_button()
-        await self.login_page.ui_login(email=email, password=password)
-        await self.welcome_new_user_page.verify_ui_page_displayed(email=email)
-        token = await extract_access_token_from_local_storage(self._pm.login_page.page)
-        self._test_config.token = token
+    async def ui_login(self, user: UserData) -> None:
+        if not user.authorized:
+            await self.auth_page.ui_click_login_button()
+            await self.login_page.ui_enter_email(email=user.email)
+            await self.login_page.ui_enter_password(password=user.password)
+            await self.login_page.ui_click_continue_button()
+            await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
+            token = await extract_access_token_from_local_storage(
+                self._pm.login_page.page
+            )
+            user.token = token
 
     # ********************   Onboarding steps   ****************************
-
     @async_step("Pass new user onboarding and create first organization via UI")
     async def ui_pass_new_user_onboarding(
-        self, email: str, username: str, gherkin_name: str
+        self, user: UserData, gherkin_name: str
     ) -> None:
-        token = await extract_access_token_from_local_storage(self._pm.login_page.page)
-        self._test_config.token = token
-
         await self.welcome_new_user_page.ui_click_lets_do_it_button()
-        await self.join_org_page.verify_ui_page_displayed(username=username)
+        await self.join_org_page.verify_ui_page_displayed(username=user.username)
 
         await self.join_org_page.ui_click_create_organization_button()
         await self.name_org_page.verify_ui_page_displayed()
@@ -94,6 +95,7 @@ class UISteps(PageSteps):
         await self.thats_it_page.ui_click_lets_do_it_button()
 
         await self.main_page.verify_ui_page_displayed()
+        user.orgs.append(org_name)
 
     # ********************   New user signup steps   ****************************
     @async_step("Signup new user via UI and activate email verification link")
@@ -123,10 +125,30 @@ class UISteps(PageSteps):
         await self.main_page.ui_wait_user_agreement_disappear()
         await self.ui_wait_for_timeout(3000)
         await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
+
         token = await extract_access_token_from_local_storage(self._pm.login_page.page)
-        self._test_config.token = token
+        user.token = token
+        user.authorized = True
 
         return user
+
+    @async_step("Get second user")
+    async def ui_get_second_user(self) -> UserData:
+        if self._users_manager.second_user:
+            return self._users_manager.second_user
+        else:
+            user = await self.ui_signup_new_user_ver_link()
+            self._users_manager.second_user = user
+            return user
+
+    @async_step("Get third user")
+    async def ui_get_third_user(self) -> UserData:
+        if self._users_manager.third_user:
+            return self._users_manager.third_user
+        else:
+            user = await self.ui_signup_new_user_ver_link()
+            self._users_manager.third_user = user
+            return user
 
     # ********************   invite user to organization steps   ****************************
     @async_step("Invite user to organization via UI")
@@ -275,10 +297,10 @@ class UISteps(PageSteps):
     # ********************   Upload/Download file steps   ****************************
     @async_step("Upload file via API and reload page")
     async def ui_upload_file(
-        self, org_name: str, proj_name: str, file_path: str
+        self, token: str, org_name: str, proj_name: str, file_path: str
     ) -> None:
         response = await self._api_helper.upload_file(
-            token=self._test_config.token,
+            token=token,
             organization=org_name,
             project_name=proj_name,
             file_path=file_path,
@@ -307,6 +329,43 @@ class UISteps(PageSteps):
         assert self._data_manager.compare_files_md5(file_path_1, file_path_2), (
             "MD5 hash does not match!"
         )
+
+    # ********************   Organization API steps   ****************************
+    @async_step("Add user to organization via API and reload page")
+    async def ui_add_user_to_org_api(
+        self, user: UserData, org_name: str, username: str, role: str = "user"
+    ) -> None:
+        response = await self._api_helper.add_user_to_org(
+            token=user.token,
+            org_name=org_name,
+            username=username,
+            role=role.lower(),
+        )
+        assert response.status == 201, (
+            f"Expected HTTP 201 response but got {response.status_code}!"
+        )
+        await self.ui_reload_page()
+        await self.ui_reload_page()
+        await self.main_page.ui_click_organization_settings_button(user.email)
+        await self.org_settings_popup.verify_ui_popup_displayed(
+            email=user.email, username=user.username
+        )
+
+        await self.org_settings_popup.ui_click_people_button()
+        await self.org_people_page.verify_ui_page_displayed()
+
+    @async_step("Add organization via API and reload page")
+    async def ui_add_org_api(self, token: str, gherkin_name: str) -> None:
+        organization = self._data_manager.add_organization(gherkin_name=gherkin_name)
+        org_name = organization.org_name
+        response = await self._api_helper.add_org(
+            token=token,
+            org_name=org_name,
+        )
+        assert response.status == 201, (
+            f"Expected HTTP 201 response but got {response.status_code}!"
+        )
+        await self.ui_reload_page()
 
     # ********************   Secrets steps   ****************************
     @async_step("Create Secret via UI")

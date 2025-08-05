@@ -46,11 +46,11 @@ class InvitedToOrgPage(BasePage):
 
     async def click_accept_and_go_button(self) -> None:
         self.log("Click accept and Go button")
-        btn = self._get_accept_and_go_button()
-        await btn.hover()
-        await self.page.wait_for_timeout(500)
-        await btn.click()
+        await self._get_accept_and_go_button().click()
         await self.page.wait_for_timeout(500)
         self.log("Wait for network idle")
         await self.page.wait_for_load_state("networkidle", timeout=10000)
         self.log("Network idle done")
+        await self.page.reload()
+        await self.page.wait_for_timeout(300)
+        await self.wait_for_spinner()

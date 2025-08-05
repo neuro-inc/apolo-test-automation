@@ -18,11 +18,10 @@ class TestUIProjectStructureSetup(BaseUITest):
     @async_title("Create First Project from main page via UI")
     async def test_create_first_proj_main_page_via_ui(self) -> None:
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -46,11 +45,10 @@ class TestUIProjectStructureSetup(BaseUITest):
     @async_title("Create First Project from top pane of main via UI")
     async def test_create_first_proj_top_pane_via_ui(self) -> None:
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -78,11 +76,10 @@ class TestUIProjectStructureSetup(BaseUITest):
     @async_title("Create second project via UI")
     async def test_create_second_proj_via_ui(self) -> None:
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -120,11 +117,10 @@ class TestUIProjectStructureSetup(BaseUITest):
     @async_title("Invite member of organization to project via UI")
     async def test_invite_org_member_to_proj_via_ui(self) -> None:
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -134,26 +130,27 @@ class TestUIProjectStructureSetup(BaseUITest):
             org_name=org.org_name, proj_name=proj1.project_name, default_role="Reader"
         )
 
-        add_steps = await self.init_test_steps()
+        u2_steps = await self.init_test_steps()
         self.log("User2 login")
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
         self.log("User1 invite User2 to organization")
         await steps.ui_invite_user_to_org(
-            email=user.email, username=user.username, add_user_email=add_user.email
+            email=user.email, username=user.username, add_user_email=second_user.email
         )
 
         self.log("User 2 accept invite to organization")
-        await add_steps.ui_reload_page()
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
+        await u2_steps.ui_reload_page()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
+        await u2_steps.invited_to_org_page.verify_ui_page_displayed(
             org.org_name, "user"
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+        await u2_steps.invited_to_org_page.ui_click_accept_and_go_button()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
-        await add_steps.main_page.verify_ui_create_project_button_displayed()
+        await u2_steps.main_page.verify_ui_create_project_button_displayed()
 
         self.log(f"User1 invite User2 to project {proj1.project_name}")
         await steps.main_page.ui_click_proj_button_top_pane()
@@ -165,15 +162,15 @@ class TestUIProjectStructureSetup(BaseUITest):
             org_name=org.org_name, proj_name=proj1.project_name
         )
 
-        await steps.invite_proj_member_popup.ui_enter_user_data(email=add_user.email)
+        await steps.invite_proj_member_popup.ui_enter_user_data(email=second_user.email)
         await steps.invite_proj_member_popup.ui_select_user_role(role="Reader")
         await steps.invite_proj_member_popup.verify_ui_invite_user_btn_displayed(
-            email=add_user.email
+            email=second_user.email
         )
         await steps.invite_proj_member_popup.verify_ui_invite_bth_disabled()
 
         await steps.invite_proj_member_popup.ui_click_invite_user_btn(
-            email=add_user.email
+            email=second_user.email
         )
         await steps.invite_proj_member_popup.verify_ui_invite_bth_enabled()
 
@@ -183,31 +180,30 @@ class TestUIProjectStructureSetup(BaseUITest):
         )
         await steps.proj_people_page.verify_ui_page_displayed()
         await steps.proj_people_page.verify_ui_user_displayed_in_users_list(
-            username=add_user.username
+            username=second_user.username
         )
         await steps.proj_people_page.verify_ui_user_role(
-            username=add_user.username, role="Reader"
+            username=second_user.username, role="Reader"
         )
         await steps.proj_people_page.verify_ui_invited_user_email(
-            username=add_user.username, email=add_user.email
+            username=second_user.username, email=second_user.email
         )
 
-        await add_steps.ui_reload_page()
-        await add_steps.apps_page.verify_ui_page_displayed()
+        await u2_steps.ui_reload_page()
+        await u2_steps.apps_page.verify_ui_page_displayed()
 
-        await add_steps.main_page.ui_click_proj_button_top_pane()
-        await add_steps.proj_info_popup.verify_ui_popup_displayed(
+        await u2_steps.main_page.ui_click_proj_button_top_pane()
+        await u2_steps.proj_info_popup.verify_ui_popup_displayed(
             proj_name=proj1.project_name
         )
 
     @async_title("Invite member that NOT in organization to project via UI")
     async def test_invite_not_org_member_to_proj_via_ui(self) -> None:
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -232,8 +228,7 @@ class TestUIProjectStructureSetup(BaseUITest):
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         self.log("User2 password new user onboarding and create organization")
         await u2_steps.ui_pass_new_user_onboarding(
-            email=second_user.email,
-            username=second_user.username,
+            user=second_user,
             gherkin_name="new-organization",
         )
 
@@ -246,11 +241,10 @@ class TestUIProjectStructureSetup(BaseUITest):
     @async_title("Invite not registered user to project via UI")
     async def test_invite_not_registered_to_proj_via_ui(self) -> None:
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization

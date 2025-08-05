@@ -45,20 +45,18 @@ class TestHelloWorldJob:
         self.cli_common_steps = CLICommonSteps(
             self._test_config, self._apolo_cli, self._data_manager
         )
-        user = await self.ui_steps.ui_signup_new_user_ver_link()
-        self._email = user.email
-        self._password = user.password
-        self._username = user.username
-
+        user = self._users_manager.main_user
+        await self.ui_steps.ui_login(user)
+        self._user = user
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
         await self.ui_steps.ui_pass_new_user_onboarding(
-            email=self._email, username=self._username, gherkin_name="default"
+            user=self._user, gherkin_name="default"
         )
-        await self.cli_common_steps.cli_login_with_token()
+        await self.cli_common_steps.cli_login_with_token(token=self._user.token)
         await asyncio.sleep(2)
         await self.create_project("my-project")
         await self.run_hello_world_job("my-project")

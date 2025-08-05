@@ -24,38 +24,33 @@ class TestUICreditsPurchase(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        add_steps = await self.init_test_steps()
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        u2_steps = await self.init_test_steps()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=add_user.email,
-            role="User",
-        )
-
-        await add_steps.ui_reload_page()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "User"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="User",
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+
+        await u2_steps.ui_reload_page()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
 
-        await add_steps.main_page.verify_ui_credits_button_disabled()
+        await u2_steps.main_page.verify_ui_credits_button_disabled()
 
     @async_title(
         "Verify Manager can purchase organization credits with predefined value"
@@ -68,54 +63,49 @@ class TestUICreditsPurchase(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        add_steps = await self.init_test_steps()
-        add_user = await add_steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        u2_steps = await self.init_test_steps()
+        second_user = await u2_steps.ui_get_second_user()
+        await u2_steps.ui_login(second_user)
 
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
-        await add_steps.welcome_new_user_page.ui_click_lets_do_it_button()
-
-        await steps.ui_invite_user_to_org(
-            email=user.email,
-            username=user.username,
-            add_user_email=add_user.email,
-            role="Manager",
-        )
-
-        await add_steps.ui_reload_page()
+        await u2_steps.welcome_new_user_page.ui_click_lets_do_it_button()
 
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await add_steps.invited_to_org_page.verify_ui_page_displayed(
-            org.org_name, "Manager"
+        await steps.ui_add_user_to_org_api(
+            user=user,
+            org_name=org.org_name,
+            username=second_user.username,
+            role="Manager",
         )
-        await add_steps.invited_to_org_page.ui_click_accept_and_go_button()
-        await add_steps.main_page.verify_ui_create_project_message_displayed(
+
+        await u2_steps.ui_reload_page()
+        await u2_steps.main_page.verify_ui_create_project_message_displayed(
             org.org_name
         )
 
-        await add_steps.main_page.verify_ui_credits_button_enabled()
-        current_amount = await add_steps.main_page.ui_get_current_credits_amount()
+        await u2_steps.main_page.verify_ui_credits_button_enabled()
+        current_amount = await u2_steps.main_page.ui_get_current_credits_amount()
 
-        await add_steps.main_page.ui_click_credits_btn()
-        await add_steps.buy_credits_popup.verify_ui_popup_displayed()
+        await u2_steps.main_page.ui_click_credits_btn()
+        await u2_steps.buy_credits_popup.verify_ui_popup_displayed()
 
-        await add_steps.buy_credits_popup.ui_click_10_credits_button()
-        await add_steps.buy_credits_popup.ui_click_buy_credits_button()
-        await add_steps.payment_page.verify_ui_page_displayed(email=add_user.email)
+        await u2_steps.buy_credits_popup.ui_click_10_credits_button()
+        await u2_steps.buy_credits_popup.ui_click_buy_credits_button()
+        await u2_steps.payment_page.verify_ui_page_displayed(email=second_user.email)
 
-        await add_steps.payment_page.ui_enter_test_payment_data()
-        await add_steps.payment_page.ui_click_pay_button()
-        await add_steps.payment_page.ui_wait_to_disappear()
-        await add_steps.main_page.verify_ui_page_displayed()
+        await u2_steps.payment_page.ui_enter_test_payment_data()
+        await u2_steps.payment_page.ui_click_pay_button()
+        await u2_steps.payment_page.ui_wait_to_disappear()
+        await u2_steps.main_page.verify_ui_page_displayed()
 
         expected_amount = current_amount + 10
-        await add_steps.main_page.verify_ui_current_credits_amount_is_valid(
+        await u2_steps.main_page.verify_ui_current_credits_amount_is_valid(
             expected_amount
         )
 
@@ -127,12 +117,11 @@ class TestUICreditsPurchase(BaseUITest):
         """
 
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
 
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         await steps.main_page.verify_ui_credits_button_enabled()

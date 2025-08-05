@@ -22,11 +22,10 @@ class TestUIDisks(BaseUITest):
             - User cannot create first Disk if no project created yet
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         await steps.main_page.ui_click_disks_btn()
@@ -45,11 +44,10 @@ class TestUIDisks(BaseUITest):
             - User can create first Disk after project created
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -80,11 +78,10 @@ class TestUIDisks(BaseUITest):
             - User can create second Disk
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -125,11 +122,10 @@ class TestUIDisks(BaseUITest):
             - User can search for Disk
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -176,11 +172,10 @@ class TestUIDisks(BaseUITest):
             - After click on disk button Disk info view appears
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
@@ -219,11 +214,10 @@ class TestUIDisks(BaseUITest):
             - User can delete Disk
         """
         steps = self._steps
-        user = await steps.ui_signup_new_user_ver_link()
-        await steps.ui_pass_new_user_onboarding(
-            email=user.email,
-            username=user.username,
-            gherkin_name="Default-organization",
+        user = self._users_manager.main_user
+        await steps.ui_login(user)
+        await steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
         )
 
         org = self._data_manager.default_organization
