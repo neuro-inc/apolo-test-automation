@@ -54,9 +54,7 @@ jobs:
       - name: Run tests
         id: run_tests
         run: |
-          uv run pytest tests -n 3 --dist loadfile --testmon
-          echo "Disk space after running tests:"
-          df -h
+          uv run pytest tests -n 3 --dist loadfile --timeout=180 --timeout-method=thread
 
       - name: Read test summary
         if: always()
