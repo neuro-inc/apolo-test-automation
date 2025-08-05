@@ -15,13 +15,14 @@ from allure_commons.types import AttachmentType
 from playwright.async_api import async_playwright, Browser, BrowserContext
 
 from tests.components.ui.page_manager import PageManager
+from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.utils.api_helper import APIHelper
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.exception_handling.exception_manager import ExceptionManager
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.schema_data import SchemaData
 from tests.utils.test_data_management.test_data import DataManager
-from tests.utils.test_data_management.users_manager import UsersManager
+from tests.utils.test_data_management.users_manager import UsersManager, UserData
 
 logger = logging.getLogger("[🔧TEST CONFIG]")
 exception_manager = ExceptionManager(logger=logger)
@@ -34,6 +35,11 @@ GENERATED_DATA_PATH = os.path.join(STORAGE_OBJECTS_PATH, "generated_objects")
 DOWNLOAD_PATH = os.path.join(STORAGE_OBJECTS_PATH, "downloads")
 
 _browser_context_pairs: list[tuple[Browser, BrowserContext]] = []
+main_user: UserData | None = None
+# main_user: UserData | None = UserData(email='regression-1rjt86vnpl@apolo.us', username='regression-1rjt86vnpl', password='pa^l3#TT70Rs')
+second_user: UserData | None = None
+# second_user: UserData | None = UserData(email='regression-cxeo13y4g6@apolo.us', username='regression-cxeo13y4g6', password='7o$T!NQKRO@I')
+third_user: UserData | None = None
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -112,18 +118,74 @@ def users_manager() -> UsersManager:
 
 
 @pytest.fixture(autouse=True)
-async def clean_up(
+async def setup_cleanup(
     request: pytest.FixtureRequest,
+    page_manager: PageManager,
+    test_config: ConfigManager,
+    data_manager: DataManager,
+    users_manager: UsersManager,
+    api_helper: APIHelper,
+    apolo_cli: ApoloCLI,
 ) -> AsyncGenerator[None, None]:
     """
     Post-test cleanup:
     - closes all browser sessions,
     - logs any cleanup errors without failing the test run.
     """
+    global main_user, second_user, third_user
+
+    if main_user:
+        logger.info(f"Continue using {main_user} as main test user...")
+        users_manager.main_user = main_user
+        users_manager.main_user.authorized = False
+    else:
+        logger.info("Setup new main test user...")
+        max_attempts = 2
+        for attempt in range(1, max_attempts + 1):
+            logger.info(f"Signup attempt {attempt}...")
+
+            try:
+                pm = await _create_page_manager(test_config, request)
+                ui_steps = UISteps(
+                    pm, test_config, data_manager, users_manager, api_helper
+                )
+
+                main_user = await ui_steps.ui_signup_new_user_ver_link()
+                users_manager.main_user = main_user
+                users_manager.main_user.authorized = False
+                break
+            except Exception as e:
+                logger.warning(f"⚠️ Signup attempt {attempt} failed: {e}")
+                # ensure broken context is not reused
+                await _cleanup_browsers()
+
+                if attempt == max_attempts:
+                    logger.error("❌ Failed to sign up default user after all retries.")
+                    raise RuntimeError(
+                        "🚫 Aborting test session: default user signup failed."
+                    )
+                else:
+                    logger.info("🔁 Retrying with fresh browser context...")
+
+    if second_user:
+        logger.info(f"Continue using {second_user} as second test user...")
+        users_manager.second_user = second_user
+        users_manager.second_user.authorized = False  # type: ignore[union-attr]
+    if third_user:
+        logger.info(f"Continue using {third_user} as third test user...")
+        users_manager.third_user = third_user
+        users_manager.third_user.authorized = False  # type: ignore[union-attr]
+
     yield
+
+    if users_manager.second_user:
+        second_user = users_manager.second_user
+    if users_manager.third_user:
+        third_user = users_manager.third_user
 
     with allure.step("Post-test cleanup"):
         try:
+            await _cleanup_orgs(data_manager, api_helper)
             await _cleanup_browsers()
 
         except Exception as exc:
@@ -142,6 +204,46 @@ async def clean_up(
             )
 
             logger.warning(f"Post-test cleanup failed: {formatted_msg}", RuntimeWarning)
+
+
+async def _cleanup_orgs(
+    data_manager: DataManager,
+    api_helper: APIHelper,
+) -> None:
+    global main_user, second_user, third_user
+    if not main_user:
+        logger.info("Main user is None. Nothing to cleanup.")
+        return
+    org_data = await api_helper.get_orgs(token=main_user.token)
+    organizations = [org["name"] for org in org_data if "name" in org]
+    token = main_user.token
+    logger.info("Cleaning up %d organisations", len(organizations))
+
+    if not organizations:
+        allure.attach(
+            "No organisations to clean up.",
+            name="Cleanup note",
+            attachment_type=AttachmentType.TEXT,
+        )
+        return
+
+    for org_name in organizations:
+        with allure.step(f"Delete organisation: {org_name}"):
+            try:
+                await api_helper.delete_org(token=token, org_name=org_name)
+
+                data_manager.remove_organization(org_name)
+            except Exception as exc:
+                formatted_msg = exception_manager.handle(
+                    exc, context="Post-test cleanup"
+                )
+                logger.warning("Can not delete org: %s", formatted_msg)
+                logger.warning("Need to setup new test users due to cleanup issues...")
+                main_user = None
+                second_user = None
+                third_user = None
+            else:
+                logger.info("Removed organisation: %s", org_name)
 
 
 async def _cleanup_browsers() -> None:

@@ -45,19 +45,54 @@ class TestCLIOrganizationStructureSetup:
             self._test_config, self._apolo_cli, self._data_manager
         )
 
-        user = await self.ui_steps.ui_signup_new_user_ver_link()
-        email = user.email
-        password = user.password
-        # Login via UI to get access token
-        await self.ui_steps.ui_login(email, password)
         # Verify CLI client installed
         await self.cli_common_steps.verify_cli_client_installed()
 
     @async_title("User creates a first organization via CLI")
-    @pytest.mark.xfail(reason="BUG-ENG-747", strict=True)
     async def test_create_first_organization_cli(self) -> None:
-        await self.cli_common_steps.cli_login_with_token()
+        user = self._users_manager.main_user
+        await self.ui_steps.ui_login(user=user)
+        await self.cli_common_steps.cli_login_with_token(token=user.token)
         await self.cli_common_steps.verify_cli_organization_count(0)
-        await self.cli_common_steps.cli_add_new_organization("My-organization")
+        await self.cli_common_steps.cli_add_new_organization(
+            "My-organization", user=user
+        )
         await self.cli_common_steps.verify_cli_organization_count(1)
         await self.cli_common_steps.verify_cli_organization_listed("My-organization")
+
+    @async_title("User creates a second organization via CLI")
+    async def test_create_second_organization_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self.ui_steps.ui_login(user=user)
+        await self.cli_common_steps.cli_login_with_token(token=user.token)
+        await self.cli_common_steps.verify_cli_organization_count(0)
+        await self.cli_common_steps.cli_add_new_organization(
+            "My-organization", user=user
+        )
+        await self.cli_common_steps.verify_cli_organization_count(1)
+        await self.cli_common_steps.verify_cli_organization_listed("My-organization")
+
+        await self.cli_common_steps.cli_add_new_organization(
+            "Second-organization", user=user
+        )
+        await self.cli_common_steps.verify_cli_organization_count(2)
+        await self.cli_common_steps.verify_cli_organization_listed("My-organization")
+        await self.cli_common_steps.verify_cli_organization_listed(
+            "Second-organization"
+        )
+
+    @async_title("User removes organization via CLI")
+    async def test_remove_organization_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self.ui_steps.ui_login(user=user)
+        await self.cli_common_steps.cli_login_with_token(token=user.token)
+        await self.cli_common_steps.verify_cli_organization_count(0)
+
+        await self.cli_common_steps.cli_add_new_organization(
+            "My-organization", user=user
+        )
+        await self.cli_common_steps.verify_cli_organization_count(1)
+        await self.cli_common_steps.verify_cli_organization_listed("My-organization")
+
+        await self.cli_common_steps.cli_remove_org("My-organization")
+        await self.cli_common_steps.verify_cli_organization_count(0)

@@ -2,6 +2,7 @@ from tests.reporting_hooks.reporting import async_step
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.test_data import DataManager
+from tests.utils.test_data_management.users_manager import UserData
 
 
 class CLICommonSteps:
@@ -14,10 +15,11 @@ class CLICommonSteps:
         self._test_config = test_config
         self._apolo_cli = apolo_cli
         self._data_manager = data_manager
+        self._current_token = ""
 
     @async_step("Login to apolo CLI with access token")
-    async def cli_login_with_token(self) -> None:
-        token = self._test_config.token
+    async def cli_login_with_token(self, token: str) -> None:
+        self._current_token = token
         url = self._test_config.cli_login_url
         await self._apolo_cli.login_with_token(token, url)
         assert self._apolo_cli.login_successful, "Login via CLI should be successful!"
@@ -36,9 +38,20 @@ class CLICommonSteps:
         )
 
     @async_step("Add new organization via apolo CLI")
-    async def cli_add_new_organization(self, gherkin_name: str) -> None:
+    async def cli_add_new_organization(self, gherkin_name: str, user: UserData) -> None:
         organization = self._data_manager.add_organization(gherkin_name=gherkin_name)
-        await self._apolo_cli.create_organization(org_name=organization.org_name)
+        try:
+            await self._apolo_cli.create_organization(org_name=organization.org_name)
+            user.orgs.append(organization.org_name)
+        except Exception as ex:
+            msg = str(ex)
+            if (
+                "ERROR: There are no clusters available. Please logout and login again."
+                in msg
+            ):
+                await self.cli_login_with_token(self._current_token)
+            else:
+                raise
 
     @async_step("Verify organization is listed in the CLI output")
     async def verify_cli_organization_listed(self, gherkin_name: str) -> None:
@@ -54,3 +67,10 @@ class CLICommonSteps:
             f"Organization '{org.org_name}' (for gherkin_name '{gherkin_name}') "
             f"not found in CLI output: {self._apolo_cli.parsed_get_orgs_output}"
         )
+
+    @async_step("Remove organization via CLI")
+    async def cli_remove_org(self, gherkin_name: str) -> None:
+        org = self._data_manager.get_organization_by_gherkin_name(gherkin_name)
+        org_name = org.org_name
+        await self._apolo_cli.remove_organization(org_name=org_name)
+        self._data_manager.remove_organization(org_name=org_name)

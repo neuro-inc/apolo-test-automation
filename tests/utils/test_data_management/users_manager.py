@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import random
 import string
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 logger = logging.getLogger("[👤UsersManager]")
@@ -14,6 +14,9 @@ class UserData:
     email: str
     username: str
     password: str
+    token: str = ""
+    authorized: bool = False
+    orgs: list[str] = field(default_factory=list)
 
     def __repr__(self) -> str:
         return f"UserData(email='{self.email}', username='{self.username}', password='{self.password}')"
@@ -22,7 +25,9 @@ class UserData:
 class UsersManager:
     def __init__(self) -> None:
         self._users: list[UserData] = []
-        self._default_user: Optional[UserData] = None
+        self._main_user: Optional[UserData] = None
+        self._second_user: Optional[UserData] = None
+        self._third_user: Optional[UserData] = None
 
     def _generate_email(self) -> str:
         suffix = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
@@ -54,16 +59,34 @@ class UsersManager:
         logger.info(f"Generated new user: {user}")
         self._users.append(user)
         if len(self._users) == 1:
-            self.default_user = user
+            self.main_user = user
         return user
 
     @property
-    def default_user(self) -> UserData:
-        if self._default_user is None:
-            raise ValueError("Default user is not set.")
-        return self._default_user
+    def main_user(self) -> UserData:
+        if self._main_user is None:
+            raise ValueError("Main user is not set.")
+        return self._main_user
 
-    @default_user.setter
-    def default_user(self, user: UserData) -> None:
-        logger.info(f"Setting default user to {user}")
-        self._default_user = user
+    @main_user.setter
+    def main_user(self, user: UserData) -> None:
+        logger.info(f"Setting main user to {user}")
+        self._main_user = user
+
+    @property
+    def second_user(self) -> UserData | None:
+        return self._second_user
+
+    @second_user.setter
+    def second_user(self, user: UserData) -> None:
+        logger.info(f"Setting second user to {user}")
+        self._second_user = user
+
+    @property
+    def third_user(self) -> UserData | None:
+        return self._third_user
+
+    @third_user.setter
+    def third_user(self, user: UserData) -> None:
+        logger.info(f"Setting third user to {user}")
+        self._third_user = user
