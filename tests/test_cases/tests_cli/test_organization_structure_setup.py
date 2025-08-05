@@ -1,98 +1,166 @@
 import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
-from tests.test_cases.steps.common_steps.cli_steps.cli_common_steps import (
-    CLICommonSteps,
-)
-from tests.components.ui.page_manager import PageManager
-from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.utils.api_helper import APIHelper
-from tests.utils.test_data_management.test_data import DataManager
-from tests.utils.cli.apolo_cli import ApoloCLI
-from tests.utils.test_config_helper import ConfigManager
-from tests.utils.test_data_management.users_manager import UsersManager
+from tests.test_cases.tests_cli.base_cli_test import BaseCLITest
 
 
-@async_suite("CLI Organization Structure Setup")
-class TestCLIOrganizationStructureSetup:
+@async_suite("CLI Organization Structure Setup", parent="CLI Tests")
+class TestCLIOrganizationStructureSetup(BaseCLITest):
     @pytest.fixture(autouse=True)
-    async def setup(
-        self,
-        page_manager: PageManager,
-        data_manager: DataManager,
-        apolo_cli: ApoloCLI,
-        test_config: ConfigManager,
-        users_manager: UsersManager,
-        api_helper: APIHelper,
-    ) -> None:
+    async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        self._page_manager = page_manager
-        self._data_manager = data_manager
-        self._apolo_cli = apolo_cli
-        self._test_config = test_config
-        self._users_manager = users_manager
-        self._api_helper = api_helper
-        self.ui_steps = UISteps(
-            self._page_manager,
-            self._test_config,
-            self._data_manager,
-            self._users_manager,
-            self._api_helper,
-        )
-        self.cli_common_steps = CLICommonSteps(
-            self._test_config, self._apolo_cli, self._data_manager
-        )
+        self._ui_steps = await self.init_ui_test_steps()
+        self._cli_steps = await self.init_test_steps()
 
         # Verify CLI client installed
-        await self.cli_common_steps.verify_cli_client_installed()
+        await self._cli_steps.verify_cli_client_installed()
 
     @async_title("User creates a first organization via CLI")
     async def test_create_first_organization_cli(self) -> None:
         user = self._users_manager.main_user
-        await self.ui_steps.ui_login(user=user)
-        await self.cli_common_steps.cli_login_with_token(token=user.token)
-        await self.cli_common_steps.verify_cli_organization_count(0)
-        await self.cli_common_steps.cli_add_new_organization(
-            "My-organization", user=user
-        )
-        await self.cli_common_steps.verify_cli_organization_count(1)
-        await self.cli_common_steps.verify_cli_organization_listed("My-organization")
+        await self._ui_steps.ui_login(user=user)
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self._cli_steps.verify_cli_organization_count(0)
+        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.verify_cli_organization_count(1)
+        await self._cli_steps.verify_cli_organization_listed("My-organization")
 
     @async_title("User creates a second organization via CLI")
     async def test_create_second_organization_cli(self) -> None:
         user = self._users_manager.main_user
-        await self.ui_steps.ui_login(user=user)
-        await self.cli_common_steps.cli_login_with_token(token=user.token)
-        await self.cli_common_steps.verify_cli_organization_count(0)
-        await self.cli_common_steps.cli_add_new_organization(
-            "My-organization", user=user
-        )
-        await self.cli_common_steps.verify_cli_organization_count(1)
-        await self.cli_common_steps.verify_cli_organization_listed("My-organization")
+        await self._ui_steps.ui_login(user=user)
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self._cli_steps.verify_cli_organization_count(0)
+        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.verify_cli_organization_count(1)
+        await self._cli_steps.verify_cli_organization_listed("My-organization")
 
-        await self.cli_common_steps.cli_add_new_organization(
-            "Second-organization", user=user
-        )
-        await self.cli_common_steps.verify_cli_organization_count(2)
-        await self.cli_common_steps.verify_cli_organization_listed("My-organization")
-        await self.cli_common_steps.verify_cli_organization_listed(
-            "Second-organization"
-        )
+        await self._cli_steps.cli_add_new_organization("Second-organization", user=user)
+        await self._cli_steps.verify_cli_organization_count(2)
+        await self._cli_steps.verify_cli_organization_listed("My-organization")
+        await self._cli_steps.verify_cli_organization_listed("Second-organization")
 
     @async_title("User removes organization via CLI")
     async def test_remove_organization_cli(self) -> None:
         user = self._users_manager.main_user
-        await self.ui_steps.ui_login(user=user)
-        await self.cli_common_steps.cli_login_with_token(token=user.token)
-        await self.cli_common_steps.verify_cli_organization_count(0)
+        await self._ui_steps.ui_login(user=user)
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self._cli_steps.verify_cli_organization_count(0)
 
-        await self.cli_common_steps.cli_add_new_organization(
-            "My-organization", user=user
+        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.verify_cli_organization_count(1)
+        await self._cli_steps.verify_cli_organization_listed("My-organization")
+
+        await self._cli_steps.cli_remove_org("My-organization")
+        await self._cli_steps.verify_cli_organization_count(0)
+
+    @async_title("User verifies config show output via CLI")
+    async def test_config_show_output_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self._ui_steps.ui_login(user=user)
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.cli_show_config()
+        org = self._data_manager.get_organization_by_gherkin_name("My-organization")
+        await self._cli_steps.verify_cli_show_command_output(
+            expected_username=user.username, expected_org=org.org_name
         )
-        await self.cli_common_steps.verify_cli_organization_count(1)
-        await self.cli_common_steps.verify_cli_organization_listed("My-organization")
 
-        await self.cli_common_steps.cli_remove_org("My-organization")
-        await self.cli_common_steps.verify_cli_organization_count(0)
+    @async_title("User switch organization via CLI")
+    async def test_switch_org_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self._ui_steps.ui_login(user=user)
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.cli_add_new_organization("Second-organization", user=user)
+
+        org = self._data_manager.get_organization_by_gherkin_name("Second-organization")
+        await self._cli_steps.cli_switch_org(org_name=org.org_name)
+        await self._cli_steps.cli_show_config()
+        await self._cli_steps.verify_cli_show_command_output(
+            expected_username=user.username, expected_org=org.org_name
+        )
+
+    @async_title("Invite user to org via CLI")
+    async def test_invite_user_to_org_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self._ui_steps.ui_login(user=user)
+        u2_ui_steps = await self.init_ui_test_steps()
+        second_user = await u2_ui_steps.ui_get_second_user()
+        await u2_ui_steps.ui_login(second_user)
+
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        org = self._data_manager.get_organization_by_gherkin_name("My-organization")
+        await self._cli_steps.cli_add_user_to_org(
+            org_name=org.org_name, username=second_user.username, role="User"
+        )
+
+        await self._cli_steps.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.cli_show_config()
+        await self._cli_steps.verify_cli_show_command_output(
+            expected_username=second_user.username, expected_org=org.org_name
+        )
+
+    @async_title("User verifies admin get-org-users output via CLI")
+    async def test_verify_get_org_users_output_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self._ui_steps.ui_login(user=user)
+        u2_ui_steps = await self.init_ui_test_steps()
+        second_user = await u2_ui_steps.ui_get_second_user()
+        await u2_ui_steps.ui_login(second_user)
+
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        org = self._data_manager.get_organization_by_gherkin_name("My-organization")
+        await self._cli_steps.cli_get_org_users(org_name=org.org_name)
+        await self._cli_steps.verify_cli_admin_get_orgs_users_output(
+            username=user.username, role="Admin", email=user.email, credits="unlimited"
+        )
+
+        await self._cli_steps.cli_add_user_to_org(
+            org_name=org.org_name, username=second_user.username, role="User"
+        )
+        await self._cli_steps.cli_get_org_users(org_name=org.org_name)
+        await self._cli_steps.verify_cli_admin_get_orgs_users_output(
+            username=second_user.username,
+            role="User",
+            email=second_user.email,
+            credits="unlimited",
+        )
+
+    @async_title("Set default user credits via CLI")
+    async def test_set_user_credits_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self._ui_steps.ui_login(user=user)
+        u2_ui_steps = await self.init_ui_test_steps()
+        second_user = await u2_ui_steps.ui_get_second_user()
+        await u2_ui_steps.ui_login(second_user)
+
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+
+        org = self._data_manager.get_organization_by_gherkin_name("My-organization")
+        await self._cli_steps.cli_show_config()
+        await self._cli_steps.verify_cli_show_command_output(
+            expected_username=user.username,
+            expected_org=org.org_name,
+            expected_org_credits=500,
+        )
+
+        await self._cli_steps.cli_set_org_default_credits(
+            org_name=org.org_name, credits_amount=234
+        )
+        await self._cli_steps.cli_add_user_to_org(
+            org_name=org.org_name, username=second_user.username, role="User"
+        )
+        await self._cli_steps.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.cli_get_org_users(org_name=org.org_name)
+        await self._cli_steps.verify_cli_admin_get_orgs_users_output(
+            username=second_user.username,
+            role="User",
+            email=second_user.email,
+            credits=234,
+        )

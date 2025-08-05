@@ -13,7 +13,7 @@ from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.test_data_management.users_manager import UsersManager
 
 
-@async_suite("CLI Login")
+@async_suite("CLI Login", parent="CLI Tests")
 class TestCLILogin:
     @pytest.fixture(autouse=True)
     async def setup(
