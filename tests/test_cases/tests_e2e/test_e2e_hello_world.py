@@ -56,9 +56,13 @@ class TestHelloWorldJob:
         await self.ui_steps.ui_pass_new_user_onboarding(
             user=self._user, gherkin_name="default"
         )
+        org = self._data_manager.get_organization_by_gherkin_name("default")
         await self.cli_common_steps.cli_login_with_token(token=self._user.token)
         await asyncio.sleep(2)
-        await self.create_project("my-project")
+        proj1 = org.add_project("my-project")
+        await self.cli_common_steps.cli_add_new_project(
+            org_name=org.org_name, proj_name=proj1.project_name
+        )
         await self.run_hello_world_job("my-project")
         await self.ui_steps.ui_reload_page()
         await self.ui_check_job_not_in_running()
@@ -68,11 +72,6 @@ class TestHelloWorldJob:
     async def create_organization(self) -> None:
         organization = self._data_manager.add_organization("default")
         await self._apolo_cli.create_organization(org_name=organization.org_name)
-
-    @async_step("Create my-project in the default organization")
-    async def create_project(self, project_name: str) -> None:
-        project = self._data_manager.default_organization.add_project(project_name)
-        await self._apolo_cli.create_project(project_name=project.project_name)
 
     @async_step("Run Hello World job via CLI")
     async def run_hello_world_job(self, project_name: str) -> None:
