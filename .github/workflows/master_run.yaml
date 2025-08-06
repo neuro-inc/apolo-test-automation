@@ -54,7 +54,7 @@ jobs:
       - name: Run tests
         id: run_tests
         run: |
-          uv run pytest tests -n 3 --dist loadfile --timeout=180 --timeout-method=thread
+          uv run pytest tests -n 3 --dist loadfile --timeout=180 --timeout-method=process --tb=short --capture=tee-sys
 
       - name: Read test summary
         if: always()
