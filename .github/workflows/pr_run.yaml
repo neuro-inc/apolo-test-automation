@@ -118,7 +118,7 @@ jobs:
           echo "Running pytest on:"
           echo "$FILES"
           set +e
-          uv run pytest $FILES --timeout=180 --timeout-method=process --tb=short --capture=tee-sys
+          uv run pytest $FILES --timeout=180 --timeout-method=signal --tb=short --capture=tee-sys
           exit_code=${PIPESTATUS[0]}
           exit $exit_code
 
