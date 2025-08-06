@@ -2,6 +2,7 @@ import logging
 import re
 from typing import Optional
 
+
 from tests.utils.cli.cli_command_manager import CLICommandManager
 
 logger = logging.getLogger("[🖥apolo_CLI]")
@@ -15,6 +16,7 @@ class ApoloCLI:
         self._last_command_output: str = ""
         self._parsed_get_orgs_output: list[str] = []
         self._parsed_get_org_users_output: list[dict[str, str]] = []
+        self._parsed_get_projects_output: list[dict[str, str]] = []
 
     @property
     def parsed_get_orgs_output(self) -> list[str]:
@@ -66,6 +68,63 @@ class ApoloCLI:
     async def create_organization(self, org_name: str) -> bool:
         return await self._run_command(
             "admin", "add-org", org_name, action=f"create organization '{org_name}'"
+        )
+
+    async def create_project(
+        self,
+        org_name: str,
+        proj_name: str,
+        default_role: str,
+        cluster: str = "default",
+        default_proj: bool = False,
+    ) -> bool:
+        arguments = [
+            "admin",
+            "add-project",
+            "--default-role",
+            default_role,
+            "--org",
+            org_name,
+            cluster,
+            proj_name,
+        ]
+        if default_proj:
+            arguments.insert(2, "--default")
+        return await self._run_command(
+            *arguments,
+            action=f"create project {proj_name} under {org_name}",
+        )
+
+    async def get_projects(self, org_name: str, cluster: str = "default") -> bool:
+        result = await self._run_command(
+            "admin",
+            "get-projects",
+            "--org",
+            org_name,
+            cluster,
+            action=f"get projects in {org_name}",
+        )
+        self._parsed_get_projects_output = self._parse_get_projects_output()
+        return result
+
+    async def add_proj_user(
+        self,
+        org_name: str,
+        proj_name: str,
+        username: str,
+        role: str,
+        cluster: str = "default",
+    ) -> bool:
+        return await self._run_command(
+            "admin",
+            "add-project-user",
+            "--org",
+            org_name,
+            cluster,
+            proj_name,
+            username,
+            role,
+            action=f"add user {username} to project {proj_name}",
         )
 
     async def remove_organization(self, org_name: str, force: bool = True) -> bool:
@@ -158,6 +217,47 @@ class ApoloCLI:
 
         return data_rows
 
+    def _parse_get_projects_output(self) -> list[dict[str, str]]:
+        """
+        Parse CLI admin get-projects output into a list of dicts.
+        Each dict has keys: proj_name, cluster, org_name, default_role, default_proj
+        """
+        lines = [
+            line
+            for line in self._last_command_output.strip().splitlines()
+            if line.strip()
+        ]
+        header_idx = next(
+            i
+            for i, line in enumerate(lines)
+            if "Project name" in line and "Cluster name" in line
+        )
+
+        data_lines = []
+        for line in lines[header_idx + 2 :]:
+            if line.startswith("━"):
+                continue
+            if line.strip() == "":
+                continue
+            data_lines.append(line)
+
+        result = []
+        for line in data_lines:
+            cols = [col.strip() for col in line.split("  ") if col.strip()]
+            if len(cols) < 5:
+                cols = [col.strip() for col in line.split() if col.strip()]
+            if len(cols) == 5:
+                result.append(
+                    {
+                        "proj_name": cols[0],
+                        "cluster": cols[1],
+                        "org_name": cols[2],
+                        "default_role": cols[3],
+                        "default_proj": cols[4],
+                    }
+                )
+        return result
+
     async def set_org_default_credits(self, org_name: str, credits_amount: int) -> bool:
         return await self._run_command(
             "admin",
@@ -166,17 +266,6 @@ class ApoloCLI:
             f"{credits_amount}",
             org_name,
             action=f"set default credits to {credits_amount} for {org_name}",
-        )
-
-    async def create_project(
-        self, project_name: str, cluster_name: str = "default"
-    ) -> bool:
-        return await self._run_command(
-            "admin",
-            "add-project",
-            cluster_name,
-            project_name,
-            action=f"create project '{project_name}' in cluster '{cluster_name}'",
         )
 
     async def remove_project(
@@ -462,5 +551,85 @@ class ApoloCLI:
         raise AssertionError(
             "User not found in list with all expected fields!\n"
             f"username='{username}', role='{role}', email='{email}', credits='{credits}'\n"
+            f"Closest mismatches:\n" + "\n".join(debug_msg)
+        )
+
+    async def verify_get_projects_output(
+        self,
+        proj_name: str,
+        org_name: str,
+        default_role: str,
+        default_proj: str | bool,
+        cluster: str = "default",
+    ) -> bool:
+        """
+        Assert a project row with matching fields is present in the parsed list.
+        Raises AssertionError with mismatches if not found.
+        """
+
+        def _proj_equal(a, b) -> bool:  # type: ignore
+            if isinstance(a, bool):
+                a = str(a)
+            if isinstance(b, bool):
+                b = str(b)
+            return str(a).strip().lower() == str(b).strip().lower()
+
+        for project in self._parsed_get_projects_output:
+            errors = []
+            if project.get("proj_name") != proj_name:
+                errors.append(
+                    f"Expected proj_name '{proj_name}', got '{project.get('proj_name')}'"
+                )
+            if project.get("cluster") != cluster:
+                errors.append(
+                    f"Expected cluster '{cluster}', got '{project.get('cluster')}'"
+                )
+            if project.get("org_name") != org_name:
+                errors.append(
+                    f"Expected org_name '{org_name}', got '{project.get('org_name')}'"
+                )
+            if project.get("default_role") != default_role:
+                errors.append(
+                    f"Expected default_role '{default_role}', got '{project.get('default_role')}'"
+                )
+            if not _proj_equal(project.get("default_proj"), default_proj):
+                errors.append(
+                    f"Expected default_proj '{default_proj}', got '{project.get('default_proj')}'"
+                )
+            if not errors:
+                logger.info(
+                    f"✅ Project present: proj_name='{proj_name}', cluster='{cluster}', org_name='{org_name}', default_role='{default_role}', default_proj='{default_proj}'"
+                )
+                return True
+
+        debug_msg = []
+        for project in self._parsed_get_projects_output:
+            diff = []
+            if project.get("proj_name") != proj_name:
+                diff.append(
+                    f"proj_name (expected '{proj_name}', got '{project.get('proj_name')}')"
+                )
+            if project.get("cluster") != cluster:
+                diff.append(
+                    f"cluster (expected '{cluster}', got '{project.get('cluster')}')"
+                )
+            if project.get("org_name") != org_name:
+                diff.append(
+                    f"org_name (expected '{org_name}', got '{project.get('org_name')}')"
+                )
+            if project.get("default_role") != default_role:
+                diff.append(
+                    f"default_role (expected '{default_role}', got '{project.get('default_role')}')"
+                )
+            if not _proj_equal(project.get("default_proj"), default_proj):
+                diff.append(
+                    f"default_proj (expected '{default_proj}', got '{project.get('default_proj')}')"
+                )
+            if diff:
+                debug_msg.append("{" + "; ".join(diff) + "}")
+
+        raise AssertionError(
+            "Project not found in list with all expected fields!\n"
+            f"proj_name='{proj_name}', cluster='{cluster}', org_name='{org_name}', default_role='{default_role}', default_proj='{default_proj}'\n"
             f"Closest mismatches:\n" + "\n".join(debug_msg)
         )
