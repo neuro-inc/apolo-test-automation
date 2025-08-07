@@ -77,8 +77,7 @@ class TestHelloWorldJob:
     async def run_hello_world_job(self, project_name: str) -> None:
         organization = self._data_manager.default_organization
         project = organization.get_project_by_gherkin_name(project_name)
-        # job = project.add_job("Hello World", command="echo Hello, World")
-        job = project.add_job("Hello World", command="sleep 600")
+        job = project.add_job("Hello World", command="echo Hello, World")
         job.job_id = await self._apolo_cli.run_job(
             job_name=job.job_name,
             image=job.image_name,
