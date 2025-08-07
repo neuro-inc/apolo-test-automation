@@ -14,7 +14,7 @@ class APIHelper:
     Stateless API client using aiohttp, with optional per-request bearer token.
     """
 
-    def __init__(self, config: ConfigManager, timeout: int = 10) -> None:
+    def __init__(self, config: ConfigManager, timeout: int = 30) -> None:
         self._config = config
         self._timeout = timeout
         self._session: Optional[aiohttp.ClientSession] = None
