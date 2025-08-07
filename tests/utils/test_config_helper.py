@@ -109,3 +109,6 @@ class ConfigManager:
 
     def get_add_org_url(self) -> str:
         return str(self._endpoints.add_org)
+
+    def get_add_proj_url(self, org_name: str) -> str:
+        return str(self._endpoints.add_proj).format(org_name=org_name)

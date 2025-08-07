@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import re
 from typing import Optional
@@ -26,30 +27,32 @@ class ApoloCLI:
     def login_successful(self) -> bool:
         return self._login_success
 
-    async def is_cli_installed(self) -> bool:
+    async def is_cli_installed(self) -> tuple[bool, str]:
         return await self._run_command("--version", action="check CLI version")
 
-    async def login_with_token(self, token: str, api_url: str) -> bool:
-        success = await self._run_command(
+    async def login_with_token(self, token: str, api_url: str) -> tuple[bool, str]:
+        result, error_message = await self._run_command(
             "config", "login-with-token", token, api_url, action="login-with-token"
         )
-        self._login_success = success
-        return success
+        self._login_success = result
+        return result, error_message
 
     async def run_job(
         self,
         job_name: str,
         image: str,
         command: str,
-        wait_for_output_timeout: int = 20,
+        wait_for_output_timeout: int = 60,
     ) -> Optional[str]:
         base_command = ["run", "--name", job_name, image, "--"]
         command_parts = command.strip().split()
         cli_args = base_command + command_parts
 
-        await self._run_command(
+        result, error_message = await self._run_command(
             *cli_args, action=f"run job '{job_name}'", timeout=wait_for_output_timeout
         )
+        if not result:
+            raise RuntimeError(error_message)
 
         job_id_match = re.search(
             r"Job ID:\s*(job-[\w-]+)", self._last_command_output or ""
@@ -65,7 +68,7 @@ class ApoloCLI:
 
         return job_id
 
-    async def create_organization(self, org_name: str) -> bool:
+    async def create_organization(self, org_name: str) -> tuple[bool, str]:
         return await self._run_command(
             "admin", "add-org", org_name, action=f"create organization '{org_name}'"
         )
@@ -77,7 +80,7 @@ class ApoloCLI:
         default_role: str,
         cluster: str = "default",
         default_proj: bool = False,
-    ) -> bool:
+    ) -> tuple[bool, str]:
         arguments = [
             "admin",
             "add-project",
@@ -95,8 +98,10 @@ class ApoloCLI:
             action=f"create project {proj_name} under {org_name}",
         )
 
-    async def get_projects(self, org_name: str, cluster: str = "default") -> bool:
-        result = await self._run_command(
+    async def get_projects(
+        self, org_name: str, cluster: str = "default"
+    ) -> tuple[bool, str]:
+        result, error_message = await self._run_command(
             "admin",
             "get-projects",
             "--org",
@@ -104,8 +109,9 @@ class ApoloCLI:
             cluster,
             action=f"get projects in {org_name}",
         )
-        self._parsed_get_projects_output = self._parse_get_projects_output()
-        return result
+        if result:
+            self._parsed_get_projects_output = self._parse_get_projects_output()
+        return result, error_message
 
     async def add_proj_user(
         self,
@@ -114,7 +120,7 @@ class ApoloCLI:
         username: str,
         role: str,
         cluster: str = "default",
-    ) -> bool:
+    ) -> tuple[bool, str]:
         return await self._run_command(
             "admin",
             "add-project-user",
@@ -127,7 +133,17 @@ class ApoloCLI:
             action=f"add user {username} to project {proj_name}",
         )
 
-    async def remove_organization(self, org_name: str, force: bool = True) -> bool:
+    async def switch_proj(self, proj_name: str) -> tuple[bool, str]:
+        return await self._run_command(
+            "config",
+            "switch-project",
+            proj_name,
+            action=f"Switch project to '{proj_name}'",
+        )
+
+    async def remove_organization(
+        self, org_name: str, force: bool = True
+    ) -> tuple[bool, str]:
         logger.info(f"Removing organization '{org_name}' (force={force})")
         args = ["admin", "remove-org", org_name]
         if force:
@@ -154,15 +170,17 @@ class ApoloCLI:
         logger.info(f"Fetched organizations: {organizations}")
         return organizations
 
-    async def config_show(self) -> bool:
+    async def config_show(self) -> tuple[bool, str]:
         return await self._run_command("config", "show", action="show config info")
 
-    async def switch_org(self, org_name: str) -> bool:
+    async def switch_org(self, org_name: str) -> tuple[bool, str]:
         return await self._run_command(
             "config", "switch-org", org_name, action=f"switch org to {org_name}"
         )
 
-    async def add_user_to_org(self, org_name: str, username: str, role: str) -> bool:
+    async def add_user_to_org(
+        self, org_name: str, username: str, role: str
+    ) -> tuple[bool, str]:
         return await self._run_command(
             "admin",
             "add-org-user",
@@ -172,12 +190,24 @@ class ApoloCLI:
             action=f"add user {username} to organization {org_name} as {role}",
         )
 
-    async def get_org_users(self, org_name: str) -> bool:
-        result = await self._run_command(
+    async def remove_user_from_org(
+        self, org_name: str, username: str
+    ) -> tuple[bool, str]:
+        return await self._run_command(
+            "admin",
+            "remove-org-user",
+            org_name,
+            username,
+            action=f"remove user {username} from {org_name}",
+        )
+
+    async def get_org_users(self, org_name: str) -> tuple[bool, str]:
+        result, error_message = await self._run_command(
             "admin", "get-org-users", org_name, action="get org users"
         )
-        self._parsed_get_org_users_output = self._parse_get_org_users_output()
-        return result
+        if result:
+            self._parsed_get_org_users_output = self._parse_get_org_users_output()
+        return result, error_message
 
     def _parse_get_org_users_output(self) -> list[dict[str, str]]:
         """
@@ -258,7 +288,9 @@ class ApoloCLI:
                 )
         return result
 
-    async def set_org_default_credits(self, org_name: str, credits_amount: int) -> bool:
+    async def set_org_default_credits(
+        self, org_name: str, credits_amount: int
+    ) -> tuple[bool, str]:
         return await self._run_command(
             "admin",
             "set-org-defaults",
@@ -270,7 +302,7 @@ class ApoloCLI:
 
     async def remove_project(
         self, cluster_name: str, project_name: str, force: bool = True
-    ) -> bool:
+    ) -> tuple[bool, str]:
         args = ["admin", "remove-project", cluster_name, project_name]
         if force:
             args.append("--force")
@@ -375,14 +407,31 @@ class ApoloCLI:
 
     async def _run_command(
         self, *args: str, action: str, timeout: Optional[int] = None
-    ) -> bool:
+    ) -> tuple[bool, str]:
         default_timeout: int = timeout if timeout else 60
         logger.info(
-            f"{action} running command via cli:\n\n{self._binary} {' '.join(args)}\n"
+            f"{action}. Running command via cli:\n\n{self._binary} {' '.join(args)}\n"
         )
 
-        await self._manager.run_async(*args)
-        await self._manager.wait(timeout=default_timeout)
+        try:
+            await asyncio.wait_for(
+                self._manager.run_async(*args), timeout=default_timeout
+            )
+            await asyncio.wait_for(self._manager.wait(), timeout=default_timeout)
+        except asyncio.TimeoutError:
+            if hasattr(self._manager, "kill"):
+                self._manager.kill()
+            elif hasattr(self._manager, "process") and self._manager.process:
+                self._manager.process.kill()
+            logger.error(
+                f"Command timed out after {default_timeout} seconds and was killed."
+            )
+            raise Exception(
+                f"Command timed out after {default_timeout} seconds and was killed."
+            )
+        except Exception as exc:
+            logger.exception(f"Error running command {args}: {exc}")
+            raise
 
         raw_output = await self._manager.get_output()
         raw_error = await self._manager.get_error()
@@ -417,10 +466,10 @@ class ApoloCLI:
         if cleaned_error:
             error_message = f"{action} failed:\n\n{cleaned_error}\n{self._last_command_output or ''}\n"
             logger.error(error_message)
-            raise RuntimeError(error_message)
+            return False, cleaned_error
 
         logger.info(f"{action} succeeded:\n\n{self._last_command_output}\n")
-        return True
+        return True, ""
 
     async def verify_login_output(
         self,
@@ -489,9 +538,9 @@ class ApoloCLI:
         )
         return True
 
-    async def verify_get_org_users_output(
+    async def verify_user_in_org_users_output(
         self, username: str, role: str, email: str, credits: str | float | int
-    ) -> bool:
+    ) -> tuple[bool, str]:
         """
         Assert a user with matching fields is present in the list.
         Raises AssertionError with mismatches if not found.
@@ -528,7 +577,7 @@ class ApoloCLI:
                 logger.info(
                     f"✅ User present: username='{username}', role='{role}', email='{email}', credits='{credits}'"
                 )
-                return True
+                return True, ""
 
         debug_msg = []
         for user in self._parsed_get_org_users_output:
@@ -537,7 +586,7 @@ class ApoloCLI:
                 diff.append(
                     f"username (expected '{username}', got '{user.get('username')}')"
                 )
-            if user.get("role") != role:
+            if user.get("role") != role.lower():
                 diff.append(f"role (expected '{role}', got '{user.get('role')}')")
             if user.get("email") != email:
                 diff.append(f"email (expected '{email}', got '{user.get('email')}')")
@@ -548,10 +597,10 @@ class ApoloCLI:
             if diff:
                 debug_msg.append("{" + "; ".join(diff) + "}")
 
-        raise AssertionError(
-            "User not found in list with all expected fields!\n"
-            f"username='{username}', role='{role}', email='{email}', credits='{credits}'\n"
-            f"Closest mismatches:\n" + "\n".join(debug_msg)
+        return (
+            False,
+            f"User not found in list with all expected fields!\n username='{username}', role='{role}', email='{email}', credits='{credits}'\n Closest mismatches:\n"
+            + "\n".join(debug_msg),
         )
 
     async def verify_get_projects_output(
