@@ -1,85 +1,73 @@
 import pytest
 
-from tests.components.ui.page_manager import PageManager
 from tests.reporting_hooks.reporting import async_step, async_suite, async_title
-from tests.test_cases.steps.common_steps.cli_steps.cli_common_steps import (
-    CLICommonSteps,
-)
-from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.utils.api_helper import APIHelper
-from tests.utils.cli.apolo_cli import ApoloCLI
-from tests.utils.test_config_helper import ConfigManager
-from tests.utils.test_data_management.test_data import DataManager
-from tests.utils.test_data_management.users_manager import UsersManager
+from tests.test_cases.tests_cli.base_cli_test import BaseCLITest
 
 
 @async_suite("CLI Login", parent="CLI Tests")
-class TestCLILogin:
+class TestCLILogin(BaseCLITest):
     @pytest.fixture(autouse=True)
-    async def setup(
-        self,
-        page_manager: PageManager,
-        data_manager: DataManager,
-        apolo_cli: ApoloCLI,
-        test_config: ConfigManager,
-        users_manager: UsersManager,
-        api_helper: APIHelper,
-    ) -> None:
+    async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        self._page_manager = page_manager
-        self._data_manager = data_manager
-        self._apolo_cli = apolo_cli
-        self._test_config = test_config
-        self._users_manager = users_manager
-        self._api_helper = api_helper
-        self.ui_steps = UISteps(
-            self._page_manager,
-            self._test_config,
-            self._data_manager,
-            self._users_manager,
-            self._api_helper,
-        )
-        self.cli_common_steps = CLICommonSteps(
-            self._test_config, self._apolo_cli, self._data_manager
-        )
+        self._ui_steps = await self.init_ui_test_steps()
+        self._cli_steps = await self.init_test_steps()
 
-        user = self._users_manager.main_user
-        self._user = user
-        # Login via UI to get access token
-        await self.ui_steps.ui_login(user)
-        await self.ui_steps.ui_pass_new_user_onboarding(
-            user=user, gherkin_name="Default-org"
-        )
-        # Verify CLI client installed
-        await self.cli_common_steps.verify_cli_client_installed()
+        await self._cli_steps.verify_cli_client_installed()
 
-    @async_title("User logs in to Apolo CLI with auth token and verifies login success")
+    @async_title("User without organization logs in with auth token via CLI")
     async def test_login_with_token_cli(self) -> None:
-        await self.cli_common_steps.cli_login_with_token(token=self._user.token)
-        await self.cli_verify_login_successfull()
-        await self.cli_verify_login_output(check_org=True)
+        user = self._users_manager.main_user
+        await self._ui_steps.ui_login(user)
 
-    @async_step("Verify CLI login successfull")
-    async def cli_verify_login_successfull(self) -> None:
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self.cli_verify_login_successful()
+        await self._cli_steps.cli_verify_login_output(user.username)
+
+    @async_title("User with organization logs in with auth token via CLI")
+    async def test_login_org_with_token_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self._ui_steps.ui_login(user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
+        )
+
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self.cli_verify_login_successful()
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        await self._cli_steps.cli_verify_login_output(
+            user.username, org_name=org.org_name
+        )
+
+    @async_title("User with organization and project logs in with auth token via CLI")
+    async def test_login_org_proj_with_token_cli(self) -> None:
+        user = self._users_manager.main_user
+        await self._ui_steps.ui_login(user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="Default-organization"
+        )
+        org = self._data_manager.get_organization_by_gherkin_name(
+            "Default-organization"
+        )
+        proj = org.add_project(gherkin_name="Default-project")
+        await self._ui_steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
+
+        await self._cli_steps.cli_login_with_token(token=user.token)
+        await self.cli_verify_login_successful()
+
+        await self._cli_steps.cli_verify_login_output(
+            user.username, org_name=org.org_name, proj_name=proj.project_name
+        )
+
+    @async_step("Verify CLI login successful")
+    async def cli_verify_login_successful(self) -> None:
         assert self._apolo_cli.login_successful, "Login via CLI should be successful!"
-
-    @async_step("Verify CLI login output")
-    async def cli_verify_login_output(
-        self, check_org: bool = False, check_proj: bool = False
-    ) -> None:
-        url: str = self._test_config.cli_login_url
-
-        organization_name = (
-            self._data_manager.default_organization.org_name if check_org else None
-        )
-        project_name = (
-            self._data_manager.default_organization.default_project.project_name
-            if check_proj
-            else None
-        )
-
-        assert await self._apolo_cli.verify_login_output(
-            url, self._user.username, organization_name, project_name
-        ), "CLI login output should be valid!"

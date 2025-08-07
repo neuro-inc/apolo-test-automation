@@ -160,3 +160,22 @@ class APIHelper:
         logger.info(f"Add org {org_name} response: {response}")
 
         return response
+
+    async def add_proj(
+        self,
+        token: str,
+        org_name: str,
+        proj_name: str,
+        default_role: str,
+        proj_default: bool,
+    ) -> Any:
+        url = self._config.get_add_proj_url(org_name=org_name)
+        data = {
+            "name": proj_name,
+            "default_role": default_role,
+            "is_default": proj_default,
+        }
+        response = await self._post(url, token=token, data=data)
+        logger.info(f"Add proj {org_name} response: {response}")
+
+        return response
