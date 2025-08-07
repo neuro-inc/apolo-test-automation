@@ -69,11 +69,11 @@ class UISteps(PageSteps):
             await self.login_page.ui_enter_email(email=user.email)
             await self.login_page.ui_enter_password(password=user.password)
             await self.login_page.ui_click_continue_button()
-            await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
             token = await extract_access_token_from_local_storage(
                 self._pm.login_page.page
             )
             user.token = token
+            await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
 
     # ********************   Onboarding steps   ****************************
     @async_step("Pass new user onboarding and create first organization via UI")
@@ -361,6 +361,27 @@ class UISteps(PageSteps):
         response = await self._api_helper.add_org(
             token=token,
             org_name=org_name,
+        )
+        assert response.status == 201, (
+            f"Expected HTTP 201 response but got {response.status_code}!"
+        )
+        await self.ui_reload_page()
+
+    @async_step("Add project via API and reload page")
+    async def ui_add_proj_api(
+        self,
+        token: str,
+        org_name: str,
+        proj_name: str,
+        default_role: str,
+        proj_default: bool,
+    ) -> None:
+        response = await self._api_helper.add_proj(
+            token=token,
+            org_name=org_name,
+            proj_name=proj_name,
+            default_role=default_role,
+            proj_default=proj_default,
         )
         assert response.status == 201, (
             f"Expected HTTP 201 response but got {response.status_code}!"

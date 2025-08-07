@@ -13,6 +13,7 @@ class MainPage(BasePage):
         Returns True if the page is considered loaded (key elements are visible).
         """
         self.log("Check if page loaded")
+        await self.wait_for_spinner()
         return (
             await self._get_apps_button().expect_to_be_loaded()
             and await self._get_jobs_button().expect_to_be_loaded()
