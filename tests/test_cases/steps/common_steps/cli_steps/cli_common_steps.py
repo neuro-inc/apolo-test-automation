@@ -140,42 +140,12 @@ class CLICommonSteps:
             default_proj=default_proj,
         )
 
-    @async_step("Add new project via apolo CLI")
-    async def cli_add_new_project(
-        self,
-        org_name: str,
-        proj_name: str,
-        default_role: str = "reader",
-        default_proj: bool = False,
-    ) -> None:
-        await self._apolo_cli.create_project(
-            org_name=org_name,
-            proj_name=proj_name,
-            default_role=default_role,
-            default_proj=default_proj,
-        )
-
-    @async_step("Run admin get-projects via CLI")
-    async def cli_run_get_projects(self, org_name: str) -> None:
-        await self._apolo_cli.get_projects(org_name=org_name)
-
     @async_step("Add user to project via CLI")
     async def cli_add_user_to_project(
         self, org_name: str, proj_name: str, username: str, role: str
     ) -> None:
         await self._apolo_cli.add_proj_user(
             org_name=org_name, proj_name=proj_name, username=username, role=role
-        )
-
-    @async_step("Verify admin get-projects output via CLI")
-    async def verify_cli_admin_get_projects_output(
-        self, org_name: str, proj_name: str, default_role: str, default_proj: bool
-    ) -> None:
-        await self._apolo_cli.verify_get_projects_output(
-            org_name=org_name,
-            proj_name=proj_name,
-            default_role=default_role,
-            default_proj=default_proj,
         )
 
     @async_step("Verify organization is listed in the CLI output")
