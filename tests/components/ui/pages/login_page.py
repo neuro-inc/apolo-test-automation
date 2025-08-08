@@ -35,5 +35,5 @@ class LoginPage(BasePage):
     async def click_continue_button(self) -> None:
         self.log("Click continue button")
         await self._continue_button.click()
-        await self.page.wait_for_timeout(500)
+        await self.page.wait_for_timeout(1000)
         await self.wait_for_spinner()
