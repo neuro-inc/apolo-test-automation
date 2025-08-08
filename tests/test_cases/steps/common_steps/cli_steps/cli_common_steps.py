@@ -129,16 +129,59 @@ class CLICommonSteps:
         result, error_message = await self._apolo_cli.switch_proj(proj_name=proj_name)
         assert result, error_message
 
+    @async_step("Get project users via CLI")
+    async def cli_get_proj_users(self, org_name: str, proj_name: str) -> None:
+        result, error_message = await self._apolo_cli.get_proj_users(
+            org_name=org_name, proj_name=proj_name
+        )
+        assert result, error_message
+
+    @async_step("Verify user present in get-project-users output via CLI")
+    async def verify_cli_user_in_proj_users_output(
+        self, username: str, role: str, email: str
+    ) -> None:
+        result, error_message = await self._apolo_cli.verify_user_in_proj_users_output(
+            username=username, role=role, email=email
+        )
+        assert result, error_message
+
+    @async_step("Verify user is not present in get-project-users output via CLI")
+    async def verify_cli_user_not_in_proj_users_output(
+        self, username: str, role: str, email: str
+    ) -> None:
+        result, error_message = await self._apolo_cli.verify_user_in_proj_users_output(
+            username=username, role=role, email=email
+        )
+        assert not result, (
+            f"User '{username}' should not be listed in get-project-users output"
+        )
+
+    @async_step("Remove user from project via CLI")
+    async def cli_remove_user_from_proj(
+        self, org_name: str, proj_name: str, username: str, expected_error: str = ""
+    ) -> None:
+        result, error_message = await self._apolo_cli.remove_proj_user(
+            org_name=org_name, proj_name=proj_name, username=username
+        )
+        if expected_error:
+            assert not result, f"Command should fail with: {expected_error}"
+            assert error_message == expected_error, (
+                f" Expected: {expected_error}, got: {error_message}"
+            )
+        else:
+            assert result, error_message
+
     @async_step("Verify admin get-projects output via CLI")
     async def verify_cli_admin_get_projects_output(
         self, org_name: str, proj_name: str, default_role: str, default_proj: bool
     ) -> None:
-        await self._apolo_cli.verify_get_projects_output(
+        resut, error_message = await self._apolo_cli.verify_get_projects_output(
             org_name=org_name,
             proj_name=proj_name,
             default_role=default_role,
             default_proj=default_proj,
         )
+        assert resut, error_message
 
     @async_step("Add user to project via CLI")
     async def cli_add_user_to_project(

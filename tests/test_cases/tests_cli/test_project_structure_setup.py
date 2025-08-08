@@ -146,23 +146,30 @@ class TestCLIProjectStructureSetup(BaseCLITest):
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
-        proj1 = org.add_project("project 1")
+        proj = org.add_project("project 1")
         await self._cli_steps.cli_add_new_project(
-            org_name=org.org_name, proj_name=proj1.project_name
+            org_name=org.org_name, proj_name=proj.project_name
         )
 
         await self._cli_steps.cli_add_org_member_to_project(
             org_name=org.org_name,
-            proj_name=proj1.project_name,
+            proj_name=proj.project_name,
             username=second_user.username,
-            role="reader",
+            role="Reader",
         )
+        await self._cli_steps.cli_get_proj_users(
+            org_name=org.org_name, proj_name=proj.project_name
+        )
+        await self._cli_steps.verify_cli_user_in_proj_users_output(
+            username=second_user.username, role="Reader", email=second_user.email
+        )
+
         await self._cli_steps.cli_login_with_token(token=second_user.token)
         await self._cli_steps.cli_show_config()
         await self._cli_steps.verify_cli_show_command_output(
             expected_username=second_user.username,
             expected_org=org.org_name,
-            expected_project=proj1.project_name,
+            expected_project=proj.project_name,
         )
 
     @async_title("Add user not in organization to project via CLI")
