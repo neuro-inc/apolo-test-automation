@@ -17,6 +17,7 @@ class ApoloCLI:
         self._last_command_output: str = ""
         self._parsed_get_orgs_output: list[str] = []
         self._parsed_get_org_users_output: list[dict[str, str]] = []
+        self._parsed_get_proj_users_output: list[dict[str, str]] = []
         self._parsed_get_projects_output: list[dict[str, str]] = []
 
     @property
@@ -129,7 +130,7 @@ class ApoloCLI:
             cluster,
             proj_name,
             username,
-            role,
+            role.lower(),
             action=f"add user {username} to project {proj_name}",
         )
 
@@ -139,6 +140,36 @@ class ApoloCLI:
             "switch-project",
             proj_name,
             action=f"Switch project to '{proj_name}'",
+        )
+
+    async def get_proj_users(
+        self, org_name: str, proj_name: str, cluster: str = "default"
+    ) -> tuple[bool, str]:
+        result, error_message = await self._run_command(
+            "admin",
+            "get-project-users",
+            "--org",
+            org_name,
+            cluster,
+            proj_name,
+            action=f"get users in '{proj_name}'",
+        )
+        if result:
+            self._parsed_get_proj_users_output = self._parse_get_proj_users_output()
+        return result, error_message
+
+    async def remove_proj_user(
+        self, org_name: str, proj_name: str, username: str, cluster: str = "default"
+    ) -> tuple[bool, str]:
+        return await self._run_command(
+            "admin",
+            "remove-project-user",
+            "--org",
+            org_name,
+            cluster,
+            proj_name,
+            username,
+            action=f"remove user '{username}' in '{proj_name}'",
         )
 
     async def remove_organization(
@@ -242,6 +273,52 @@ class ApoloCLI:
                     "role": cols[1],
                     "email": cols[2],
                     "credits": cols[5],
+                }
+            )
+
+        return data_rows
+
+    def _parse_get_proj_users_output(self) -> list[dict[str, str]]:
+        """
+        Parse CLI table output using '│' as column delimiter.
+        Returns a list of dicts with keys: username, role, email.
+        """
+        lines = self._last_command_output.strip().splitlines()
+        data_rows = []
+
+        # Find the header row
+        header_index = None
+        for i, line in enumerate(lines):
+            if (
+                "Role" in line
+                and "Email" in line
+                and "Full name" in line
+                and "Registered" in line
+            ):
+                header_index = i
+                break
+        if header_index is None:
+            raise ValueError("Table header not found.")
+
+        # Parse each data row after the header (skip separators and empty lines)
+        for row in lines[header_index + 2 :]:
+            if (
+                not row.strip()
+                or row.strip().startswith("╺")
+                or row.strip().startswith("━")
+                or row.strip().startswith("╵")
+            ):
+                continue
+
+            cols = [col.strip() for col in row.strip(" │").split("│")]
+            if len(cols) < 5:
+                continue
+
+            data_rows.append(
+                {
+                    "username": cols[0],
+                    "role": cols[1],
+                    "email": cols[2],
                 }
             )
 
@@ -542,9 +619,19 @@ class ApoloCLI:
         self, username: str, role: str, email: str, credits: str | float | int
     ) -> tuple[bool, str]:
         """
-        Assert a user with matching fields is present in the list.
-        Raises AssertionError with mismatches if not found.
+        Look up the user by username in _parsed_get_org_users_output and
+        verify that role, email, and credits match expected values.
+        Returns (True, "") if fields match, else (False, details).
         """
+        # Find user by username
+        user = None
+        for u in self._parsed_get_org_users_output:
+            if u.get("username") == username:
+                user = u
+                break
+
+        if user is None:
+            return False, f"User '{username}' not found in list"
 
         def _credits_equal(a, b) -> bool:  # type: ignore
             def _norm(x: str | float | int) -> None | str | float:
@@ -559,49 +646,55 @@ class ApoloCLI:
 
             return _norm(a) == _norm(b)
 
-        for user in self._parsed_get_org_users_output:
-            errors = []
-            if user.get("username") != username:
-                errors.append(
-                    f"Expected username '{username}', got '{user.get('username')}'"
-                )
-            if user.get("role") != role.lower():
-                errors.append(f"Expected role '{role}', got '{user.get('role')}'")
-            if user.get("email") != email:
-                errors.append(f"Expected email '{email}', got '{user.get('email')}'")
-            if not _credits_equal(user.get("credits"), credits):
-                errors.append(
-                    f"Expected credits '{credits}', got '{user.get('credits')}'"
-                )
-            if not errors:
-                logger.info(
-                    f"✅ User present: username='{username}', role='{role}', email='{email}', credits='{credits}'"
-                )
-                return True, ""
+        errors = []
+        if user.get("role") != role.lower():
+            errors.append(f"Expected role '{role}', got '{user.get('role')}'")
+        if user.get("email") != email:
+            errors.append(f"Expected email '{email}', got '{user.get('email')}'")
+        if not _credits_equal(user.get("credits"), credits):
+            errors.append(f"Expected credits '{credits}', got '{user.get('credits')}'")
 
-        debug_msg = []
-        for user in self._parsed_get_org_users_output:
-            diff = []
-            if user.get("username") != username:
-                diff.append(
-                    f"username (expected '{username}', got '{user.get('username')}')"
-                )
-            if user.get("role") != role.lower():
-                diff.append(f"role (expected '{role}', got '{user.get('role')}')")
-            if user.get("email") != email:
-                diff.append(f"email (expected '{email}', got '{user.get('email')}')")
-            if not _credits_equal(user.get("credits"), credits):
-                diff.append(
-                    f"credits (expected '{credits}', got '{user.get('credits')}')"
-                )
-            if diff:
-                debug_msg.append("{" + "; ".join(diff) + "}")
+        if not errors:
+            logger.info(
+                f"✅ User '{username}' fields match: role='{role}', email='{email}', credits='{credits}'"
+            )
+            return True, ""
+        else:
+            debug_msg = "; ".join(errors)
+            return False, debug_msg
 
-        return (
-            False,
-            f"User not found in list with all expected fields!\n username='{username}', role='{role}', email='{email}', credits='{credits}'\n Closest mismatches:\n"
-            + "\n".join(debug_msg),
-        )
+    async def verify_user_in_proj_users_output(
+        self, username: str, role: str, email: str
+    ) -> tuple[bool, str]:
+        """
+        Look up the user by username in _parsed_get_proj_users_output and
+        verify that role and email match expected values.
+        Returns (True, "") if fields match, else (False, details).
+        """
+        # Find user by username
+        user = None
+        for u in self._parsed_get_proj_users_output:
+            if u.get("username") == username:
+                user = u
+                break
+
+        if user is None:
+            return False, f"User '{username}' not found in list"
+
+        errors = []
+        if user.get("role") != role.lower():
+            errors.append(f"Expected role '{role}', got '{user.get('role')}'")
+        if user.get("email") != email:
+            errors.append(f"Expected email '{email}', got '{user.get('email')}'")
+
+        if not errors:
+            logger.info(
+                f"✅ User '{username}' fields match: role='{role}', email='{email}'"
+            )
+            return True, ""
+        else:
+            debug_msg = "; ".join(errors)
+            return False, debug_msg
 
     async def verify_get_projects_output(
         self,
@@ -610,11 +703,21 @@ class ApoloCLI:
         default_role: str,
         default_proj: str | bool,
         cluster: str = "default",
-    ) -> bool:
+    ) -> tuple[bool, str]:
         """
-        Assert a project row with matching fields is present in the parsed list.
-        Raises AssertionError with mismatches if not found.
+        Look up the project by proj_name in _parsed_get_projects_output and
+        verify that org_name, default_role, default_proj, cluster match.
+        Returns (True, "") if fields match; else (False, error message).
         """
+        # Lookup project by proj_name
+        project = None
+        for p in self._parsed_get_projects_output:
+            if p.get("proj_name") == proj_name:
+                project = p
+                break
+
+        if not project:
+            return False, f"Project '{proj_name}' not found in list"
 
         def _proj_equal(a, b) -> bool:  # type: ignore
             if isinstance(a, bool):
@@ -623,62 +726,29 @@ class ApoloCLI:
                 b = str(b)
             return str(a).strip().lower() == str(b).strip().lower()
 
-        for project in self._parsed_get_projects_output:
-            errors = []
-            if project.get("proj_name") != proj_name:
-                errors.append(
-                    f"Expected proj_name '{proj_name}', got '{project.get('proj_name')}'"
-                )
-            if project.get("cluster") != cluster:
-                errors.append(
-                    f"Expected cluster '{cluster}', got '{project.get('cluster')}'"
-                )
-            if project.get("org_name") != org_name:
-                errors.append(
-                    f"Expected org_name '{org_name}', got '{project.get('org_name')}'"
-                )
-            if project.get("default_role") != default_role:
-                errors.append(
-                    f"Expected default_role '{default_role}', got '{project.get('default_role')}'"
-                )
-            if not _proj_equal(project.get("default_proj"), default_proj):
-                errors.append(
-                    f"Expected default_proj '{default_proj}', got '{project.get('default_proj')}'"
-                )
-            if not errors:
-                logger.info(
-                    f"✅ Project present: proj_name='{proj_name}', cluster='{cluster}', org_name='{org_name}', default_role='{default_role}', default_proj='{default_proj}'"
-                )
-                return True
+        errors = []
+        if project.get("cluster") != cluster:
+            errors.append(
+                f"Expected cluster '{cluster}', got '{project.get('cluster')}'"
+            )
+        if project.get("org_name") != org_name:
+            errors.append(
+                f"Expected org_name '{org_name}', got '{project.get('org_name')}'"
+            )
+        if project.get("default_role") != default_role:
+            errors.append(
+                f"Expected default_role '{default_role}', got '{project.get('default_role')}'"
+            )
+        if not _proj_equal(project.get("default_proj"), default_proj):
+            errors.append(
+                f"Expected default_proj '{default_proj}', got '{project.get('default_proj')}'"
+            )
 
-        debug_msg = []
-        for project in self._parsed_get_projects_output:
-            diff = []
-            if project.get("proj_name") != proj_name:
-                diff.append(
-                    f"proj_name (expected '{proj_name}', got '{project.get('proj_name')}')"
-                )
-            if project.get("cluster") != cluster:
-                diff.append(
-                    f"cluster (expected '{cluster}', got '{project.get('cluster')}')"
-                )
-            if project.get("org_name") != org_name:
-                diff.append(
-                    f"org_name (expected '{org_name}', got '{project.get('org_name')}')"
-                )
-            if project.get("default_role") != default_role:
-                diff.append(
-                    f"default_role (expected '{default_role}', got '{project.get('default_role')}')"
-                )
-            if not _proj_equal(project.get("default_proj"), default_proj):
-                diff.append(
-                    f"default_proj (expected '{default_proj}', got '{project.get('default_proj')}')"
-                )
-            if diff:
-                debug_msg.append("{" + "; ".join(diff) + "}")
-
-        raise AssertionError(
-            "Project not found in list with all expected fields!\n"
-            f"proj_name='{proj_name}', cluster='{cluster}', org_name='{org_name}', default_role='{default_role}', default_proj='{default_proj}'\n"
-            f"Closest mismatches:\n" + "\n".join(debug_msg)
-        )
+        if not errors:
+            logger.info(
+                f"✅ Project '{proj_name}' fields match: cluster='{cluster}', org_name='{org_name}', default_role='{default_role}', default_proj='{default_proj}'"
+            )
+            return True, ""
+        else:
+            debug_msg = "; ".join(errors)
+            return False, debug_msg
