@@ -171,6 +171,26 @@ class CLICommonSteps:
         else:
             assert result, error_message
 
+    @async_step("Update user role on a project via CLI")
+    async def cli_update_proj_user_role(
+        self,
+        org_name: str,
+        proj_name: str,
+        username: str,
+        role: str,
+        expected_error: str = "",
+    ) -> None:
+        result, error_message = await self._apolo_cli.update_proj_user(
+            org_name=org_name, proj_name=proj_name, username=username, role=role
+        )
+        if expected_error:
+            assert not result, f"Command should fail with: {expected_error}"
+            assert error_message == expected_error, (
+                f" Expected: {expected_error}, got: {error_message}"
+            )
+        else:
+            assert result, error_message
+
     @async_step("Verify admin get-projects output via CLI")
     async def verify_cli_admin_get_projects_output(
         self, org_name: str, proj_name: str, default_role: str, default_proj: bool
