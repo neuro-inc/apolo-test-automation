@@ -172,6 +172,26 @@ class ApoloCLI:
             action=f"remove user '{username}' in '{proj_name}'",
         )
 
+    async def update_proj_user(
+        self,
+        org_name: str,
+        proj_name: str,
+        username: str,
+        role: str,
+        cluster: str = "default",
+    ) -> tuple[bool, str]:
+        return await self._run_command(
+            "admin",
+            "update-project-user",
+            "--org",
+            org_name,
+            cluster,
+            proj_name,
+            username,
+            role.lower(),
+            action=f"update user '{username}' role in '{proj_name}' to '{role}'",
+        )
+
     async def remove_organization(
         self, org_name: str, force: bool = True
     ) -> tuple[bool, str]:
