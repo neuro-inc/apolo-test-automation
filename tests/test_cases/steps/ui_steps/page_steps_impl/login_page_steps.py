@@ -24,9 +24,3 @@ class LoginPageSteps:
     @async_step("Click Continue button")
     async def ui_click_continue_button(self) -> None:
         await self._pm.login_page.click_continue_button()
-
-    @async_step("Verify that Login page displayed")
-    async def ui_login(self, email: str, password: str) -> None:
-        await self.ui_enter_email(email=email)
-        await self.ui_enter_password(password=password)
-        await self.ui_click_continue_button()

@@ -345,7 +345,6 @@ class UISteps(PageSteps):
             f"Expected HTTP 201 response but got {response.status_code}!"
         )
         await self.ui_reload_page()
-        await self.ui_reload_page()
         await self.main_page.ui_click_organization_settings_button(user.email)
         await self.org_settings_popup.verify_ui_popup_displayed(
             email=user.email, username=user.username
