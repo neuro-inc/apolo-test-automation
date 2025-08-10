@@ -7,6 +7,7 @@ from typing import Optional
 
 import lorem  # type: ignore
 
+from tests.utils.test_data_management.disk_data import DiskData
 from tests.utils.test_data_management.organization_data import OrganizationData
 from tests.utils.test_data_management.job_data import JobData
 
@@ -18,6 +19,7 @@ class DataManager:
         self._gen_obj_path = gen_obj_path
         self._download_path = download_path
         self._organizations: dict[str, OrganizationData] = {}
+        self._disks: dict[str, DiskData] = {}
         self._default_organization: Optional[OrganizationData] = None
 
     def __repr__(self) -> str:
@@ -138,3 +140,21 @@ class DataManager:
             return hash_md5.hexdigest()
 
         return file_md5(file_path_1) == file_md5(file_path_2)
+
+    def add_disk(
+        self,
+        gherkin_name: str,
+        org_name: str,
+        owner: str,
+        storage_amount: str,
+        proj_name: str = "",
+    ) -> DiskData:
+        disk = DiskData(
+            gherkin_name=gherkin_name,
+            owner=owner,
+            org_name=org_name,
+            proj_name=proj_name,
+            storage=storage_amount,
+        )
+        self._disks[gherkin_name] = disk
+        return disk
