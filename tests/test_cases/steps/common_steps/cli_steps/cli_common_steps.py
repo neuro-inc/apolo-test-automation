@@ -1,6 +1,7 @@
 from tests.reporting_hooks.reporting import async_step
 from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.test_config_helper import ConfigManager
+from tests.utils.test_data_management.disk_data import DiskData
 from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.test_data_management.users_manager import UserData
 
@@ -317,3 +318,64 @@ class CLICommonSteps:
             expected_project=expected_project,
             expected_org_credit=expected_org_credits,
         ), "Verify config show command output failed!"
+
+    @async_step("Create disk via CLI")
+    async def cli_create_disk(
+        self,
+        disk: DiskData,
+        expected_error: str = "",
+    ) -> None:
+        result, error_message = await self._apolo_cli.create_disk(
+            disk=disk,
+        )
+        if expected_error:
+            assert not result, f"Command should fail with: {expected_error}"
+            assert error_message == expected_error, (
+                f"Expected: \n{expected_error} \nbut got \n{error_message}"
+            )
+        else:
+            assert result, error_message
+
+    @async_step("Verify create disk output via CLI")
+    async def verify_cli_create_disk_output(self, disk: DiskData) -> None:
+        result, error_message = self._apolo_cli.verify_create_disk_output(disk=disk)
+        assert result, error_message
+
+    @async_step("List disks via CLI")
+    async def cli_list_disks(self, org_name: str, proj_name: str) -> None:
+        result, error_message = await self._apolo_cli.list_disks(
+            org_name=org_name, proj_name=proj_name
+        )
+        assert result, error_message
+
+    @async_step("Verify disk in list disks output via CLI")
+    async def verify_cli_disk_in_list_disks_output(self, disk: DiskData) -> None:
+        result, error_message = await self._apolo_cli.verify_disk_in_list_output(
+            disk=disk
+        )
+        assert result, error_message
+
+    @async_step("Verify disk  not in list disks output via CLI")
+    async def verify_cli_disk_not_in_list_disks_output(self, disk: DiskData) -> None:
+        result, error_message = await self._apolo_cli.verify_disk_in_list_output(
+            disk=disk
+        )
+        assert not result, f"{disk.id} should not be present in list disks output"
+
+    @async_step("Get disk by ID via CLI")
+    async def cli_get_disk_by_id(
+        self, org_name: str, proj_name: str, disk_id: str
+    ) -> None:
+        result, error_message = await self._apolo_cli.get_disk_by_id(
+            org_name=org_name, proj_name=proj_name, disk_id=disk_id
+        )
+        assert result, error_message
+
+    @async_step("Remove disk by ID via CLI")
+    async def cli_remove_disk_by_id(
+        self, org_name: str, proj_name: str, disk_id: str
+    ) -> None:
+        result, error_message = await self._apolo_cli.remove_disk(
+            org_name=org_name, proj_name=proj_name, disk_id=disk_id
+        )
+        assert result, error_message

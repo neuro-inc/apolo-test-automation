@@ -49,6 +49,7 @@ class OrganizationSettingsPopup(BasePage):
     async def click_people_button(self) -> None:
         self.log("Click People button")
         await self._get_people_button().click()
+        await self.wait_for_spinner()
 
     def _get_billing_button(self) -> BaseElement:
         return BaseElement(self.page, "a", has_text="Billing")
