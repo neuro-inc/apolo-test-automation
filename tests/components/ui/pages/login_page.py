@@ -36,6 +36,4 @@ class LoginPage(BasePage):
         self.log("Click continue button")
         await self._continue_button.click()
         await self.page.wait_for_timeout(1000)
-        await self.page.wait_for_load_state("networkidle", timeout=10000)
-        await self.page.wait_for_timeout(1000)
         await self.wait_for_spinner()
