@@ -5,6 +5,9 @@ from tests.test_cases.steps.cli_steps.comonent_steps_impl.config_steps import (
 )
 from tests.test_cases.steps.cli_steps.comonent_steps_impl.disk_steps import DiskSteps
 from tests.test_cases.steps.cli_steps.comonent_steps_impl.job_steps import JobSteps
+from tests.test_cases.steps.cli_steps.comonent_steps_impl.secret_steps import (
+    SecretSteps,
+)
 from tests.test_cases.steps.cli_steps.comonent_steps_impl.storage_steps import (
     StorageSteps,
 )
@@ -37,6 +40,9 @@ class CLISteps:
             test_config=test_config, apolo_cli=apolo_cli, data_manager=data_manager
         )
         self.storage = StorageSteps(
+            test_config=test_config, apolo_cli=apolo_cli, data_manager=data_manager
+        )
+        self.secret = SecretSteps(
             test_config=test_config, apolo_cli=apolo_cli, data_manager=data_manager
         )
 
