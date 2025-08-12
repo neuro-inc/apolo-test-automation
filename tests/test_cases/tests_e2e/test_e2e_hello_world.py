@@ -2,8 +2,8 @@ import asyncio
 import pytest
 
 from tests.reporting_hooks.reporting import async_step, async_suite, async_title
-from tests.test_cases.steps.common_steps.cli_steps.cli_common_steps import (
-    CLICommonSteps,
+from tests.test_cases.steps.cli_steps.cli_steps import (
+    CLISteps,
 )
 from tests.components.ui.page_manager import PageManager
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
@@ -42,14 +42,14 @@ class TestHelloWorldJob:
             self._users_manager,
             self._api_helper,
         )
-        self.cli_common_steps = CLICommonSteps(
+        self.cli_steps = CLISteps(
             self._test_config, self._apolo_cli, self._data_manager
         )
         user = self._users_manager.main_user
         await self.ui_steps.ui_login(user)
         self._user = user
         # Verify CLI client installed
-        await self.cli_common_steps.verify_cli_client_installed()
+        await self.cli_steps.verify_cli_client_installed()
 
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
@@ -57,10 +57,10 @@ class TestHelloWorldJob:
             user=self._user, gherkin_name="default"
         )
         org = self._data_manager.get_organization_by_gherkin_name("default")
-        await self.cli_common_steps.cli_login_with_token(token=self._user.token)
+        await self.cli_steps.config.cli_login_with_token(token=self._user.token)
         await asyncio.sleep(2)
         proj1 = org.add_project("my-project")
-        await self.cli_common_steps.cli_add_new_project(
+        await self.cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj1.project_name
         )
         await self.run_hello_world_job("my-project")
@@ -71,18 +71,14 @@ class TestHelloWorldJob:
     @async_step("Create default organization")
     async def create_organization(self) -> None:
         organization = self._data_manager.add_organization("default")
-        await self._apolo_cli.create_organization(org_name=organization.org_name)
+        await self._apolo_cli.admin.create_organization(org_name=organization.org_name)
 
     @async_step("Run Hello World job via CLI")
     async def run_hello_world_job(self, project_name: str) -> None:
         organization = self._data_manager.default_organization
         project = organization.get_project_by_gherkin_name(project_name)
         job = project.add_job("Hello World", command="echo Hello, World")
-        job.job_id = await self._apolo_cli.run_job(
-            job_name=job.job_name,
-            image=job.image_name,
-            command=job.command,
-        )
+        job.job_id = await self.cli_steps.job.run_job(job=job)
 
     @async_step("Open Jobs page and verify job not in running list")
     async def ui_check_job_not_in_running(self) -> None:
