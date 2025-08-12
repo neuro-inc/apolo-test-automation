@@ -12,7 +12,7 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         Initialize shared resources for the test methods.
         """
         self._ui_steps = await self.init_ui_test_steps()
-        self._cli_steps = await self.init_test_steps()
+        self._cli_steps = await self.init_cli_test_steps()
 
         # Verify CLI client installed
         await self._cli_steps.verify_cli_client_installed()
@@ -21,46 +21,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_reader_to_writer_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Reader",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Reader", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Writer",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Writer", email=second_user.email
         )
 
@@ -68,46 +70,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_reader_to_manager_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Reader",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Reader", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
 
@@ -115,46 +119,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_reader_to_admin_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Reader",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Reader", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Admin",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Admin", email=second_user.email
         )
 
@@ -162,46 +168,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_writer_to_reader_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Writer",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Writer", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Reader",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Reader", email=second_user.email
         )
 
@@ -209,46 +217,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_writer_to_manager_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Writer",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Writer", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
 
@@ -256,46 +266,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_writer_to_admin_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Writer",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Writer", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Admin",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Admin", email=second_user.email
         )
 
@@ -303,46 +315,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_manager_to_reader_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Reader",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Reader", email=second_user.email
         )
 
@@ -350,46 +364,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_manager_to_writer_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Writer",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Writer", email=second_user.email
         )
 
@@ -397,46 +413,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_manager_to_admin_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Admin",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Admin", email=second_user.email
         )
 
@@ -444,46 +462,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_admin_to_reader_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Admin",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Admin", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Reader",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Reader", email=second_user.email
         )
 
@@ -491,46 +511,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_admin_to_writer_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Admin",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Admin", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Writer",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Writer", email=second_user.email
         )
 
@@ -538,46 +560,48 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_change_admin_to_manager_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Admin",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Admin", email=second_user.email
         )
 
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
 
@@ -585,37 +609,39 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_admin_demote_himself_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=user.username, role="Admin", email=user.email
         )
 
         expected_error = (
             "ERROR: Illegal argument(s) (Last project admin cannot be demoted)"
         )
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=user.username,
             role="Manager",
             expected_error=expected_error,
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=user.username, role="Admin", email=user.email
         )
 
@@ -623,6 +649,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_reader_to_writer_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -630,55 +659,54 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Writer",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Writer", email=third_user.email
         )
 
@@ -686,6 +714,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_reader_to_manager_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -693,55 +724,54 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Manager", email=third_user.email
         )
 
@@ -749,6 +779,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_reader_to_admin_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -756,57 +789,56 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         expected_error = f'ERROR: Not enough permissions ({{"missing": [{{"uri": "cluster://default/orgs/{org.org_name}/projects/{proj.project_name}/admins", "action": "write"}}]}})'
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Admin",
             expected_error=expected_error,
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
@@ -814,6 +846,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_writer_to_reader_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -821,55 +856,54 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Writer",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Writer", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
@@ -877,6 +911,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_writer_to_manager_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -884,55 +921,54 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Writer",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Writer", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
@@ -940,6 +976,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_writer_to_admin_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -947,57 +986,56 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Writer",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Writer", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         expected_error = f'ERROR: Not enough permissions ({{"missing": [{{"uri": "cluster://default/orgs/{org.org_name}/projects/{proj.project_name}/admins", "action": "write"}}]}})'
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Admin",
             expected_error=expected_error,
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Writer", email=third_user.email
         )
 
@@ -1005,6 +1043,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_manager_to_reader_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -1012,55 +1053,54 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Manager",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Manager", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
@@ -1068,6 +1108,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_manager_to_writer_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -1075,55 +1118,54 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Manager",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Manager", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Writer",
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Writer", email=third_user.email
         )
 
@@ -1131,6 +1173,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_manager_to_admin_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -1138,57 +1183,56 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Manager",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Manager", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         expected_error = f'ERROR: Not enough permissions ({{"missing": [{{"uri": "cluster://default/orgs/{org.org_name}/projects/{proj.project_name}/admins", "action": "write"}}]}})'
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Admin",
             expected_error=expected_error,
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Manager", email=third_user.email
         )
 
@@ -1196,6 +1240,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_manager_change_admin_to_reader_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -1203,57 +1250,56 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Manager",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Admin",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Manager", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Admin", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         expected_error = f'ERROR: Not enough permissions ({{"missing": [{{"uri": "cluster://default/orgs/{org.org_name}/projects/{proj.project_name}/admins", "action": "write"}}]}})'
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
             expected_error=expected_error,
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Admin", email=third_user.email
         )
 
@@ -1261,6 +1307,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_writer_change_reader_to_writer_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -1268,57 +1317,56 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Writer",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Writer", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         expected_error = f'ERROR: Not enough permissions ({{"missing": [{{"uri": "cluster://default/orgs/{org.org_name}/projects/{proj.project_name}/users", "action": "write"}}]}})'
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Writer",
             expected_error=expected_error,
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
@@ -1326,6 +1374,9 @@ class TestCLIProjectStructureSetup(BaseCLITest):
     async def test_reader_change_reader_to_writer_cli(self) -> None:
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
+        await self._ui_steps.ui_add_org_api(
+            token=user.token, gherkin_name="My-organization"
+        )
         u2_ui_steps = await self.init_ui_test_steps()
         second_user = await u2_ui_steps.ui_get_second_user()
         await u2_ui_steps.ui_login(second_user)
@@ -1333,56 +1384,55 @@ class TestCLIProjectStructureSetup(BaseCLITest):
         third_user = await u3_ui_steps.ui_get_third_user()
         await u3_ui_steps.ui_login(third_user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self._cli_steps.cli_add_new_organization("My-organization", user=user)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name("My-organization")
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=second_user.username, role="User"
         )
-        await self._cli_steps.cli_add_user_to_org(
+        await self._cli_steps.admin.cli_add_user_to_org(
             org_name=org.org_name, username=third_user.username, role="User"
         )
 
         proj = org.add_project("project 1")
-        await self._cli_steps.cli_add_new_project(
+        await self._cli_steps.admin.cli_add_new_project(
             org_name=org.org_name, proj_name=proj.project_name
         )
 
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=second_user.username,
             role="Reader",
         )
-        await self._cli_steps.cli_add_org_member_to_project(
+        await self._cli_steps.admin.cli_add_org_member_to_project(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Reader",
         )
 
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=second_user.username, role="Reader", email=second_user.email
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )
 
-        await self._cli_steps.cli_login_with_token(token=second_user.token)
+        await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         expected_error = f'ERROR: Not enough permissions ({{"missing": [{{"uri": "cluster://default/orgs/{org.org_name}/projects/{proj.project_name}/users", "action": "write"}}]}})'
-        await self._cli_steps.cli_update_proj_user_role(
+        await self._cli_steps.admin.cli_update_proj_user_role(
             org_name=org.org_name,
             proj_name=proj.project_name,
             username=third_user.username,
             role="Writer",
             expected_error=expected_error,
         )
-        await self._cli_steps.cli_get_proj_users(
+        await self._cli_steps.admin.cli_get_proj_users(
             org_name=org.org_name, proj_name=proj.project_name
         )
-        await self._cli_steps.verify_cli_user_in_proj_users_output(
+        await self._cli_steps.admin.verify_cli_user_in_proj_users_output(
             username=third_user.username, role="Reader", email=third_user.email
         )

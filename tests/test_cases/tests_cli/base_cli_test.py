@@ -6,8 +6,8 @@ from collections.abc import Awaitable, Callable
 import pytest
 
 from tests.components.ui.page_manager import PageManager
-from tests.test_cases.steps.common_steps.cli_steps.cli_common_steps import (
-    CLICommonSteps,
+from tests.test_cases.steps.cli_steps.cli_steps import (
+    CLISteps,
 )
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
 from tests.utils.cli.apolo_cli import ApoloCLI
@@ -96,8 +96,8 @@ class BaseCLITest:
 
         return steps
 
-    async def init_test_steps(self) -> CLICommonSteps:
-        steps = CLICommonSteps(
+    async def init_cli_test_steps(self) -> CLISteps:
+        steps = CLISteps(
             test_config=self._test_config,
             apolo_cli=self._apolo_cli,
             data_manager=self._data_manager,
