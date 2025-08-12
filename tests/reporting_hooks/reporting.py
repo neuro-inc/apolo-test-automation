@@ -28,7 +28,8 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
         @wraps(func)
         async def wrapper(*args: Any, **kwargs: Any) -> Any:
             is_failed = False
-            resolved_name, page = _resolve_step_name(func, args, step_name)
+            resolved_name, page = _handle_if_ui_step(func, args, step_name)
+            cli_obj = _handle_if_cli_step(func, args, step_name)
 
             logger.info(f"▶️ STEP started: {resolved_name}")
             with allure.step(resolved_name):
@@ -57,6 +58,17 @@ def async_step(step_name: str) -> Callable[[ReportFunc], ReportFunc]:
                     if page:
                         await _capture_screenshot(
                             page, resolved_name, func.__name__, is_failed
+                        )
+                    if cli_obj:
+                        allure.attach(
+                            cli_obj.last_command_executed,
+                            name="Executed CLI command",
+                            attachment_type=allure.attachment_type.TEXT,
+                        )
+                        allure.attach(
+                            cli_obj.last_command_output,
+                            name="Executed CLI command output",
+                            attachment_type=allure.attachment_type.TEXT,
                         )
 
         return cast(ReportFunc, wrapper)
@@ -142,7 +154,7 @@ def async_suite(
     return decorator
 
 
-def _resolve_step_name(
+def _handle_if_ui_step(
     func: ABC_Callable[..., Any], args: tuple[Any, ...], base_name: str
 ) -> tuple[str, Any | None]:
     """Determine dynamic step name and extract page (if present)."""
@@ -160,6 +172,21 @@ def _resolve_step_name(
     )
     page = getattr(page_manager, "page", None)
     return step_name, page
+
+
+def _handle_if_cli_step(
+    func: ABC_Callable[..., Any], args: tuple[Any, ...], base_name: str
+) -> Any | None:
+    """Determine dynamic step name and extract page (if present)."""
+    if "cli_" not in func.__name__ or not args:
+        return None
+
+    self_instance = args[0]
+    cli_instance = getattr(self_instance, "_apolo_cli", None)
+    if not cli_instance:
+        return None
+    else:
+        return cli_instance
 
 
 async def _capture_screenshot(

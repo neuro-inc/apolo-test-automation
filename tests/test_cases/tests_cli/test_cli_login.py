@@ -1,6 +1,6 @@
 import pytest
 
-from tests.reporting_hooks.reporting import async_step, async_suite, async_title
+from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.tests_cli.base_cli_test import BaseCLITest
 
 
@@ -12,7 +12,7 @@ class TestCLILogin(BaseCLITest):
         Initialize shared resources for the test methods.
         """
         self._ui_steps = await self.init_ui_test_steps()
-        self._cli_steps = await self.init_test_steps()
+        self._cli_steps = await self.init_cli_test_steps()
 
         await self._cli_steps.verify_cli_client_installed()
 
@@ -21,9 +21,8 @@ class TestCLILogin(BaseCLITest):
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user)
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self.cli_verify_login_successful()
-        await self._cli_steps.cli_verify_login_output(user.username)
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
+        await self._cli_steps.config.cli_verify_login_output(user.username)
 
     @async_title("User with organization logs in with auth token via CLI")
     async def test_login_org_with_token_cli(self) -> None:
@@ -33,12 +32,11 @@ class TestCLILogin(BaseCLITest):
             token=user.token, gherkin_name="Default-organization"
         )
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self.cli_verify_login_successful()
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
         org = self._data_manager.get_organization_by_gherkin_name(
             "Default-organization"
         )
-        await self._cli_steps.cli_verify_login_output(
+        await self._cli_steps.config.cli_verify_login_output(
             user.username, org_name=org.org_name
         )
 
@@ -61,13 +59,8 @@ class TestCLILogin(BaseCLITest):
             proj_default=False,
         )
 
-        await self._cli_steps.cli_login_with_token(token=user.token)
-        await self.cli_verify_login_successful()
+        await self._cli_steps.config.cli_login_with_token(token=user.token)
 
-        await self._cli_steps.cli_verify_login_output(
+        await self._cli_steps.config.cli_verify_login_output(
             user.username, org_name=org.org_name, proj_name=proj.project_name
         )
-
-    @async_step("Verify CLI login successful")
-    async def cli_verify_login_successful(self) -> None:
-        assert self._apolo_cli.login_successful, "Login via CLI should be successful!"
