@@ -1,11 +1,12 @@
 import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
-from tests.test_cases.tests_cli.base_cli_test import BaseCLITest
+
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("CLI Project Remove Members", parent="CLI Tests")
-class TestCLIProjectStructureSetup(BaseCLITest):
+class TestCLIProjectStructureSetup(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
@@ -19,6 +20,7 @@ class TestCLIProjectStructureSetup(BaseCLITest):
 
     @async_title("Admin change member role from Reader to Writer in project via CLI")
     async def test_admin_change_reader_to_writer_cli(self) -> None:
+        """ """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(

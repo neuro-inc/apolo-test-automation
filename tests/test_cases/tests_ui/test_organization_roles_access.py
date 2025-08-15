@@ -2,24 +2,27 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Organization Roles Access", parent="UI Tests")
-class TestUIOrganizationRolesAccess(BaseUITest):
+class TestUIOrganizationRolesAccess(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Verify invited User access")
     async def test_invited_user_access(self) -> None:
         """
-        Invite member with USER role.
-        Verify that user:
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with User role via API.
+        Verify that User:
             - Cannot access organization Settings
             - Cannot access organization Billing
             - Cannot invite member to organization
@@ -30,7 +33,7 @@ class TestUIOrganizationRolesAccess(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -70,15 +73,18 @@ class TestUIOrganizationRolesAccess(BaseUITest):
     @async_title("Verify invited Manager can access organization settings")
     async def test_invited_manager_org_settings(self) -> None:
         """
-        Invite member with Manager role.
-        Verify that user:
-            - Can access organization Settings
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        Verify that Manager:
+            - Can access organization Settings.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -112,15 +118,18 @@ class TestUIOrganizationRolesAccess(BaseUITest):
     @async_title("Verify invited Manager can access organization billing")
     async def test_invited_manager_org_billing(self) -> None:
         """
-        Invite member with Manager role.
-        Verify that user:
-            - Can access organization Billing
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        Verify that Manager:
+            - Can access organization Billing.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -154,15 +163,18 @@ class TestUIOrganizationRolesAccess(BaseUITest):
     @async_title("Verify invited Admin can access organization settings")
     async def test_invited_admin_org_settings(self) -> None:
         """
-        Invite member with Admin role.
-        Verify that user:
-            - Can access organization Settings
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Admin role via API.
+        Verify that Admin:
+            - Can access organization Settings.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -195,15 +207,18 @@ class TestUIOrganizationRolesAccess(BaseUITest):
     @async_title("Verify invited Admin can access organization billing")
     async def test_invited_admin_org_billing(self) -> None:
         """
-        Invite member with Admin role.
-        Verify that user:
-            - Can access organization Billing
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Admin role via API.
+        Verify that Admin:
+            - Can access organization Billing.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
