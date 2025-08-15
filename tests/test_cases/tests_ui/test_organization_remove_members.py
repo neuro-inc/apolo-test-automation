@@ -2,31 +2,34 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Organization Remove Members", parent="UI Tests")
-class TestUIOrganizationRemoveMembers(BaseUITest):
+class TestUIOrganizationRemoveMembers(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Verify Admin can remove User from organization")
     async def test_admin_remove_user_from_org(self) -> None:
         """
-        Invite member with User role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with User role via API.
         Verify that:
-            - Admin can remove User from organization
+            - Admin can remove User from organization.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -76,15 +79,18 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
     @async_title("Verify Admin can remove Manager from organization")
     async def test_admin_remove_manager_from_org(self) -> None:
         """
-        Invite member with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
         Verify that:
-            - Admin can remove Manager from organization
+            - Admin can remove Manager from organization.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -134,15 +140,18 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
     @async_title("Verify Admin can remove another Admin from organization")
     async def test_admin_remove_admin_from_org(self) -> None:
         """
-        Invite member with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Admin role via API.
         Verify that:
-            - Admin can remove Admin from organization
+            - Admin can remove another Admin from organization.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -192,15 +201,18 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
     @async_title("Verify Admin cannot remove himself from organization")
     async def test_admin_remove_himself_from_org(self) -> None:
         """
-        Invite member with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Admin role via API.
         Verify that:
-            - Admin cannot remove himself from organization
+            - Admin cannot remove himself from organization.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -250,16 +262,21 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
     @async_title("Verify Manager can remove User from organization")
     async def test_manager_remove_user_from_org(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with User role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with User role via API.
         Verify that:
-            - Manager can remove User from organization
+            - Manager can remove User from organization.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -328,16 +345,21 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
     @async_title("Verify Manager can remove another Manager from organization")
     async def test_manager_remove_manager_from_org(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with Manager role via API.
         Verify that:
-            - Manager can remove another Manager from organization
+            - Manager can remove another Manager from organization.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -406,16 +428,21 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
     @async_title("Verify Manager cannot remove Admin from organization")
     async def test_manager_remove_admin_from_org(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with Admin role via API.
         Verify that:
-            - Manager cannot remove another Admin from organization
+            - Manager cannot remove another Admin from organization.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -484,7 +511,10 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
     @async_title("Verify Manager cannot remove himself from organization")
     async def test_manager_remove_himself_from_org(self) -> None:
         """
-        Invite member with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
         Verify that:
             - Manager cannot remove himself from organization
         """
@@ -492,7 +522,7 @@ class TestUIOrganizationRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 

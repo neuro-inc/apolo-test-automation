@@ -2,24 +2,28 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Project Roles Access", parent="UI Tests")
-class TestUIProjectRolesAccess(BaseUITest):
+class TestUIProjectRolesAccess(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Verify Reader cannot modify files")
     async def test_reader_modify_files(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Reader role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Reader role.
         Verify that:
             - Reader doesn't have access to modify Files
         """
@@ -27,7 +31,7 @@ class TestUIProjectRolesAccess(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -74,8 +78,12 @@ class TestUIProjectRolesAccess(BaseUITest):
     @async_title("Verify Writer can modify files")
     async def test_writer_modify_files(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Writer role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Writer role.
         Verify that:
             - Writer has access to modify Files
         """
@@ -83,7 +91,7 @@ class TestUIProjectRolesAccess(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -130,8 +138,12 @@ class TestUIProjectRolesAccess(BaseUITest):
     @async_title("Verify Manager can modify files")
     async def test_manager_modify_files(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
         Verify that:
             - Manager has access to modify Files
         """
@@ -139,7 +151,7 @@ class TestUIProjectRolesAccess(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -186,18 +198,23 @@ class TestUIProjectRolesAccess(BaseUITest):
     @async_title("Verify Manager can invite Reader to a project")
     async def test_manager_invite_reader_to_project(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
+        -Signup third user.
+        -Invite third user to organization via API.
         Verify that:
-            - Manager can invite Reader to a project
+            - Manager can invite third user as Reader to a project
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()
@@ -261,18 +278,23 @@ class TestUIProjectRolesAccess(BaseUITest):
     @async_title("Verify Manager can invite Writer to a project")
     async def test_manager_invite_writer_to_project(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
+        -Signup third user.
+        -Invite third user to organization via API.
         Verify that:
-            - Manager can invite Writer to a project
+            - Manager can invite third user as Writer to a project
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()
@@ -336,18 +358,23 @@ class TestUIProjectRolesAccess(BaseUITest):
     @async_title("Verify Manager can invite Manager to a project")
     async def test_manager_invite_manager_to_project(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
+        -Signup third user.
+        -Invite third user to organization via API.
         Verify that:
-            - Manager can invite Manager to a project
+            - Manager can invite third user as Manager to a project
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()
@@ -411,18 +438,23 @@ class TestUIProjectRolesAccess(BaseUITest):
     @async_title("Verify Manager cannot invite Admin to a project")
     async def test_manager_invite_admin_to_project(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
+        -Signup third user.
+        -Invite third user to organization via API.
         Verify that:
-            - Manager cannot invite Admin to a project
+            - Manager cannot invite third user as Admin to a project.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()

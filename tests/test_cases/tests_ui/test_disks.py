@@ -2,24 +2,26 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Disks", parent="UI Tests")
-class TestUIDisks(BaseUITest):
+class TestUIDisks(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Create First Disk without project via UI")
     async def test_create_first_disk_no_project_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
         Verify that:
-            - User cannot create first Disk if no project created yet
+            - User cannot create first Disk if no project created yet.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -40,6 +42,9 @@ class TestUIDisks(BaseUITest):
     @async_title("Create First Disk via UI")
     async def test_create_first_disk_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
         Verify that:
             - User can create first Disk after project created
         """
@@ -74,8 +79,12 @@ class TestUIDisks(BaseUITest):
     @async_title("Create Second Disk via UI")
     async def test_create_second_disk_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create new Disk.
         Verify that:
-            - User can create second Disk
+            - User can create second Disk.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -118,8 +127,13 @@ class TestUIDisks(BaseUITest):
     @async_title("Search Disk via UI")
     async def test_search_disk_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create new Disk.
+        -Create second Disk.
         Verify that:
-            - User can search for Disk
+            - User can search for Disk via Ui with the Search field.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -168,6 +182,10 @@ class TestUIDisks(BaseUITest):
     @async_title("Open Disk info view by click on disk button")
     async def test_disk_info_view_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create new Disk.
         Verify that:
             - After click on disk button Disk info view appears
         """
@@ -210,8 +228,12 @@ class TestUIDisks(BaseUITest):
     @async_title("Delete Disk via UI")
     async def test_delete_disk_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create new Disk.
         Verify that:
-            - User can delete Disk
+            - User can delete Disk.
         """
         steps = self._steps
         user = self._users_manager.main_user

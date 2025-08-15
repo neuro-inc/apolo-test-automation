@@ -6,14 +6,16 @@ from collections.abc import Awaitable, Callable
 import pytest
 
 from tests.components.ui.page_manager import PageManager
+from tests.test_cases.steps.cli_steps.cli_steps import CLISteps
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
+from tests.utils.cli.apolo_cli import ApoloCLI
 from tests.utils.test_config_helper import ConfigManager
 from tests.utils.test_data_management.test_data import DataManager
 from tests.utils.test_data_management.users_manager import UsersManager
 from tests.utils.api_helper import APIHelper
 
 
-class BaseUITest:
+class BaseTestClass:
     @pytest.fixture(autouse=True)
     async def _inject_fixtures(
         self,
@@ -23,6 +25,7 @@ class BaseUITest:
         data_manager: DataManager,
         users_manager: UsersManager,
         api_helper: APIHelper,
+        apolo_cli: ApoloCLI,
     ) -> None:
         """
         Inject test dependencies into the base test class.
@@ -39,6 +42,7 @@ class BaseUITest:
         self._data_manager = data_manager
         self._users_manager = users_manager
         self._api_helper = api_helper
+        self._apolo_cli = apolo_cli
 
         self._user_counter = 1
         self._primary_taken = False
@@ -77,7 +81,7 @@ class BaseUITest:
         formatted_message = f"{':' * 15} {message}"
         self.logger.log(level, formatted_message)
 
-    async def init_test_steps(self) -> UISteps:
+    async def init_ui_test_steps(self) -> UISteps:
         pm = await self._pick_pm()
 
         steps = UISteps(
@@ -88,4 +92,12 @@ class BaseUITest:
             self._api_helper,
         )
 
+        return steps
+
+    async def init_cli_test_steps(self) -> CLISteps:
+        steps = CLISteps(
+            test_config=self._test_config,
+            apolo_cli=self._apolo_cli,
+            data_manager=self._data_manager,
+        )
         return steps

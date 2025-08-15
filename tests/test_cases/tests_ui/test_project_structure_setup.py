@@ -2,21 +2,27 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Project Structure Setup", parent="UI Tests")
-class TestUIProjectStructureSetup(BaseUITest):
+class TestUIProjectStructureSetup(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Create First Project from main page via UI")
     async def test_create_first_proj_main_page_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        Verify that:
+            User can create first project in organization from the main page.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
@@ -44,6 +50,12 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Create First Project from top pane of main via UI")
     async def test_create_first_proj_top_pane_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        Verify that:
+            User can create first project in organization from project menu in the top pane of the main page.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
@@ -75,6 +87,13 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Create second project via UI")
     async def test_create_second_proj_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        Verify that:
+            User can create second project in organization.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
@@ -116,6 +135,15 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Invite member of organization to project via UI")
     async def test_invite_org_member_to_proj_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization.
+        Verify that:
+            User can invite member of organization to project.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
@@ -130,7 +158,7 @@ class TestUIProjectStructureSetup(BaseUITest):
             org_name=org.org_name, proj_name=proj1.project_name, default_role="Reader"
         )
 
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         self.log("User2 login")
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
@@ -199,6 +227,15 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Invite member that NOT in organization to project via UI")
     async def test_invite_not_org_member_to_proj_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup new user.
+        -DO NOT invite second user to organization.
+        Verify that:
+            User cannot invite to project another user which is not member of organization.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
@@ -223,7 +260,7 @@ class TestUIProjectStructureSetup(BaseUITest):
             org_name=org.org_name, proj_name=proj1.project_name
         )
 
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         self.log("User2 login")
         second_user = await u2_steps.ui_signup_new_user_ver_link()
         self.log("User2 password new user onboarding and create organization")
@@ -240,6 +277,13 @@ class TestUIProjectStructureSetup(BaseUITest):
 
     @async_title("Invite not registered user to project via UI")
     async def test_invite_not_registered_to_proj_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        Verify that:
+            User cannot invite to project another user which is not registered.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
