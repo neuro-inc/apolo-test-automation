@@ -2,22 +2,24 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Secrets", parent="UI Tests")
-class TestUISecrets(BaseUITest):
+class TestUISecrets(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Create First Secret without project via UI")
     async def test_create_first_secret_no_project_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
         Verify that:
             - User cannot create first Secret if no project created yet
         """
@@ -40,6 +42,9 @@ class TestUISecrets(BaseUITest):
     @async_title("Create First Secret via UI")
     async def test_create_first_secret_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
         Verify that:
             - User can create first Secret after project created
         """
@@ -73,8 +78,12 @@ class TestUISecrets(BaseUITest):
     @async_title("Create Second Secret via UI")
     async def test_create_second_secret_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create Secret.
         Verify that:
-            - User can create second Secret
+            - User can create second Secret.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -114,8 +123,12 @@ class TestUISecrets(BaseUITest):
     @async_title("Search Secret via UI")
     async def test_search_secret_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create Secret.
         Verify that:
-            - User can Search for secret
+            - User can Search for secret via UI.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -165,8 +178,12 @@ class TestUISecrets(BaseUITest):
     @async_title("Delete Secret via UI")
     async def test_delete_secret_via_ui(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create Secret.
         Verify that:
-            - User can delete Secret
+            - User can delete Secret.
         """
         steps = self._steps
         user = self._users_manager.main_user

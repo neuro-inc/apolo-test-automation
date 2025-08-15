@@ -2,24 +2,28 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Project Remove Members", parent="UI Tests")
-class TestUIProjectRemoveMembers(BaseUITest):
+class TestUIProjectRemoveMembers(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Verify Admin can remove Reader from project")
     async def test_admin_remove_reader_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Reader role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Reader role.
         Verify that:
             - Admin can remove Reader from project
         """
@@ -27,7 +31,7 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -90,8 +94,12 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Admin can remove Writer from project")
     async def test_admin_remove_writer_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Writer role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Writer role.
         Verify that:
             - Admin can remove Writer from project
         """
@@ -99,7 +107,7 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -161,8 +169,12 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Admin can remove Manager from project")
     async def test_admin_remove_manager_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
         Verify that:
             - Admin can remove Manager from project
         """
@@ -170,7 +182,7 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -232,8 +244,12 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Admin can remove another Admin from project")
     async def test_admin_remove_admin_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Admin role.
         Verify that:
             - Admin can remove another Admin from project
         """
@@ -241,7 +257,7 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -303,6 +319,9 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Admin cannot remove himself from project")
     async def test_admin_remove_himself_from_proj(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
         Verify that:
             - Admin cannot remove himself from project
         """
@@ -332,10 +351,15 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Manager can remove Reader from project")
     async def test_manager_remove_reader_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Manager role.
-        Invite member2 to project with Reader role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
+        -Signup third user.
+        -Invite third user to organization via API.
+        -Invite third user to project with Reader role.
         Verify that:
             - Manager can remove Reader from project
         """
@@ -343,8 +367,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()
@@ -431,10 +455,15 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Manager can remove Writer from project")
     async def test_manager_remove_writer_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Manager role.
-        Invite member2 to project with Writer role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
+        -Signup third user.
+        -Invite third user to organization via API.
+        -Invite third user to project with Writer role.
         Verify that:
             - Manager can remove Writer from project
         """
@@ -442,8 +471,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()
@@ -530,10 +559,15 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Manager can remove another Manager from project")
     async def test_manager_remove_manager_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Manager role.
-        Invite member2 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
+        -Signup third user.
+        -Invite third user to organization via API.
+        -Invite third user to project with Manager role.
         Verify that:
             - Manager can remove another Manager from project
         """
@@ -541,8 +575,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()
@@ -629,10 +663,15 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Manager cannot remove Admin from project")
     async def test_manager_remove_admin_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Manager role.
-        Invite member2 to project with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
+        -Signup third user.
+        -Invite third user to organization via API.
+        -Invite third user to project with Admin role.
         Verify that:
             - Manager cannot remove Admin from project
         """
@@ -640,8 +679,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()
@@ -729,8 +768,12 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Manager cannot remove himself from project")
     async def test_manager_remove_himself_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
         Verify that:
             - Manager cannot remove himself from project
         """
@@ -738,7 +781,7 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -787,10 +830,15 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Writer cannot remove members from project")
     async def test_writer_remove_reader_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Writer role.
-        Invite member2 to project with Reader role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Reader role.
+        -Signup third user.
+        -Invite third user to organization via API.
+        -Invite third user to project with Reader role.
         Verify that:
             - Writer cannot remove members from project
         """
@@ -798,8 +846,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()
@@ -870,10 +918,15 @@ class TestUIProjectRemoveMembers(BaseUITest):
     @async_title("Verify Reader cannot remove members from project")
     async def test_reader_remove_reader_from_proj(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member2 to organization with User role.
-        Invite member1 to project with Reader role.
-        Invite member2 to project with Reader role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Reader role.
+        -Signup third user.
+        -Invite third user to organization via API.
+        -Invite third user to project with Reader role.
         Verify that:
             - Reader cannot remove members from project
         """
@@ -881,8 +934,8 @@ class TestUIProjectRemoveMembers(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         third_user = await u3_steps.ui_get_third_user()

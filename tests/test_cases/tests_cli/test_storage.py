@@ -1,11 +1,12 @@
 import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
-from tests.test_cases.tests_cli.base_cli_test import BaseCLITest
+
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("CLI Storage", parent="CLI Tests")
-class TestCLIStorage(BaseCLITest):
+class TestCLIStorage(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
@@ -19,6 +20,14 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin create folder without project created via CLI")
     async def test_admin_create_folder_no_project_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        Verify that:
+            - User cannot create folder if there is no project created yet via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -34,6 +43,15 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin create folder via CLI")
     async def test_admin_create_folder_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        Verify that:
+            - User can create folder via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -53,6 +71,16 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin rename folder via CLI")
     async def test_admin_rename_folder_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        -Create new folder via CLI.
+        Verify that:
+            - User can rename folder via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -79,6 +107,16 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin remove folder via CLI")
     async def test_admin_remove_folder_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        -Create new folder via CLI.
+        Verify that:
+            - User can remove folder via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -101,6 +139,14 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin upload file without project created via CLI")
     async def test_admin_upload_no_project_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        Verify that:
+            - User cannot upload file if there is no project created yet via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -117,6 +163,15 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin upload text file via CLI")
     async def test_admin_upload_txt_file_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        Verify that:
+            - User can upload txt file via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -137,6 +192,15 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin upload bin file via CLI")
     async def test_admin_upload_bin_file_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        Verify that:
+            - User can upload bin file via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -157,6 +221,17 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin download text file via CLI")
     async def test_admin_download_txt_file_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        -Upload text file via CLI.
+        Verify that:
+            - User can download txt file via CLI.
+            - downloaded txt file md5 hash matches expected file.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -184,6 +259,17 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin download bin file via CLI")
     async def test_admin_download_bin_file_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        -Upload bin file via CLI.
+        Verify that:
+            - User can download bin file via CLI.
+            - downloaded bin file md5 hash matches expected file.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -211,6 +297,16 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin rename text file via CLI")
     async def test_admin_rename_txt_file_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        -Upload text file via CLI.
+        Verify that:
+            - User can rename txt file via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -237,6 +333,16 @@ class TestCLIStorage(BaseCLITest):
 
     @async_title("Admin remove text file via CLI")
     async def test_admin_remove_txt_file_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create new organization via API.
+        -Login with Bearer auth token via CLI.
+        -Create new project via CLI.
+        -Upload text file via CLI.
+        Verify that:
+            - User can remove txt file via CLI.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(

@@ -2,11 +2,11 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Organization Change Member Roles", parent="UI Tests")
-class TestUIOrganizationChangeMemberRoles(BaseUITest):
+class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     """
     This class tests the UI Organization Change Member Roles via UI.
     """
@@ -16,13 +16,16 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Verify Admin can change User role to Manager")
     async def test_admin_change_user_to_manager(self) -> None:
         """
-        Invite member with User role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with User role via API.
         Verify that:
             - Admin can change user role from User to Manager
             - User after changing role from User to Manager:
@@ -33,7 +36,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -85,7 +88,10 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Admin can change User role to Admin")
     async def test_admin_change_user_to_admin(self) -> None:
         """
-        Invite member with User role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with User role via API.
         Verify that:
             - Admin can change user role from User to Admin
             - User after changing role from User to Admin:
@@ -96,7 +102,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -148,7 +154,10 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Admin can change Manager role to User")
     async def test_admin_change_manager_to_user(self) -> None:
         """
-        Invite member with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
         Verify that:
             - Admin can change user role from Manager to User
             - User after changing role from Manager to User:
@@ -159,7 +168,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -211,7 +220,10 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Admin can change Manager role to Admin")
     async def test_admin_change_manager_to_admin(self) -> None:
         """
-        Invite member with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
         Verify that:
             - Admin can change user role from Manager to Admin
             - User after changing role from Manager to Admin:
@@ -222,7 +234,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -275,7 +287,10 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Admin can change Admin role to User")
     async def test_admin_change_admin_to_user(self) -> None:
         """
-        Invite member with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Admin role via API.
         Verify that:
             - Admin can change user role from Admin to User
             - User after changing role from Admin to User:
@@ -286,7 +301,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -339,7 +354,10 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Admin can change Admin role to Manager")
     async def test_admin_change_admin_to_manager(self) -> None:
         """
-        Invite member with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Admin role via API.
         Verify that:
             - Admin can change user role from Admin to Manager
             - User after changing role from Admin to Manager:
@@ -350,7 +368,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -403,7 +421,10 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Admin cannot demote himself to User")
     async def test_admin_demote_himself_to_user(self) -> None:
         """
-        Invite member with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Admin role via API.
         Verify that:
             - Admin cannot demote himself to User
         """
@@ -411,7 +432,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -463,7 +484,10 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Admin cannot demote himself to Manager")
     async def test_admin_demote_himself_to_manager(self) -> None:
         """
-        Invite member with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Admin role via API.
         Verify that:
             - Admin cannot demote himself to Manager
         """
@@ -471,7 +495,7 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -523,7 +547,12 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Manager can change User role to Manager")
     async def test_manager_change_user_to_manager(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with User role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with User role via API.
         Verify that:
             - Manager can change user role from User to Manager
             - User after changing role from User to Manager:
@@ -534,8 +563,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -608,16 +637,21 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Manager cannot change User role to Admin")
     async def test_manager_change_user_to_admin(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with User role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with User role via API.
         Verify that:
-            - Manager cannot change user role from User to Admin
+            - Manager cannot change user role from User to Admin.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -692,10 +726,15 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Manager can change Manager role to User")
     async def test_manager_change_manager_to_user(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with Manager role via API.
         Verify that:
             - Manager can change user role from Manager to User
-            - User after changing role from User to Manager:
+            - User after changing role from Manager to User:
                 - Cannot access organization Settings
                 - Cannot access organization Billing
         """
@@ -703,8 +742,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -777,16 +816,21 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Manager cannot change Manager role to Admin")
     async def test_manager_change_manager_to_admin(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with Manager role via API.
         Verify that:
-            - Manager cannot change user role from Manager to Admin
+            - Manager cannot change user role from Manager to Admin.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -861,7 +905,12 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Manager cannot change Admin role to User")
     async def test_manager_change_admin_to_user(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with Admin role via API.
         Verify that:
             - Manager cannot change user role from Admin to User
         """
@@ -869,8 +918,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -945,7 +994,12 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Manager cannot change Admin role to Manager")
     async def test_manager_change_admin_to_manager(self) -> None:
         """
-        Invite member1 with Manager role. Invite member2 with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
+        -Signup third user.
+        -Invite third user to organization with Admin role via API.
         Verify that:
             - Manager cannot change user role from Admin to Manager
         """
@@ -953,8 +1007,8 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
-        u3_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -1029,15 +1083,18 @@ class TestUIOrganizationChangeMemberRoles(BaseUITest):
     @async_title("Verify Manager cannot demote himself to User")
     async def test_manager_demote_himself_to_user(self) -> None:
         """
-        Invite member with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role via API.
         Verify that:
-            - Manager cannot demote himself to User
+            - Manager cannot demote himself to User.
         """
 
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 

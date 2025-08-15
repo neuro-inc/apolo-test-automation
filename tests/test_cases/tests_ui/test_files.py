@@ -2,24 +2,28 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Files", parent="UI Tests")
-class TestUIFiles(BaseUITest):
+class TestUIFiles(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Verify Writer can create new folder")
     async def test_writer_create_folder(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Writer role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Writer role.
         Verify that:
             - Writer can create new folder
         """
@@ -28,7 +32,7 @@ class TestUIFiles(BaseUITest):
         user = self._users_manager.main_user
         await steps.ui_login(user)
 
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -83,8 +87,12 @@ class TestUIFiles(BaseUITest):
     @async_title("Verify Manager can create new folder")
     async def test_manager_create_folder(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Manager role.
         Verify that:
             - Manager can create new folder
         """
@@ -92,7 +100,7 @@ class TestUIFiles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -147,8 +155,12 @@ class TestUIFiles(BaseUITest):
     @async_title("Verify Admin can create new folder")
     async def test_admin_create_folder(self) -> None:
         """
-        Invite member1 to organization with User role.
-        Invite member1 to project with Admin role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Invite second user to project with Admin role.
         Verify that:
             - Admin can create new folder
         """
@@ -156,7 +168,7 @@ class TestUIFiles(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -211,7 +223,10 @@ class TestUIFiles(BaseUITest):
     @async_title("User make single click on Folder")
     async def test_folder_single_click(self) -> None:
         """
-        User created Folder.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create new folder.
         Verify that after single click on folder following elements appear:
             - Folder info section
             - Folder action bar
@@ -255,8 +270,12 @@ class TestUIFiles(BaseUITest):
     @async_title("User make double click on Folder")
     async def test_folder_double_click(self) -> None:
         """
-        User created Folder.
-        Verify that user opens a folder with a double click on it.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create new folder.
+        Verify that:
+            - User opens a folder with a double click on it.
         """
 
         steps = self._steps
@@ -295,8 +314,12 @@ class TestUIFiles(BaseUITest):
     @async_title("User rename Folder")
     async def test_rename_folder(self) -> None:
         """
-        User created Folder.
-        Verify that user can rename a folder with Rename button from File action bar.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create new folder.
+        Verify that:
+            - User can rename a folder with Rename button from File action bar.
         """
 
         steps = self._steps
@@ -342,8 +365,12 @@ class TestUIFiles(BaseUITest):
     @async_title("User delete Folder")
     async def test_delete_folder(self) -> None:
         """
-        User created Folder.
-        Verify that user can delete a folder with Delete button from File action bar.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Create new folder.
+        Verify that:
+            - User can delete a folder with Delete button from File action bar.
         """
 
         steps = self._steps
@@ -387,7 +414,11 @@ class TestUIFiles(BaseUITest):
     @async_title("User upload bin file")
     async def test_upload_bin_file(self) -> None:
         """
-        Verify that user can upload bin file via UI.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        Verify that:
+            User can upload bin file via UI.
         """
 
         steps = self._steps
@@ -422,7 +453,11 @@ class TestUIFiles(BaseUITest):
     @async_title("User upload txt file")
     async def test_upload_txt_file(self) -> None:
         """
-        Verify that user can upload txt file via UI.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        Verify that:
+            - User can upload txt file via UI.
         """
 
         steps = self._steps
@@ -457,7 +492,10 @@ class TestUIFiles(BaseUITest):
     @async_title("User make single click on File")
     async def test_file_single_click(self) -> None:
         """
-        User uploaded txt file.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Upload txt file.
         Verify that after single click on file following elements appear:
             - File info section
             - File action bar
@@ -503,7 +541,10 @@ class TestUIFiles(BaseUITest):
     @async_title("User download bin file")
     async def test_download_bin_file(self) -> None:
         """
-        User uploaded bin file.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Upload bin file.
         Verify that:
             - user can download bin file via UI.
             - downloaded bin file md5 hash matches expected file.
@@ -547,7 +588,10 @@ class TestUIFiles(BaseUITest):
     @async_title("User download txt file")
     async def test_download_txt_file(self) -> None:
         """
-        User uploaded txt file.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Upload txt file.
         Verify that:
             - user can download txt file via UI.
             - downloaded bin file md5 hash matches expected file.
@@ -591,8 +635,12 @@ class TestUIFiles(BaseUITest):
     @async_title("User rename File")
     async def test_rename_file(self) -> None:
         """
-        User uploaded txt file.
-        Verify that user can rename a file with Rename button from File action bar.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Upload txt file.
+        Verify that:
+            - User can rename a file with Rename button from File action bar.
         """
 
         steps = self._steps
@@ -640,8 +688,12 @@ class TestUIFiles(BaseUITest):
     @async_title("User delete File")
     async def test_delete_file(self) -> None:
         """
-        User uploaded txt file.
-        Verify that user can delete a file with Delete button from File action bar.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project.
+        -Upload txt file.
+        Verify that:
+            - User can delete a file with Delete button from File action bar.
         """
 
         steps = self._steps

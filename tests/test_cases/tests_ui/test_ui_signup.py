@@ -4,21 +4,25 @@ from __future__ import annotations
 import pytest
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Signup", parent="UI Tests")
-class TestUISignup(BaseUITest):
+class TestUISignup(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("New user successful signup")
     async def test_new_user_signup(self) -> None:
+        """
+        Verify that:
+            New user can signup via UI.
+        """
         user = self._users_manager.generate_user()
         steps = self._steps
         await steps.auth_page.ui_click_signup_button()
@@ -44,8 +48,14 @@ class TestUISignup(BaseUITest):
 
     @async_title("Invite not registered user as user to organization")
     async def test_invite_not_registered_user_to_org(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization.
+        Verify that:
+            User can invite not registered user to organization.
+        """
         steps = self._steps
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         user = self._users_manager.main_user
         await steps.ui_login(user)
         second_user = self._users_manager.generate_user()
@@ -106,10 +116,18 @@ class TestUISignup(BaseUITest):
         "Invite not registered user to organization with default project via UI"
     )
     async def test_invite_not_registered_user_to_org_with_default_proj(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization.
+        -Create project with 'default' option.
+        -Invite not registered user to organization.
+        Verify that:
+            Newly invited user automatically is member of default project.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = self._users_manager.generate_user()
 
         await steps.ui_add_org_api(

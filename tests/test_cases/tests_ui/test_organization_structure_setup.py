@@ -2,21 +2,26 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Organization Structure Setup", parent="UI Tests")
-class TestUIOrganizationStructureSetup(BaseUITest):
+class TestUIOrganizationStructureSetup(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Create First Organization via UI")
     async def test_create_first_organization_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        Verify that:
+            User can create first organization during onboarding.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
@@ -38,6 +43,12 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Create Second Organization via UI")
     async def test_create_second_organization_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        Verify that:
+            User can create second organization.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
@@ -62,6 +73,13 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Switch between organization via UI")
     async def test_switch_org_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create second organization via UI.
+        Verify that:
+            User can switch between organizations.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
@@ -94,10 +112,16 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Set default organization credits via UI")
     async def test_set_default_credits_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        Verify that:
+            User can set default organization credits.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
         await steps.ui_add_org_api(
@@ -146,13 +170,23 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Search Member of organization via UI")
     async def test_search_org_member_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization via API.
+        -Signup third user.
+        -Invite third user to organization via API.
+        Verify that:
+            User can search organization members using Search field.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
-        u3_steps = await self.init_test_steps()
+        u3_steps = await self.init_ui_test_steps()
         third_user = await u3_steps.ui_get_third_user()
         await u3_steps.ui_login(third_user)
 
@@ -225,10 +259,17 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Invite registered user without organization to organization via UI")
     async def test_invite_registered_user_without_org_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        Verify that:
+            User can invite to organization another user that is registered but doesn't have an organization.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -259,10 +300,19 @@ class TestUIOrganizationStructureSetup(BaseUITest):
         "Invite registered user without organization to organization with default project via UI"
     )
     async def test_invite_registered_user_without_org_default_proj_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Create new project with 'default' option.
+        -Signup second user.
+        Verify that:
+            - User can invite to organization another user that is registered but doesn't have organization.
+            - Newly invited user is member of the default project.
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -294,10 +344,18 @@ class TestUIOrganizationStructureSetup(BaseUITest):
 
     @async_title("Invite user with organization to organization via UI")
     async def test_invite_registered_user_with_org_via_ui(self) -> None:
+        """
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Pass onboarding for second user and create organization via UI.
+        Verify that:
+            - User can invite to organization another user that already has organization.'
+        """
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
 
         self.log("User1 pass new user onboarding and create organization")
         await steps.ui_add_org_api(

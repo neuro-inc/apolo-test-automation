@@ -2,23 +2,26 @@ import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
-from tests.test_cases.tests_ui.base_ui_test import BaseUITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("UI Credits Purchase", parent="UI Tests")
-class TestUICreditsPurchase(BaseUITest):
+class TestUICreditsPurchase(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
         Initialize shared resources for the test methods.
         """
-        steps = await self.init_test_steps()
+        steps = await self.init_ui_test_steps()
         self._steps: UISteps = steps
 
     @async_title("Verify User cannot purchase credits via top pane")
     async def test_user_purchase_credits(self) -> None:
         """
-        Invite member with User role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with User role.
         Verify that:
             - User cannot purchase credits via top pane.
         """
@@ -26,7 +29,7 @@ class TestUICreditsPurchase(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -57,7 +60,10 @@ class TestUICreditsPurchase(BaseUITest):
     )
     async def test_manager_purchase_credits(self) -> None:
         """
-        Invite member with Manager role.
+        -Login with valid credentials.
+        -Create new organization via API.
+        -Signup second user.
+        -Invite second user to organization with Manager role.
         Verify that:
             - Manager can purchase credits using predefined value(10, 100, 1000).
         """
@@ -65,7 +71,7 @@ class TestUICreditsPurchase(BaseUITest):
         steps = self._steps
         user = self._users_manager.main_user
         await steps.ui_login(user)
-        u2_steps = await self.init_test_steps()
+        u2_steps = await self.init_ui_test_steps()
         second_user = await u2_steps.ui_get_second_user()
         await u2_steps.ui_login(second_user)
 
@@ -112,6 +118,8 @@ class TestUICreditsPurchase(BaseUITest):
     @async_title("Verify Admin can purchase organization credits with custom amount")
     async def test_admin_purchase_credits(self) -> None:
         """
+        -Login with valid credentials.
+        -Create new organization via API.
         Verify that:
             - Admin can purchase credits by input custom amount.
         """

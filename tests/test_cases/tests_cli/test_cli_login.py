@@ -1,11 +1,11 @@
 import pytest
 
 from tests.reporting_hooks.reporting import async_suite, async_title
-from tests.test_cases.tests_cli.base_cli_test import BaseCLITest
+from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("CLI Login", parent="CLI Tests")
-class TestCLILogin(BaseCLITest):
+class TestCLILogin(BaseTestClass):
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
@@ -18,6 +18,13 @@ class TestCLILogin(BaseCLITest):
 
     @async_title("User without organization logs in with auth token via CLI")
     async def test_login_with_token_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        Verify that:
+            - User can login with Bearer auth token via CLI.
+            - Login output in CLI doesn't contain organization and project.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user)
 
@@ -26,6 +33,14 @@ class TestCLILogin(BaseCLITest):
 
     @async_title("User with organization logs in with auth token via CLI")
     async def test_login_org_with_token_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create organization via API.
+        Verify that:
+            - User can login with Bearer auth token via CLI.
+            - Login output in CLI valid organization and no project info.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user)
         await self._ui_steps.ui_add_org_api(
@@ -42,6 +57,15 @@ class TestCLILogin(BaseCLITest):
 
     @async_title("User with organization and project logs in with auth token via CLI")
     async def test_login_org_proj_with_token_cli(self) -> None:
+        """
+        -Login with valid credentials via UI.
+        -Get Bearer auth token from Playwright local storage.
+        -Create organization via API.
+        -Create project via API.
+        Verify that:
+            - User can login with Bearer auth token via CLI.
+            - Login output in CLI contain valid organization and project.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user)
         await self._ui_steps.ui_add_org_api(
