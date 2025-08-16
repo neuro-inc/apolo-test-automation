@@ -18,17 +18,19 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
         # Verify CLI client installed
         await self._cli_steps.verify_cli_client_installed()
 
-    @async_title("Admin removes User from org via CLI")
+    @async_title("Admin removes User from org via **CLI**")
     async def test_admin_remove_user_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with User role via CLI.
-        Verify that:
-            - Admin can remove User from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `User` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can remove `User` from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -68,17 +70,19 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
         await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         await self._cli_steps.config.cli_verify_login_output(second_user.username)
 
-    @async_title("Admin removes Manager from org via CLI")
+    @async_title("Admin removes Manager from org via **CLI**")
     async def test_admin_remove_manager_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with Manager role via CLI.
-        Verify that:
-            - Admin can remove Manager from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `Manager` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can remove `Manager` from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -118,17 +122,19 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
         await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         await self._cli_steps.config.cli_verify_login_output(second_user.username)
 
-    @async_title("Admin removes Admin from org via CLI")
+    @async_title("Admin removes Admin from org via **CLI**")
     async def test_admin_remove_admin_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with Admin role via CLI.
-        Verify that:
-            - Admin can remove Admin from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `Admin` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can remove `Admin` from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -168,18 +174,20 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
         await self._cli_steps.config.cli_login_with_token(token=second_user.token)
         await self._cli_steps.config.cli_verify_login_output(second_user.username)
 
-    @async_title("Admin removes himself from org via CLI")
+    @async_title("Admin removes himself from org via **CLI**")
     async def test_admin_remove_himself_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with Admin role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Admin cannot remove himself from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `Admin` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` **cannot** remove `himself` from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -226,20 +234,22 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
             second_user.username, org_name=org.org_name
         )
 
-    @async_title("Manager removes User from org via CLI")
+    @async_title("Manager removes User from org via **CLI**")
     async def test_manager_remove_user_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with Manager role via CLI.
-        -Add third user to organization with User role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager can remove User from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `Manager` role via **CLI**.
+        - Add `third user` to organization with `User` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can remove `User` from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -292,20 +302,22 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
         await self._cli_steps.config.cli_login_with_token(token=third_user.token)
         await self._cli_steps.config.cli_verify_login_output(third_user.username)
 
-    @async_title("Manager removes Manager from org via CLI")
+    @async_title("Manager removes Manager from org via **CLI**")
     async def test_manager_remove_manager_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with Manager role via CLI.
-        -Add third user to organization with Manager role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager can remove Manager from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `Manager` role via **CLI**.
+        - Add `third user` to organization with `Manager` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can remove `Manager` from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -358,20 +370,22 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
         await self._cli_steps.config.cli_login_with_token(token=third_user.token)
         await self._cli_steps.config.cli_verify_login_output(third_user.username)
 
-    @async_title("Manager removes Admin from org via CLI")
+    @async_title("Manager removes Admin from org via **CLI**")
     async def test_manager_remove_admin_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with Manager role via CLI.
-        -Add third user to organization with Admin role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager cannot remove Admin from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `Manager` role via **CLI**.
+        - Add `third user` to organization with `Admin` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** remove `Admin` from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -428,18 +442,20 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
             third_user.username, org_name=org.org_name
         )
 
-    @async_title("Manager removes himself from org via CLI")
+    @async_title("Manager removes himself from org via **CLI**")
     async def test_manager_remove_himself_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with Manager role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager cannot remove himself from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `Manager` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** remove `himself` from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -486,20 +502,22 @@ class TestCLIOrganizationRemoveMembers(BaseTestClass):
             second_user.username, org_name=org.org_name
         )
 
-    @async_title("User removes User from org via CLI")
+    @async_title("User removes User from org via **CLI**")
     async def test_user_remove_user_from_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization with User role via CLI.
-        -Add third user to organization with User role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - User cannot remove members from organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization with `User` role via **CLI**.
+        - Add `third user` to organization with `User` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `User` **cannot** remove members from organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)

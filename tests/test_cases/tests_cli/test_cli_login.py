@@ -19,11 +19,13 @@ class TestCLILogin(BaseTestClass):
     @async_title("User without organization logs in with auth token via CLI")
     async def test_login_with_token_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        Verify that:
-            - User can login with Bearer auth token via CLI.
-            - Login output in CLI doesn't contain organization and project.
+        - Login with valid credentials **via UI**.
+        - Get Bearer auth token from Playwright local storage.
+
+        ### Verify that:
+
+        - User can login with Bearer auth token **via CLI**.
+        - Login output in CLI doesn't contain `organization` and `project`.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user)
@@ -34,12 +36,14 @@ class TestCLILogin(BaseTestClass):
     @async_title("User with organization logs in with auth token via CLI")
     async def test_login_org_with_token_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create organization via API.
-        Verify that:
-            - User can login with Bearer auth token via CLI.
-            - Login output in CLI valid organization and no project info.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create organization via **API**.
+
+        ### Verify that:
+
+        - User can login with Bearer auth token via **CLI**.
+        - Login output in CLI valid `organization` and no `project` info.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user)
@@ -58,13 +62,15 @@ class TestCLILogin(BaseTestClass):
     @async_title("User with organization and project logs in with auth token via CLI")
     async def test_login_org_proj_with_token_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create organization via API.
-        -Create project via API.
-        Verify that:
-            - User can login with Bearer auth token via CLI.
-            - Login output in CLI contain valid organization and project.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create organization via API.
+        - Create project via API.
+
+        ### Verify that:
+
+        - User can login with Bearer auth token via CLI.
+        - Login output in CLI contain valid organization and project.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user)

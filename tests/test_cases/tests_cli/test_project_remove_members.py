@@ -21,16 +21,18 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Admin removes Reader from project via CLI")
     async def test_admin_remove_reader_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add second user to project with Reader role via CLI.
-        Verify that:
-            - Admin can remove Reader from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Reader` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can remove `Reader` from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -81,16 +83,18 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Admin removes Writer from project via CLI")
     async def test_admin_remove_writer_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add second user to project with Writer role via CLI.
-        Verify that:
-            - Admin can remove Writer from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Writer` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can remove `Writer` from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -141,16 +145,18 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Admin removes Manager from project via CLI")
     async def test_admin_remove_manager_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add second user to project with Manager role via CLI.
-        Verify that:
-            - Admin can remove Manager from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can remove `Manager` from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -201,16 +207,18 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Admin removes Admin from project via CLI")
     async def test_admin_remove_admin_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add second user to project with Admin role via CLI.
-        Verify that:
-            - Admin can remove another Admin from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Admin` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can remove another `Admin` from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -261,13 +269,15 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Admin removes himself from project via CLI")
     async def test_admin_remove_himself_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        Verify that:
-            - Admin cannot remove himself from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` **cannot** remove himself from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -309,20 +319,22 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Manager removes Reader from project via CLI")
     async def test_manager_remove_reader_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add third user to organization via CLI.
-        -Add second user to project with Manager role via CLI.
-        -Add third user to project with Reader role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager can remove Reader from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Reader` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can remove `Reader` from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -389,20 +401,22 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Manager removes Writer from project via CLI")
     async def test_manager_remove_writer_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add third user to organization via CLI.
-        -Add second user to project with Manager role via CLI.
-        -Add third user to project with Writer role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager can remove Writer from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Writer` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can remove `Writer` from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -469,20 +483,22 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Manager removes Manager from project via CLI")
     async def test_manager_remove_manager_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add third user to organization via CLI.
-        -Add second user to project with Manager role via CLI.
-        -Add third user to project with Manager role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager can remove another Manager from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Manager` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can remove another `Manager` from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -549,20 +565,22 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Manager removes Admin from project via CLI")
     async def test_manager_remove_admin_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add third user to organization via CLI.
-        -Add second user to project with Manager role via CLI.
-        -Add third user to project with Admin role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager cannot remove Admin from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Admin` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` cannot remove `Admin` from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -632,17 +650,19 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @pytest.mark.xfail(reason="ENG-877", strict=True)
     async def test_manager_remove_himself_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add second user to project with Manager role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Manager cannot remove himself from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** remove himself from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -694,20 +714,22 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Writer removes Reader from project via CLI")
     async def test_writer_remove_reader_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add third user to organization via CLI.
-        -Add second user to project with Writer role via CLI.
-        -Add third user to project with Reader role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Writer cannot remove members from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Writer` role via **CLI**.
+        - Add `third user` to project with `Reader` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Writer` **cannot** remove members from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -776,20 +798,22 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Reader removes Reader from project via CLI")
     async def test_reader_remove_reader_from_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Signup third user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Add second user to organization via CLI.
-        -Add third user to organization via CLI.
-        -Add second user to project with Reader role via CLI.
-        -Add third user to project with Reader role via CLI.
-        -Second user login with Bearer auth token via CLI.
-        Verify that:
-            - Reader cannot remove members from project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Reader` role via **CLI**.
+        - Add `third user` to project with `Reader` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Reader` **cannot** remove members from project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)

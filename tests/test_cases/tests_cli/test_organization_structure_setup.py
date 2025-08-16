@@ -21,11 +21,13 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("User creates a first organization via CLI")
     async def test_create_first_organization_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Login with Bearer auth token via CLI.
-        Verify that:
-            - User can create first organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - User can create first organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -40,12 +42,14 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("User creates a second organization via CLI")
     async def test_create_second_organization_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Login with Bearer auth token via CLI.
-        -Create first organization via CLI.
-        Verify that:
-            - User can create second organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Login with Bearer auth token via **CLI**.
+        - Create first organization via **CLI**.
+
+        ### Verify that:
+
+        - User can create second organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -69,13 +73,15 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("User removes organization via CLI")
     async def test_remove_organization_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Login with Bearer auth token via CLI.
-        -Create first organization via CLI.
-        -Create second organization via CLI.
-        Verify that:
-            - User can remove organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Login with Bearer auth token via **CLI**.
+        - Create first organization via **CLI**.
+        - Create second organization via **CLI**.
+
+        ### Verify that:
+
+        - User can remove organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -94,13 +100,15 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("User verifies config show output via CLI")
     async def test_config_show_output_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Login with Bearer auth token via CLI.
-        -Create first organization via CLI.
-        -Run 'apolo config show' command via CLI.
-        Verify that:
-            - 'apolo config show' command output is valid.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Login with Bearer auth token via **CLI**.
+        - Create first organization via **CLI**.
+        - Run `apolo config show` command via **CLI**.
+
+        ### Verify that:
+
+        - `apolo config show` command output is valid.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -117,13 +125,15 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("User switch organization via CLI")
     async def test_switch_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Login with Bearer auth token via CLI.
-        -Create first organization via CLI.
-        -Create second organization via CLI.
-        Verify that:
-            - User can switch between organizations via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Login with Bearer auth token via **CLI**.
+        - Create first organization via **CLI**.
+        - Create second organization via **CLI**.
+
+        ### Verify that:
+
+        - User can switch between organizations via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -145,13 +155,15 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("Invite user to org via CLI")
     async def test_invite_user_to_org_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create first organization via CLI.
-        Verify that:
-            - User can invite registered user to organization via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Signup `second` user via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first organization via **CLI**.
+
+        ### Verify that:
+
+        - User can invite registered user to organization via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -176,15 +188,17 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("Invite user to organization with default project via CLI")
     async def test_invite_user_to_org_with_default_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create first organization via CLI.
-        -Create first project with 'default' option via CLI.
-        Verify that:
-            - User can invite registered user to organization via CLI.
-            - Newly invited user is member of default project.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first organization via **CLI**.
+        - Create first project with 'default' option via **CLI**.
+
+        ### Verify that:
+
+        - User can invite registered user to organization via **CLI**.
+        - Newly invited user is member of default project.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -216,15 +230,17 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("User verifies admin get-org-users output via CLI")
     async def test_verify_get_org_users_output_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create first organization via CLI.
-        -Invite second user to organization via CLI.
-        -Run 'apolo admin get-org-users' command via CLI.
-        Verify that:
-            - Organization members are listed with valid data in command output.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first organization via **CLI**.
+        - Invite `second user` to organization via **CLI**.
+        - Run `apolo admin get-org-users` command via **CLI**.
+
+        ### Verify that:
+
+        - Organization members are listed with valid data in command output.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -256,17 +272,19 @@ class TestCLIOrganizationStructureSetup(BaseTestClass):
     @async_title("Set default user credits via CLI")
     async def test_set_user_credits_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create first organization via CLI.
-        -Set default user credits via CLI.
-        -Invite second user to organization via CLI.
-        -Second user login with Bearer auth token via CLI.
-        -Run 'apolo config show' command via CLI.
-        Verify that:
-            - Valid user credits amount is displayed in command output.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first organization via **CLI**.
+        - Set default user credits via **CLI**.
+        - Invite `second user` to organization via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+        - Run `apolo config show` command via **CLI**.
+
+        ### Verify that:
+
+        - Valid user credits amount is displayed in command output.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)

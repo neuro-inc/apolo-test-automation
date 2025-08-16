@@ -18,16 +18,18 @@ class TestUIOrganizationRolesAccess(BaseTestClass):
     @async_title("Verify invited User access")
     async def test_invited_user_access(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with User role via API.
-        Verify that User:
-            - Cannot access organization Settings
-            - Cannot access organization Billing
-            - Cannot invite member to organization
-            - Cannot edit organization members
-            - Cannot delete members from organization
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `User` role via **API**.
+
+        ### Verify that `User`:
+
+        - **Cannot** access organization Settings.
+        - **Cannot** access organization Billing.
+        - **Cannot** invite member to organization.
+        - **Cannot** edit organization members.
+        - **Cannot** delete members from organization.
         """
 
         steps = self._steps
@@ -73,12 +75,14 @@ class TestUIOrganizationRolesAccess(BaseTestClass):
     @async_title("Verify invited Manager can access organization settings")
     async def test_invited_manager_org_settings(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        Verify that Manager:
-            - Can access organization Settings.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+
+        ### Verify that `Manager`:
+
+        - Can access organization Settings.
         """
 
         steps = self._steps
@@ -118,12 +122,14 @@ class TestUIOrganizationRolesAccess(BaseTestClass):
     @async_title("Verify invited Manager can access organization billing")
     async def test_invited_manager_org_billing(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        Verify that Manager:
-            - Can access organization Billing.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+
+        ### Verify that `Manager`:
+
+        - Can access organization Billing.
         """
 
         steps = self._steps
@@ -163,12 +169,14 @@ class TestUIOrganizationRolesAccess(BaseTestClass):
     @async_title("Verify invited Admin can access organization settings")
     async def test_invited_admin_org_settings(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Admin role via API.
-        Verify that Admin:
-            - Can access organization Settings.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Admin` role via **API**.
+
+        ### Verify that `Admin`:
+
+        - Can access organization Settings.
         """
 
         steps = self._steps
@@ -207,12 +215,14 @@ class TestUIOrganizationRolesAccess(BaseTestClass):
     @async_title("Verify invited Admin can access organization billing")
     async def test_invited_admin_org_billing(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Admin role via API.
-        Verify that Admin:
-            - Can access organization Billing.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Admin` role via **API**.
+
+        ### Verify that `Admin`:
+
+        - Can access organization Billing.
         """
 
         steps = self._steps

@@ -20,12 +20,14 @@ class TestCLIDisks(BaseTestClass):
     @async_title("Admin create disk with no project created via CLI")
     async def test_admin_create_disk_no_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        Verify that:
-            - User cannot create disk via CLI if there is no project created yet.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - User **cannot** create disk via CLI if there is no project created yet.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -50,13 +52,15 @@ class TestCLIDisks(BaseTestClass):
     @async_title("Admin create first disk via CLI")
     async def test_admin_create_first_disk_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Create new project via API.
-        -Login with Bearer auth token via CLI.
-        Verify that:
-            - User can create disk via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - User can create disk via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -89,14 +93,16 @@ class TestCLIDisks(BaseTestClass):
     @async_title("Admin create second disk via CLI")
     async def test_admin_create_second_disk_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Create new project via API.
-        -Login with Bearer auth token via CLI.
-        -Create first disk via CLI.
-        Verify that:
-            - User can create second disk via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first disk via **CLI**.
+
+        ### Verify that:
+
+        - User can create second disk via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -142,14 +148,16 @@ class TestCLIDisks(BaseTestClass):
     @async_title("Admin get disk by ID via CLI")
     async def test_admin_get_disk_by_id_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Create new project via API.
-        -Login with Bearer auth token via CLI.
-        -Create first disk via CLI.
-        Verify that:
-            - User can get disk info by disk ID via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first disk via **CLI**.
+
+        ### Verify that:
+
+        - User can get disk info by disk ID via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -193,14 +201,16 @@ class TestCLIDisks(BaseTestClass):
     @async_title("Admin remove disk via CLI")
     async def test_admin_remove_disk_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Create new project via API.
-        -Login with Bearer auth token via CLI.
-        -Create first disk via CLI.
-        Verify that:
-            - User can delete disk via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first disk via **CLI**.
+
+        ### Verify that:
+
+        - User can delete disk via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)

@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import re
 from collections.abc import Awaitable
 from collections.abc import Callable
 
@@ -13,6 +15,7 @@ from collections.abc import Callable as ABC_Callable
 from playwright.async_api import Page
 
 import allure
+import markdown  # type: ignore[import-untyped]
 
 from tests.utils.exception_handling.exception_manager import ExceptionManager
 from tests.conftest import SCREENSHOTS_DIR
@@ -90,9 +93,23 @@ def async_title(title_name: str) -> Callable[[ReportFunc], ReportFunc]:
                 return result
             except Exception as e:
                 logger.error(f"❌ TEST failed: {title_name}\nException: {e}")
-                raise e
+                raise
             finally:
                 logger.info("-" * 60)
+
+        # --- Handle docstring ---
+        docstring = (func.__doc__ or "").strip()
+        if docstring:
+            # Step 1: Convert Markdown → HTML
+            html_doc = markdown.markdown(docstring)
+
+            # Step 2: Replace <code>...</code> with styled span
+            html_doc = _highlight_code_blocks_html(html_doc)
+
+            # Step 3: Wrap for spacing
+            styled_doc = f"<div style='line-height:1.6;'>{html_doc}</div>"
+
+            wrapper = allure.description_html(styled_doc)(wrapper)  # type: ignore[no-untyped-call]
 
         return cast(ReportFunc, allure.title(title_name)(wrapper))  # type: ignore[no-untyped-call]
 
@@ -210,3 +227,14 @@ async def _capture_screenshot(
         )
     except Exception as e:
         logger.warning(f"⚠️ Could not capture screenshot ({suffix}): {e}")
+
+
+def _highlight_code_blocks_html(text: str) -> str:
+    return re.sub(
+        r"<code>(.*?)</code>",
+        lambda m: f"<span style='background-color:{'#D3D3D3'}; "
+        f"padding:2px 4px; border-radius:3px; "
+        f"font-family:monospace;'>{m.group(1)}</span>",
+        text,
+        flags=re.DOTALL,
+    )

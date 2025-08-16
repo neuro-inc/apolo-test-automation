@@ -18,14 +18,16 @@ class TestUIFiles(BaseTestClass):
     @async_title("Verify Writer can create new folder")
     async def test_writer_create_folder(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Writer role.
-        Verify that:
-            - Writer can create new folder
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Writer` can create new folder.
         """
 
         steps = self._steps
@@ -87,14 +89,16 @@ class TestUIFiles(BaseTestClass):
     @async_title("Verify Manager can create new folder")
     async def test_manager_create_folder(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        Verify that:
-            - Manager can create new folder
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+
+        ### Verify that:
+
+        - `Manager` can create new folder.
         """
 
         steps = self._steps
@@ -155,14 +159,16 @@ class TestUIFiles(BaseTestClass):
     @async_title("Verify Admin can create new folder")
     async def test_admin_create_folder(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Admin role.
-        Verify that:
-            - Admin can create new folder
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Admin` role.
+
+        ### Verify that:
+
+        - `Admin` can create new folder
         """
 
         steps = self._steps
@@ -223,13 +229,16 @@ class TestUIFiles(BaseTestClass):
     @async_title("User make single click on Folder")
     async def test_folder_single_click(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create new folder.
-        Verify that after single click on folder following elements appear:
-            - Folder info section
-            - Folder action bar
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create new folder.
+        - Single click on folder.
+
+        ### Verify that:
+
+        - Folder info section appears.
+        - Folder action bar appears.
         """
 
         steps = self._steps
@@ -270,12 +279,14 @@ class TestUIFiles(BaseTestClass):
     @async_title("User make double click on Folder")
     async def test_folder_double_click(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create new folder.
-        Verify that:
-            - User opens a folder with a double click on it.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create new folder.
+
+        ### Verify that:
+
+        - User opens a folder with a double click on it.
         """
 
         steps = self._steps
@@ -314,12 +325,14 @@ class TestUIFiles(BaseTestClass):
     @async_title("User rename Folder")
     async def test_rename_folder(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create new folder.
-        Verify that:
-            - User can rename a folder with Rename button from File action bar.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create new folder.
+
+        ### Verify that:
+
+        - User can rename a folder with `Rename` button from File action bar.
         """
 
         steps = self._steps
@@ -365,12 +378,14 @@ class TestUIFiles(BaseTestClass):
     @async_title("User delete Folder")
     async def test_delete_folder(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create new folder.
-        Verify that:
-            - User can delete a folder with Delete button from File action bar.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create new folder.
+
+        ### Verify that:
+
+        - User can delete a folder with `Delete` button from File action bar.
         """
 
         steps = self._steps
@@ -414,11 +429,13 @@ class TestUIFiles(BaseTestClass):
     @async_title("User upload bin file")
     async def test_upload_bin_file(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        Verify that:
-            User can upload bin file via UI.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+
+        ### Verify that:
+
+        - User can upload `bin` file via UI.
         """
 
         steps = self._steps
@@ -453,11 +470,13 @@ class TestUIFiles(BaseTestClass):
     @async_title("User upload txt file")
     async def test_upload_txt_file(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        Verify that:
-            - User can upload txt file via UI.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+
+        ### Verify that:
+
+        - User can upload `txt` file via UI.
         """
 
         steps = self._steps
@@ -492,13 +511,15 @@ class TestUIFiles(BaseTestClass):
     @async_title("User make single click on File")
     async def test_file_single_click(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Upload txt file.
-        Verify that after single click on file following elements appear:
-            - File info section
-            - File action bar
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Upload `txt` file.
+        - Single click on file.
+
+        ### Verify that:
+        - File info section appears.
+        - File action bar appears.
         """
 
         steps = self._steps
@@ -541,13 +562,15 @@ class TestUIFiles(BaseTestClass):
     @async_title("User download bin file")
     async def test_download_bin_file(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Upload bin file.
-        Verify that:
-            - user can download bin file via UI.
-            - downloaded bin file md5 hash matches expected file.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Upload `bin` file.
+
+        ### Verify that:
+
+        - User can download `bin` file via UI.
+        - Downloaded `bin` file md5 hash matches expected file.
         """
 
         steps = self._steps
@@ -588,13 +611,15 @@ class TestUIFiles(BaseTestClass):
     @async_title("User download txt file")
     async def test_download_txt_file(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Upload txt file.
-        Verify that:
-            - user can download txt file via UI.
-            - downloaded bin file md5 hash matches expected file.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Upload `txt` file.
+
+        ### Verify that:
+
+        - User can download `txt` file via UI.
+        - Downloaded `txt` file md5 hash matches expected file.
         """
 
         steps = self._steps
@@ -635,12 +660,14 @@ class TestUIFiles(BaseTestClass):
     @async_title("User rename File")
     async def test_rename_file(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Upload txt file.
-        Verify that:
-            - User can rename a file with Rename button from File action bar.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Upload txt file.
+
+        ### Verify that:
+
+        - User can rename a file with `Rename` button from File action bar.
         """
 
         steps = self._steps
@@ -688,12 +715,14 @@ class TestUIFiles(BaseTestClass):
     @async_title("User delete File")
     async def test_delete_file(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Upload txt file.
-        Verify that:
-            - User can delete a file with Delete button from File action bar.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Upload `txt` file.
+
+        ### Verify that:
+
+        - User can delete a file with Delete button from File action bar.
         """
 
         steps = self._steps

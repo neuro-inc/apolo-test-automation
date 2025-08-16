@@ -20,8 +20,9 @@ class TestUISignup(BaseTestClass):
     @async_title("New user successful signup")
     async def test_new_user_signup(self) -> None:
         """
-        Verify that:
-            New user can signup via UI.
+        ### Verify that:
+
+        - New user can signup via UI.
         """
         user = self._users_manager.generate_user()
         steps = self._steps
@@ -49,10 +50,12 @@ class TestUISignup(BaseTestClass):
     @async_title("Invite not registered user as user to organization")
     async def test_invite_not_registered_user_to_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization.
-        Verify that:
-            User can invite not registered user to organization.
+        - Login with valid credentials.
+        - Create new organization.
+
+        ### Verify that:
+
+        - User can invite **not registered** user to organization.
         """
         steps = self._steps
         u2_steps = await self.init_ui_test_steps()
@@ -117,12 +120,14 @@ class TestUISignup(BaseTestClass):
     )
     async def test_invite_not_registered_user_to_org_with_default_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization.
-        -Create project with 'default' option.
-        -Invite not registered user to organization.
-        Verify that:
-            Newly invited user automatically is member of default project.
+        - Login with valid credentials.
+        - Create new organization.
+        - Create project with `default` option.
+        - Invite **not registered** user to organization.
+
+        ### Verify that:
+
+        - Newly invited user automatically is member of default project.
         """
         steps = self._steps
         user = self._users_manager.main_user

@@ -18,14 +18,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can promote Reader to Writer")
     async def test_admin_change_reader_to_writer(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Reader role.
-        Verify that:
-            - Admin can promote Reader to Writer
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Admin` can promote Reader to `Writer`.
         """
 
         steps = self._steps
@@ -95,14 +97,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can promote Reader to Manager")
     async def test_admin_change_reader_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Reader role.
-        Verify that:
-            - Admin can promote Reader to Manager
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Admin` can promote `Reader` to `Manager`.
         """
 
         steps = self._steps
@@ -166,14 +170,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can promote Reader to Admin")
     async def test_admin_change_reader_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Reader role.
-        Verify that:
-            - Admin can promote Reader to Admin
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Admin` can promote `Reader` to `Admin`.
         """
 
         steps = self._steps
@@ -237,14 +243,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can demote Writer to Reader")
     async def test_admin_change_writer_to_reader(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Writer role.
-        Verify that:
-            - Admin can demote Writer to Reader
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Admin` can demote `Writer` to `Reader`.
         """
 
         steps = self._steps
@@ -314,14 +322,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can promote Writer to Manager")
     async def test_admin_change_writer_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Writer role.
-        Verify that:
-            - Admin can promote Writer to Manager
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Admin` can promote `Writer` to `Manager`.
         """
 
         steps = self._steps
@@ -385,14 +395,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can promote Writer to Admin")
     async def test_admin_change_writer_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Writer role.
-        Verify that:
-            - Admin can promote Writer to Admin
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Admin` can promote `Writer` to `Admin`.
         """
 
         steps = self._steps
@@ -456,14 +468,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can demote Manager to Reader")
     async def test_admin_change_manager_to_reader(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        Verify that:
-            - Admin can demote Manager to Reader
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+
+        ### Verify that:
+
+        - `Admin` can demote `Manager` to `Reader`.
         """
 
         steps = self._steps
@@ -533,14 +547,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can demote Manager to Writer")
     async def test_admin_change_manager_to_writer(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        Verify that:
-            - Admin can demote Manager to Writer
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+
+        ### Verify that:
+
+        - `Admin` can demote `Manager` to `Writer`.
         """
 
         steps = self._steps
@@ -604,14 +620,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can promote Manager to Admin")
     async def test_admin_change_manager_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        Verify that:
-            - Admin can promote Manager to Admin
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+
+        ### Verify that:
+
+        - `Admin` can promote `Manager` to `Admin`.
         """
 
         steps = self._steps
@@ -675,14 +693,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can demote Admin to Reader")
     async def test_admin_change_admin_to_reader(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Admin role.
-        Verify that:
-            - Admin can demote Admin to Reader
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Admin` role.
+
+        ### Verify that:
+
+        - `Admin` can demote `Admin` to `Reader`.
         """
 
         steps = self._steps
@@ -752,14 +772,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can demote Admin to Writer")
     async def test_admin_change_admin_to_writer(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Admin role.
-        Verify that:
-            - Admin can demote Admin to Writer
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Admin` role.
+
+        ### Verify that:
+
+        - `Admin` can demote `Admin` to `Writer`.
         """
 
         steps = self._steps
@@ -823,14 +845,16 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can demote Admin to Manager")
     async def test_admin_change_admin_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Admin role.
-        Verify that:
-            - Admin can demote Admin to Manager.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Admin` role.
+
+        ### Verify that:
+
+        - `Admin` can demote `Admin` to `Manager`.
         """
 
         steps = self._steps
@@ -894,17 +918,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager can promote Reader to Writer")
     async def test_manager_change_reader_to_writer(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Reader role.
-        Verify that:
-            - Manager can promote Reader to Writer
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Manager` can promote `Reader` to `Writer`.
         """
 
         steps = self._steps
@@ -1000,17 +1026,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager can promote Reader to Manager")
     async def test_manager_change_reader_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Reader role.
-        Verify that:
-            - Manager can promote Reader to Manager
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Manager` can promote `Reader` to `Manager`.
         """
 
         steps = self._steps
@@ -1099,17 +1127,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager cannot promote Reader to Admin")
     async def test_manager_change_reader_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Reader role.
-        Verify that:
-            - Manager cannot promote Reader to Admin
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Manager` **cannot** promote `Reader` to `Admins`.
         """
 
         steps = self._steps
@@ -1200,17 +1230,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager can demote Writer to Reader")
     async def test_manager_change_writer_to_reader(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Writer role.
-        Verify that:
-            - Manager can demote Writer to Reader
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Manager` can demote `Writer` to `Reader`.
         """
 
         steps = self._steps
@@ -1306,17 +1338,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager can promote Writer to Manager")
     async def test_manager_change_writer_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Writer role.
-        Verify that:
-            - Manager can promote Writer to Manager
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Manager` can promote `Writer` to `Manager`.
         """
 
         steps = self._steps
@@ -1405,17 +1439,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager cannot promote Writer to Admin")
     async def test_manager_change_writer_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Writer role.
-        Verify that:
-            - Manager cannot promote Writer to Admin
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Manager` **cannot** promote `Writer` to `Admin`.
         """
 
         steps = self._steps
@@ -1506,17 +1542,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager cannot demote Admin")
     async def test_manager_change_admin_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Admin role.
-        Verify that:
-            - Manager cannot demote Admin to Manager
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Admin` role.
+
+        ### Verify that:
+
+        - `Manager` **cannot** demote `Admin` to `Manager`.
         """
 
         steps = self._steps
@@ -1607,17 +1645,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Writer cannot change member roles")
     async def test_writer_change_role(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Writer role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Reader role.
-        Verify that:
-            - Writer cannot change member roles
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Writer` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Writer` **cannot** change member roles.
         """
 
         steps = self._steps
@@ -1694,17 +1734,19 @@ class TestUIProjectChangeMemberRoles(BaseTestClass):
     @async_title("Verify Reader cannot change member roles")
     async def test_reader_change_role(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Reader role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Reader role.
-        Verify that:
-            - Reader cannot change member roles
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Reader` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Reader` **cannot** change member roles.
         """
 
         steps = self._steps

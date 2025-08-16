@@ -21,12 +21,14 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("User creates a first project via CLI")
     async def test_create_first_project_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        Verify that:
-            - User can create first project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - User can create first project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -52,14 +54,16 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("User verifies admin get-projects command output via CLI")
     async def test_get_projects_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Run 'apolo admin get-projects' command via CLI.
-        Verify that:
-            - Valid project info is displayed in command output.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Run `apolo admin get-projects` command via **CLI**.
+
+        ### Verify that:
+
+        - Valid project info is displayed in command output.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -88,13 +92,15 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("User creates a second project via CLI")
     async def test_create_second_project_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        -Create first project via CLI.
-        Verify that:
-            - User can create second project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first project via **CLI**.
+
+        ### Verify that:
+
+        - User can create second project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -137,14 +143,16 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Switch between projects via CLI")
     async def test_switch_project_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        -Create first project via CLI.
-        -Create second project via CLI.
-        Verify that:
-            - User can switch between projects via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create first project via **CLI**.
+        - Create second project via **CLI**.
+
+        ### Verify that:
+
+        - User can switch between projects via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -181,15 +189,17 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Add organization member to project via CLI")
     async def test_add_user_to_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Add second user to organization via CLI.
-        -Create new project via CLI.
-        Verify that:
-            - User can add organization member to project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Create new project via **CLI**.
+
+        ### Verify that:
+
+        - User can add organization member to project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -235,14 +245,16 @@ class TestCLIProjectStructureSetup(BaseTestClass):
     @async_title("Add user not in organization to project via CLI")
     async def test_add_user_not_in_org_to_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Signup second user via UI.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        Verify that:
-            - User cannot add registered user not from organization to project via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+
+        ### Verify that:
+
+        - User **cannot** add registered user **not from organization** to project via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)

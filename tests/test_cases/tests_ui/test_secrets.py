@@ -18,10 +18,12 @@ class TestUISecrets(BaseTestClass):
     @async_title("Create First Secret without project via UI")
     async def test_create_first_secret_no_project_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        Verify that:
-            - User cannot create first Secret if no project created yet
+        - Login with valid credentials.
+        - Create new organization via **API**.
+
+        ### Verify that:
+
+        - User **cannot** create first Secret if **no project created** yet.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -42,11 +44,13 @@ class TestUISecrets(BaseTestClass):
     @async_title("Create First Secret via UI")
     async def test_create_first_secret_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        Verify that:
-            - User can create first Secret after project created
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+
+        ### Verify that:
+
+        - User can create first Secret after project created.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -78,12 +82,14 @@ class TestUISecrets(BaseTestClass):
     @async_title("Create Second Secret via UI")
     async def test_create_second_secret_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create Secret.
-        Verify that:
-            - User can create second Secret.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create Secret.
+
+        ### Verify that:
+
+        - User can create second Secret.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -123,12 +129,14 @@ class TestUISecrets(BaseTestClass):
     @async_title("Search Secret via UI")
     async def test_search_secret_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create Secret.
-        Verify that:
-            - User can Search for secret via UI.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create Secret.
+
+        ### Verify that:
+
+        - User can Search for secret via UI.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -178,12 +186,14 @@ class TestUISecrets(BaseTestClass):
     @async_title("Delete Secret via UI")
     async def test_delete_secret_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create Secret.
-        Verify that:
-            - User can delete Secret.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create Secret.
+
+        ### Verify that:
+
+        - User can delete Secret.
         """
         steps = self._steps
         user = self._users_manager.main_user
