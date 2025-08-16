@@ -21,12 +21,14 @@ class TestCLISecrets(BaseTestClass):
     @async_title("Admin create secret with no project created via CLI")
     async def test_admin_create_secret_no_proj_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        Verify that:
-            - User cannot create secret if there is no project created via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - User **cannot** create secret if there is no project created via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -46,13 +48,15 @@ class TestCLISecrets(BaseTestClass):
     @async_title("Admin create first secret via CLI")
     async def test_admin_create_first_secret_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        Verify that:
-            - User can create first secret via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+
+        ### Verify that:
+
+        - User can create first secret via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -78,14 +82,16 @@ class TestCLISecrets(BaseTestClass):
     @async_title("Admin create second secret via CLI")
     async def test_admin_create_second_secret_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Create first secret via CLI.
-        Verify that:
-            - User can create second secret via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Create first secret via **CLI**.
+
+        ### Verify that:
+
+        - User can create second secret via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
@@ -119,15 +125,17 @@ class TestCLISecrets(BaseTestClass):
     @async_title("Admin remove secret via CLI")
     async def test_admin_remove_secret_cli(self) -> None:
         """
-        -Login with valid credentials via UI.
-        -Get Bearer auth token from Playwright local storage.
-        -Create new organization via API.
-        -Login with Bearer auth token via CLI.
-        -Create new project via CLI.
-        -Create first secret via CLI.
-        -Create second secret via CLI.
-        Verify that:
-            - User can remove second secret via CLI.
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Create first secret via **CLI**.
+        - Create second secret via **CLI**.
+
+        ### Verify that:
+
+        - User can remove second secret via **CLI**.
         """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)

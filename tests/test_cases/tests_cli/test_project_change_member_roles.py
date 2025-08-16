@@ -20,7 +20,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Reader to Writer in project via CLI")
     async def test_admin_change_reader_to_writer_cli(self) -> None:
-        """ """
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Reader` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Reader` to `Writer` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -70,6 +83,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Reader to Manager in project via CLI")
     async def test_admin_change_reader_to_manager_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Reader` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Reader` to `Manager` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -119,6 +146,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Reader to Admin in project via CLI")
     async def test_admin_change_reader_to_admin_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Reader` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Reader` to `Admin` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -168,6 +209,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Writer to Reader in project via CLI")
     async def test_admin_change_writer_to_reader_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Writer` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Writer` to `Reader` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -217,6 +272,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Writer to Manager in project via CLI")
     async def test_admin_change_writer_to_manager_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Writer` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Writer` to `Manager` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -266,6 +335,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Writer to Admin in project via CLI")
     async def test_admin_change_writer_to_admin_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Writer` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Writer` to `Admin` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -315,6 +398,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Manager to Reader in project via CLI")
     async def test_admin_change_manager_to_reader_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Manager` to `Reader` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -364,6 +461,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Manager to Writer in project via CLI")
     async def test_admin_change_manager_to_writer_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Manager` to `Writer` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -413,6 +524,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Manager to Admin in project via CLI")
     async def test_admin_change_manager_to_admin_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Manager` to `Admin` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -462,6 +587,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Admin to Reader in project via CLI")
     async def test_admin_change_admin_to_reader_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Admin` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Admin` to `Reader` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -511,6 +650,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Admin to Writer in project via CLI")
     async def test_admin_change_admin_to_writer_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Admin` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Admin` to `Writer` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -560,6 +713,20 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin change member role from Admin to Manager in project via CLI")
     async def test_admin_change_admin_to_manager_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `second user` to project with `Admin` role via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` can change project role from `Admin` to `Manager` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -609,6 +776,17 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Admin demote himself to Manager in project via CLI")
     async def test_admin_demote_himself_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+
+        ### Verify that:
+
+        - `Admin` **cannot** demote himself via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -649,6 +827,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Reader to Writer in project via CLI")
     async def test_manager_change_reader_to_writer_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Reader` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can change project role from `Reader` to `Writer` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -714,6 +910,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Reader to Manager in project via CLI")
     async def test_manager_change_reader_to_manager_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Reader` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can change project role from `Reader` to `Manager` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -779,6 +993,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Reader to Admin in project via CLI")
     async def test_manager_change_reader_to_admin_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Reader` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** change project role from `Reader` to `Admin` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -846,6 +1078,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Writer to Reader in project via CLI")
     async def test_manager_change_writer_to_reader_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Writer` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can change project role from `Writer` to `Reader` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -911,6 +1161,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Writer to Manager in project via CLI")
     async def test_manager_change_writer_to_manager_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Writer` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can change project role from `Writer` to `Manager` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -976,6 +1244,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Writer to Admin in project via CLI")
     async def test_manager_change_writer_to_admin_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Writer` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** change project role from `Writer` to `Admin` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -1043,6 +1329,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Manager to Reader in project via CLI")
     async def test_manager_change_manager_to_reader_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Manager` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can change project role from `Manager` to `Reader` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -1108,6 +1412,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Manager to Writer in project via CLI")
     async def test_manager_change_manager_to_writer_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Manager` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` can change project role from `Manager` to `Writer` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -1173,6 +1495,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Manager to Admin in project via CLI")
     async def test_manager_change_manager_to_admin_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Manager` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** change project role from `Manager` to `Admin` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -1240,6 +1580,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Manager change member role from Admin to Reader in project via CLI")
     async def test_manager_change_admin_to_reader_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Manager` role via **CLI**.
+        - Add `third user` to project with `Admin` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** change project role from `Admin` to `Reader` via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -1307,6 +1665,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Writer change member role from Reader to Writer in project via CLI")
     async def test_writer_change_reader_to_writer_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Writer` role via **CLI**.
+        - Add `third user` to project with `Reader` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Writer` **cannot** change member project roles via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(
@@ -1374,6 +1750,24 @@ class TestCLIProjectStructureSetup(BaseTestClass):
 
     @async_title("Reader change member role from Reader to Writer in project via CLI")
     async def test_reader_change_reader_to_writer_cli(self) -> None:
+        """
+        - Login with valid credentials via **UI**.
+        - Get Bearer auth token from Playwright local storage.
+        - Create new organization via **API**.
+        - Signup `second user` via **UI**.
+        - Signup `third user` via **UI**.
+        - Login with Bearer auth token via **CLI**.
+        - Create new project via **CLI**.
+        - Add `second user` to organization via **CLI**.
+        - Add `third user` to organization via **CLI**.
+        - Add `second user` to project with `Reader` role via **CLI**.
+        - Add `third user` to project with `Reader` role via **CLI**.
+        - `Second user` login with Bearer auth token via **CLI**.
+
+        ### Verify that:
+
+        - `Reader` **cannot** change member project roles via **CLI**.
+        """
         user = self._users_manager.main_user
         await self._ui_steps.ui_login(user=user)
         await self._ui_steps.ui_add_org_api(

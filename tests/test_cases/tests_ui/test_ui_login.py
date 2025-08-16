@@ -22,8 +22,9 @@ class TestUILogin(BaseTestClass):
     @async_title("New user successful login")
     async def test_new_user_login(self) -> None:
         """
-        Verify that:
-            User can login with valid credentials.
+        ### Verify that:
+
+        - User can login with valid credentials.
         """
         add_steps = await self.init_ui_test_steps()
         await add_steps.auth_page.ui_click_login_button()

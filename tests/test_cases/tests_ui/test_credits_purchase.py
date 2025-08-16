@@ -18,12 +18,14 @@ class TestUICreditsPurchase(BaseTestClass):
     @async_title("Verify User cannot purchase credits via top pane")
     async def test_user_purchase_credits(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with User role.
-        Verify that:
-            - User cannot purchase credits via top pane.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `User` role.
+
+        ### Verify that:
+
+        - `User` **cannot** purchase credits via top pane.
         """
 
         steps = self._steps
@@ -60,12 +62,14 @@ class TestUICreditsPurchase(BaseTestClass):
     )
     async def test_manager_purchase_credits(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role.
-        Verify that:
-            - Manager can purchase credits using predefined value(10, 100, 1000).
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role.
+
+        ### Verify that:
+
+        - `Manager` can purchase credits using predefined value(10, 100, 1000).
         """
 
         steps = self._steps
@@ -118,10 +122,12 @@ class TestUICreditsPurchase(BaseTestClass):
     @async_title("Verify Admin can purchase organization credits with custom amount")
     async def test_admin_purchase_credits(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        Verify that:
-            - Admin can purchase credits by input custom amount.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+
+        ### Verify that:
+
+        - Admin can purchase credits by input custom amount.
         """
 
         steps = self._steps
