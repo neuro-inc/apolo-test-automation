@@ -18,14 +18,16 @@ class TestUIProjectRolesAccess(BaseTestClass):
     @async_title("Verify Reader cannot modify files")
     async def test_reader_modify_files(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Reader role.
-        Verify that:
-            - Reader doesn't have access to modify Files
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Reader` **doesn't** have access to modify Files.
         """
 
         steps = self._steps
@@ -78,14 +80,16 @@ class TestUIProjectRolesAccess(BaseTestClass):
     @async_title("Verify Writer can modify files")
     async def test_writer_modify_files(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Writer role.
-        Verify that:
-            - Writer has access to modify Files
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Writer` has access to modify Files.
         """
 
         steps = self._steps
@@ -138,14 +142,16 @@ class TestUIProjectRolesAccess(BaseTestClass):
     @async_title("Verify Manager can modify files")
     async def test_manager_modify_files(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        Verify that:
-            - Manager has access to modify Files
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+
+        ### Verify that:
+
+        - `Manager` has access to modify Files.
         """
 
         steps = self._steps
@@ -198,16 +204,18 @@ class TestUIProjectRolesAccess(BaseTestClass):
     @async_title("Verify Manager can invite Reader to a project")
     async def test_manager_invite_reader_to_project(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        Verify that:
-            - Manager can invite third user as Reader to a project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+
+        ### Verify that:
+
+        - `Manager` can invite `third user` as `Reader` to a project.
         """
 
         steps = self._steps
@@ -278,16 +286,18 @@ class TestUIProjectRolesAccess(BaseTestClass):
     @async_title("Verify Manager can invite Writer to a project")
     async def test_manager_invite_writer_to_project(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        Verify that:
-            - Manager can invite third user as Writer to a project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+
+        ### Verify that:
+
+        - `Manager` can invite `third user` as `Writer` to a project.
         """
 
         steps = self._steps
@@ -358,16 +368,18 @@ class TestUIProjectRolesAccess(BaseTestClass):
     @async_title("Verify Manager can invite Manager to a project")
     async def test_manager_invite_manager_to_project(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        Verify that:
-            - Manager can invite third user as Manager to a project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+
+        ### Verify that:
+
+        - Manager can invite `third user` as `Manager` to a project.
         """
 
         steps = self._steps
@@ -438,16 +450,18 @@ class TestUIProjectRolesAccess(BaseTestClass):
     @async_title("Verify Manager cannot invite Admin to a project")
     async def test_manager_invite_admin_to_project(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        Verify that:
-            - Manager cannot invite third user as Admin to a project.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** invite `third user` as `Admin` to a project.
         """
 
         steps = self._steps

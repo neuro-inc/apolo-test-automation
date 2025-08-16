@@ -54,13 +54,15 @@ class TestHelloWorldJob:
     @async_title("Run Hello World Job and Validate UI and CLI Results")
     async def test_run_hello_world_job(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via UI during onboarding.
-        -Create new project via CLI.
-        -Run Hello World Job via CLI.
+        - Login with valid credentials.
+        - Create new organization via **UI** during onboarding.
+        - Create new project via **CLI**.
+        - Run `Hello World` Job via **CLI**.
+
         Verify that:
-            - Job executed successfully in CLI.
-            - Job is displayed in successful jobs via UI.
+
+        - Job executed successfully in **CLI**.
+        - Job is displayed in successful jobs via **UI**.
         """
         await self.ui_steps.ui_pass_new_user_onboarding(
             user=self._user, gherkin_name="default"

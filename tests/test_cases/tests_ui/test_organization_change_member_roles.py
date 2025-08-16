@@ -22,15 +22,18 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can change User role to Manager")
     async def test_admin_change_user_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with User role via API.
-        Verify that:
-            - Admin can change user role from User to Manager
-            - User after changing role from User to Manager:
-                - Can access organization Settings
-                - Can access organization Billing
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `User` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` can change user role from `User` to `Manager`
+        - User after changing role from `User` to `Manager`:
+
+        - Can access organization `Settings`
+        - Can access organization `Billing`
         """
 
         steps = self._steps
@@ -88,15 +91,18 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can change User role to Admin")
     async def test_admin_change_user_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with User role via API.
-        Verify that:
-            - Admin can change user role from User to Admin
-            - User after changing role from User to Admin:
-                - Can access organization Settings
-                - Can access organization Billing
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `User` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` can change user role from `User` to `Admin`
+        - User after changing role from `User` to `Admin`:
+
+        - Can access organization `Settings`
+        - Can access organization `Billing`
         """
 
         steps = self._steps
@@ -154,15 +160,17 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can change Manager role to User")
     async def test_admin_change_manager_to_user(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        Verify that:
-            - Admin can change user role from Manager to User
-            - User after changing role from Manager to User:
-                - Cannot access organization Settings
-                - Cannot access organization Billing
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+
+        ### Verify that:
+        - `Admin` can change user role from `Manager` to `User`
+        - User after changing role from `Manager` to `User`:
+
+        - **Cannot** access organization `Settings`
+        - **Cannot** access organization `Billing`
         """
 
         steps = self._steps
@@ -220,15 +228,17 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can change Manager role to Admin")
     async def test_admin_change_manager_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        Verify that:
-            - Admin can change user role from Manager to Admin
-            - User after changing role from Manager to Admin:
-                - Can access organization Settings
-                - Can access organization Billing
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+
+        ### Verify that:
+        - `Admin` can change user role from `Manager` to `Admin`
+        - User after changing role from `Manager` to `Admin`:
+
+        - Can access organization `Settings`.
+        - Can access organization `Billing`.
         """
 
         steps = self._steps
@@ -287,15 +297,18 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can change Admin role to User")
     async def test_admin_change_admin_to_user(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Admin role via API.
-        Verify that:
-            - Admin can change user role from Admin to User
-            - User after changing role from Admin to User:
-                - Cannot access organization Settings
-                - Cannot access organization Billing
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Admin` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` can change user role from `Admin` to `User`
+        - User after changing role from `Admin` to `User`:
+
+        - **Cannot** access organization `Settings`.
+        - **Cannot** access organization `Billing`.
         """
 
         steps = self._steps
@@ -354,15 +367,18 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin can change Admin role to Manager")
     async def test_admin_change_admin_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Admin role via API.
-        Verify that:
-            - Admin can change user role from Admin to Manager
-            - User after changing role from Admin to Manager:
-                - Can access organization Settings
-                - Can access organization Billing
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with Admin role via **API**.
+
+        ### Verify that:
+
+        - `Admin` can change user role from `Admin` to `Manager`.
+        - User after changing role from `Admin` to `Manager`:
+
+        - Can access organization `Settings`.
+        - Can access organization `Billing`.
         """
 
         steps = self._steps
@@ -421,12 +437,14 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin cannot demote himself to User")
     async def test_admin_demote_himself_to_user(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Admin role via API.
-        Verify that:
-            - Admin cannot demote himself to User
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Admin` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` **cannot** demote himself to `User`.
         """
 
         steps = self._steps
@@ -484,12 +502,14 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Admin cannot demote himself to Manager")
     async def test_admin_demote_himself_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Admin role via API.
-        Verify that:
-            - Admin cannot demote himself to Manager
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Admin` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` cannot demote himself to `Manager`.
         """
 
         steps = self._steps
@@ -547,17 +567,20 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager can change User role to Manager")
     async def test_manager_change_user_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with User role via API.
-        Verify that:
-            - Manager can change user role from User to Manager
-            - User after changing role from User to Manager:
-                - Can access organization Settings
-                - Can access organization Billing
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `User` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` can change user role from User to `Manager`.
+        - User after changing role from `User` to `Manager`:
+
+        - Can access organization `Settings`.
+        - Can access organization `Billing`.
         """
 
         steps = self._steps
@@ -637,14 +660,16 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager cannot change User role to Admin")
     async def test_manager_change_user_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with User role via API.
-        Verify that:
-            - Manager cannot change user role from User to Admin.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `User` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** change user role from `User` to `Admin`.
         """
 
         steps = self._steps
@@ -726,17 +751,20 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager can change Manager role to User")
     async def test_manager_change_manager_to_user(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with Manager role via API.
-        Verify that:
-            - Manager can change user role from Manager to User
-            - User after changing role from Manager to User:
-                - Cannot access organization Settings
-                - Cannot access organization Billing
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `Manager` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` can change user role from `Manager` to `User`.
+        - User after changing role from `Manager` to `User`:
+
+        - **Cannot** access organization `Settings`.
+        - **Cannot** access organization `Billing`.
         """
 
         steps = self._steps
@@ -816,14 +844,16 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager cannot change Manager role to Admin")
     async def test_manager_change_manager_to_admin(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with Manager role via API.
-        Verify that:
-            - Manager cannot change user role from Manager to Admin.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `Manager` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` cannot change user role from `Manager` to `Admin`.
         """
 
         steps = self._steps
@@ -905,14 +935,16 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager cannot change Admin role to User")
     async def test_manager_change_admin_to_user(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with Admin role via API.
-        Verify that:
-            - Manager cannot change user role from Admin to User
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `Admin` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** change user role from `Admin` to `User`.
         """
 
         steps = self._steps
@@ -994,14 +1026,16 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager cannot change Admin role to Manager")
     async def test_manager_change_admin_to_manager(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with Admin role via API.
-        Verify that:
-            - Manager cannot change user role from Admin to Manager
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `Admin` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** change user role from `Admin` to `Manager`.
         """
 
         steps = self._steps
@@ -1083,12 +1117,14 @@ class TestUIOrganizationChangeMemberRoles(BaseTestClass):
     @async_title("Verify Manager cannot demote himself to User")
     async def test_manager_demote_himself_to_user(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        Verify that:
-            - Manager cannot demote himself to User.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** demote himself to `User`.
         """
 
         steps = self._steps

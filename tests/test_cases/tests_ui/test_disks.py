@@ -18,10 +18,12 @@ class TestUIDisks(BaseTestClass):
     @async_title("Create First Disk without project via UI")
     async def test_create_first_disk_no_project_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        Verify that:
-            - User cannot create first Disk if no project created yet.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+
+        ### Verify that:
+
+        - User **cannot** create first Disk if **no project created** yet.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -42,11 +44,13 @@ class TestUIDisks(BaseTestClass):
     @async_title("Create First Disk via UI")
     async def test_create_first_disk_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        Verify that:
-            - User can create first Disk after project created
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+
+        ### Verify that:
+
+        - User can create first Disk after project created.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -79,12 +83,14 @@ class TestUIDisks(BaseTestClass):
     @async_title("Create Second Disk via UI")
     async def test_create_second_disk_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create new Disk.
-        Verify that:
-            - User can create second Disk.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create new Disk.
+
+        ### Verify that:
+
+        - User can create second Disk.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -127,13 +133,15 @@ class TestUIDisks(BaseTestClass):
     @async_title("Search Disk via UI")
     async def test_search_disk_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create new Disk.
-        -Create second Disk.
-        Verify that:
-            - User can search for Disk via Ui with the Search field.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create new Disk.
+        - Create second Disk.
+
+        ### Verify that:
+
+        - User can search for Disk via UI with the `Search` field.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -182,12 +190,14 @@ class TestUIDisks(BaseTestClass):
     @async_title("Open Disk info view by click on disk button")
     async def test_disk_info_view_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create new Disk.
-        Verify that:
-            - After click on disk button Disk info view appears
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create new Disk.
+
+        ### Verify that:
+
+        - After click on disk button Disk info view appears.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -228,12 +238,14 @@ class TestUIDisks(BaseTestClass):
     @async_title("Delete Disk via UI")
     async def test_delete_disk_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Create new Disk.
-        Verify that:
-            - User can delete Disk.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Create new Disk.
+
+        ### Verify that:
+
+        - User can delete Disk.
         """
         steps = self._steps
         user = self._users_manager.main_user

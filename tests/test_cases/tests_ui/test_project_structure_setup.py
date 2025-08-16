@@ -18,10 +18,12 @@ class TestUIProjectStructureSetup(BaseTestClass):
     @async_title("Create First Project from main page via UI")
     async def test_create_first_proj_main_page_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        Verify that:
-            User can create first project in organization from the main page.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+
+        ### Verify that:
+
+        - User can create first project in organization from **the main page**.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -51,10 +53,12 @@ class TestUIProjectStructureSetup(BaseTestClass):
     @async_title("Create First Project from top pane of main via UI")
     async def test_create_first_proj_top_pane_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        Verify that:
-            User can create first project in organization from project menu in the top pane of the main page.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+
+        ### Verify that:
+
+        - User can create first project in organization from project menu in the **top pane of the main page**.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -88,11 +92,13 @@ class TestUIProjectStructureSetup(BaseTestClass):
     @async_title("Create second project via UI")
     async def test_create_second_proj_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        Verify that:
-            User can create second project in organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+
+        ### Verify that:
+
+        - User can create second project in organization.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -136,13 +142,15 @@ class TestUIProjectStructureSetup(BaseTestClass):
     @async_title("Invite member of organization to project via UI")
     async def test_invite_org_member_to_proj_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization.
-        Verify that:
-            User can invite member of organization to project.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization.
+
+        ### Verify that:
+
+        - User can invite member of organization to project.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -228,13 +236,15 @@ class TestUIProjectStructureSetup(BaseTestClass):
     @async_title("Invite member that NOT in organization to project via UI")
     async def test_invite_not_org_member_to_proj_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup new user.
-        -DO NOT invite second user to organization.
-        Verify that:
-            User cannot invite to project another user which is not member of organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - DO NOT invite `second user` to organization.
+
+        ### Verify that:
+
+        - User **cannot** invite to project another user which is **not member of organization**.
         """
         steps = self._steps
         user = self._users_manager.main_user
@@ -278,11 +288,13 @@ class TestUIProjectStructureSetup(BaseTestClass):
     @async_title("Invite not registered user to project via UI")
     async def test_invite_not_registered_to_proj_via_ui(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        Verify that:
-            User cannot invite to project another user which is not registered.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+
+        ### Verify that:
+
+        - User **cannot** invite to project another user which is **not registered**.
         """
         steps = self._steps
         user = self._users_manager.main_user

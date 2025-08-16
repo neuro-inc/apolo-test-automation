@@ -18,12 +18,14 @@ class TestUIOrganizationRemoveMembers(BaseTestClass):
     @async_title("Verify Admin can remove User from organization")
     async def test_admin_remove_user_from_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with User role via API.
-        Verify that:
-            - Admin can remove User from organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `User` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` can remove `User` from organization.
         """
 
         steps = self._steps
@@ -79,12 +81,14 @@ class TestUIOrganizationRemoveMembers(BaseTestClass):
     @async_title("Verify Admin can remove Manager from organization")
     async def test_admin_remove_manager_from_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        Verify that:
-            - Admin can remove Manager from organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` can remove `Manager` from organization.
         """
 
         steps = self._steps
@@ -140,12 +144,14 @@ class TestUIOrganizationRemoveMembers(BaseTestClass):
     @async_title("Verify Admin can remove another Admin from organization")
     async def test_admin_remove_admin_from_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Admin role via API.
-        Verify that:
-            - Admin can remove another Admin from organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Admin` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` can remove another `Admin` from organization.
         """
 
         steps = self._steps
@@ -201,12 +207,14 @@ class TestUIOrganizationRemoveMembers(BaseTestClass):
     @async_title("Verify Admin cannot remove himself from organization")
     async def test_admin_remove_himself_from_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Admin role via API.
-        Verify that:
-            - Admin cannot remove himself from organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Admin` role via **API**.
+
+        ### Verify that:
+
+        - `Admin` **cannot** remove himself from organization.
         """
 
         steps = self._steps
@@ -262,14 +270,16 @@ class TestUIOrganizationRemoveMembers(BaseTestClass):
     @async_title("Verify Manager can remove User from organization")
     async def test_manager_remove_user_from_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with User role via API.
-        Verify that:
-            - Manager can remove User from organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `User` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` can remove `User` from organization.
         """
 
         steps = self._steps
@@ -345,14 +355,16 @@ class TestUIOrganizationRemoveMembers(BaseTestClass):
     @async_title("Verify Manager can remove another Manager from organization")
     async def test_manager_remove_manager_from_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with Manager role via API.
-        Verify that:
-            - Manager can remove another Manager from organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `Manager` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` can remove another `Manager` from organization.
         """
 
         steps = self._steps
@@ -428,14 +440,16 @@ class TestUIOrganizationRemoveMembers(BaseTestClass):
     @async_title("Verify Manager cannot remove Admin from organization")
     async def test_manager_remove_admin_from_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        -Signup third user.
-        -Invite third user to organization with Admin role via API.
-        Verify that:
-            - Manager cannot remove another Admin from organization.
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+        - Signup `third user`.
+        - Invite `third user` to organization with `Admin` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** remove another `Admin` from organization.
         """
 
         steps = self._steps
@@ -511,12 +525,14 @@ class TestUIOrganizationRemoveMembers(BaseTestClass):
     @async_title("Verify Manager cannot remove himself from organization")
     async def test_manager_remove_himself_from_org(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Signup second user.
-        -Invite second user to organization with Manager role via API.
-        Verify that:
-            - Manager cannot remove himself from organization
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Signup `second user`.
+        - Invite `second user` to organization with `Manager` role via **API**.
+
+        ### Verify that:
+
+        - `Manager` **cannot** remove himself from organization.
         """
 
         steps = self._steps

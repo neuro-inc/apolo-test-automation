@@ -18,14 +18,16 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Admin can remove Reader from project")
     async def test_admin_remove_reader_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Reader role.
-        Verify that:
-            - Admin can remove Reader from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Admin` can remove `Reader` from `project`.
         """
 
         steps = self._steps
@@ -94,14 +96,16 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Admin can remove Writer from project")
     async def test_admin_remove_writer_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Writer role.
-        Verify that:
-            - Admin can remove Writer from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Admin` can remove `Writer` from project.
         """
 
         steps = self._steps
@@ -169,14 +173,16 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Admin can remove Manager from project")
     async def test_admin_remove_manager_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        Verify that:
-            - Admin can remove Manager from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+
+        ### Verify that:
+
+        - `Admin` can remove `Manager` from project.
         """
 
         steps = self._steps
@@ -244,14 +250,16 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Admin can remove another Admin from project")
     async def test_admin_remove_admin_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Admin role.
-        Verify that:
-            - Admin can remove another Admin from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Admin` role.
+
+        ### Verify that:
+
+        - `Admin` can remove another `Admin` from project.
         """
 
         steps = self._steps
@@ -319,11 +327,13 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Admin cannot remove himself from project")
     async def test_admin_remove_himself_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        Verify that:
-            - Admin cannot remove himself from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+
+        ### Verify that:
+
+        - `Admin` **cannot** remove himself from project.
         """
 
         steps = self._steps
@@ -351,17 +361,19 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Manager can remove Reader from project")
     async def test_manager_remove_reader_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Reader role.
-        Verify that:
-            - Manager can remove Reader from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Manager` can remove `Reader` from project.
         """
 
         steps = self._steps
@@ -455,17 +467,19 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Manager can remove Writer from project")
     async def test_manager_remove_writer_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Writer role.
-        Verify that:
-            - Manager can remove Writer from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Writer` role.
+
+        ### Verify that:
+
+        - `Manager` can remove `Writer` from project.
         """
 
         steps = self._steps
@@ -559,17 +573,19 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Manager can remove another Manager from project")
     async def test_manager_remove_manager_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Manager role.
-        Verify that:
-            - Manager can remove another Manager from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Manager` role.
+
+        ### Verify that:
+
+        - `Manager` can remove another `Manager` from project.
         """
 
         steps = self._steps
@@ -663,17 +679,19 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Manager cannot remove Admin from project")
     async def test_manager_remove_admin_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Admin role.
-        Verify that:
-            - Manager cannot remove Admin from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Admin` role.
+
+        ### Verify that:
+
+        - `Manager` **cannot** remove `Admin` from project.
         """
 
         steps = self._steps
@@ -768,14 +786,16 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Manager cannot remove himself from project")
     async def test_manager_remove_himself_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Manager role.
-        Verify that:
-            - Manager cannot remove himself from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Manager` role.
+
+        ### Verify that:
+
+        - `Manager` **cannot** remove himself from project.
         """
 
         steps = self._steps
@@ -830,17 +850,19 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Writer cannot remove members from project")
     async def test_writer_remove_reader_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Reader role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Reader role.
-        Verify that:
-            - Writer cannot remove members from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Reader` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Writer` **cannot** remove members from project.
         """
 
         steps = self._steps
@@ -918,17 +940,19 @@ class TestUIProjectRemoveMembers(BaseTestClass):
     @async_title("Verify Reader cannot remove members from project")
     async def test_reader_remove_reader_from_proj(self) -> None:
         """
-        -Login with valid credentials.
-        -Create new organization via API.
-        -Create new project.
-        -Signup second user.
-        -Invite second user to organization via API.
-        -Invite second user to project with Reader role.
-        -Signup third user.
-        -Invite third user to organization via API.
-        -Invite third user to project with Reader role.
-        Verify that:
-            - Reader cannot remove members from project
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project.
+        - Signup `second user`.
+        - Invite `second user` to organization via **API**.
+        - Invite `second user` to project with `Reader` role.
+        - Signup `third user`.
+        - Invite `third user` to organization via **API**.
+        - Invite `third user` to project with `Reader` role.
+
+        ### Verify that:
+
+        - `Reader` **cannot** remove members from project.
         """
 
         steps = self._steps
