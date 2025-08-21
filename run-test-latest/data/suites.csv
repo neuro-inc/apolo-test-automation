@@ -1,15 +1,37 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Wed Aug 20 01:43:19 UTC 2025","Wed Aug 20 01:44:20 UTC 2025","60350","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin cannot demote himself to User","
-- Login with valid credentials.
+"passed","Thu Aug 21 02:52:50 UTC 2025","Thu Aug 21 02:53:15 UTC 2025","25019","CLI Tests","CLI Secrets","TestCLISecrets","","","Admin create second secret via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Admin` role via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Create first secret via **CLI**.
 
 ### Verify that:
 
-- `Admin` **cannot** demote himself to `User`.
+- User can create second secret via **CLI**.
 "
-"passed","Wed Aug 20 02:20:45 UTC 2025","Wed Aug 20 02:22:59 UTC 2025","133219","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager can remove Writer from project","
+"passed","Thu Aug 21 02:46:17 UTC 2025","Thu Aug 21 02:46:57 UTC 2025","40416","CLI Tests","CLI Disks","TestCLIDisks","","","Admin create disk with no project created via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- User **cannot** create disk via CLI if there is no project created yet.
+"
+"passed","Thu Aug 21 02:11:17 UTC 2025","Thu Aug 21 02:12:08 UTC 2025","50143","UI Tests","UI Files","TestUIFiles","","","User delete File","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Upload `txt` file.
+
+### Verify that:
+
+- User can delete a file with Delete button from File action bar.
+"
+"passed","Thu Aug 21 01:57:37 UTC 2025","Thu Aug 21 01:59:30 UTC 2025","113713","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Manager can demote Writer to Reader","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
@@ -22,132 +44,16 @@
 
 ### Verify that:
 
-- `Manager` can remove `Writer` from project.
+- `Manager` can demote `Writer` to `Reader`.
 "
-"passed","Wed Aug 20 01:52:33 UTC 2025","Wed Aug 20 01:54:34 UTC 2025","120762","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot change Manager role to Admin","
+"passed","Thu Aug 21 02:27:07 UTC 2025","Thu Aug 21 02:27:50 UTC 2025","42747","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Create First Organization via UI","
 - Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-- Signup `third user`.
-- Invite `third user` to organization with `Manager` role via **API**.
 
 ### Verify that:
 
-- `Manager` cannot change user role from `Manager` to `Admin`.
+- User can create first organization during onboarding.
 "
-"passed","Wed Aug 20 01:47:05 UTC 2025","Wed Aug 20 01:48:39 UTC 2025","93788","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Admin to Reader","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Admin` role.
-
-### Verify that:
-
-- `Admin` can demote `Admin` to `Reader`.
-"
-"passed","Wed Aug 20 01:46:52 UTC 2025","Wed Aug 20 01:48:13 UTC 2025","80405","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Reader to Manager in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Reader` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can change project role from `Reader` to `Manager` via **CLI**.
-"
-"passed","Wed Aug 20 02:11:34 UTC 2025","Wed Aug 20 02:13:12 UTC 2025","98243","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin can remove Writer from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Writer` role.
-
-### Verify that:
-
-- `Admin` can remove `Writer` from project.
-"
-"passed","Wed Aug 20 02:19:59 UTC 2025","Wed Aug 20 02:20:39 UTC 2025","39576","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Admin removes User from org via **CLI**","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Add `second user` to organization with `User` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can remove `User` from organization via **CLI**.
-"
-"passed","Wed Aug 20 03:10:16 UTC 2025","Wed Aug 20 03:11:36 UTC 2025","80657","UI Tests","UI Credits Purchase","TestUICreditsPurchase","","","Verify Admin can purchase organization credits with custom amount","
-- Login with valid credentials.
-- Create new organization via **API**.
-
-### Verify that:
-
-- Admin can purchase credits by input custom amount.
-"
-"passed","Wed Aug 20 02:49:47 UTC 2025","Wed Aug 20 02:50:07 UTC 2025","20228","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","User creates a second project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create first project via **CLI**.
-
-### Verify that:
-
-- User can create second project via **CLI**.
-"
-"passed","Wed Aug 20 03:01:53 UTC 2025","Wed Aug 20 03:02:46 UTC 2025","52886","UI Tests","UI Secrets","TestUISecrets","","","Create Second Secret via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Create Secret.
-
-### Verify that:
-
-- User can create second Secret.
-"
-"passed","Wed Aug 20 03:04:11 UTC 2025","Wed Aug 20 03:04:46 UTC 2025","34996","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited Manager can access organization settings","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-
-### Verify that `Manager`:
-
-- Can access organization Settings.
-"
-"passed","Wed Aug 20 01:48:19 UTC 2025","Wed Aug 20 01:49:04 UTC 2025","44111","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Reader to Admin in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Reader` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` **cannot** change project role from `Reader` to `Admin` via **CLI**.
-"
-"passed","Wed Aug 20 03:12:05 UTC 2025","Wed Aug 20 03:13:21 UTC 2025","76499","E2E Tests","Apolo CLI Hello World Job Verification","TestHelloWorldJob","","","Run Hello World Job and Validate UI and CLI Results","
+"passed","Thu Aug 21 02:53:59 UTC 2025","Thu Aug 21 02:54:59 UTC 2025","60137","E2E Tests","Apolo CLI Hello World Job Verification","TestHelloWorldJob","","","Run Hello World Job and Validate UI and CLI Results","
 - Login with valid credentials.
 - Create new organization via **UI** during onboarding.
 - Create new project via **CLI**.
@@ -158,322 +64,7 @@ Verify that:
 - Job executed successfully in **CLI**.
 - Job is displayed in successful jobs via **UI**.
 "
-"passed","Wed Aug 20 02:30:50 UTC 2025","Wed Aug 20 02:31:21 UTC 2025","31023","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User switch organization via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Login with Bearer auth token via **CLI**.
-- Create first organization via **CLI**.
-- Create second organization via **CLI**.
-
-### Verify that:
-
-- User can switch between organizations via **CLI**.
-"
-"passed","Wed Aug 20 02:39:14 UTC 2025","Wed Aug 20 02:40:57 UTC 2025","102982","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Manager can remove another Manager from organization","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-- Signup `third user`.
-- Invite `third user` to organization with `Manager` role via **API**.
-
-### Verify that:
-
-- `Manager` can remove another `Manager` from organization.
-"
-"passed","Wed Aug 20 01:35:49 UTC 2025","Wed Aug 20 01:36:40 UTC 2025","51179","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Writer to Reader in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Writer` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Writer` to `Reader` via **CLI**.
-"
-"passed","Wed Aug 20 03:06:42 UTC 2025","Wed Aug 20 03:07:10 UTC 2025","28227","CLI Tests","CLI Secrets","TestCLISecrets","","","Admin remove secret via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Create first secret via **CLI**.
-- Create second secret via **CLI**.
-
-### Verify that:
-
-- User can remove second secret via **CLI**.
-"
-"passed","Wed Aug 20 01:45:45 UTC 2025","Wed Aug 20 01:47:00 UTC 2025","74386","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Manager to Admin","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-
-### Verify that:
-
-- `Admin` can promote `Manager` to `Admin`.
-"
-"passed","Wed Aug 20 02:15:33 UTC 2025","Wed Aug 20 02:15:52 UTC 2025","19299","CLI Tests","CLI Storage","TestCLIStorage","","","Admin remove folder via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Create new folder via **CLI**.
-
-### Verify that:
-
-- User can remove folder via **CLI**.
-"
-"passed","Wed Aug 20 02:51:49 UTC 2025","Wed Aug 20 02:53:42 UTC 2025","113497","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager can invite Manager to a project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-- Signup `third user`.
-- Invite `third user` to organization via **API**.
-
-### Verify that:
-
-- Manager can invite `third user` as `Manager` to a project.
-"
-"passed","Wed Aug 20 02:05:31 UTC 2025","Wed Aug 20 02:06:30 UTC 2025","59021","UI Tests","UI Files","TestUIFiles","","","User rename Folder","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Create new folder.
-
-### Verify that:
-
-- User can rename a folder with `Rename` button from File action bar.
-"
-"passed","Wed Aug 20 03:05:47 UTC 2025","Wed Aug 20 03:06:07 UTC 2025","19314","CLI Tests","CLI Secrets","TestCLISecrets","","","Admin create first secret via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-
-### Verify that:
-
-- User can create first secret via **CLI**.
-"
-"passed","Wed Aug 20 02:00:33 UTC 2025","Wed Aug 20 02:01:05 UTC 2025","31773","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes Manager from project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can remove `Manager` from project via **CLI**.
-"
-"passed","Wed Aug 20 03:05:22 UTC 2025","Wed Aug 20 03:05:38 UTC 2025","15218","CLI Tests","CLI Secrets","TestCLISecrets","","","Admin create secret with no project created via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- User **cannot** create secret if there is no project created via **CLI**.
-"
-"passed","Wed Aug 20 02:08:41 UTC 2025","Wed Aug 20 02:09:17 UTC 2025","35786","UI Tests","UI Files","TestUIFiles","","","User upload txt file","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-
-### Verify that:
-
-- User can upload `txt` file via UI.
-"
-"passed","Wed Aug 20 02:23:05 UTC 2025","Wed Aug 20 02:25:05 UTC 2025","120064","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager can remove another Manager from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-- Signup `third user`.
-- Invite `third user` to organization via **API**.
-- Invite `third user` to project with `Manager` role.
-
-### Verify that:
-
-- `Manager` can remove another `Manager` from project.
-"
-"passed","Wed Aug 20 02:57:06 UTC 2025","Wed Aug 20 02:57:44 UTC 2025","38852","UI Tests","UI Disks","TestUIDisks","","","Delete Disk via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Create new Disk.
-
-### Verify that:
-
-- User can delete Disk.
-"
-"failed","Wed Aug 20 02:03:48 UTC 2025","Wed Aug 20 02:04:07 UTC 2025","18555","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes himself from project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-
-### Verify that:
-
-- `Admin` **cannot** remove himself from project via **CLI**.
-"
-"passed","Wed Aug 20 01:59:40 UTC 2025","Wed Aug 20 02:00:54 UTC 2025","73255","UI Tests","UI Files","TestUIFiles","","","Verify Writer can create new folder","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Writer` role.
-
-### Verify that:
-
-- `Writer` can create new folder.
-"
-"passed","Wed Aug 20 02:15:56 UTC 2025","Wed Aug 20 02:17:19 UTC 2025","83733","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin can remove another Admin from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Admin` role.
-
-### Verify that:
-
-- `Admin` can remove another `Admin` from project.
-"
-"passed","Wed Aug 20 01:54:50 UTC 2025","Wed Aug 20 01:55:35 UTC 2025","45015","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Manager to Admin in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Manager` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` **cannot** change project role from `Manager` to `Admin` via **CLI**.
-"
-"passed","Wed Aug 20 02:31:28 UTC 2025","Wed Aug 20 02:31:53 UTC 2025","24176","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","Invite user to org via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Signup `second` user via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create first organization via **CLI**.
-
-### Verify that:
-
-- User can invite registered user to organization via **CLI**.
-"
-"passed","Wed Aug 20 02:10:55 UTC 2025","Wed Aug 20 02:11:31 UTC 2025","35572","UI Tests","UI Files","TestUIFiles","","","User download txt file","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Upload `txt` file.
-
-### Verify that:
-
-- User can download `txt` file via UI.
-- Downloaded `txt` file md5 hash matches expected file.
-"
-"passed","Wed Aug 20 01:45:43 UTC 2025","Wed Aug 20 01:47:59 UTC 2025","135758","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager can change User role to Manager","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-- Signup `third user`.
-- Invite `third user` to organization with `User` role via **API**.
-
-### Verify that:
-
-- `Manager` can change user role from User to `Manager`.
-- User after changing role from `User` to `Manager`:
-
-- Can access organization `Settings`.
-- Can access organization `Billing`.
-"
-"passed","Wed Aug 20 02:12:56 UTC 2025","Wed Aug 20 02:13:48 UTC 2025","52299","UI Tests","UI Files","TestUIFiles","","","User delete File","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Upload `txt` file.
-
-### Verify that:
-
-- User can delete a file with Delete button from File action bar.
-"
-"passed","Wed Aug 20 02:05:51 UTC 2025","Wed Aug 20 02:06:43 UTC 2025","51670","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes Manager from project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Manager` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can remove another `Manager` from project via **CLI**.
-"
-"passed","Wed Aug 20 02:10:09 UTC 2025","Wed Aug 20 02:10:49 UTC 2025","40390","UI Tests","UI Files","TestUIFiles","","","User download bin file","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Upload `bin` file.
-
-### Verify that:
-
-- User can download `bin` file via UI.
-- Downloaded `bin` file md5 hash matches expected file.
-"
-"passed","Wed Aug 20 01:45:46 UTC 2025","Wed Aug 20 01:46:45 UTC 2025","58907","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Reader to Writer in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Reader` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can change project role from `Reader` to `Writer` via **CLI**.
-"
-"passed","Wed Aug 20 01:34:04 UTC 2025","Wed Aug 20 01:34:54 UTC 2025","49616","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Reader to Manager in project via CLI","
+"passed","Thu Aug 21 01:59:28 UTC 2025","Thu Aug 21 02:00:00 UTC 2025","32500","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes Reader from project via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -485,35 +76,142 @@ Verify that:
 
 ### Verify that:
 
-- `Admin` can change project role from `Reader` to `Manager` via **CLI**.
+- `Admin` can remove `Reader` from project via **CLI**.
 "
-"passed","Wed Aug 20 02:05:00 UTC 2025","Wed Aug 20 02:05:44 UTC 2025","43894","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes Writer from project via CLI","
+"passed","Thu Aug 21 02:16:04 UTC 2025","Thu Aug 21 02:16:30 UTC 2025","25712","CLI Tests","CLI Storage","TestCLIStorage","","","Admin rename text file via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Upload `text` file via **CLI**.
+
+### Verify that:
+
+- User can rename `txt` file via **CLI**.
+"
+"passed","Thu Aug 21 02:51:18 UTC 2025","Thu Aug 21 02:52:24 UTC 2025","65912","UI Tests","UI Secrets","TestUISecrets","","","Create Second Secret via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create Secret.
+
+### Verify that:
+
+- User can create second Secret.
+"
+"passed","Thu Aug 21 01:58:32 UTC 2025","Thu Aug 21 01:59:49 UTC 2025","77526","UI Tests","UI Files","TestUIFiles","","","Verify Writer can create new folder","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Writer` role.
+
+### Verify that:
+
+- `Writer` can create new folder.
+"
+"passed","Thu Aug 21 01:35:12 UTC 2025","Thu Aug 21 01:36:16 UTC 2025","64688","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change User role to Admin","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `User` role via **API**.
+
+### Verify that:
+
+- `Admin` can change user role from `User` to `Admin`
+- User after changing role from `User` to `Admin`:
+
+- Can access organization `Settings`
+- Can access organization `Billing`
+"
+"passed","Thu Aug 21 02:17:16 UTC 2025","Thu Aug 21 02:18:10 UTC 2025","54207","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Manager removes Manager from org via **CLI**","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
 - Signup `second user` via **UI**.
 - Signup `third user` via **UI**.
 - Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Writer` role via **CLI**.
+- Add `second user` to organization with `Manager` role via **CLI**.
+- Add `third user` to organization with `Manager` role via **CLI**.
 - `Second user` login with Bearer auth token via **CLI**.
 
 ### Verify that:
 
-- `Manager` can remove `Writer` from project via **CLI**.
+- `Manager` can remove `Manager` from organization via **CLI**.
 "
-"passed","Wed Aug 20 03:00:41 UTC 2025","Wed Aug 20 03:01:06 UTC 2025","24719","UI Tests","UI Secrets","TestUISecrets","","","Create First Secret without project via UI","
+"passed","Thu Aug 21 02:38:58 UTC 2025","Thu Aug 21 02:39:46 UTC 2025","48508","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Manager cannot remove himself from organization","
 - Login with valid credentials.
 - Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
 
 ### Verify that:
 
-- User **cannot** create first Secret if **no project created** yet.
+- `Manager` **cannot** remove himself from organization.
 "
-"passed","Wed Aug 20 02:26:23 UTC 2025","Wed Aug 20 02:26:55 UTC 2025","31899","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Manager removes himself from org via **CLI**","
+"passed","Thu Aug 21 01:33:19 UTC 2025","Thu Aug 21 01:34:16 UTC 2025","56889","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Reader to Writer in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Reader` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Reader` to `Writer` via **CLI**.
+"
+"passed","Thu Aug 21 01:48:44 UTC 2025","Thu Aug 21 01:50:01 UTC 2025","76323","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Admin to Manager","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Admin` role.
+
+### Verify that:
+
+- `Admin` can demote `Admin` to `Manager`.
+"
+"passed","Thu Aug 21 02:03:58 UTC 2025","Thu Aug 21 02:04:30 UTC 2025","32719","UI Tests","UI Files","TestUIFiles","","","User make double click on Folder","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create new folder.
+
+### Verify that:
+
+- User opens a folder with a double click on it.
+"
+"passed","Thu Aug 21 01:51:29 UTC 2025","Thu Aug 21 01:53:36 UTC 2025","126249","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot change Manager role to Admin","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+- Signup `third user`.
+- Invite `third user` to organization with `Manager` role via **API**.
+
+### Verify that:
+
+- `Manager` cannot change user role from `Manager` to `Admin`.
+"
+"passed","Thu Aug 21 02:14:43 UTC 2025","Thu Aug 21 02:15:25 UTC 2025","42036","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Admin removes Admin from org via **CLI**","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Add `second user` to organization with `Admin` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can remove `Admin` from organization via **CLI**.
+"
+"passed","Thu Aug 21 02:20:20 UTC 2025","Thu Aug 21 02:21:06 UTC 2025","45970","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Manager removes himself from org via **CLI**","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -526,138 +224,7 @@ Verify that:
 
 - `Manager` **cannot** remove `himself` from organization via **CLI**.
 "
-"passed","Wed Aug 20 02:41:03 UTC 2025","Wed Aug 20 02:43:07 UTC 2025","124005","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Manager cannot remove Admin from organization","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-- Signup `third user`.
-- Invite `third user` to organization with `Admin` role via **API**.
-
-### Verify that:
-
-- `Manager` **cannot** remove another `Admin` from organization.
-"
-"passed","Wed Aug 20 02:29:47 UTC 2025","Wed Aug 20 02:30:20 UTC 2025","32770","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User removes organization via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Login with Bearer auth token via **CLI**.
-- Create first organization via **CLI**.
-- Create second organization via **CLI**.
-
-### Verify that:
-
-- User can remove organization via **CLI**.
-"
-"passed","Wed Aug 20 01:38:59 UTC 2025","Wed Aug 20 01:40:19 UTC 2025","80933","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Writer to Reader","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Writer` role.
-
-### Verify that:
-
-- `Admin` can demote `Writer` to `Reader`.
-"
-"passed","Wed Aug 20 02:16:20 UTC 2025","Wed Aug 20 02:16:40 UTC 2025","19783","CLI Tests","CLI Storage","TestCLIStorage","","","Admin upload text file via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-
-### Verify that:
-
-- User can upload `txt` file via **CLI**.
-"
-"passed","Wed Aug 20 02:42:06 UTC 2025","Wed Aug 20 02:44:20 UTC 2025","133848","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Search Member of organization via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Signup `third user`.
-- Invite `third user` to organization via **API**.
-
-### Verify that:
-
-- User can search organization members using `Search` field.
-"
-"passed","Wed Aug 20 03:02:56 UTC 2025","Wed Aug 20 03:04:23 UTC 2025","86668","UI Tests","UI Secrets","TestUISecrets","","","Search Secret via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Create Secret.
-
-### Verify that:
-
-- User can Search for secret via UI.
-"
-"passed","Wed Aug 20 03:07:39 UTC 2025","Wed Aug 20 03:08:18 UTC 2025","39846","CLI Tests","CLI Login","TestCLILogin","","","User with organization logs in with auth token via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create organization via **API**.
-
-### Verify that:
-
-- User can login with Bearer auth token via **CLI**.
-- Login output in CLI valid `organization` and no `project` info.
-"
-"passed","Wed Aug 20 02:45:29 UTC 2025","Wed Aug 20 02:46:31 UTC 2025","61452","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Invite registered user without organization to organization with default project via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project with `default` option.
-- Signup `second user`.
-
-### Verify that:
-
-- User can invite to organization another user that is registered but **doesn't have organization**.
-- Newly invited user is member of the `default` project.
-"
-"passed","Wed Aug 20 01:37:34 UTC 2025","Wed Aug 20 01:38:52 UTC 2025","78156","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Reader to Admin","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Reader` role.
-
-### Verify that:
-
-- `Admin` can promote `Reader` to `Admin`.
-"
-"passed","Wed Aug 20 01:41:31 UTC 2025","Wed Aug 20 01:42:58 UTC 2025","86939","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Writer to Admin","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Writer` role.
-
-### Verify that:
-
-- `Admin` can promote `Writer` to `Admin`.
-"
-"passed","Wed Aug 20 02:04:14 UTC 2025","Wed Aug 20 02:04:53 UTC 2025","39726","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes Reader from project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Reader` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can remove `Reader` from project via **CLI**.
-"
-"passed","Wed Aug 20 02:09:31 UTC 2025","Wed Aug 20 02:10:13 UTC 2025","42006","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Reader removes Reader from project via CLI","
+"passed","Thu Aug 21 02:10:03 UTC 2025","Thu Aug 21 02:10:50 UTC 2025","47027","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Reader removes Reader from project via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -675,348 +242,19 @@ Verify that:
 
 - `Reader` **cannot** remove members from project via **CLI**.
 "
-"passed","Wed Aug 20 02:56:18 UTC 2025","Wed Aug 20 02:56:41 UTC 2025","22871","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Create First Project from top pane of main via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-
-### Verify that:
-
-- User can create first project in organization from project menu in the **top pane of the main page**.
-"
-"passed","Wed Aug 20 01:49:56 UTC 2025","Wed Aug 20 01:50:58 UTC 2025","62222","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Admin to Manager","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Admin` role.
-
-### Verify that:
-
-- `Admin` can demote `Admin` to `Manager`.
-"
-"passed","Wed Aug 20 02:14:22 UTC 2025","Wed Aug 20 02:14:59 UTC 2025","36983","CLI Tests","CLI Storage","TestCLIStorage","","","Admin create folder via CLI","
+"passed","Thu Aug 21 02:17:19 UTC 2025","Thu Aug 21 02:17:44 UTC 2025","24832","CLI Tests","CLI Storage","TestCLIStorage","","","Admin remove text file via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
 - Login with Bearer auth token via **CLI**.
 - Create new project via **CLI**.
+- Upload `text` file via **CLI**.
 
 ### Verify that:
 
-- User can create folder via **CLI**.
+- User can remove `txt` file via **CLI**.
 "
-"passed","Wed Aug 20 01:59:11 UTC 2025","Wed Aug 20 01:59:42 UTC 2025","30720","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes Reader from project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Reader` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can remove `Reader` from project via **CLI**.
-"
-"passed","Wed Aug 20 01:37:36 UTC 2025","Wed Aug 20 01:38:53 UTC 2025","77800","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change Manager role to User","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-
-### Verify that:
-- `Admin` can change user role from `Manager` to `User`
-- User after changing role from `Manager` to `User`:
-
-- **Cannot** access organization `Settings`
-- **Cannot** access organization `Billing`
-"
-"passed","Wed Aug 20 01:49:12 UTC 2025","Wed Aug 20 01:50:10 UTC 2025","58213","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Writer to Reader in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Writer` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can change project role from `Writer` to `Reader` via **CLI**.
-"
-"passed","Wed Aug 20 01:48:46 UTC 2025","Wed Aug 20 01:49:50 UTC 2025","64506","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Admin to Writer","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Admin` role.
-
-### Verify that:
-
-- `Admin` can demote `Admin` to `Writer`.
-"
-"passed","Wed Aug 20 02:01:11 UTC 2025","Wed Aug 20 02:02:18 UTC 2025","66687","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes Admin from project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Admin` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can remove another `Admin` from project via **CLI**.
-"
-"passed","Wed Aug 20 03:08:33 UTC 2025","Wed Aug 20 03:09:05 UTC 2025","32567","CLI Tests","CLI Login","TestCLILogin","","","User with organization and project logs in with auth token via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create organization via API.
-- Create project via API.
-
-### Verify that:
-
-- User can login with Bearer auth token via CLI.
-- Login output in CLI contain valid organization and project.
-"
-"passed","Wed Aug 20 02:24:16 UTC 2025","Wed Aug 20 02:25:11 UTC 2025","54270","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Manager removes Manager from org via **CLI**","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Add `second user` to organization with `Manager` role via **CLI**.
-- Add `third user` to organization with `Manager` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can remove `Manager` from organization via **CLI**.
-"
-"passed","Wed Aug 20 02:33:54 UTC 2025","Wed Aug 20 02:34:26 UTC 2025","32361","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","Set default user credits via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create first organization via **CLI**.
-- Set default user credits via **CLI**.
-- Invite `second user` to organization via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-- Run `apolo config show` command via **CLI**.
-
-### Verify that:
-
-- Valid user credits amount is displayed in command output.
-"
-"passed","Wed Aug 20 02:35:57 UTC 2025","Wed Aug 20 02:36:35 UTC 2025","38255","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Switch between organization via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create second organization via UI.
-
-### Verify that:
-
-- User can switch between organizations.
-"
-"passed","Wed Aug 20 01:33:01 UTC 2025","Wed Aug 20 01:33:57 UTC 2025","55510","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Reader to Writer in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Reader` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Reader` to `Writer` via **CLI**.
-"
-"passed","Wed Aug 20 02:32:43 UTC 2025","Wed Aug 20 02:33:41 UTC 2025","58171","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User verifies admin get-org-users output via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create first organization via **CLI**.
-- Invite `second user` to organization via **CLI**.
-- Run `apolo admin get-org-users` command via **CLI**.
-
-### Verify that:
-
-- Organization members are listed with valid data in command output.
-"
-"passed","Wed Aug 20 02:48:27 UTC 2025","Wed Aug 20 02:49:52 UTC 2025","84733","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager can invite Reader to a project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-- Signup `third user`.
-- Invite `third user` to organization via **API**.
-
-### Verify that:
-
-- `Manager` can invite `third user` as `Reader` to a project.
-"
-"passed","Wed Aug 20 02:06:43 UTC 2025","Wed Aug 20 02:07:51 UTC 2025","68004","UI Tests","UI Files","TestUIFiles","","","User delete Folder","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Create new folder.
-
-### Verify that:
-
-- User can delete a folder with `Delete` button from File action bar.
-"
-"passed","Wed Aug 20 03:09:10 UTC 2025","Wed Aug 20 03:09:28 UTC 2025","17727","UI Tests","UI Signup","TestUISignup","","","New user successful signup","
-### Verify that:
-
-- New user can signup via UI.
-"
-"passed","Wed Aug 20 01:53:46 UTC 2025","Wed Aug 20 01:54:43 UTC 2025","56477","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Manager to Writer in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Manager` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can change project role from `Manager` to `Writer` via **CLI**.
-"
-"passed","Wed Aug 20 03:07:17 UTC 2025","Wed Aug 20 03:08:05 UTC 2025","47968","UI Tests","UI Credits Purchase","TestUICreditsPurchase","","","Verify User cannot purchase credits via top pane","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `User` role.
-
-### Verify that:
-
-- `User` **cannot** purchase credits via top pane.
-"
-"passed","Wed Aug 20 01:41:42 UTC 2025","Wed Aug 20 01:42:44 UTC 2025","61136","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Admin to Writer in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Admin` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Admin` to `Writer` via **CLI**.
-"
-"passed","Wed Aug 20 02:21:29 UTC 2025","Wed Aug 20 02:22:38 UTC 2025","69094","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Admin removes Admin from org via **CLI**","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Add `second user` to organization with `Admin` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can remove `Admin` from organization via **CLI**.
-"
-"passed","Wed Aug 20 01:39:54 UTC 2025","Wed Aug 20 01:40:31 UTC 2025","37132","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Manager to Admin in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Manager` to `Admin` via **CLI**.
-"
-"passed","Wed Aug 20 02:49:17 UTC 2025","Wed Aug 20 02:49:41 UTC 2025","23809","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","User verifies admin get-projects command output via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Run `apolo admin get-projects` command via **CLI**.
-
-### Verify that:
-
-- Valid project info is displayed in command output.
-"
-"passed","Wed Aug 20 01:44:23 UTC 2025","Wed Aug 20 01:45:35 UTC 2025","72132","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Manager to Writer","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-
-### Verify that:
-
-- `Admin` can demote `Manager` to `Writer`.
-"
-"passed","Wed Aug 20 02:16:46 UTC 2025","Wed Aug 20 02:17:18 UTC 2025","31324","CLI Tests","CLI Storage","TestCLIStorage","","","Admin upload bin file via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-
-### Verify that:
-
-- User can upload `bin` file via **CLI**.
-"
-"failed","Wed Aug 20 01:51:05 UTC 2025","Wed Aug 20 01:54:01 UTC 2025","176151","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Manager can promote Reader to Writer","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-- Signup `third user`.
-- Invite `third user` to organization via **API**.
-- Invite `third user` to project with `Reader` role.
-
-### Verify that:
-
-- `Manager` can promote `Reader` to `Writer`.
-"
-"passed","Wed Aug 20 02:28:42 UTC 2025","Wed Aug 20 02:30:24 UTC 2025","102235","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Writer cannot remove members from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Reader` role.
-- Signup `third user`.
-- Invite `third user` to organization via **API**.
-- Invite `third user` to project with `Reader` role.
-
-### Verify that:
-
-- `Writer` **cannot** remove members from project.
-"
-"passed","Wed Aug 20 01:54:40 UTC 2025","Wed Aug 20 01:56:23 UTC 2025","103205","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot change Admin role to User","
+"passed","Thu Aug 21 01:55:27 UTC 2025","Thu Aug 21 01:57:13 UTC 2025","106068","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot change Admin role to Manager","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Signup `second user`.
@@ -1026,65 +264,139 @@ Verify that:
 
 ### Verify that:
 
-- `Manager` **cannot** change user role from `Admin` to `User`.
+- `Manager` **cannot** change user role from `Admin` to `Manager`.
 "
-"passed","Wed Aug 20 01:36:56 UTC 2025","Wed Aug 20 01:37:46 UTC 2025","49829","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Writer to Manager in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Writer` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Writer` to `Manager` via **CLI**.
-"
-"passed","Wed Aug 20 02:32:00 UTC 2025","Wed Aug 20 02:32:37 UTC 2025","37018","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","Invite user to organization with default project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create first organization via **CLI**.
-- Create first project with 'default' option via **CLI**.
-
-### Verify that:
-
-- User can invite registered user to organization via **CLI**.
-- Newly invited user is member of default project.
-"
-"passed","Wed Aug 20 03:02:42 UTC 2025","Wed Aug 20 03:04:05 UTC 2025","83300","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited User access","
+"passed","Thu Aug 21 01:35:16 UTC 2025","Thu Aug 21 01:36:23 UTC 2025","67471","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Reader to Manager","
 - Login with valid credentials.
 - Create new organization via **API**.
+- Create new project.
 - Signup `second user`.
-- Invite `second user` to organization with `User` role via **API**.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Reader` role.
 
-### Verify that `User`:
+### Verify that:
 
-- **Cannot** access organization Settings.
-- **Cannot** access organization Billing.
-- **Cannot** invite member to organization.
-- **Cannot** edit organization members.
-- **Cannot** delete members from organization.
+- `Admin` can promote `Reader` to `Manager`.
 "
-"passed","Wed Aug 20 02:23:29 UTC 2025","Wed Aug 20 02:24:10 UTC 2025","41052","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Manager removes User from org via **CLI**","
+"passed","Thu Aug 21 02:43:35 UTC 2025","Thu Aug 21 02:44:18 UTC 2025","42280","UI Tests","UI Disks","TestUIDisks","","","Search Disk via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create new Disk.
+- Create second Disk.
+
+### Verify that:
+
+- User can search for Disk via UI with the `Search` field.
+"
+"passed","Thu Aug 21 01:54:54 UTC 2025","Thu Aug 21 01:57:29 UTC 2025","155251","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Manager cannot promote Reader to Admin","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Reader` role.
+
+### Verify that:
+
+- `Manager` **cannot** promote `Reader` to `Admins`.
+"
+"passed","Thu Aug 21 02:53:52 UTC 2025","Thu Aug 21 02:54:41 UTC 2025","48896","UI Tests","UI Secrets","TestUISecrets","","","Delete Secret via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create Secret.
+
+### Verify that:
+
+- User can delete Secret.
+"
+"passed","Thu Aug 21 02:47:27 UTC 2025","Thu Aug 21 02:48:42 UTC 2025","75243","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Invite member of organization to project via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization.
+
+### Verify that:
+
+- User can invite member of organization to project.
+"
+"passed","Thu Aug 21 02:42:52 UTC 2025","Thu Aug 21 02:43:29 UTC 2025","37600","UI Tests","UI Disks","TestUIDisks","","","Create Second Disk via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create new Disk.
+
+### Verify that:
+
+- User can create second Disk.
+"
+"passed","Thu Aug 21 02:06:09 UTC 2025","Thu Aug 21 02:08:27 UTC 2025","137391","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Writer cannot change member roles","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Writer` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Reader` role.
+
+### Verify that:
+
+- `Writer` **cannot** change member roles.
+"
+"passed","Thu Aug 21 02:28:20 UTC 2025","Thu Aug 21 02:29:14 UTC 2025","54075","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager cannot remove himself from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+
+### Verify that:
+
+- `Manager` **cannot** remove himself from project.
+"
+"passed","Thu Aug 21 02:56:16 UTC 2025","Thu Aug 21 02:57:17 UTC 2025","61278","UI Tests","UI Signup","TestUISignup","","","Invite not registered user to organization with default project via UI","
+- Login with valid credentials.
+- Create new organization.
+- Create project with `default` option.
+- Invite **not registered** user to organization.
+
+### Verify that:
+
+- Newly invited user automatically is member of default project.
+"
+"passed","Thu Aug 21 02:11:50 UTC 2025","Thu Aug 21 02:12:15 UTC 2025","25015","CLI Tests","CLI Storage","TestCLIStorage","","","Admin rename folder via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Create new folder via **CLI**.
+
+### Verify that:
+
+- User can rename folder via **CLI**.
+"
+"passed","Thu Aug 21 02:12:58 UTC 2025","Thu Aug 21 02:13:53 UTC 2025","55551","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Admin removes User from org via **CLI**","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
 - Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
 - Login with Bearer auth token via **CLI**.
-- Add `second user` to organization with `Manager` role via **CLI**.
-- Add `third user` to organization with `User` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
+- Add `second user` to organization with `User` role via **CLI**.
 
 ### Verify that:
 
-- `Manager` can remove `User` from organization via **CLI**.
+- `Admin` can remove `User` from organization via **CLI**.
 "
-"passed","Wed Aug 20 01:33:08 UTC 2025","Wed Aug 20 01:34:35 UTC 2025","87342","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change User role to Manager","
+"passed","Thu Aug 21 01:33:46 UTC 2025","Thu Aug 21 01:35:03 UTC 2025","77334","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change User role to Manager","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Signup `second user`.
@@ -1098,41 +410,7 @@ Verify that:
 - Can access organization `Settings`
 - Can access organization `Billing`
 "
-"passed","Wed Aug 20 01:38:35 UTC 2025","Wed Aug 20 01:39:09 UTC 2025","34462","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Manager to Reader in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Manager` to `Reader` via **CLI**.
-"
-"passed","Wed Aug 20 01:40:26 UTC 2025","Wed Aug 20 01:41:25 UTC 2025","59373","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Writer to Manager","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Writer` role.
-
-### Verify that:
-
-- `Admin` can promote `Writer` to `Manager`.
-"
-"passed","Wed Aug 20 02:55:46 UTC 2025","Wed Aug 20 02:56:13 UTC 2025","26223","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Create First Project from main page via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-
-### Verify that:
-
-- User can create first project in organization from **the main page**.
-"
-"passed","Wed Aug 20 01:42:50 UTC 2025","Wed Aug 20 01:43:36 UTC 2025","45410","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Admin to Manager in project via CLI","
+"passed","Thu Aug 21 01:41:49 UTC 2025","Thu Aug 21 01:42:39 UTC 2025","49412","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Admin to Reader in project via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -1144,32 +422,33 @@ Verify that:
 
 ### Verify that:
 
-- `Admin` can change project role from `Admin` to `Manager` via **CLI**.
+- `Admin` can change project role from `Admin` to `Reader` via **CLI**.
 "
-"failed","Wed Aug 20 02:53:23 UTC 2025","Wed Aug 20 02:54:01 UTC 2025","37478","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","Add user not in organization to project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-
-### Verify that:
-
-- User **cannot** add registered user **not from organization** to project via **CLI**.
-"
-"passed","Wed Aug 20 02:57:28 UTC 2025","Wed Aug 20 02:59:01 UTC 2025","93497","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Invite member of organization to project via UI","
+"passed","Thu Aug 21 02:01:24 UTC 2025","Thu Aug 21 02:02:59 UTC 2025","94773","UI Tests","UI Files","TestUIFiles","","","Verify Admin can create new folder","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
 - Signup `second user`.
-- Invite `second user` to organization.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Admin` role.
 
 ### Verify that:
 
-- User can invite member of organization to project.
+- `Admin` can create new folder
 "
-"passed","Wed Aug 20 03:09:33 UTC 2025","Wed Aug 20 03:10:30 UTC 2025","56168","UI Tests","UI Signup","TestUISignup","","","Invite not registered user as user to organization","
+"passed","Thu Aug 21 01:47:32 UTC 2025","Thu Aug 21 01:48:38 UTC 2025","65825","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Admin to Writer","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Admin` role.
+
+### Verify that:
+
+- `Admin` can demote `Admin` to `Writer`.
+"
+"passed","Thu Aug 21 02:55:14 UTC 2025","Thu Aug 21 02:56:10 UTC 2025","56598","UI Tests","UI Signup","TestUISignup","","","Invite not registered user as user to organization","
 - Login with valid credentials.
 - Create new organization.
 
@@ -1177,246 +456,7 @@ Verify that:
 
 - User can invite **not registered** user to organization.
 "
-"passed","Wed Aug 20 02:32:10 UTC 2025","Wed Aug 20 02:33:15 UTC 2025","64489","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Admin can remove User from organization","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `User` role via **API**.
-
-### Verify that:
-
-- `Admin` can remove `User` from organization.
-"
-"passed","Wed Aug 20 02:44:27 UTC 2025","Wed Aug 20 02:45:23 UTC 2025","55760","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Invite registered user without organization to organization via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-
-### Verify that:
-
-- User can invite to organization another user that is registered but **doesn't have an organization**.
-"
-"passed","Wed Aug 20 03:02:01 UTC 2025","Wed Aug 20 03:02:36 UTC 2025","34729","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Invite not registered user to project via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-
-### Verify that:
-
-- User **cannot** invite to project another user which is **not registered**.
-"
-"passed","Wed Aug 20 01:59:48 UTC 2025","Wed Aug 20 02:00:25 UTC 2025","37059","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes Writer from project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Writer` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can remove `Writer` from project via **CLI**.
-"
-"passed","Wed Aug 20 02:59:44 UTC 2025","Wed Aug 20 03:00:05 UTC 2025","21411","CLI Tests","CLI Disks","TestCLIDisks","","","Admin get disk by ID via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Create new project via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create first disk via **CLI**.
-
-### Verify that:
-
-- User can get disk info by disk ID via **CLI**.
-"
-"passed","Wed Aug 20 01:50:18 UTC 2025","Wed Aug 20 01:51:09 UTC 2025","50816","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Writer to Manager in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Writer` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can change project role from `Writer` to `Manager` via **CLI**.
-"
-"passed","Wed Aug 20 02:35:51 UTC 2025","Wed Aug 20 02:36:51 UTC 2025","59221","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Admin cannot remove himself from organization","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Admin` role via **API**.
-
-### Verify that:
-
-- `Admin` **cannot** remove himself from organization.
-"
-"passed","Wed Aug 20 02:45:36 UTC 2025","Wed Aug 20 02:46:55 UTC 2025","79157","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Writer can modify files","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Writer` role.
-
-### Verify that:
-
-- `Writer` has access to modify Files.
-"
-"passed","Wed Aug 20 02:55:45 UTC 2025","Wed Aug 20 02:56:27 UTC 2025","41316","UI Tests","UI Disks","TestUIDisks","","","Search Disk via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Create new Disk.
-- Create second Disk.
-
-### Verify that:
-
-- User can search for Disk via UI with the `Search` field.
-"
-"passed","Wed Aug 20 01:55:42 UTC 2025","Wed Aug 20 01:56:34 UTC 2025","51998","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Admin to Reader in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Admin` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` **cannot** change project role from `Admin` to `Reader` via **CLI**.
-"
-"failed","Wed Aug 20 01:45:14 UTC 2025","Wed Aug 20 01:45:40 UTC 2025","25644","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin demote himself to Manager in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-
-### Verify that:
-
-- `Admin` **cannot** demote himself via **CLI**.
-"
-"passed","Wed Aug 20 01:32:40 UTC 2025","Wed Aug 20 01:34:15 UTC 2025","94963","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Reader to Writer","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Reader` role.
-
-### Verify that:
-
-- `Admin` can promote Reader to `Writer`.
-"
-"passed","Wed Aug 20 03:06:13 UTC 2025","Wed Aug 20 03:06:34 UTC 2025","20923","CLI Tests","CLI Secrets","TestCLISecrets","","","Admin create second secret via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Create first secret via **CLI**.
-
-### Verify that:
-
-- User can create second secret via **CLI**.
-"
-"passed","Wed Aug 20 02:44:23 UTC 2025","Wed Aug 20 02:45:30 UTC 2025","66698","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Reader cannot modify files","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Reader` role.
-
-### Verify that:
-
-- `Reader` **doesn't** have access to modify Files.
-"
-"passed","Wed Aug 20 01:44:26 UTC 2025","Wed Aug 20 01:45:36 UTC 2025","70404","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin cannot demote himself to Manager","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Admin` role via **API**.
-
-### Verify that:
-
-- `Admin` cannot demote himself to `Manager`.
-"
-"passed","Wed Aug 20 02:35:18 UTC 2025","Wed Aug 20 02:35:50 UTC 2025","32366","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Create Second Organization via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-
-### Verify that:
-
-- User can create second organization.
-"
-"passed","Wed Aug 20 02:25:18 UTC 2025","Wed Aug 20 02:26:16 UTC 2025","57850","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Manager removes Admin from org via **CLI**","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Add `second user` to organization with `Manager` role via **CLI**.
-- Add `third user` to organization with `Admin` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` **cannot** remove `Admin` from organization via **CLI**.
-"
-"passed","Wed Aug 20 01:56:29 UTC 2025","Wed Aug 20 01:58:29 UTC 2025","119783","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot change Admin role to Manager","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-- Signup `third user`.
-- Invite `third user` to organization with `Admin` role via **API**.
-
-### Verify that:
-
-- `Manager` **cannot** change user role from `Admin` to `Manager`.
-"
-"passed","Wed Aug 20 01:42:04 UTC 2025","Wed Aug 20 01:43:14 UTC 2025","69384","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change Admin role to Manager","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with Admin role via **API**.
-
-### Verify that:
-
-- `Admin` can change user role from `Admin` to `Manager`.
-- User after changing role from `Admin` to `Manager`:
-
-- Can access organization `Settings`.
-- Can access organization `Billing`.
-"
-"passed","Wed Aug 20 02:48:50 UTC 2025","Wed Aug 20 02:49:11 UTC 2025","20328","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","User creates a first project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- User can create first project via **CLI**.
-"
-"passed","Wed Aug 20 02:27:01 UTC 2025","Wed Aug 20 02:27:55 UTC 2025","54077","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","User removes User from org via **CLI**","
+"passed","Thu Aug 21 02:21:13 UTC 2025","Thu Aug 21 02:22:31 UTC 2025","77453","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","User removes User from org via **CLI**","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -1431,88 +471,7 @@ Verify that:
 
 - `User` **cannot** remove members from organization via **CLI**.
 "
-"passed","Wed Aug 20 02:27:08 UTC 2025","Wed Aug 20 02:28:24 UTC 2025","75866","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager cannot remove himself from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-
-### Verify that:
-
-- `Manager` **cannot** remove himself from project.
-"
-"passed","Wed Aug 20 02:43:13 UTC 2025","Wed Aug 20 02:44:16 UTC 2025","62988","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Manager cannot remove himself from organization","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-
-### Verify that:
-
-- `Manager` **cannot** remove himself from organization.
-"
-"passed","Wed Aug 20 02:57:55 UTC 2025","Wed Aug 20 02:58:33 UTC 2025","37459","CLI Tests","CLI Disks","TestCLIDisks","","","Admin create disk with no project created via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- User **cannot** create disk via CLI if there is no project created yet.
-"
-"passed","Wed Aug 20 01:43:05 UTC 2025","Wed Aug 20 01:44:16 UTC 2025","71245","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Manager to Reader","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-
-### Verify that:
-
-- `Admin` can demote `Manager` to `Reader`.
-"
-"passed","Wed Aug 20 02:55:11 UTC 2025","Wed Aug 20 02:55:39 UTC 2025","27337","UI Tests","UI Disks","TestUIDisks","","","Create Second Disk via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Create new Disk.
-
-### Verify that:
-
-- User can create second Disk.
-"
-"passed","Wed Aug 20 01:52:17 UTC 2025","Wed Aug 20 01:53:39 UTC 2025","82162","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Manager to Reader in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Manager` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` can change project role from `Manager` to `Reader` via **CLI**.
-"
-"passed","Wed Aug 20 02:56:47 UTC 2025","Wed Aug 20 02:57:21 UTC 2025","34190","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Create second project via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-
-### Verify that:
-
-- User can create second project in organization.
-"
-"passed","Wed Aug 20 02:50:01 UTC 2025","Wed Aug 20 02:51:42 UTC 2025","100832","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager can invite Writer to a project","
+"passed","Thu Aug 21 01:59:36 UTC 2025","Thu Aug 21 02:01:32 UTC 2025","115756","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Manager can promote Writer to Manager","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
@@ -1521,139 +480,13 @@ Verify that:
 - Invite `second user` to project with `Manager` role.
 - Signup `third user`.
 - Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Writer` role.
 
 ### Verify that:
 
-- `Manager` can invite `third user` as `Writer` to a project.
+- `Manager` can promote `Writer` to `Manager`.
 "
-"passed","Wed Aug 20 01:37:53 UTC 2025","Wed Aug 20 01:38:27 UTC 2025","34917","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Writer to Admin in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Writer` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Writer` to `Admin` via **CLI**.
-"
-"passed","Wed Aug 20 01:40:39 UTC 2025","Wed Aug 20 01:41:30 UTC 2025","51437","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Admin to Reader in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Admin` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Admin` to `Reader` via **CLI**.
-"
-"passed","Wed Aug 20 02:38:24 UTC 2025","Wed Aug 20 02:39:46 UTC 2025","81694","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Set default organization credits via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-
-### Verify that:
-
-- User can set default organization credits.
-"
-"passed","Wed Aug 20 02:22:46 UTC 2025","Wed Aug 20 02:23:23 UTC 2025","37255","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Admin removes himself from org via **CLI**","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Add `second user` to organization with `Admin` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Admin` **cannot** remove `himself` from organization via **CLI**.
-"
-"passed","Wed Aug 20 02:47:11 UTC 2025","Wed Aug 20 02:48:20 UTC 2025","69284","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager can modify files","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-
-### Verify that:
-
-- `Manager` has access to modify Files.
-"
-"passed","Wed Aug 20 02:50:14 UTC 2025","Wed Aug 20 02:50:36 UTC 2025","22627","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","Switch between projects via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create first project via **CLI**.
-- Create second project via **CLI**.
-
-### Verify that:
-
-- User can switch between projects via **CLI**.
-"
-"passed","Wed Aug 20 02:18:28 UTC 2025","Wed Aug 20 02:20:35 UTC 2025","126388","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager can remove Reader from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-- Signup `third user`.
-- Invite `third user` to organization via **API**.
-- Invite `third user` to project with `Reader` role.
-
-### Verify that:
-
-- `Manager` can remove `Reader` from project.
-"
-"passed","Wed Aug 20 03:05:48 UTC 2025","Wed Aug 20 03:06:32 UTC 2025","43448","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited Admin can access organization settings","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Admin` role via **API**.
-
-### Verify that `Admin`:
-
-- Can access organization Settings.
-"
-"passed","Wed Aug 20 02:04:46 UTC 2025","Wed Aug 20 02:05:25 UTC 2025","39247","UI Tests","UI Files","TestUIFiles","","","User make double click on Folder","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Create new folder.
-
-### Verify that:
-
-- User opens a folder with a double click on it.
-"
-"passed","Wed Aug 20 01:35:01 UTC 2025","Wed Aug 20 01:35:42 UTC 2025","41075","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Reader to Admin in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Reader` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Reader` to `Admin` via **CLI**.
-"
-"passed","Wed Aug 20 03:13:46 UTC 2025","Wed Aug 20 03:13:58 UTC 2025","12522","UI Tests","UI Login","TestUILogin","","","New user successful login","
-### Verify that:
-
-- User can login with valid credentials.
-"
-"passed","Wed Aug 20 03:06:38 UTC 2025","Wed Aug 20 03:07:18 UTC 2025","40070","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited Admin can access organization billing","
+"passed","Thu Aug 21 02:49:33 UTC 2025","Thu Aug 21 02:50:22 UTC 2025","48718","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited Admin can access organization billing","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Signup `second user`.
@@ -1663,305 +496,7 @@ Verify that:
 
 - Can access organization Billing.
 "
-"passed","Wed Aug 20 02:58:48 UTC 2025","Wed Aug 20 02:59:12 UTC 2025","23292","CLI Tests","CLI Disks","TestCLIDisks","","","Admin create first disk via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Create new project via **API**.
-- Login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- User can create disk via **CLI**.
-"
-"passed","Wed Aug 20 02:29:00 UTC 2025","Wed Aug 20 02:29:41 UTC 2025","40110","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User creates a second organization via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Login with Bearer auth token via **CLI**.
-- Create first organization via **CLI**.
-
-### Verify that:
-
-- User can create second organization via **CLI**.
-"
-"passed","Wed Aug 20 01:40:26 UTC 2025","Wed Aug 20 01:41:51 UTC 2025","84438","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change Admin role to User","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Admin` role via **API**.
-
-### Verify that:
-
-- `Admin` can change user role from `Admin` to `User`
-- User after changing role from `Admin` to `User`:
-
-- **Cannot** access organization `Settings`.
-- **Cannot** access organization `Billing`.
-"
-"passed","Wed Aug 20 02:54:41 UTC 2025","Wed Aug 20 02:55:05 UTC 2025","24066","UI Tests","UI Disks","TestUIDisks","","","Create First Disk via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-
-### Verify that:
-
-- User can create first Disk after project created.
-"
-"passed","Wed Aug 20 02:18:18 UTC 2025","Wed Aug 20 02:18:49 UTC 2025","31004","CLI Tests","CLI Storage","TestCLIStorage","","","Admin download bin file via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Upload `bin` file via **CLI**.
-
-### Verify that:
-
-- User can download `bin` file via **CLI**.
-- downloaded `bin` file md5 hash matches expected file.
-"
-"passed","Wed Aug 20 02:34:42 UTC 2025","Wed Aug 20 02:35:45 UTC 2025","62833","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Admin can remove another Admin from organization","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Admin` role via **API**.
-
-### Verify that:
-
-- `Admin` can remove another `Admin` from organization.
-"
-"passed","Wed Aug 20 02:15:06 UTC 2025","Wed Aug 20 02:15:26 UTC 2025","20270","CLI Tests","CLI Storage","TestCLIStorage","","","Admin rename folder via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Create new folder via **CLI**.
-
-### Verify that:
-
-- User can rename folder via **CLI**.
-"
-"passed","Wed Aug 20 01:48:08 UTC 2025","Wed Aug 20 01:50:05 UTC 2025","117599","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot change User role to Admin","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-- Signup `third user`.
-- Invite `third user` to organization with `User` role via **API**.
-
-### Verify that:
-
-- `Manager` **cannot** change user role from `User` to `Admin`.
-"
-"passed","Wed Aug 20 02:46:43 UTC 2025","Wed Aug 20 02:48:43 UTC 2025","120230","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Invite user with organization to organization via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup second user.
-- Pass onboarding for second user and create organization via UI.
-
-### Verify that:
-
-- User can invite to organization another user that already has organization.'
-"
-"passed","Wed Aug 20 02:01:00 UTC 2025","Wed Aug 20 02:02:43 UTC 2025","103217","UI Tests","UI Files","TestUIFiles","","","Verify Manager can create new folder","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Manager` role.
-
-### Verify that:
-
-- `Manager` can create new folder.
-"
-"passed","Wed Aug 20 03:00:26 UTC 2025","Wed Aug 20 03:01:55 UTC 2025","88891","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Invite member that NOT in organization to project via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- DO NOT invite `second user` to organization.
-
-### Verify that:
-
-- User **cannot** invite to project another user which is **not member of organization**.
-"
-"passed","Wed Aug 20 02:50:44 UTC 2025","Wed Aug 20 02:51:20 UTC 2025","35826","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","Add organization member to project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Create new project via **CLI**.
-
-### Verify that:
-
-- User can add organization member to project via **CLI**.
-"
-"passed","Wed Aug 20 02:10:20 UTC 2025","Wed Aug 20 02:11:27 UTC 2025","67267","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin can remove Reader from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Reader` role.
-
-### Verify that:
-
-- `Admin` can remove `Reader` from `project`.
-"
-"passed","Wed Aug 20 01:39:16 UTC 2025","Wed Aug 20 01:39:47 UTC 2025","31253","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Manager to Writer in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-
-### Verify that:
-
-- `Admin` can change project role from `Manager` to `Writer` via **CLI**.
-"
-"passed","Wed Aug 20 02:13:55 UTC 2025","Wed Aug 20 02:14:15 UTC 2025","20606","CLI Tests","CLI Storage","TestCLIStorage","","","Admin create folder without project created via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- User **cannot** create folder if there is **no project created** yet via **CLI**.
-"
-"passed","Wed Aug 20 02:30:27 UTC 2025","Wed Aug 20 02:30:43 UTC 2025","16217","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User verifies config show output via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Login with Bearer auth token via **CLI**.
-- Create first organization via **CLI**.
-- Run `apolo config show` command via **CLI**.
-
-### Verify that:
-
-- `apolo config show` command output is valid.
-"
-"passed","Wed Aug 20 03:08:17 UTC 2025","Wed Aug 20 03:10:09 UTC 2025","112174","UI Tests","UI Credits Purchase","TestUICreditsPurchase","","","Verify Manager can purchase organization credits with predefined value","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role.
-
-### Verify that:
-
-- `Manager` can purchase credits using predefined value(10, 100, 1000).
-"
-"passed","Wed Aug 20 02:34:32 UTC 2025","Wed Aug 20 02:35:13 UTC 2025","40211","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Create First Organization via UI","
-- Login with valid credentials.
-
-### Verify that:
-
-- User can create first organization during onboarding.
-"
-"passed","Wed Aug 20 02:30:32 UTC 2025","Wed Aug 20 02:32:02 UTC 2025","89932","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Reader cannot remove members from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Reader` role.
-- Signup `third user`.
-- Invite `third user` to organization via **API**.
-- Invite `third user` to project with `Reader` role.
-
-### Verify that:
-
-- `Reader` **cannot** remove members from project.
-"
-"passed","Wed Aug 20 01:51:20 UTC 2025","Wed Aug 20 01:52:10 UTC 2025","50833","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Writer to Admin in project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Signup `third user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- Add `third user` to project with `Writer` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` **cannot** change project role from `Writer` to `Admin` via **CLI**.
-"
-"passed","Wed Aug 20 03:04:52 UTC 2025","Wed Aug 20 03:05:38 UTC 2025","45567","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited Manager can access organization billing","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-
-### Verify that `Manager`:
-
-- Can access organization Billing.
-"
-"passed","Wed Aug 20 01:34:22 UTC 2025","Wed Aug 20 01:35:27 UTC 2025","64996","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Reader to Manager","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-- Signup `second user`.
-- Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Reader` role.
-
-### Verify that:
-
-- `Admin` can promote `Reader` to `Manager`.
-"
-"passed","Wed Aug 20 02:18:56 UTC 2025","Wed Aug 20 02:19:22 UTC 2025","25856","CLI Tests","CLI Storage","TestCLIStorage","","","Admin rename text file via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Upload `text` file via **CLI**.
-
-### Verify that:
-
-- User can rename `txt` file via **CLI**.
-"
-"passed","Wed Aug 20 02:15:59 UTC 2025","Wed Aug 20 02:16:14 UTC 2025","15017","CLI Tests","CLI Storage","TestCLIStorage","","","Admin upload file without project created via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- User **cannot** upload file if there is **no project created** yet via **CLI**.
-"
-"passed","Wed Aug 20 01:58:36 UTC 2025","Wed Aug 20 01:59:34 UTC 2025","58131","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot demote himself to User","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-
-### Verify that:
-
-- `Manager` **cannot** demote himself to `User`.
-"
-"passed","Wed Aug 20 03:12:16 UTC 2025","Wed Aug 20 03:13:17 UTC 2025","61664","UI Tests","UI Signup","TestUISignup","","","Invite not registered user to organization with default project via UI","
-- Login with valid credentials.
-- Create new organization.
-- Create project with `default` option.
-- Invite **not registered** user to organization.
-
-### Verify that:
-
-- Newly invited user automatically is member of default project.
-"
-"passed","Wed Aug 20 01:56:41 UTC 2025","Wed Aug 20 01:58:04 UTC 2025","83392","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Writer change member role from Reader to Writer in project via CLI","
+"passed","Thu Aug 21 01:57:33 UTC 2025","Thu Aug 21 01:58:22 UTC 2025","48793","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Writer change member role from Reader to Writer in project via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -1979,28 +514,7 @@ Verify that:
 
 - `Writer` **cannot** change member project roles via **CLI**.
 "
-"passed","Wed Aug 20 02:19:28 UTC 2025","Wed Aug 20 02:19:53 UTC 2025","25510","CLI Tests","CLI Storage","TestCLIStorage","","","Admin remove text file via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Upload `text` file via **CLI**.
-
-### Verify that:
-
-- User can remove `txt` file via **CLI**.
-"
-"passed","Wed Aug 20 02:17:32 UTC 2025","Wed Aug 20 02:18:23 UTC 2025","50203","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin cannot remove himself from project","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Create new project.
-
-### Verify that:
-
-- `Admin` **cannot** remove himself from project.
-"
-"passed","Wed Aug 20 02:08:38 UTC 2025","Wed Aug 20 02:09:25 UTC 2025","47506","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Writer removes Reader from project via CLI","
+"passed","Thu Aug 21 01:48:23 UTC 2025","Thu Aug 21 01:49:15 UTC 2025","51550","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Reader to Admin in project via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -2010,27 +524,27 @@ Verify that:
 - Create new project via **CLI**.
 - Add `second user` to organization via **CLI**.
 - Add `third user` to organization via **CLI**.
-- Add `second user` to project with `Writer` role via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
 - Add `third user` to project with `Reader` role via **CLI**.
 - `Second user` login with Bearer auth token via **CLI**.
 
 ### Verify that:
 
-- `Writer` **cannot** remove members from project via **CLI**.
+- `Manager` **cannot** change project role from `Reader` to `Admin` via **CLI**.
 "
-"passed","Wed Aug 20 02:03:52 UTC 2025","Wed Aug 20 02:04:39 UTC 2025","46855","UI Tests","UI Files","TestUIFiles","","","User make single click on Folder","
+"passed","Thu Aug 21 02:35:50 UTC 2025","Thu Aug 21 02:36:38 UTC 2025","48500","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager can modify files","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
-- Create new folder.
-- Single click on folder.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
 
 ### Verify that:
 
-- Folder info section appears.
-- Folder action bar appears.
+- `Manager` has access to modify Files.
 "
-"passed","Wed Aug 20 02:07:57 UTC 2025","Wed Aug 20 02:08:35 UTC 2025","37851","UI Tests","UI Files","TestUIFiles","","","User upload bin file","
+"passed","Thu Aug 21 02:06:20 UTC 2025","Thu Aug 21 02:06:59 UTC 2025","39338","UI Tests","UI Files","TestUIFiles","","","User upload bin file","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
@@ -2039,7 +553,31 @@ Verify that:
 
 - User can upload `bin` file via UI.
 "
-"passed","Wed Aug 20 01:50:12 UTC 2025","Wed Aug 20 01:52:27 UTC 2025","134999","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager can change Manager role to User","
+"failed","Thu Aug 21 02:45:32 UTC 2025","Thu Aug 21 02:46:08 UTC 2025","35602","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","Add user not in organization to project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+
+### Verify that:
+
+- User **cannot** add registered user **not from organization** to project via **CLI**.
+"
+"passed","Thu Aug 21 01:40:43 UTC 2025","Thu Aug 21 01:42:26 UTC 2025","102389","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Writer to Admin","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Writer` role.
+
+### Verify that:
+
+- `Admin` can promote `Writer` to `Admin`.
+"
+"passed","Thu Aug 21 01:49:23 UTC 2025","Thu Aug 21 01:51:20 UTC 2025","117074","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager can change Manager role to User","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Signup `second user`.
@@ -2055,7 +593,81 @@ Verify that:
 - **Cannot** access organization `Settings`.
 - **Cannot** access organization `Billing`.
 "
-"passed","Wed Aug 20 02:36:57 UTC 2025","Wed Aug 20 02:39:08 UTC 2025","130669","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Manager can remove User from organization","
+"passed","Thu Aug 21 02:52:08 UTC 2025","Thu Aug 21 02:52:43 UTC 2025","35316","CLI Tests","CLI Secrets","TestCLISecrets","","","Admin create first secret via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+
+### Verify that:
+
+- User can create first secret via **CLI**.
+"
+"passed","Thu Aug 21 02:51:12 UTC 2025","Thu Aug 21 02:52:02 UTC 2025","49818","CLI Tests","CLI Login","TestCLILogin","","","User with organization and project logs in with auth token via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create organization via API.
+- Create project via API.
+
+### Verify that:
+
+- User can login with Bearer auth token via CLI.
+- Login output in CLI contain valid organization and project.
+"
+"passed","Thu Aug 21 02:45:55 UTC 2025","Thu Aug 21 02:47:13 UTC 2025","78080","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited User access","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `User` role via **API**.
+
+### Verify that `User`:
+
+- **Cannot** access organization Settings.
+- **Cannot** access organization Billing.
+- **Cannot** invite member to organization.
+- **Cannot** edit organization members.
+- **Cannot** delete members from organization.
+"
+"passed","Thu Aug 21 01:57:25 UTC 2025","Thu Aug 21 01:58:26 UTC 2025","60146","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot demote himself to User","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+
+### Verify that:
+
+- `Manager` **cannot** demote himself to `User`.
+"
+"passed","Thu Aug 21 01:34:24 UTC 2025","Thu Aug 21 01:35:04 UTC 2025","39859","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Reader to Manager in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Reader` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Reader` to `Manager` via **CLI**.
+"
+"passed","Thu Aug 21 01:38:24 UTC 2025","Thu Aug 21 01:38:58 UTC 2025","34141","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Writer to Admin in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Writer` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Writer` to `Admin` via **CLI**.
+"
+"failed","Thu Aug 21 02:30:22 UTC 2025","Thu Aug 21 02:31:28 UTC 2025","65903","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Manager can remove User from organization","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Signup `second user`.
@@ -2067,20 +679,157 @@ Verify that:
 
 - `Manager` can remove `User` from organization.
 "
-"passed","Wed Aug 20 02:17:32 UTC 2025","Wed Aug 20 02:18:12 UTC 2025","40287","CLI Tests","CLI Storage","TestCLIStorage","","","Admin download text file via CLI","
+"passed","Thu Aug 21 01:41:27 UTC 2025","Thu Aug 21 01:42:44 UTC 2025","76454","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change Admin role to Manager","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with Admin role via **API**.
+
+### Verify that:
+
+- `Admin` can change user role from `Admin` to `Manager`.
+- User after changing role from `Admin` to `Manager`:
+
+- Can access organization `Settings`.
+- Can access organization `Billing`.
+"
+"passed","Thu Aug 21 01:42:45 UTC 2025","Thu Aug 21 01:43:22 UTC 2025","37217","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Admin to Writer in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Admin` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Admin` to `Writer` via **CLI**.
+"
+"passed","Thu Aug 21 02:01:20 UTC 2025","Thu Aug 21 02:02:27 UTC 2025","67351","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes Admin from project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Admin` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can remove another `Admin` from project via **CLI**.
+"
+"passed","Thu Aug 21 02:16:16 UTC 2025","Thu Aug 21 02:17:09 UTC 2025","52935","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Manager removes User from org via **CLI**","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Add `second user` to organization with `Manager` role via **CLI**.
+- Add `third user` to organization with `User` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can remove `User` from organization via **CLI**.
+"
+"passed","Thu Aug 21 02:33:34 UTC 2025","Thu Aug 21 02:34:37 UTC 2025","62698","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Reader cannot modify files","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Reader` role.
+
+### Verify that:
+
+- `Reader` **doesn't** have access to modify Files.
+"
+"passed","Thu Aug 21 02:13:50 UTC 2025","Thu Aug 21 02:14:21 UTC 2025","31090","CLI Tests","CLI Storage","TestCLIStorage","","","Admin upload text file via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
 - Login with Bearer auth token via **CLI**.
 - Create new project via **CLI**.
-- Upload `text` file via **CLI**.
 
 ### Verify that:
 
-- User can download `txt` file via **CLI**.
-- downloaded `txt` file md5 hash matches expected file.
+- User can upload `txt` file via **CLI**.
 "
-"passed","Wed Aug 20 02:14:35 UTC 2025","Wed Aug 20 02:15:50 UTC 2025","75066","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin can remove Manager from project","
+"passed","Thu Aug 21 01:50:24 UTC 2025","Thu Aug 21 01:51:21 UTC 2025","56271","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Writer to Manager in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Writer` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can change project role from `Writer` to `Manager` via **CLI**.
+"
+"passed","Thu Aug 21 02:26:03 UTC 2025","Thu Aug 21 02:28:13 UTC 2025","129511","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager cannot remove Admin from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Admin` role.
+
+### Verify that:
+
+- `Manager` **cannot** remove `Admin` from project.
+"
+"passed","Thu Aug 21 02:53:10 UTC 2025","Thu Aug 21 02:54:40 UTC 2025","89217","UI Tests","UI Credits Purchase","TestUICreditsPurchase","","","Verify Manager can purchase organization credits with predefined value","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role.
+
+### Verify that:
+
+- `Manager` can purchase credits using predefined value(10, 100, 1000).
+"
+"passed","Thu Aug 21 02:19:16 UTC 2025","Thu Aug 21 02:20:14 UTC 2025","57805","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Manager removes Admin from org via **CLI**","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Add `second user` to organization with `Manager` role via **CLI**.
+- Add `third user` to organization with `Admin` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` **cannot** remove `Admin` from organization via **CLI**.
+"
+"failed","Thu Aug 21 02:37:35 UTC 2025","Thu Aug 21 02:38:51 UTC 2025","76513","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Manager cannot remove Admin from organization","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+- Signup `third user`.
+- Invite `third user` to organization with `Admin` role via **API**.
+
+### Verify that:
+
+- `Manager` **cannot** remove another `Admin` from organization.
+"
+"passed","Thu Aug 21 01:42:32 UTC 2025","Thu Aug 21 01:43:48 UTC 2025","76217","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Manager to Reader","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
@@ -2090,9 +839,445 @@ Verify that:
 
 ### Verify that:
 
-- `Admin` can remove `Manager` from project.
+- `Admin` can demote `Manager` to `Reader`.
 "
-"passed","Wed Aug 20 01:58:14 UTC 2025","Wed Aug 20 01:59:04 UTC 2025","50553","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Reader change member role from Reader to Writer in project via CLI","
+"passed","Thu Aug 21 02:49:45 UTC 2025","Thu Aug 21 02:50:20 UTC 2025","35365","UI Tests","UI Secrets","TestUISecrets","","","Create First Secret without project via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+
+### Verify that:
+
+- User **cannot** create first Secret if **no project created** yet.
+"
+"passed","Thu Aug 21 02:14:00 UTC 2025","Thu Aug 21 02:14:36 UTC 2025","36533","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Admin removes Manager from org via **CLI**","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Add `second user` to organization with `Manager` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can remove `Manager` from organization via **CLI**.
+"
+"passed","Thu Aug 21 01:37:56 UTC 2025","Thu Aug 21 01:39:19 UTC 2025","82912","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Writer to Reader","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Writer` role.
+
+### Verify that:
+
+- `Admin` can demote `Writer` to `Reader`.
+"
+"passed","Thu Aug 21 02:51:19 UTC 2025","Thu Aug 21 02:51:56 UTC 2025","36563","CLI Tests","CLI Secrets","TestCLISecrets","","","Admin create secret with no project created via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- User **cannot** create secret if there is no project created via **CLI**.
+"
+"passed","Thu Aug 21 02:18:00 UTC 2025","Thu Aug 21 02:18:30 UTC 2025","30067","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin cannot remove himself from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+
+### Verify that:
+
+- `Admin` **cannot** remove himself from project.
+"
+"passed","Thu Aug 21 02:41:00 UTC 2025","Thu Aug 21 02:41:43 UTC 2025","42919","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","User creates a second project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create first project via **CLI**.
+
+### Verify that:
+
+- User can create second project via **CLI**.
+"
+"passed","Thu Aug 21 01:52:53 UTC 2025","Thu Aug 21 01:53:39 UTC 2025","46002","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Manager to Reader in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Manager` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can change project role from `Manager` to `Reader` via **CLI**.
+"
+"passed","Thu Aug 21 01:39:04 UTC 2025","Thu Aug 21 01:39:50 UTC 2025","45916","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Manager to Reader in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Manager` to `Reader` via **CLI**.
+"
+"passed","Thu Aug 21 01:51:31 UTC 2025","Thu Aug 21 01:52:42 UTC 2025","71629","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Writer to Admin in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Writer` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` **cannot** change project role from `Writer` to `Admin` via **CLI**.
+"
+"passed","Thu Aug 21 02:36:45 UTC 2025","Thu Aug 21 02:38:44 UTC 2025","119066","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager can invite Reader to a project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+
+### Verify that:
+
+- `Manager` can invite `third user` as `Reader` to a project.
+"
+"passed","Thu Aug 21 02:14:27 UTC 2025","Thu Aug 21 02:14:48 UTC 2025","21177","CLI Tests","CLI Storage","TestCLIStorage","","","Admin upload bin file via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+
+### Verify that:
+
+- User can upload `bin` file via **CLI**.
+"
+"passed","Thu Aug 21 01:35:12 UTC 2025","Thu Aug 21 01:35:53 UTC 2025","41148","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Reader to Admin in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Reader` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Reader` to `Admin` via **CLI**.
+"
+"passed","Thu Aug 21 02:48:34 UTC 2025","Thu Aug 21 02:49:10 UTC 2025","35442","CLI Tests","CLI Disks","TestCLIDisks","","","Admin get disk by ID via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Create new project via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create first disk via **CLI**.
+
+### Verify that:
+
+- User can get disk info by disk ID via **CLI**.
+"
+"failed","Thu Aug 21 02:34:33 UTC 2025","Thu Aug 21 02:37:02 UTC 2025","148769","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Search Member of organization via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+
+### Verify that:
+
+- User can search organization members using `Search` field.
+"
+"passed","Thu Aug 21 02:53:22 UTC 2025","Thu Aug 21 02:53:47 UTC 2025","24983","CLI Tests","CLI Secrets","TestCLISecrets","","","Admin remove secret via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Create first secret via **CLI**.
+- Create second secret via **CLI**.
+
+### Verify that:
+
+- User can remove second secret via **CLI**.
+"
+"passed","Thu Aug 21 02:04:22 UTC 2025","Thu Aug 21 02:05:17 UTC 2025","55390","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes Reader from project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Reader` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can remove `Reader` from project via **CLI**.
+"
+"passed","Thu Aug 21 02:08:34 UTC 2025","Thu Aug 21 02:10:30 UTC 2025","116060","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Reader cannot change member roles","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Reader` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Reader` role.
+
+### Verify that:
+
+- `Reader` **cannot** change member roles.
+"
+"passed","Thu Aug 21 01:49:23 UTC 2025","Thu Aug 21 01:50:17 UTC 2025","53464","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Writer to Reader in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Writer` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can change project role from `Writer` to `Reader` via **CLI**.
+"
+"passed","Thu Aug 21 02:16:34 UTC 2025","Thu Aug 21 02:17:55 UTC 2025","80779","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin can remove another Admin from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Admin` role.
+
+### Verify that:
+
+- `Admin` can remove another `Admin` from project.
+"
+"passed","Thu Aug 21 02:24:40 UTC 2025","Thu Aug 21 02:25:11 UTC 2025","31815","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","Invite user to organization with default project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create first organization via **CLI**.
+- Create first project with 'default' option via **CLI**.
+
+### Verify that:
+
+- User can invite registered user to organization via **CLI**.
+- Newly invited user is member of default project.
+"
+"passed","Thu Aug 21 02:25:18 UTC 2025","Thu Aug 21 02:25:50 UTC 2025","31922","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User verifies admin get-org-users output via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create first organization via **CLI**.
+- Invite `second user` to organization via **CLI**.
+- Run `apolo admin get-org-users` command via **CLI**.
+
+### Verify that:
+
+- Organization members are listed with valid data in command output.
+"
+"passed","Thu Aug 21 02:44:24 UTC 2025","Thu Aug 21 02:44:58 UTC 2025","34751","UI Tests","UI Disks","TestUIDisks","","","Open Disk info view by click on disk button","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create new Disk.
+
+### Verify that:
+
+- After click on disk button Disk info view appears.
+"
+"passed","Thu Aug 21 02:12:58 UTC 2025","Thu Aug 21 02:13:43 UTC 2025","45165","CLI Tests","CLI Storage","TestCLIStorage","","","Admin upload file without project created via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- User **cannot** upload file if there is **no project created** yet via **CLI**.
+"
+"passed","Thu Aug 21 02:39:34 UTC 2025","Thu Aug 21 02:41:08 UTC 2025","93259","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Invite user with organization to organization via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup second user.
+- Pass onboarding for second user and create organization via UI.
+
+### Verify that:
+
+- User can invite to organization another user that already has organization.'
+"
+"passed","Thu Aug 21 01:39:25 UTC 2025","Thu Aug 21 01:40:37 UTC 2025","72311","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Writer to Manager","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Writer` role.
+
+### Verify that:
+
+- `Admin` can promote `Writer` to `Manager`.
+"
+"passed","Thu Aug 21 02:18:37 UTC 2025","Thu Aug 21 02:21:02 UTC 2025","145272","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager can remove Reader from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Reader` role.
+
+### Verify that:
+
+- `Manager` can remove `Reader` from project.
+"
+"passed","Thu Aug 21 02:42:07 UTC 2025","Thu Aug 21 02:42:45 UTC 2025","37833","UI Tests","UI Disks","TestUIDisks","","","Create First Disk via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+
+### Verify that:
+
+- User can create first Disk after project created.
+"
+"passed","Thu Aug 21 02:27:56 UTC 2025","Thu Aug 21 02:28:29 UTC 2025","33651","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Create Second Organization via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+
+### Verify that:
+
+- User can create second organization.
+"
+"passed","Thu Aug 21 02:11:24 UTC 2025","Thu Aug 21 02:11:44 UTC 2025","20124","CLI Tests","CLI Storage","TestCLIStorage","","","Admin create folder via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+
+### Verify that:
+
+- User can create folder via **CLI**.
+"
+"passed","Thu Aug 21 01:43:58 UTC 2025","Thu Aug 21 01:45:14 UTC 2025","75093","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin cannot demote himself to Manager","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Admin` role via **API**.
+
+### Verify that:
+
+- `Admin` cannot demote himself to `Manager`.
+"
+"passed","Thu Aug 21 02:08:54 UTC 2025","Thu Aug 21 02:09:38 UTC 2025","44066","UI Tests","UI Files","TestUIFiles","","","User download bin file","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Upload `bin` file.
+
+### Verify that:
+
+- User can download `bin` file via UI.
+- Downloaded `bin` file md5 hash matches expected file.
+"
+"passed","Thu Aug 21 02:18:53 UTC 2025","Thu Aug 21 02:19:32 UTC 2025","38740","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User creates a second organization via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Login with Bearer auth token via **CLI**.
+- Create first organization via **CLI**.
+
+### Verify that:
+
+- User can create second organization via **CLI**.
+"
+"passed","Thu Aug 21 02:42:53 UTC 2025","Thu Aug 21 02:43:36 UTC 2025","42594","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","Add organization member to project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Create new project via **CLI**.
+
+### Verify that:
+
+- User can add organization member to project via **CLI**.
+"
+"passed","Thu Aug 21 02:41:57 UTC 2025","Thu Aug 21 02:42:44 UTC 2025","47452","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","Switch between projects via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create first project via **CLI**.
+- Create second project via **CLI**.
+
+### Verify that:
+
+- User can switch between projects via **CLI**.
+"
+"passed","Thu Aug 21 01:55:47 UTC 2025","Thu Aug 21 01:57:25 UTC 2025","98271","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Admin to Reader in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Admin` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` **cannot** change project role from `Admin` to `Reader` via **CLI**.
+"
+"passed","Thu Aug 21 01:58:28 UTC 2025","Thu Aug 21 01:59:20 UTC 2025","51821","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Reader change member role from Reader to Writer in project via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -2110,31 +1295,17 @@ Verify that:
 
 - `Reader` **cannot** change member project roles via **CLI**.
 "
-"skipped","Wed Aug 20 02:08:00 UTC 2025","Wed Aug 20 02:08:31 UTC 2025","30351","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes himself from project via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Signup `second user` via **UI**.
-- Login with Bearer auth token via **CLI**.
-- Create new project via **CLI**.
-- Add `second user` to organization via **CLI**.
-- Add `second user` to project with `Manager` role via **CLI**.
-- `Second user` login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- `Manager` **cannot** remove himself from project via **CLI**.
-"
-"passed","Wed Aug 20 03:01:11 UTC 2025","Wed Aug 20 03:01:47 UTC 2025","35583","UI Tests","UI Secrets","TestUISecrets","","","Create First Secret via UI","
+"passed","Thu Aug 21 02:22:38 UTC 2025","Thu Aug 21 02:23:46 UTC 2025","67989","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Admin can remove User from organization","
 - Login with valid credentials.
 - Create new organization via **API**.
-- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization with `User` role via **API**.
 
 ### Verify that:
 
-- User can create first Secret after project created.
+- `Admin` can remove `User` from organization.
 "
-"passed","Wed Aug 20 03:00:13 UTC 2025","Wed Aug 20 03:00:35 UTC 2025","21822","CLI Tests","CLI Disks","TestCLIDisks","","","Admin remove disk via CLI","
+"passed","Thu Aug 21 02:47:51 UTC 2025","Thu Aug 21 02:48:27 UTC 2025","35234","CLI Tests","CLI Disks","TestCLIDisks","","","Admin create second disk via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -2144,9 +1315,34 @@ Verify that:
 
 ### Verify that:
 
-- User can delete disk via **CLI**.
+- User can create second disk via **CLI**.
 "
-"passed","Wed Aug 20 03:04:29 UTC 2025","Wed Aug 20 03:05:16 UTC 2025","47282","UI Tests","UI Secrets","TestUISecrets","","","Delete Secret via UI","
+"passed","Thu Aug 21 02:14:54 UTC 2025","Thu Aug 21 02:15:17 UTC 2025","22655","CLI Tests","CLI Storage","TestCLIStorage","","","Admin download text file via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Upload `text` file via **CLI**.
+
+### Verify that:
+
+- User can download `txt` file via **CLI**.
+- downloaded `txt` file md5 hash matches expected file.
+"
+"passed","Thu Aug 21 01:36:30 UTC 2025","Thu Aug 21 01:37:50 UTC 2025","80217","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Reader to Admin","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Reader` role.
+
+### Verify that:
+
+- `Admin` can promote `Reader` to `Admin`.
+"
+"passed","Thu Aug 21 02:52:38 UTC 2025","Thu Aug 21 02:53:47 UTC 2025","68299","UI Tests","UI Secrets","TestUISecrets","","","Search Secret via UI","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
@@ -2154,9 +1350,170 @@ Verify that:
 
 ### Verify that:
 
-- User can delete Secret.
+- User can Search for secret via UI.
 "
-"passed","Wed Aug 20 02:25:12 UTC 2025","Wed Aug 20 02:27:01 UTC 2025","108836","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager cannot remove Admin from project","
+"passed","Thu Aug 21 02:34:42 UTC 2025","Thu Aug 21 02:35:42 UTC 2025","59964","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Writer can modify files","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Writer` role.
+
+### Verify that:
+
+- `Writer` has access to modify Files.
+"
+"passed","Thu Aug 21 01:43:30 UTC 2025","Thu Aug 21 01:44:06 UTC 2025","36649","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Admin to Manager in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Admin` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Admin` to `Manager` via **CLI**.
+"
+"passed","Thu Aug 21 02:45:05 UTC 2025","Thu Aug 21 02:45:47 UTC 2025","42016","UI Tests","UI Disks","TestUIDisks","","","Delete Disk via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create new Disk.
+
+### Verify that:
+
+- User can delete Disk.
+"
+"passed","Thu Aug 21 02:18:18 UTC 2025","Thu Aug 21 02:18:47 UTC 2025","28623","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User creates a first organization via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- User can create first organization via **CLI**.
+"
+"passed","Thu Aug 21 02:54:47 UTC 2025","Thu Aug 21 02:55:07 UTC 2025","20281","UI Tests","UI Signup","TestUISignup","","","New user successful signup","
+### Verify that:
+
+- New user can signup via UI.
+"
+"passed","Thu Aug 21 02:40:41 UTC 2025","Thu Aug 21 02:42:53 UTC 2025","131537","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager can invite Manager to a project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+
+### Verify that:
+
+- Manager can invite `third user` as `Manager` to a project.
+"
+"passed","Thu Aug 21 02:31:16 UTC 2025","Thu Aug 21 02:33:26 UTC 2025","130312","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Reader cannot remove members from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Reader` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Reader` role.
+
+### Verify that:
+
+- `Reader` **cannot** remove members from project.
+"
+"passed","Thu Aug 21 01:46:28 UTC 2025","Thu Aug 21 01:47:26 UTC 2025","57932","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Admin to Reader","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Admin` role.
+
+### Verify that:
+
+- `Admin` can demote `Admin` to `Reader`.
+"
+"passed","Thu Aug 21 02:50:27 UTC 2025","Thu Aug 21 02:51:08 UTC 2025","41197","UI Tests","UI Secrets","TestUISecrets","","","Create First Secret via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+
+### Verify that:
+
+- User can create first Secret after project created.
+"
+"passed","Thu Aug 21 02:52:17 UTC 2025","Thu Aug 21 02:53:04 UTC 2025","46848","UI Tests","UI Credits Purchase","TestUICreditsPurchase","","","Verify User cannot purchase credits via top pane","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `User` role.
+
+### Verify that:
+
+- `User` **cannot** purchase credits via top pane.
+"
+"passed","Thu Aug 21 01:50:07 UTC 2025","Thu Aug 21 01:52:47 UTC 2025","159450","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Manager can promote Reader to Writer","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Reader` role.
+
+### Verify that:
+
+- `Manager` can promote `Reader` to `Writer`.
+"
+"passed","Thu Aug 21 01:47:24 UTC 2025","Thu Aug 21 01:48:17 UTC 2025","52481","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Reader to Manager in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Reader` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can change project role from `Reader` to `Manager` via **CLI**.
+"
+"passed","Thu Aug 21 02:05:24 UTC 2025","Thu Aug 21 02:06:06 UTC 2025","41133","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes Writer from project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Writer` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can remove `Writer` from project via **CLI**.
+"
+"passed","Thu Aug 21 02:04:04 UTC 2025","Thu Aug 21 02:06:02 UTC 2025","118040","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Manager cannot demote Admin","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
@@ -2169,90 +1526,237 @@ Verify that:
 
 ### Verify that:
 
-- `Manager` **cannot** remove `Admin` from project.
+- `Manager` **cannot** demote `Admin` to `Manager`.
 "
-"passed","Wed Aug 20 02:02:50 UTC 2025","Wed Aug 20 02:03:46 UTC 2025","55845","UI Tests","UI Files","TestUIFiles","","","Verify Admin can create new folder","
+"passed","Thu Aug 21 02:28:36 UTC 2025","Thu Aug 21 02:29:15 UTC 2025","38337","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Switch between organization via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create second organization via UI.
+
+### Verify that:
+
+- User can switch between organizations.
+"
+"passed","Thu Aug 21 01:52:54 UTC 2025","Thu Aug 21 01:54:47 UTC 2025","113088","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Manager can promote Reader to Manager","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
 - Signup `second user`.
 - Invite `second user` to organization via **API**.
-- Invite `second user` to project with `Admin` role.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Reader` role.
 
 ### Verify that:
 
-- `Admin` can create new folder
+- `Manager` can promote `Reader` to `Manager`.
 "
-"passed","Wed Aug 20 01:39:02 UTC 2025","Wed Aug 20 01:40:19 UTC 2025","77765","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change Manager role to Admin","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `Manager` role via **API**.
-
-### Verify that:
-- `Admin` can change user role from `Manager` to `Admin`
-- User after changing role from `Manager` to `Admin`:
-
-- Can access organization `Settings`.
-- Can access organization `Billing`.
-"
-"passed","Wed Aug 20 02:54:06 UTC 2025","Wed Aug 20 02:54:36 UTC 2025","29433","UI Tests","UI Disks","TestUIDisks","","","Create First Disk without project via UI","
-- Login with valid credentials.
-- Create new organization via **API**.
-
-### Verify that:
-
-- User **cannot** create first Disk if **no project created** yet.
-"
-"passed","Wed Aug 20 02:59:18 UTC 2025","Wed Aug 20 02:59:38 UTC 2025","19439","CLI Tests","CLI Disks","TestCLIDisks","","","Admin create second disk via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Create new organization via **API**.
-- Create new project via **API**.
-- Login with Bearer auth token via **CLI**.
-- Create first disk via **CLI**.
-
-### Verify that:
-
-- User can create second disk via **CLI**.
-"
-"passed","Wed Aug 20 01:34:42 UTC 2025","Wed Aug 20 01:35:43 UTC 2025","60977","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change User role to Admin","
-- Login with valid credentials.
-- Create new organization via **API**.
-- Signup `second user`.
-- Invite `second user` to organization with `User` role via **API**.
-
-### Verify that:
-
-- `Admin` can change user role from `User` to `Admin`
-- User after changing role from `User` to `Admin`:
-
-- Can access organization `Settings`
-- Can access organization `Billing`
-"
-"passed","Wed Aug 20 02:56:34 UTC 2025","Wed Aug 20 02:56:59 UTC 2025","25734","UI Tests","UI Disks","TestUIDisks","","","Open Disk info view by click on disk button","
+"passed","Thu Aug 21 02:01:47 UTC 2025","Thu Aug 21 02:03:58 UTC 2025","131600","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Manager cannot promote Writer to Admin","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
-- Create new Disk.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Writer` role.
 
 ### Verify that:
 
-- After click on disk button Disk info view appears.
+- `Manager` **cannot** promote `Writer` to `Admin`.
 "
-"passed","Wed Aug 20 02:20:45 UTC 2025","Wed Aug 20 02:21:22 UTC 2025","37121","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Admin removes Manager from org via **CLI**","
+"passed","Thu Aug 21 02:00:44 UTC 2025","Thu Aug 21 02:01:13 UTC 2025","29574","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes Manager from project via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
 - Signup `second user` via **UI**.
 - Login with Bearer auth token via **CLI**.
-- Add `second user` to organization with `Manager` role via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
 
 ### Verify that:
 
-- `Admin` can remove `Manager` from organization via **CLI**.
+- `Admin` can remove `Manager` from project via **CLI**.
 "
-"passed","Wed Aug 20 02:33:27 UTC 2025","Wed Aug 20 02:34:37 UTC 2025","70197","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Admin can remove Manager from organization","
+"passed","Thu Aug 21 02:45:35 UTC 2025","Thu Aug 21 02:46:06 UTC 2025","30875","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Create First Project from top pane of main via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+
+### Verify that:
+
+- User can create first project in organization from project menu in the **top pane of the main page**.
+"
+"passed","Thu Aug 21 02:15:24 UTC 2025","Thu Aug 21 02:15:57 UTC 2025","32871","CLI Tests","CLI Storage","TestCLIStorage","","","Admin download bin file via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Upload `bin` file via **CLI**.
+
+### Verify that:
+
+- User can download `bin` file via **CLI**.
+- downloaded `bin` file md5 hash matches expected file.
+"
+"passed","Thu Aug 21 02:48:57 UTC 2025","Thu Aug 21 02:49:26 UTC 2025","28919","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited Admin can access organization settings","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Admin` role via **API**.
+
+### Verify that `Admin`:
+
+- Can access organization Settings.
+"
+"passed","Thu Aug 21 02:48:13 UTC 2025","Thu Aug 21 02:48:49 UTC 2025","36378","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited Manager can access organization billing","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+
+### Verify that `Manager`:
+
+- Can access organization Billing.
+"
+"passed","Thu Aug 21 01:39:37 UTC 2025","Thu Aug 21 01:41:21 UTC 2025","103634","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change Admin role to User","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Admin` role via **API**.
+
+### Verify that:
+
+- `Admin` can change user role from `Admin` to `User`
+- User after changing role from `Admin` to `User`:
+
+- **Cannot** access organization `Settings`.
+- **Cannot** access organization `Billing`.
+"
+"passed","Thu Aug 21 02:09:12 UTC 2025","Thu Aug 21 02:09:55 UTC 2025","43035","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Writer removes Reader from project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Writer` role via **CLI**.
+- Add `third user` to project with `Reader` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Writer` **cannot** remove members from project via **CLI**.
+"
+"passed","Thu Aug 21 02:47:26 UTC 2025","Thu Aug 21 02:48:04 UTC 2025","37171","UI Tests","UI Organization Roles Access","TestUIOrganizationRolesAccess","","","Verify invited Manager can access organization settings","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+
+### Verify that `Manager`:
+
+- Can access organization Settings.
+"
+"passed","Thu Aug 21 01:40:51 UTC 2025","Thu Aug 21 01:41:33 UTC 2025","42281","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Manager to Admin in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Manager` to `Admin` via **CLI**.
+"
+"passed","Thu Aug 21 02:10:39 UTC 2025","Thu Aug 21 02:11:51 UTC 2025","71882","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin can remove Reader from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Reader` role.
+
+### Verify that:
+
+- `Admin` can remove `Reader` from `project`.
+"
+"passed","Thu Aug 21 02:03:05 UTC 2025","Thu Aug 21 02:03:52 UTC 2025","46570","UI Tests","UI Files","TestUIFiles","","","User make single click on Folder","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create new folder.
+- Single click on folder.
+
+### Verify that:
+
+- Folder info section appears.
+- Folder action bar appears.
+"
+"passed","Thu Aug 21 02:10:23 UTC 2025","Thu Aug 21 02:11:11 UTC 2025","48072","UI Tests","UI Files","TestUIFiles","","","User rename File","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Upload txt file.
+
+### Verify that:
+
+- User can rename a file with `Rename` button from File action bar.
+"
+"passed","Thu Aug 21 01:46:16 UTC 2025","Thu Aug 21 01:47:16 UTC 2025","60148","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Reader to Writer in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Reader` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can change project role from `Reader` to `Writer` via **CLI**.
+"
+"passed","Thu Aug 21 01:37:28 UTC 2025","Thu Aug 21 01:38:16 UTC 2025","48002","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Writer to Manager in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Writer` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Writer` to `Manager` via **CLI**.
+"
+"passed","Thu Aug 21 02:12:23 UTC 2025","Thu Aug 21 02:12:44 UTC 2025","21132","CLI Tests","CLI Storage","TestCLIStorage","","","Admin remove folder via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Create new folder via **CLI**.
+
+### Verify that:
+
+- User can remove folder via **CLI**.
+"
+"passed","Thu Aug 21 02:23:52 UTC 2025","Thu Aug 21 02:24:58 UTC 2025","66923","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Admin can remove Manager from organization","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Signup `second user`.
@@ -2262,7 +1766,157 @@ Verify that:
 
 - `Admin` can remove `Manager` from organization.
 "
-"passed","Wed Aug 20 02:06:57 UTC 2025","Wed Aug 20 02:07:52 UTC 2025","54529","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes Admin from project via CLI","
+"passed","Thu Aug 21 02:41:17 UTC 2025","Thu Aug 21 02:41:54 UTC 2025","37387","UI Tests","UI Disks","TestUIDisks","","","Create First Disk without project via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+
+### Verify that:
+
+- User **cannot** create first Disk if **no project created** yet.
+"
+"passed","Thu Aug 21 02:21:09 UTC 2025","Thu Aug 21 02:23:41 UTC 2025","151611","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager can remove Writer from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Writer` role.
+
+### Verify that:
+
+- `Manager` can remove `Writer` from project.
+"
+"passed","Thu Aug 21 01:43:57 UTC 2025","Thu Aug 21 01:45:04 UTC 2025","67093","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can demote Manager to Writer","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+
+### Verify that:
+
+- `Admin` can demote `Manager` to `Writer`.
+"
+"passed","Thu Aug 21 01:47:14 UTC 2025","Thu Aug 21 01:49:17 UTC 2025","122425","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot change User role to Admin","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+- Signup `third user`.
+- Invite `third user` to organization with `User` role via **API**.
+
+### Verify that:
+
+- `Manager` **cannot** change user role from `User` to `Admin`.
+"
+"passed","Thu Aug 21 01:36:01 UTC 2025","Thu Aug 21 01:37:21 UTC 2025","80257","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Writer to Reader in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Writer` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Writer` to `Reader` via **CLI**.
+"
+"passed","Thu Aug 21 02:25:06 UTC 2025","Thu Aug 21 02:26:03 UTC 2025","57022","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Admin can remove another Admin from organization","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Admin` role via **API**.
+
+### Verify that:
+
+- `Admin` can remove another `Admin` from organization.
+"
+"passed","Thu Aug 21 01:53:42 UTC 2025","Thu Aug 21 01:55:19 UTC 2025","96139","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager cannot change Admin role to User","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+- Signup `third user`.
+- Invite `third user` to organization with `Admin` role via **API**.
+
+### Verify that:
+
+- `Manager` **cannot** change user role from `Admin` to `User`.
+"
+"passed","Thu Aug 21 02:23:24 UTC 2025","Thu Aug 21 02:23:50 UTC 2025","25938","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User switch organization via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Login with Bearer auth token via **CLI**.
+- Create first organization via **CLI**.
+- Create second organization via **CLI**.
+
+### Verify that:
+
+- User can switch between organizations via **CLI**.
+"
+"passed","Thu Aug 21 02:11:00 UTC 2025","Thu Aug 21 02:11:17 UTC 2025","16554","CLI Tests","CLI Storage","TestCLIStorage","","","Admin create folder without project created via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- User **cannot** create folder if there is **no project created** yet via **CLI**.
+"
+"passed","Thu Aug 21 02:09:44 UTC 2025","Thu Aug 21 02:10:16 UTC 2025","32076","UI Tests","UI Files","TestUIFiles","","","User download txt file","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Upload `txt` file.
+
+### Verify that:
+
+- User can download `txt` file via UI.
+- Downloaded `txt` file md5 hash matches expected file.
+"
+"passed","Thu Aug 21 01:39:57 UTC 2025","Thu Aug 21 01:40:44 UTC 2025","47306","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin change member role from Manager to Writer in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can change project role from `Manager` to `Writer` via **CLI**.
+"
+"failed","Thu Aug 21 02:21:15 UTC 2025","Thu Aug 21 02:22:04 UTC 2025","49147","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User removes organization via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Login with Bearer auth token via **CLI**.
+- Create first organization via **CLI**.
+- Create second organization via **CLI**.
+
+### Verify that:
+
+- User can remove organization via **CLI**.
+"
+"passed","Thu Aug 21 02:26:09 UTC 2025","Thu Aug 21 02:27:39 UTC 2025","90094","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Admin cannot remove himself from organization","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Admin` role via **API**.
+
+### Verify that:
+
+- `Admin` **cannot** remove himself from organization.
+"
+"passed","Thu Aug 21 02:07:23 UTC 2025","Thu Aug 21 02:08:28 UTC 2025","65125","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes Admin from project via CLI","
 - Login with valid credentials via **UI**.
 - Get Bearer auth token from Playwright local storage.
 - Create new organization via **API**.
@@ -2280,7 +1934,7 @@ Verify that:
 
 - `Manager` cannot remove `Admin` from project via **CLI**.
 "
-"passed","Wed Aug 20 03:07:25 UTC 2025","Wed Aug 20 03:07:32 UTC 2025","6808","CLI Tests","CLI Login","TestCLILogin","","","User without organization logs in with auth token via CLI","
+"passed","Thu Aug 21 02:50:29 UTC 2025","Thu Aug 21 02:50:37 UTC 2025","7703","CLI Tests","CLI Login","TestCLILogin","","","User without organization logs in with auth token via CLI","
 - Login with valid credentials **via UI**.
 - Get Bearer auth token from Playwright local storage.
 
@@ -2289,26 +1943,48 @@ Verify that:
 - User can login with Bearer auth token **via CLI**.
 - Login output in CLI doesn't contain `organization` and `project`.
 "
-"passed","Wed Aug 20 02:11:42 UTC 2025","Wed Aug 20 02:12:50 UTC 2025","68449","UI Tests","UI Files","TestUIFiles","","","User rename File","
+"passed","Thu Aug 21 01:45:21 UTC 2025","Thu Aug 21 01:47:07 UTC 2025","106048","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Manager can change User role to Manager","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+- Signup `third user`.
+- Invite `third user` to organization with `User` role via **API**.
+
+### Verify that:
+
+- `Manager` can change user role from User to `Manager`.
+- User after changing role from `User` to `Manager`:
+
+- Can access organization `Settings`.
+- Can access organization `Billing`.
+"
+"passed","Thu Aug 21 02:08:16 UTC 2025","Thu Aug 21 02:08:48 UTC 2025","31353","UI Tests","UI Files","TestUIFiles","","","User make single click on File","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
-- Upload txt file.
+- Upload `txt` file.
+- Single click on file.
+
+### Verify that:
+- File info section appears.
+- File action bar appears.
+"
+"passed","Thu Aug 21 02:38:51 UTC 2025","Thu Aug 21 02:40:33 UTC 2025","101946","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager can invite Writer to a project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
 
 ### Verify that:
 
-- User can rename a file with `Rename` button from File action bar.
+- `Manager` can invite `third user` as `Writer` to a project.
 "
-"passed","Wed Aug 20 02:28:11 UTC 2025","Wed Aug 20 02:28:54 UTC 2025","42319","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User creates a first organization via CLI","
-- Login with valid credentials via **UI**.
-- Get Bearer auth token from Playwright local storage.
-- Login with Bearer auth token via **CLI**.
-
-### Verify that:
-
-- User can create first organization via **CLI**.
-"
-"passed","Wed Aug 20 02:53:49 UTC 2025","Wed Aug 20 02:55:39 UTC 2025","109716","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager cannot invite Admin to a project","
+"passed","Thu Aug 21 02:43:00 UTC 2025","Thu Aug 21 02:44:48 UTC 2025","108080","UI Tests","UI Project Roles Access","TestUIProjectRolesAccess","","","Verify Manager cannot invite Admin to a project","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
@@ -2322,14 +1998,458 @@ Verify that:
 
 - `Manager` **cannot** invite `third user` as `Admin` to a project.
 "
-"passed","Wed Aug 20 02:09:23 UTC 2025","Wed Aug 20 02:10:03 UTC 2025","39651","UI Tests","UI Files","TestUIFiles","","","User make single click on File","
+"passed","Thu Aug 21 02:29:20 UTC 2025","Thu Aug 21 02:31:09 UTC 2025","108768","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Writer cannot remove members from project","
 - Login with valid credentials.
 - Create new organization via **API**.
 - Create new project.
-- Upload `txt` file.
-- Single click on file.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Reader` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Reader` role.
 
 ### Verify that:
-- File info section appears.
-- File action bar appears.
+
+- `Writer` **cannot** remove members from project.
+"
+"passed","Thu Aug 21 02:47:10 UTC 2025","Thu Aug 21 02:47:44 UTC 2025","33999","CLI Tests","CLI Disks","TestCLIDisks","","","Admin create first disk via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Create new project via **API**.
+- Login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- User can create disk via **CLI**.
+"
+"passed","Thu Aug 21 02:40:21 UTC 2025","Thu Aug 21 02:40:50 UTC 2025","28712","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","User verifies admin get-projects command output via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Run `apolo admin get-projects` command via **CLI**.
+
+### Verify that:
+
+- Valid project info is displayed in command output.
+"
+"passed","Thu Aug 21 02:15:33 UTC 2025","Thu Aug 21 02:16:08 UTC 2025","34511","CLI Tests","CLI Organization Remove Members","TestCLIOrganizationRemoveMembers","","","Admin removes himself from org via **CLI**","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Add `second user` to organization with `Admin` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Admin` **cannot** remove `himself` from organization via **CLI**.
+"
+"passed","Thu Aug 21 02:23:58 UTC 2025","Thu Aug 21 02:24:33 UTC 2025","35386","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","Invite user to org via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Signup `second` user via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create first organization via **CLI**.
+
+### Verify that:
+
+- User can invite registered user to organization via **CLI**.
+"
+"passed","Thu Aug 21 02:46:13 UTC 2025","Thu Aug 21 02:47:11 UTC 2025","57841","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Create second project via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+
+### Verify that:
+
+- User can create second project in organization.
+"
+"passed","Thu Aug 21 02:13:42 UTC 2025","Thu Aug 21 02:15:00 UTC 2025","78396","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin can remove Writer from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Writer` role.
+
+### Verify that:
+
+- `Admin` can remove `Writer` from project.
+"
+"failed","Thu Aug 21 01:45:40 UTC 2025","Thu Aug 21 01:46:08 UTC 2025","27866","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin demote himself to Manager in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+
+### Verify that:
+
+- `Admin` **cannot** demote himself via **CLI**.
+"
+"passed","Thu Aug 21 01:54:39 UTC 2025","Thu Aug 21 01:55:37 UTC 2025","57234","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Manager to Admin in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Manager` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` **cannot** change project role from `Manager` to `Admin` via **CLI**.
+"
+"passed","Thu Aug 21 02:29:22 UTC 2025","Thu Aug 21 02:30:28 UTC 2025","66733","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Set default organization credits via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+
+### Verify that:
+
+- User can set default organization credits.
+"
+"passed","Thu Aug 21 02:00:08 UTC 2025","Thu Aug 21 02:00:37 UTC 2025","29720","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes Writer from project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Writer` role via **CLI**.
+
+### Verify that:
+
+- `Admin` can remove `Writer` from project via **CLI**.
+"
+"passed","Thu Aug 21 02:06:13 UTC 2025","Thu Aug 21 02:07:08 UTC 2025","54719","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes Manager from project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Manager` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can remove another `Manager` from project via **CLI**.
+"
+"passed","Thu Aug 21 02:50:27 UTC 2025","Thu Aug 21 02:51:12 UTC 2025","44693","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Invite not registered user to project via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+
+### Verify that:
+
+- User **cannot** invite to project another user which is **not registered**.
+"
+"passed","Thu Aug 21 02:15:08 UTC 2025","Thu Aug 21 02:16:28 UTC 2025","79875","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Admin can remove Manager from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+
+### Verify that:
+
+- `Admin` can remove `Manager` from project.
+"
+"passed","Thu Aug 21 01:38:11 UTC 2025","Thu Aug 21 01:39:31 UTC 2025","79536","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change Manager role to Admin","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+
+### Verify that:
+- `Admin` can change user role from `Manager` to `Admin`
+- User after changing role from `Manager` to `Admin`:
+
+- Can access organization `Settings`.
+- Can access organization `Billing`.
+"
+"passed","Thu Aug 21 02:23:49 UTC 2025","Thu Aug 21 02:25:56 UTC 2025","127243","UI Tests","UI Project Remove Members","TestUIProjectRemoveMembers","","","Verify Manager can remove another Manager from project","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+- Signup `third user`.
+- Invite `third user` to organization via **API**.
+- Invite `third user` to project with `Manager` role.
+
+### Verify that:
+
+- `Manager` can remove another `Manager` from project.
+"
+"passed","Thu Aug 21 02:07:06 UTC 2025","Thu Aug 21 02:08:10 UTC 2025","64598","UI Tests","UI Files","TestUIFiles","","","User upload txt file","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+
+### Verify that:
+
+- User can upload `txt` file via UI.
+"
+"passed","Thu Aug 21 01:53:48 UTC 2025","Thu Aug 21 01:54:33 UTC 2025","44617","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager change member role from Manager to Writer in project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Signup `third user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `third user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- Add `third user` to project with `Manager` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` can change project role from `Manager` to `Writer` via **CLI**.
+"
+"passed","Thu Aug 21 01:59:55 UTC 2025","Thu Aug 21 02:01:17 UTC 2025","82106","UI Tests","UI Files","TestUIFiles","","","Verify Manager can create new folder","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+
+### Verify that:
+
+- `Manager` can create new folder.
+"
+"passed","Thu Aug 21 02:05:28 UTC 2025","Thu Aug 21 02:06:13 UTC 2025","45343","UI Tests","UI Files","TestUIFiles","","","User delete Folder","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create new folder.
+
+### Verify that:
+
+- User can delete a folder with `Delete` button from File action bar.
+"
+"failed","Thu Aug 21 02:33:33 UTC 2025","Thu Aug 21 02:34:45 UTC 2025","72641","UI Tests","UI Organization Remove Members","TestUIOrganizationRemoveMembers","","","Verify Manager can remove another Manager from organization","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+- Signup `third user`.
+- Invite `third user` to organization with `Manager` role via **API**.
+
+### Verify that:
+
+- `Manager` can remove another `Manager` from organization.
+"
+"passed","Thu Aug 21 01:33:31 UTC 2025","Thu Aug 21 01:35:10 UTC 2025","99487","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Reader to Writer","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Reader` role.
+
+### Verify that:
+
+- `Admin` can promote Reader to `Writer`.
+"
+"passed","Thu Aug 21 02:44:56 UTC 2025","Thu Aug 21 02:45:28 UTC 2025","31317","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Create First Project from main page via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+
+### Verify that:
+
+- User can create first project in organization from **the main page**.
+"
+"passed","Thu Aug 21 02:38:30 UTC 2025","Thu Aug 21 02:39:27 UTC 2025","57641","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Invite registered user without organization to organization with default project via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project with `default` option.
+- Signup `second user`.
+
+### Verify that:
+
+- User can invite to organization another user that is registered but **doesn't have organization**.
+- Newly invited user is member of the `default` project.
+"
+"passed","Thu Aug 21 02:39:53 UTC 2025","Thu Aug 21 02:40:14 UTC 2025","20721","CLI Tests","CLI Project Structure Setup","TestCLIProjectStructureSetup","","","User creates a first project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- User can create first project via **CLI**.
+"
+"passed","Thu Aug 21 02:25:58 UTC 2025","Thu Aug 21 02:26:54 UTC 2025","55603","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","Set default user credits via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create first organization via **CLI**.
+- Set default user credits via **CLI**.
+- Invite `second user` to organization via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+- Run `apolo config show` command via **CLI**.
+
+### Verify that:
+
+- Valid user credits amount is displayed in command output.
+"
+"skipped","Thu Aug 21 02:08:35 UTC 2025","Thu Aug 21 02:09:05 UTC 2025","30330","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Manager removes himself from project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Signup `second user` via **UI**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+- Add `second user` to organization via **CLI**.
+- Add `second user` to project with `Manager` role via **CLI**.
+- `Second user` login with Bearer auth token via **CLI**.
+
+### Verify that:
+
+- `Manager` **cannot** remove himself from project via **CLI**.
+"
+"passed","Thu Aug 21 01:36:23 UTC 2025","Thu Aug 21 01:38:05 UTC 2025","102690","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin can change Manager role to User","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Manager` role via **API**.
+
+### Verify that:
+- `Admin` can change user role from `Manager` to `User`
+- User after changing role from `Manager` to `User`:
+
+- **Cannot** access organization `Settings`
+- **Cannot** access organization `Billing`
+"
+"passed","Thu Aug 21 02:49:17 UTC 2025","Thu Aug 21 02:49:39 UTC 2025","21985","CLI Tests","CLI Disks","TestCLIDisks","","","Admin remove disk via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Create new project via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create first disk via **CLI**.
+
+### Verify that:
+
+- User can delete disk via **CLI**.
+"
+"passed","Thu Aug 21 02:04:38 UTC 2025","Thu Aug 21 02:05:21 UTC 2025","43585","UI Tests","UI Files","TestUIFiles","","","User rename Folder","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Create new folder.
+
+### Verify that:
+
+- User can rename a folder with `Rename` button from File action bar.
+"
+"passed","Thu Aug 21 02:50:43 UTC 2025","Thu Aug 21 02:51:07 UTC 2025","23265","CLI Tests","CLI Login","TestCLILogin","","","User with organization logs in with auth token via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create organization via **API**.
+
+### Verify that:
+
+- User can login with Bearer auth token via **CLI**.
+- Login output in CLI valid `organization` and no `project` info.
+"
+"passed","Thu Aug 21 02:37:08 UTC 2025","Thu Aug 21 02:38:23 UTC 2025","75779","UI Tests","UI Organization Structure Setup","TestUIOrganizationStructureSetup","","","Invite registered user without organization to organization via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+
+### Verify that:
+
+- User can invite to organization another user that is registered but **doesn't have an organization**.
+"
+"passed","Thu Aug 21 02:22:55 UTC 2025","Thu Aug 21 02:23:18 UTC 2025","23080","CLI Tests","CLI Organization Structure Setup","TestCLIOrganizationStructureSetup","","","User verifies config show output via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Login with Bearer auth token via **CLI**.
+- Create first organization via **CLI**.
+- Run `apolo config show` command via **CLI**.
+
+### Verify that:
+
+- `apolo config show` command output is valid.
+"
+"passed","Thu Aug 21 01:45:10 UTC 2025","Thu Aug 21 01:46:22 UTC 2025","71949","UI Tests","UI Project Change Member Roles","TestUIProjectChangeMemberRoles","","","Verify Admin can promote Manager to Admin","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- Invite `second user` to organization via **API**.
+- Invite `second user` to project with `Manager` role.
+
+### Verify that:
+
+- `Admin` can promote `Manager` to `Admin`.
+"
+"passed","Thu Aug 21 02:56:28 UTC 2025","Thu Aug 21 02:56:41 UTC 2025","12537","UI Tests","UI Login","TestUILogin","","","New user successful login","
+### Verify that:
+
+- User can login with valid credentials.
+"
+"failed","Thu Aug 21 02:03:49 UTC 2025","Thu Aug 21 02:04:15 UTC 2025","25720","CLI Tests","CLI Project Remove Members","TestCLIProjectStructureSetup","","","Admin removes himself from project via CLI","
+- Login with valid credentials via **UI**.
+- Get Bearer auth token from Playwright local storage.
+- Create new organization via **API**.
+- Login with Bearer auth token via **CLI**.
+- Create new project via **CLI**.
+
+### Verify that:
+
+- `Admin` **cannot** remove himself from project via **CLI**.
+"
+"passed","Thu Aug 21 01:42:50 UTC 2025","Thu Aug 21 01:43:52 UTC 2025","62800","UI Tests","UI Organization Change Member Roles","TestUIOrganizationChangeMemberRoles","","","Verify Admin cannot demote himself to User","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Signup `second user`.
+- Invite `second user` to organization with `Admin` role via **API**.
+
+### Verify that:
+
+- `Admin` **cannot** demote himself to `User`.
+"
+"passed","Thu Aug 21 02:48:49 UTC 2025","Thu Aug 21 02:50:19 UTC 2025","89587","UI Tests","UI Project Structure Setup","TestUIProjectStructureSetup","","","Invite member that NOT in organization to project via UI","
+- Login with valid credentials.
+- Create new organization via **API**.
+- Create new project.
+- Signup `second user`.
+- DO NOT invite `second user` to organization.
+
+### Verify that:
+
+- User **cannot** invite to project another user which is **not member of organization**.
+"
+"passed","Thu Aug 21 02:54:46 UTC 2025","Thu Aug 21 02:56:03 UTC 2025","77433","UI Tests","UI Credits Purchase","TestUICreditsPurchase","","","Verify Admin can purchase organization credits with custom amount","
+- Login with valid credentials.
+- Create new organization via **API**.
+
+### Verify that:
+
+- Admin can purchase credits by input custom amount.
 "
