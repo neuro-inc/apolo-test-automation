@@ -63,7 +63,7 @@ class UISteps(PageSteps):
         await self._pm.page.wait_for_load_state("networkidle")
 
     @async_step("Login via UI")
-    async def ui_login(self, user: UserData) -> None:
+    async def ui_login(self, user: UserData, fresh_login: bool = True) -> None:
         if not user.authorized:
             await self.auth_page.ui_click_login_button()
             await self.login_page.ui_enter_email(email=user.email)
@@ -73,7 +73,12 @@ class UISteps(PageSteps):
                 self._pm.login_page.page
             )
             user.token = token
-            await self.welcome_new_user_page.verify_ui_page_displayed(email=user.email)
+            if fresh_login:
+                await self.welcome_new_user_page.verify_ui_page_displayed(
+                    email=user.email
+                )
+            else:
+                await self.apps_page.verify_ui_page_displayed()
 
     # ********************   Onboarding steps   ****************************
     @async_step("Pass new user onboarding and create first organization via UI")

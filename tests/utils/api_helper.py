@@ -179,3 +179,32 @@ class APIHelper:
         logger.info(f"Add proj {org_name} response: {response}")
 
         return response
+
+    async def get_app_output(
+        self, token: str, org_name: str, proj_name: str, app_id: str
+    ) -> Any:
+        url = self._config.get_app_output_url(
+            org_name=org_name, proj_name=proj_name, app_id=app_id
+        )
+        status, response = await self._get(url, token=token)
+        logger.info(f"Status: {status}. Response: {response}")
+
+        return status, response
+
+    async def get_app_events(
+        self, token: str, org_name: str, proj_name: str, app_id: str
+    ) -> Any:
+        url = self._config.get_app_events_url(
+            org_name=org_name, proj_name=proj_name, app_id=app_id
+        )
+        status, response = await self._get(url, token=token)
+        logger.info(f"Status: {status}. Response: {response}")
+
+        return status, response
+
+    async def get_instances(self, token: str, org_name: str, proj_name: str) -> Any:
+        url = self._config.get_instances_url(org_name=org_name, proj_name=proj_name)
+        status, response = await self._get(url, token=token)
+        logger.info(f"Status: {status}. Response: {response}")
+
+        return status, response

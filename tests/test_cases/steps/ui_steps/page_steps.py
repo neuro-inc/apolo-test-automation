@@ -2,6 +2,15 @@ from tests.components.ui.page_manager import PageManager
 from tests.test_cases.steps.ui_steps.page_steps_impl.Invited_to_org_page_steps import (
     InvitedToOrgPageSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.resource_preset_popup_steps import (
+    ResourcePresetPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.shell_install_page_steps import (
+    ShellInstallPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.shell_status_page import (
+    ShellDetailsPageSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.auth_page_steps import (
     AuthPageSteps,
 )
@@ -163,3 +172,6 @@ class PageSteps:
         self.disks_page = DisksPageSteps(self._pm)
         self.create_disk_popup = CreateDiskPopupSteps(self._pm)
         self.delete_disk_popup = DeleteDiskPopupSteps(self._pm)
+        self.resource_preset_popup = ResourcePresetPopupSteps(self._pm)
+        self.shell_install_page = ShellInstallPageSteps(self._pm)
+        self.shell_details_page = ShellDetailsPageSteps(self._pm)
