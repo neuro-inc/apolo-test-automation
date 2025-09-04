@@ -71,7 +71,7 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.shell_install_page.ui_click_resource_preset_btn()
         await ui_steps.resource_preset_popup.verify_ui_popup_displayed()
 
-        await ui_steps.resource_preset_popup.ui_select_cpu_large_preset()
+        await ui_steps.resource_preset_popup.ui_select_cpu_medium_preset()
         await ui_steps.resource_preset_popup.ui_click_apply_button()
         await ui_steps.resource_preset_popup.ui_wait_to_disappear()
         app_name = self._data_manager.generate_app_instance_name(app_name="Shell")
