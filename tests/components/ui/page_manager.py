@@ -1,5 +1,8 @@
 from playwright.async_api import Page
 
+from tests.components.ui.pages.apps.resource_preset_popup import ResourcePresetPopup
+from tests.components.ui.pages.apps.shell_install_page import ShellInstallPage
+from tests.components.ui.pages.apps.shell_status_page import ShellDetailsPage
 from tests.components.ui.pages.apps_page import AppsPage
 from tests.components.ui.pages.auth_page import AuthPage
 from tests.components.ui.pages.buy_credits_popup import BuyCreditsPopup
@@ -99,3 +102,6 @@ class PageManager:
         self.disks_page = DisksPage(page)
         self.create_disk_popup = CreateDiskPopup(page)
         self.delete_disk_popup = DeleteDiskPopup(page)
+        self.resource_preset_popup = ResourcePresetPopup(page)
+        self.shell_install_page = ShellInstallPage(page)
+        self.shell_details_page = ShellDetailsPage(page)

@@ -37,6 +37,11 @@ _SUITE_OUTCOMES: dict[str, dict[str, int]] = defaultdict(
 
 
 def pytest_configure(config: Config) -> None:
+    config.addinivalue_line(
+        "markers",
+        "class_setup: run setup/teardown once per test class instead of per test",
+    )
+
     # Allure results directory setup
     config.option.allure_report_dir = ALLURE_RESULTS_DIR
     config.option.allure_report = ALLURE_RESULTS_DIR

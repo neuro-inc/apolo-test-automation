@@ -112,3 +112,21 @@ class ConfigManager:
 
     def get_add_proj_url(self, org_name: str) -> str:
         return str(self._endpoints.add_proj).format(org_name=org_name)
+
+    def get_app_output_url(self, org_name: str, proj_name: str, app_id: str) -> str:
+        return str(self._endpoints.app_output).format(
+            org_name=org_name, proj_name=proj_name, app_id=app_id
+        )
+
+    def get_app_events_url(self, org_name: str, proj_name: str, app_id: str) -> str:
+        return str(self._endpoints.app_events).format(
+            org_name=org_name, proj_name=proj_name, app_id=app_id
+        )
+
+    def get_instances_url(self, org_name: str, proj_name: str) -> str:
+        return str(self._endpoints.instances).format(
+            org_name=org_name, proj_name=proj_name
+        )
+
+    def get_app_instance_url(self, app_id: str) -> str:
+        return str(self._endpoints.app_instance).format(app_id=app_id)

@@ -244,3 +244,115 @@ class MainPage(BasePage):
     async def click_accept_invite_to_org(self, org_name: str) -> None:
         self.log(f"Click accept invite to organization {org_name} button")
         await self._get_invite_row_accept_button(org_name).click()
+
+    # ******************************  APPS  **************************************************
+
+    def _get_installed_apps_btn(self) -> BaseElement:
+        return BaseElement(
+            self.page,
+            "a[href='/apps/installed']",
+        )
+
+    async def click_installed_apps_btn(self) -> None:
+        self.log("Click Installed Apps button")
+        await self._get_installed_apps_btn().click()
+
+    def _get_app_container(self, app_name: str) -> BaseElement:
+        return BaseElement(
+            self.page,
+            selector="div.peer",
+            has=self.page.get_by_role("link", name=app_name),
+        )
+
+    async def verify_app_container_displayed(self, app_name: str) -> bool:
+        self.log(f"Verify app container {app_name} displayed")
+
+        container_area = self.page.locator("div.min-h-0.min-w-0.overflow-auto")
+        container = self._get_app_container(app_name)
+
+        try:
+            for _ in range(10):  # limit to avoid infinite loop
+                if await container.is_visible():
+                    return True
+
+                # scroll a bit down
+                await container_area.evaluate("el => el.scrollBy(0, 300)")
+                self.log(f"Scroll to {app_name} container...")
+                await self.page.wait_for_timeout(300)  # give UI some time to render
+
+            self.log(f"App container {app_name} not found after scrolling")
+            return False
+
+        except Exception as e:
+            self.log(f"App container {app_name} not found: {e}")
+            return False
+
+    def _get_app_install_btn(self, app_name: str) -> BaseElement:
+        selector = (
+            f"div.peer:has(a.text-h5:has-text('{app_name}')) a:has-text('Install')"
+        )
+
+        return BaseElement(self.page, selector=selector)
+
+    async def click_install_btn_app_container(self, app_name: str) -> None:
+        await self._get_app_install_btn(app_name).click()
+        await self.page.wait_for_timeout(2000)
+
+    def _get_container_installed_label(self, app_name: str) -> BaseElement:
+        return BaseElement(
+            self.page, f'a[href="/apps/installed/{app_name}"]:has-text("Installed")'
+        )
+
+    async def is_container_installed_label_visible(self, app_name: str) -> bool:
+        self.log(f"Verify installed label on {app_name} container is visible")
+        element = self._get_container_installed_label(app_name)
+        return await element.is_visible()
+
+    async def click_container_installed_label(self, app_name: str) -> None:
+        self.log(f"Click installed label on {app_name} container")
+        element = self._get_container_installed_label(app_name)
+        await element.click()
+
+    def _get_container_show_all_btn(self, app_name: str) -> BaseElement:
+        return BaseElement(
+            self.page,
+            f'a[href="/apps/installed/{app_name}"].inline-flex:has-text("Show All")',
+        )
+
+    async def is_container_show_all_btn_visible(self, app_name: str) -> bool:
+        element = self._get_container_show_all_btn(app_name)
+        return await element.is_visible()
+
+    async def click_container_show_all_btn(self, app_name: str) -> None:
+        element = self._get_container_show_all_btn(app_name)
+        await element.click()
+        await self.wait_for_spinner()
+
+    def _get_installed_app_container(self, app_name: str, owner: str) -> BaseElement:
+        locator = (
+            "div.rounded-xl.bg-white.p-6"
+            f":has(p.text-h6:has-text('{app_name}'))"
+            f":has(div:has(p.text-footnote:has-text('Owner')) p.truncate:has-text('{owner}'))"
+        )
+        return BaseElement(self.page, locator)
+
+    async def is_installed_app_displayed(self, app_name: str, owner: str) -> bool:
+        self.log(f"Check if installed app container {app_name} displayed")
+        return await self._get_installed_app_container(app_name, owner).is_visible()
+
+    def _get_app_details_button(self, app_name: str, owner: str) -> BaseElement:
+        locator = (
+            "div.rounded-xl.bg-white.p-6"
+            f":has(p.text-h6:has-text('{app_name}'))"
+            f":has(div:has(p.text-footnote:has-text('Owner')) p.truncate:has-text('{owner}')) "
+            "a:has-text('Details')"
+        )
+        return BaseElement(self.page, locator)
+
+    async def is_app_details_btn_displayed(self, app_name: str, owner: str) -> bool:
+        self.log(f"Check if App Details button in {app_name} container displayed")
+        return await self._get_app_details_button(app_name, owner).is_visible()
+
+    async def click_app_details_btn(self, app_name: str, owner: str) -> None:
+        self.log(f"Click App Details button in {app_name} container")
+        await self._get_app_details_button(app_name, owner).click()
