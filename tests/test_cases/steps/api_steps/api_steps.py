@@ -113,3 +113,26 @@ class APISteps:
         raise TimeoutError(
             f"⏳ Timed out waiting for app '{app_id}' to reach 'uninstalled' state."
         )
+
+    @async_step("Validate app instance details via API")
+    async def verify_api_app_details_info(
+        self,
+        token: str,
+        app_id: str,
+        expected_owner: str,
+        expected_app_name: str,
+        expected_proj_name: str,
+        expected_org_name: str,
+    ) -> None:
+        (
+            result,
+            error_message,
+        ) = await self._api_helper.verify_app_instance_info(
+            token=token,
+            app_id=app_id,
+            expected_owner=expected_owner,
+            expected_app_name=expected_app_name,
+            expected_proj_name=expected_proj_name,
+            expected_org_name=expected_org_name,
+        )
+        assert result, error_message

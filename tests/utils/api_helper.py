@@ -208,3 +208,55 @@ class APIHelper:
         logger.info(f"Status: {status}. Response: {response}")
 
         return status, response
+
+    async def get_app_instance(self, app_id: str, token: str) -> Any:
+        url = self._config.get_app_instance_url(app_id=app_id)
+        status, response = await self._get(url, token=token)
+        logger.info(f"Status: {status}. Response: {response}")
+
+        return status, response
+
+    async def verify_app_instance_info(
+        self,
+        token: str,
+        expected_owner: str,
+        app_id: str,
+        expected_app_name: str,
+        expected_proj_name: str,
+        expected_org_name: str,
+    ) -> tuple[bool, str]:
+        mismatches: list[str] = []
+
+        status, response = await self.get_app_instance(app_id=app_id, token=token)
+
+        if status != 200:
+            return False, f"Expected status 200, got {status}"
+
+        actual_owner = response.get("creator", "").strip()
+        actual_app_id = response.get("id", "").strip()
+        actual_app_name = response.get("display_name", "").strip()
+        actual_proj_name = response.get("project_name", "").strip()
+        actual_org_name = response.get("org_name", "").strip()
+
+        if actual_owner != expected_owner:
+            mismatches.append(
+                f"Owner expected '{expected_owner}', got '{actual_owner}'"
+            )
+        if actual_app_id != app_id:
+            mismatches.append(f"ID expected '{app_id}', got '{actual_app_id}'")
+        if actual_app_name != expected_app_name:
+            mismatches.append(
+                f"Display Name expected '{expected_app_name}', got '{actual_app_name}'"
+            )
+        if actual_proj_name != expected_proj_name:
+            mismatches.append(
+                f"Project expected '{expected_proj_name}', got '{actual_proj_name}'"
+            )
+        if actual_org_name != expected_org_name:
+            mismatches.append(
+                f"Organization expected '{expected_org_name}', got '{actual_org_name}'"
+            )
+
+        if mismatches:
+            return False, "; ".join(mismatches)
+        return True, "All fields matched"

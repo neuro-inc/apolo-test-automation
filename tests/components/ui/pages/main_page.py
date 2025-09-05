@@ -266,7 +266,26 @@ class MainPage(BasePage):
 
     async def verify_app_container_displayed(self, app_name: str) -> bool:
         self.log(f"Verify app container {app_name} displayed")
-        return await self._get_app_container(app_name).is_visible()
+
+        container_area = self.page.locator("div.min-h-0.min-w-0.overflow-auto")
+        container = self._get_app_container(app_name)
+
+        try:
+            for _ in range(10):  # limit to avoid infinite loop
+                if await container.is_visible():
+                    return True
+
+                # scroll a bit down
+                await container_area.evaluate("el => el.scrollBy(0, 300)")
+                self.log(f"Scroll to {app_name} container...")
+                await self.page.wait_for_timeout(300)  # give UI some time to render
+
+            self.log(f"App container {app_name} not found after scrolling")
+            return False
+
+        except Exception as e:
+            self.log(f"App container {app_name} not found: {e}")
+            return False
 
     def _get_app_install_btn(self, app_name: str) -> BaseElement:
         selector = (

@@ -7,6 +7,7 @@ from tests.test_cases.base_test_class import BaseTestClass
 
 
 @async_suite("Shell App", parent="E2E Tests")
+@pytest.mark.flaky(reruns=0)
 @pytest.mark.class_setup
 class TestE2EShellApp(BaseTestClass):
     shell_app_name = ""
@@ -32,6 +33,7 @@ class TestE2EShellApp(BaseTestClass):
 
     @async_title("Install Shell app via UI")
     @pytest.mark.order(1)
+    @pytest.mark.timeout(400)
     async def test_install_shell_app_via_ui(self) -> None:
         """
         - Login with valid credentials.
@@ -55,6 +57,7 @@ class TestE2EShellApp(BaseTestClass):
         )
         TestE2EShellApp.org_name = org.org_name
         proj = org.add_project(gherkin_name="Default-project")
+        TestE2EShellApp.proj_name = proj.project_name
         await ui_steps.ui_add_proj_api(
             token=user.token,
             org_name=org.org_name,
@@ -174,6 +177,7 @@ class TestE2EShellApp(BaseTestClass):
         ui_steps = self._ui_steps
         user = self._users_manager.main_user
         await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.verify_ui_shell_container_displayed()
         await ui_steps.main_page.verify_ui_installed_label_shell_container_displayed()
         await ui_steps.main_page.verify_ui_show_all_btn_shell_container_displayed()
 
@@ -196,6 +200,7 @@ class TestE2EShellApp(BaseTestClass):
         ui_steps = self._ui_steps
         user = self._users_manager.main_user
         await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.verify_ui_shell_container_displayed()
         await ui_steps.main_page.ui_shell_container_click_show_all_btn()
         app_name = TestE2EShellApp.shell_app_name
         await ui_steps.main_page.ui_verify_installed_app_displayed(
@@ -238,6 +243,38 @@ class TestE2EShellApp(BaseTestClass):
             proj_name=proj_name,
         )
 
+    @async_title("Verify Installed apps details info via API")
+    async def test_app_details_info_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `instances` API.
+
+        ### Verify that:
+
+        - API response contains valid data.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_name = TestE2EShellApp.shell_app_name
+        app_id = TestE2EShellApp.shell_app_id
+        org_name = TestE2EShellApp.org_name
+        proj_name = TestE2EShellApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_api_app_details_info(
+            token=user.token,
+            app_id=app_id,
+            expected_owner=user.username,
+            expected_app_name=app_name,
+            expected_org_name=org_name,
+            expected_proj_name=proj_name,
+        )
+
     @async_title("Verify User can uninstall app via UI")
     async def test_app_uninstall_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
@@ -270,13 +307,11 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.shell_details_page.verify_ui_page_displayed()
 
         await ui_steps.shell_details_page.ui_click_uninstall_btn()
-        await api_steps.wait_for_app_events_until_ready(
+        await api_steps.wait_for_app_until_uninstalled(
             token=user.token, org_name=org_name, proj_name=proj_name, app_id=app_id
         )
+        await ui_steps.ui_open_product_base_page()
         await ui_steps.main_page.ui_click_installed_apps_btn()
-        await ui_steps.main_page.ui_click_inst_app_details_btn(
-            app_name=app_name, owner=user.username
-        )
         await ui_steps.main_page.ui_verify_installed_app_not_displayed(
             app_name=app_name, owner=user.username
         )

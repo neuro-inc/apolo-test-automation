@@ -127,3 +127,6 @@ class ConfigManager:
         return str(self._endpoints.instances).format(
             org_name=org_name, proj_name=proj_name
         )
+
+    def get_app_instance_url(self, app_id: str) -> str:
+        return str(self._endpoints.app_instance).format(app_id=app_id)

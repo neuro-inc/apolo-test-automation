@@ -29,7 +29,7 @@ class UISteps(PageSteps):
     @async_step("Reload page")
     async def ui_reload_page(self) -> None:
         await self._pm.page.reload()
-        await self._pm.page.wait_for_timeout(500)
+        await self._pm.page.wait_for_timeout(1000)
         await self._pm.main_page.wait_for_spinner()
 
     @async_step("Wait for timeout")
@@ -391,6 +391,7 @@ class UISteps(PageSteps):
             f"Expected HTTP 201 response but got {response.status_code}!"
         )
         await self.ui_reload_page()
+        await self._pm.page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
 
     # ********************   Secrets steps   ****************************
     @async_step("Create Secret via UI")

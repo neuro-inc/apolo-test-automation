@@ -48,9 +48,8 @@ class ShellDetailsPage(BasePage):
 
     def _get_owner_field(self) -> BaseElement:
         locator = (
-            "div.flex.flex-col.gap-1.5"
-            ":has(p.text-footnote.capitalize.text-neural-04:has-text('Owner')) "
-            "p.text-rebecca"
+            "p.text-footnote.capitalize.text-neural-04:has-text('Owner') "
+            "+ p.text-rebecca"
         )
         return BaseElement(self.page, locator)
 
@@ -79,7 +78,7 @@ class ShellDetailsPage(BasePage):
         return raw_text.strip().split()[0]
 
     def _get_proj_field(self) -> BaseElement:
-        return BaseElement(self.page, 'div:has(h6:text("Project")) p.w-fit >> nth=1')
+        return BaseElement(self.page, 'h6:has-text("Project") + p.w-fit')
 
     async def get_proj_name(self) -> str:
         element = self._get_proj_field()
