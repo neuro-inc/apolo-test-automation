@@ -136,3 +136,65 @@ class MainPageSteps:
         assert actual_amount == expected_amount, (
             f"Expected {expected_amount} credits amount but got {actual_amount}"
         )
+
+    @async_step("Verify Shell app container displayed on the main page")
+    async def verify_ui_shell_container_displayed(self) -> None:
+        assert await self._pm.main_page.verify_app_container_displayed(
+            app_name="Shell"
+        ), "Shell app container should be displayed!"
+
+    @async_step("Click Install button on the Shell container")
+    async def ui_shell_container_click_install_btn(self) -> None:
+        await self._pm.main_page.click_install_btn_app_container(app_name="Shell")
+
+    @async_step("Verify 'Installed' label on Shell app container is displayed")
+    async def verify_ui_installed_label_shell_container_displayed(self) -> None:
+        assert await self._pm.main_page.is_container_installed_label_visible(
+            app_name="shell"
+        ), "'Installed' label should be displayed on the Shell app container!"
+
+    @async_step("Click `Installed` label on the Shell app container")
+    async def ui_shell_container_click_installed_label(self) -> None:
+        await self._pm.main_page.click_container_installed_label(app_name="shell")
+
+    @async_step("Verify 'Show All' button on Shell app container is displayed")
+    async def verify_ui_show_all_btn_shell_container_displayed(self) -> None:
+        assert await self._pm.main_page.is_container_show_all_btn_visible(
+            app_name="shell"
+        ), "'Show All' button should be displayed on the Shell app container!"
+
+    @async_step("Click `Show All` button on the Shell app container")
+    async def ui_shell_container_click_show_all_btn(self) -> None:
+        await self._pm.main_page.click_container_show_all_btn(app_name="shell")
+
+    @async_step("Click Installed Apps button")
+    async def ui_click_installed_apps_btn(self) -> None:
+        await self._pm.main_page.click_installed_apps_btn()
+
+    @async_step("Verify Installed application displayed")
+    async def ui_verify_installed_app_displayed(
+        self, app_name: str, owner: str
+    ) -> None:
+        assert await self._pm.main_page.is_installed_app_displayed(
+            app_name=app_name, owner=owner
+        ), f"Installed app {app_name} should be displayed!"
+
+    @async_step("Verify Installed application not displayed")
+    async def ui_verify_installed_app_not_displayed(
+        self, app_name: str, owner: str
+    ) -> None:
+        assert not await self._pm.main_page.is_installed_app_displayed(
+            app_name=app_name, owner=owner
+        ), f"Installed app {app_name} should not be displayed!"
+
+    @async_step("Verify 'Details' button on installed app container displayed")
+    async def verify_ui_inst_app_details_btn_displayed(
+        self, app_name: str, owner: str
+    ) -> None:
+        assert await self._pm.main_page.is_app_details_btn_displayed(
+            app_name=app_name, owner=owner
+        ), f"Installed app {app_name} should be displayed!"
+
+    @async_step("Click 'Details' button on installed app container")
+    async def ui_click_inst_app_details_btn(self, app_name: str, owner: str) -> None:
+        await self._pm.main_page.click_app_details_btn(app_name=app_name, owner=owner)

@@ -15,9 +15,10 @@ class BasePage(ABC):
         full_message = f"<{class_name}>: {message}"
         self.logger.log(level, full_message)
 
-    async def wait_for_spinner(self, timeout: int = 6000) -> None:
+    async def wait_for_spinner(
+        self, spinner_selector: str = ".chase-spinner", timeout: int = 6000
+    ) -> None:
         try:
-            spinner_selector = ".chase-spinner"
             self.log("Waiting for spinner")
             await self.page.wait_for_selector(
                 spinner_selector, state="visible", timeout=timeout

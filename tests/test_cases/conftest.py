@@ -1,9 +1,8 @@
 from __future__ import annotations
-
 from collections.abc import AsyncGenerator
-from collections.abc import Callable
-from collections.abc import Coroutine
 
+import asyncio
+from collections.abc import Callable, Coroutine
 import logging
 import os
 from typing import Any
@@ -12,7 +11,7 @@ from urllib.parse import urlparse
 import allure
 import pytest
 from allure_commons.types import AttachmentType
-from playwright.async_api import async_playwright, Browser, BrowserContext
+from playwright.async_api import async_playwright, Browser, BrowserContext, Playwright
 
 from tests.components.ui.page_manager import PageManager
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
@@ -34,7 +33,9 @@ STORAGE_OBJECTS_PATH = os.path.join(PROJECT_ROOT, "storage_objects")
 GENERATED_DATA_PATH = os.path.join(STORAGE_OBJECTS_PATH, "generated_objects")
 DOWNLOAD_PATH = os.path.join(STORAGE_OBJECTS_PATH, "downloads")
 
-_browser_context_pairs: list[tuple[Browser, BrowserContext]] = []
+# Track per-test browser/context/playwright triples
+_browser_context_triples: list[tuple[Browser, BrowserContext, Playwright]] = []
+
 main_user: UserData | None = None
 second_user: UserData | None = None
 third_user: UserData | None = None
@@ -67,7 +68,7 @@ async def add_page_manager(
         pm1 = await add_page_manager()
         pm2 = await add_page_manager()
 
-    All opened browsers/contexts are closed automatically after the test.
+    All opened browsers/contexts/playwrights are closed automatically after the test.
     """
 
     async def _factory() -> PageManager:
@@ -125,11 +126,64 @@ async def setup_cleanup(
     api_helper: APIHelper,
     apolo_cli: ApoloCLI,
 ) -> AsyncGenerator[None, None]:
-    """
-    Post-test cleanup:
-    - closes all browser sessions,
-    - logs any cleanup errors without failing the test run.
-    """
+    run_once = "class_setup" in request.keywords
+
+    if run_once:
+        if not hasattr(request.cls, "_class_setup_done"):
+            request.cls._class_setup_done = True
+
+            # --- setup once for this class ---
+            await _do_full_setup_logic(
+                request, test_config, data_manager, users_manager, api_helper
+            )
+
+            # store users for reuse
+            request.cls._main_user = users_manager.main_user
+            request.cls._second_user = users_manager.second_user
+            request.cls._third_user = users_manager.third_user
+        else:
+            # reuse stored users
+            users_manager.main_user = getattr(request.cls, "_main_user", None)  # type: ignore[assignment]
+            users_manager.second_user = getattr(request.cls, "_second_user", None)  # type: ignore[assignment]
+            users_manager.third_user = getattr(request.cls, "_third_user", None)  # type: ignore[assignment]
+
+        try:
+            yield
+        finally:
+            # 🔑 teardown only after the *last* test in the class
+            class_items = [
+                i for i in request.session.items if i.parent == request.node.parent
+            ]
+            if class_items and class_items[-1] == request.node:
+                await _do_full_teardown_logic(
+                    request, users_manager, data_manager, api_helper
+                )
+
+    else:
+        # --- per-test setup ---
+        await _do_full_setup_logic(
+            request, test_config, data_manager, users_manager, api_helper
+        )
+
+        try:
+            yield
+        finally:
+            # --- always teardown after each test ---
+            await _do_full_teardown_logic(
+                request, users_manager, data_manager, api_helper
+            )
+
+
+# ------------------------------
+# Setup Logic
+# ------------------------------
+async def _do_full_setup_logic(
+    request: pytest.FixtureRequest,
+    test_config: ConfigManager,
+    data_manager: DataManager,
+    users_manager: UsersManager,
+    api_helper: APIHelper,
+) -> None:
     global main_user, second_user, third_user
 
     if main_user:
@@ -141,20 +195,17 @@ async def setup_cleanup(
         max_attempts = 2
         for attempt in range(1, max_attempts + 1):
             logger.info(f"Signup attempt {attempt}...")
-
             try:
                 pm = await _create_page_manager(test_config, request)
                 ui_steps = UISteps(
                     pm, test_config, data_manager, users_manager, api_helper
                 )
-
                 main_user = await ui_steps.ui_signup_new_user_ver_link()
                 users_manager.main_user = main_user
                 users_manager.main_user.authorized = False
                 break
             except Exception as e:
                 logger.warning(f"⚠️ Signup attempt {attempt} failed: {e}")
-                # ensure broken context is not reused
                 await _cleanup_browsers()
 
                 if attempt == max_attempts:
@@ -169,12 +220,23 @@ async def setup_cleanup(
         logger.info(f"Continue using {second_user} as second test user...")
         users_manager.second_user = second_user
         users_manager.second_user.authorized = False  # type: ignore[union-attr]
+
     if third_user:
         logger.info(f"Continue using {third_user} as third test user...")
         users_manager.third_user = third_user
         users_manager.third_user.authorized = False  # type: ignore[union-attr]
 
-    yield
+
+# ------------------------------
+# Teardown Logic
+# ------------------------------
+async def _do_full_teardown_logic(
+    request: pytest.FixtureRequest,
+    users_manager: UsersManager,
+    data_manager: DataManager,
+    api_helper: APIHelper,
+) -> None:
+    global second_user, third_user
 
     if users_manager.second_user:
         second_user = users_manager.second_user
@@ -185,22 +247,18 @@ async def setup_cleanup(
         try:
             await _cleanup_orgs(data_manager, api_helper)
             await _cleanup_browsers()
-
         except Exception as exc:
-            # Capture details but DO NOT fail the test
             if not hasattr(request.session, "cleanup_warning"):
                 request.session.cleanup_warning = (  # type: ignore[attr-defined]
                     "Test cleanup failed. See log file for details!\n"
                 )
             formatted_msg = exception_manager.handle(exc, context="Post-test cleanup")
             logger.exception("Post-test cleanup failed: %s", formatted_msg)
-
             allure.attach(
                 formatted_msg,
                 name="Cleanup exception",
                 attachment_type=AttachmentType.TEXT,
             )
-
             logger.warning(f"Post-test cleanup failed: {formatted_msg}", RuntimeWarning)
 
 
@@ -229,7 +287,6 @@ async def _cleanup_orgs(
         with allure.step(f"Delete organisation: {org_name}"):
             try:
                 await api_helper.delete_org(token=token, org_name=org_name)
-
                 data_manager.remove_organization(org_name)
             except Exception as exc:
                 formatted_msg = exception_manager.handle(
@@ -245,50 +302,62 @@ async def _cleanup_orgs(
 
 
 async def _cleanup_browsers() -> None:
+    global _browser_context_triples
     logger.info("Closing all browser sessions")
-    for browser, context in _browser_context_pairs:
+
+    for browser, context, playwright in list(_browser_context_triples):
+        # 1. Stop Playwright first (kills browsers/contexts)
         try:
-            await context.close()
-            logger.info("Closed context")
+            await asyncio.wait_for(playwright.stop(), timeout=5)
+            logger.info("Stopped Playwright")
+        except Exception as e:
+            logger.warning(f"Failed to stop Playwright: {e}")
+
+        # 2. Defensive cleanup in case stop() didn't kill everything
+        try:
+            if context:
+                await asyncio.wait_for(context.close(), timeout=3)
+                logger.info("Closed context (post-stop)")
         except Exception as e:
             logger.warning(f"Failed to close context: {e}")
 
         try:
-            if browser.is_connected():
-                await browser.close()
-                logger.info("Closed browser")
+            if browser and browser.is_connected():
+                await asyncio.wait_for(browser.close(), timeout=3)
+                logger.info("Closed browser (post-stop)")
         except Exception as e:
             logger.warning(f"Failed to close browser: {e}")
 
-    _browser_context_pairs.clear()
-    logger.info("Closed all browser sessions")
+    _browser_context_triples.clear()
+    logger.info("Browser cleanup finished")
 
 
-async def _start_browser() -> Browser:
+async def _start_browser() -> tuple[Browser, Playwright]:
     """
-    Launches a headless Chromium browser with CI-safe arguments.
+    Start Playwright + Chromium browser (per test).
     """
     playwright = await async_playwright().start()
-
     logger.info("Starting browser in a headless mode...")
     browser = await playwright.chromium.launch(
         headless=True,
         args=["--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080"],
     )
-
-    return browser
+    return browser, playwright
 
 
 async def _create_page_manager(
     test_config: ConfigManager, request: pytest.FixtureRequest
 ) -> PageManager:
-    browser = await _start_browser()
-    logger.info("Initializing new browser context")
+    playwright: Playwright = await async_playwright().start()
+    browser = await playwright.chromium.launch(
+        headless=True,
+        args=["--no-sandbox", "--disable-dev-shm-usage", "--window-size=1920,1080"],
+    )
     context = await browser.new_context(no_viewport=True, accept_downloads=True)
-    _browser_context_pairs.append((browser, context))
-    page = await context.new_page()
 
-    # Attach HTTP response logging
+    _browser_context_triples.append((browser, context, playwright))
+
+    page = await context.new_page()
     page.on("response", lambda response: _log_failed_requests(test_config, response))
 
     logger.info(f"Navigating to: {test_config.base_url}")
@@ -297,16 +366,12 @@ async def _create_page_manager(
 
     test_config.context = context
     request.node.page = page
-    pm = PageManager(page)
-    return pm
+    return PageManager(page)
 
 
 async def _log_failed_requests(test_config: ConfigManager, response: Any) -> None:
     """
-    Logs HTTP responses within product hostname, including:
-    - Request method and URL
-    - Request body (if available)
-    - Response body (truncated)
+    Logs HTTP responses within product hostname.
     """
     status = response.status
     request = response.request
@@ -315,14 +380,12 @@ async def _log_failed_requests(test_config: ConfigManager, response: Any) -> Non
     cli_login_url = test_config.cli_login_url
     product_hostname = urlparse(cli_login_url).hostname
 
-    # Parse URL and check hostname
     parsed_url = urlparse(url)
     if parsed_url.hostname != product_hostname:
         return
 
     if status >= 200:
         method = request.method
-
         try:
             request_body = await request.post_data()
         except Exception:
