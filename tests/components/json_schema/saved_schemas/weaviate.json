@@ -1,0 +1,423 @@
+{
+  "name": "weaviate",
+  "title": "Weaviate App",
+  "pub_date": "2025-03-21T00:00:00Z",
+  "description": "Weaviate is an open-source, cloud-native vector search engine that allows you to build and deploy machine learning models.",
+  "short_description": "Deploy Weaviate on Apolo platform",
+  "schema_version": 1,
+  "version": "apolo",
+  "input": {
+    "$defs": {
+      "IngressHttp": {
+        "properties": {
+          "auth": {
+            "default": true,
+            "title": "Auth",
+            "type": "boolean",
+            "x-description": "Require authenticated user credentials with appropriate permissions for all incoming HTTPS requests to the application.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Enable Authentication and Authorization"
+          }
+        },
+        "title": "IngressHttp",
+        "type": "object",
+        "x-description": "Enable access to your application over the internet using HTTPS.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Enable HTTP Ingress"
+      },
+      "Preset": {
+        "properties": {
+          "name": {
+            "description": "The name of the preset.",
+            "title": "Preset name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Preset",
+        "type": "object",
+        "x-description": "Select the resource preset used per service replica.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Resource Preset"
+      },
+      "WeaviatePersistence": {
+        "properties": {
+          "size": {
+            "default": 32,
+            "title": "Size",
+            "type": "integer",
+            "x-description": "Specify the size of the storage volume in gigabytes.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Storage Size (GB)"
+          },
+          "enable_backups": {
+            "default": true,
+            "title": "Enable Backups",
+            "type": "boolean",
+            "x-description": "Enable periodic backups of Weaviate storage to object store. We automatically create bucket and the corresponding credentials for you. Note: this bucket will not be automatically removed when you remove the bucket.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Enable backups"
+          }
+        },
+        "title": "WeaviatePersistence",
+        "type": "object",
+        "x-description": "Configure Weaviate to store data in a persistent storage.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Weaviate persistence"
+      }
+    },
+    "properties": {
+      "preset": {
+        "$ref": "#/$defs/Preset"
+      },
+      "persistence": {
+        "$ref": "#/$defs/WeaviatePersistence"
+      },
+      "ingress_http": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/IngressHttp"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Enable access to your application over the internet using HTTPS.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Enable HTTP Ingress"
+      }
+    },
+    "required": [
+      "preset",
+      "persistence"
+    ],
+    "title": "WeaviateInputs",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "BasicAuth": {
+        "properties": {
+          "username": {
+            "default": "",
+            "description": "The username for basic authentication.",
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "default": "",
+            "description": "The password for basic authentication.",
+            "title": "Password",
+            "type": "string"
+          }
+        },
+        "title": "BasicAuth",
+        "type": "object",
+        "x-description": "Basic Auth Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Basic Auth"
+      },
+      "GraphQLAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "graphql",
+            "default": "graphql",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "GraphQLAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      },
+      "GrpcAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "grpc",
+            "default": "grpc",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "GrpcAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      },
+      "RestAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "RestAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      }
+    },
+    "properties": {
+      "external_graphql_endpoint": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/GraphQLAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The external GraphQL endpoint.",
+        "title": "External GraphQL endpoint"
+      },
+      "external_rest_endpoint": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The external REST endpoint.",
+        "title": "External REST endpoint"
+      },
+      "internal_graphql_endpoint": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/GraphQLAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The internal GraphQL endpoint.",
+        "title": "Internal GraphQL endpoint"
+      },
+      "internal_rest_endpoint": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The internal REST endpoint.",
+        "title": "Internal REST endpoint"
+      },
+      "internal_grpc_endpoint": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/GrpcAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The internal GRPC endpoint.",
+        "title": "Internal GRPC endpoint"
+      },
+      "auth": {
+        "$ref": "#/$defs/BasicAuth"
+      }
+    },
+    "title": "WeaviateOutputs",
+    "type": "object"
+  },
+  "tags": [
+    "apolo",
+    "apolo weaviate",
+    "weaviate"
+  ],
+  "git_url": "https://github.com/neuro-inc/weaviate-helm",
+  "helm_path": "weaviate",
+  "type": "mlops",
+  "logo": "https://weaviate.io/img/site/weaviate-logo-horizontal-light-1.svg",
+  "assets": [],
+  "documentation_urls": [
+    {
+      "text": "Apolo Weaviate",
+      "url": "https://docs.apolo.us/index/apolo-console/apps/available-apps/weaviate"
+    }
+  ],
+  "external_urls": [],
+  "mlops_app_type": "weaviate",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}

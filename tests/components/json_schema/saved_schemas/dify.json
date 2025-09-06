@@ -1,0 +1,545 @@
+{
+  "name": "dify",
+  "title": "Dify",
+  "pub_date": "2025-05-08T00:00:00Z",
+  "description": "Build Generative AI Apps with Our Advanced Open-Source Stack.",
+  "short_description": "Run Dify",
+  "schema_version": 1,
+  "version": "apolo",
+  "input": {
+    "$defs": {
+      "CrunchyPostgresUserCredentials": {
+        "properties": {
+          "user": {
+            "title": "User",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "host": {
+            "title": "Host",
+            "type": "string"
+          },
+          "port": {
+            "title": "Port",
+            "type": "integer"
+          },
+          "pgbouncer_host": {
+            "title": "Pgbouncer Host",
+            "type": "string"
+          },
+          "pgbouncer_port": {
+            "title": "Pgbouncer Port",
+            "type": "integer"
+          },
+          "dbname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Dbname"
+          },
+          "jdbc_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Jdbc Uri"
+          },
+          "pgbouncer_jdbc_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pgbouncer Jdbc Uri"
+          },
+          "pgbouncer_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pgbouncer Uri"
+          },
+          "uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Uri"
+          },
+          "postgres_uri": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/PostgresURI"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "user",
+          "password",
+          "host",
+          "port",
+          "pgbouncer_host",
+          "pgbouncer_port"
+        ],
+        "title": "CrunchyPostgresUserCredentials",
+        "type": "object",
+        "x-description": "Configuration for Crunchy Postgres user credentials.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Postgres User Credentials"
+      },
+      "DifyAppApi": {
+        "properties": {
+          "replicas": {
+            "default": 1,
+            "title": "Replicas",
+            "type": "integer",
+            "x-description": "Configure Replicas count.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Replicas Count"
+          },
+          "preset": {
+            "$ref": "#/$defs/Preset"
+          },
+          "use_object_store": {
+            "default": false,
+            "description": "Use platform Object Storage to store Dify data. We automatically create and configure the corresponding bucket for you. Currently, only AWS/Minio buckets are supported. If you disable this option, we will provision a dedicated disk to store data. Note: this bucket will not be automatically removed when you remove the app.",
+            "title": "Use Object Store",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "preset"
+        ],
+        "title": "DifyAppApi",
+        "type": "object",
+        "x-description": "Configure Dify Api.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Dify API"
+      },
+      "DifyAppProxy": {
+        "properties": {
+          "preset": {
+            "$ref": "#/$defs/Preset"
+          }
+        },
+        "required": [
+          "preset"
+        ],
+        "title": "DifyAppProxy",
+        "type": "object",
+        "x-description": "Configure Dify Proxy.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Dify Proxy"
+      },
+      "DifyAppRedis": {
+        "properties": {
+          "master_preset": {
+            "$ref": "#/$defs/Preset",
+            "x-description": "Configure Master Preset.",
+            "x-meta-type": "inline",
+            "x-title": "Master Preset"
+          }
+        },
+        "required": [
+          "master_preset"
+        ],
+        "title": "DifyAppRedis",
+        "type": "object",
+        "x-description": "Configure Dify Redis.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Dify Redis"
+      },
+      "DifyAppWeb": {
+        "properties": {
+          "replicas": {
+            "default": 1,
+            "title": "Replicas",
+            "type": "integer",
+            "x-description": "Configure Replicas count.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Replicas Count"
+          },
+          "preset": {
+            "$ref": "#/$defs/Preset"
+          }
+        },
+        "required": [
+          "preset"
+        ],
+        "title": "DifyAppWeb",
+        "type": "object",
+        "x-description": "Configure Dify Web.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Dify Web"
+      },
+      "DifyAppWorker": {
+        "properties": {
+          "replicas": {
+            "default": 1,
+            "title": "Replicas",
+            "type": "integer",
+            "x-description": "Configure Replicas count.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Replicas Count"
+          },
+          "preset": {
+            "$ref": "#/$defs/Preset"
+          }
+        },
+        "required": [
+          "preset"
+        ],
+        "title": "DifyAppWorker",
+        "type": "object",
+        "x-description": "Configure Dify Worker.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Dify Worker"
+      },
+      "IngressHttp": {
+        "properties": {
+          "auth": {
+            "default": true,
+            "title": "Auth",
+            "type": "boolean",
+            "x-description": "Require authenticated user credentials with appropriate permissions for all incoming HTTPS requests to the application.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Enable Authentication and Authorization"
+          }
+        },
+        "title": "IngressHttp",
+        "type": "object",
+        "x-description": "Enable access to your application over the internet using HTTPS.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Enable HTTP Ingress"
+      },
+      "PostgresURI": {
+        "description": "Configuration for the Postgres connection URI.",
+        "properties": {
+          "uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Uri",
+            "x-description": "Specify full Postgres connection URI. E.g. 'postgresql://user:pass@host:5432/db'",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "URI"
+          }
+        },
+        "title": "PostgresURI",
+        "type": "object",
+        "x-description": "Full Postgres connection URI configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Postgres URI"
+      },
+      "Preset": {
+        "properties": {
+          "name": {
+            "description": "The name of the preset.",
+            "title": "Preset name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Preset",
+        "type": "object",
+        "x-description": "Select the resource preset used per service replica.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Resource Preset"
+      }
+    },
+    "properties": {
+      "ingress_http": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/IngressHttp"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "x-description": "Define HTTP ingress configuration for exposing services over the web.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "HTTP Ingress"
+      },
+      "api": {
+        "$ref": "#/$defs/DifyAppApi"
+      },
+      "worker": {
+        "$ref": "#/$defs/DifyAppWorker"
+      },
+      "proxy": {
+        "$ref": "#/$defs/DifyAppProxy"
+      },
+      "web": {
+        "$ref": "#/$defs/DifyAppWeb"
+      },
+      "redis": {
+        "$ref": "#/$defs/DifyAppRedis"
+      },
+      "external_postgres": {
+        "$ref": "#/$defs/CrunchyPostgresUserCredentials"
+      },
+      "external_pgvector": {
+        "$ref": "#/$defs/CrunchyPostgresUserCredentials"
+      }
+    },
+    "required": [
+      "api",
+      "worker",
+      "proxy",
+      "web",
+      "redis",
+      "external_postgres",
+      "external_pgvector"
+    ],
+    "title": "DifyAppInputs",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "DifySpecificOutputs": {
+        "properties": {
+          "init_password": {
+            "title": "Init Password",
+            "type": "string",
+            "x-description": "The initial password for the Dify application.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Init Password"
+          }
+        },
+        "required": [
+          "init_password"
+        ],
+        "title": "DifySpecificOutputs",
+        "type": "object",
+        "x-description": "Configure Dify Specific Outputs.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Dify Specific Outputs"
+      },
+      "RestAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "RestAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      }
+    },
+    "properties": {
+      "internal_web_app_url": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "The URL of the internal web app.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Internal Web App URL"
+      },
+      "external_web_app_url": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "The URL of the external web app.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "External Web App URL"
+      },
+      "internal_api_url": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "The URL of the internal API.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Internal API URL"
+      },
+      "external_api_url": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "The URL of the external API.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "External API URL"
+      },
+      "dify_specific": {
+        "$ref": "#/$defs/DifySpecificOutputs"
+      }
+    },
+    "required": [
+      "dify_specific"
+    ],
+    "title": "DifyAppOutputs",
+    "type": "object"
+  },
+  "tags": [
+    "dify",
+    "python",
+    "llmops"
+  ],
+  "git_url": "https://github.com/neuro-inc/dify-helm",
+  "helm_path": "charts/dify",
+  "type": "mlops",
+  "logo": "https://avatars.githubusercontent.com/u/127165244",
+  "assets": [
+    {
+      "type": "image",
+      "url": "https://avatars.githubusercontent.com/u/127165244"
+    }
+  ],
+  "documentation_urls": [
+    {
+      "text": "Dify Documentation",
+      "url": "https://docs.dify.ai/en/introduction"
+    }
+  ],
+  "external_urls": [
+    {
+      "text": "Dify Repository",
+      "url": "https://github.com/langgenius/dify"
+    }
+  ],
+  "mlops_app_type": "dify",
+  "preprocessor_image": null,
+  "postprocessor_image": null
+}
