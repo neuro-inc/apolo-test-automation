@@ -31,7 +31,7 @@ class AdminSteps:
         )
         if not result:
             if (
-                "ERROR: There are no clusters available. Please logout and login again."
+                "ERROR: There are no clusters available. Please run 'apolo logout' and then 'apolo login'."
                 in error_message
             ):
                 url = self._test_config.cli_login_url
