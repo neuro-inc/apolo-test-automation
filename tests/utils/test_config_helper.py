@@ -83,6 +83,9 @@ class ConfigManager:
     def _endpoints(self) -> DictConfig:
         return DictConfig(self._config.endpoints)
 
+    def get_ds_model_token(self) -> str:
+        return str(self._config.ds_model_token)
+
     def get_template_url(self, organization: str, project_name: str) -> str:
         return str(self._endpoints.templates).format(
             organization=organization, project=project_name
@@ -130,3 +133,6 @@ class ConfigManager:
 
     def get_app_instance_url(self, app_id: str) -> str:
         return str(self._endpoints.app_instance).format(app_id=app_id)
+
+    def get_create_secret_url(self) -> str:
+        return str(self._endpoints.create_secret)

@@ -136,3 +136,23 @@ class APISteps:
             expected_org_name=expected_org_name,
         )
         assert result, error_message
+
+    @async_step("Add Secret via API")
+    async def ui_add_secret_api(
+        self,
+        token: str,
+        secret_name: str,
+        secret_value: str,
+        org_name: str,
+        proj_name: str,
+    ) -> None:
+        response = await self._api_helper.add_secret(
+            token=token,
+            secret_name=secret_name,
+            secret_value=secret_value,
+            org_name=org_name,
+            proj_name=proj_name,
+        )
+        assert response.status == 201, (
+            f"Expected HTTP 201 response but got {response.status}!"
+        )

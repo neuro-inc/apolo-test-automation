@@ -1,8 +1,11 @@
 from playwright.async_api import Page
 
+from tests.components.ui.pages.apps.choose_secret_popup import ChooseSecretPopup
+from tests.components.ui.pages.apps.deep_seek_details_page import DeepSeekDetailsPage
+from tests.components.ui.pages.apps.deep_seek_install_page import DeepSeekInstallPage
 from tests.components.ui.pages.apps.resource_preset_popup import ResourcePresetPopup
 from tests.components.ui.pages.apps.shell_install_page import ShellInstallPage
-from tests.components.ui.pages.apps.shell_status_page import ShellDetailsPage
+from tests.components.ui.pages.apps.shell_details_page import ShellDetailsPage
 from tests.components.ui.pages.apps_page import AppsPage
 from tests.components.ui.pages.auth_page import AuthPage
 from tests.components.ui.pages.buy_credits_popup import BuyCreditsPopup
@@ -103,5 +106,8 @@ class PageManager:
         self.create_disk_popup = CreateDiskPopup(page)
         self.delete_disk_popup = DeleteDiskPopup(page)
         self.resource_preset_popup = ResourcePresetPopup(page)
+        self.choose_secret_popup = ChooseSecretPopup(page)
         self.shell_install_page = ShellInstallPage(page)
         self.shell_details_page = ShellDetailsPage(page)
+        self.deep_seek_install_page = DeepSeekInstallPage(page)
+        self.deep_seek_details_page = DeepSeekDetailsPage(page)
