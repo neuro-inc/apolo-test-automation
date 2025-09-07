@@ -26,8 +26,8 @@ class APISteps:
         org_name: str,
         proj_name: str,
         app_id: str,
+        timeout=600 # 10 minutes
     ) -> Any:
-        timeout = 600  # 10 minutes
         interval = 20
         start = time.monotonic()
         deadline = start + timeout
