@@ -66,7 +66,7 @@ class APISteps:
 
             await asyncio.sleep(interval)
 
-        raise TimeoutError("⏳ Timed out waiting for app to reach 'healthy' state.")
+        raise AssertionError("⏳ Timed out waiting for app to reach 'healthy' state.")
 
     @async_step("Wait for app until uninstalled")
     async def wait_for_app_until_uninstalled(
