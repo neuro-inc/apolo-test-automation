@@ -27,7 +27,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
         self._api_steps: APISteps = api_steps
 
     @pytest.fixture
-    def shell_status(self) -> None:
+    def deep_seek_status(self) -> None:
         if not TestE2EDeepSeekApp.app_install_status:
             pytest.skip("DeepSeek app was not installed successfully")
 
@@ -119,7 +119,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
     @async_title("Verify installed DeepSeek app listed in Installed apps via UI")
     @pytest.mark.order(2)
-    async def test_app_listed_in_installed_apps_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+    async def test_app_listed_in_installed_apps_via_ui(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
         - DeepSeek app installed.
@@ -145,7 +145,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
         "Verify User can reach DeepSeek app Details page from Installed Apps page"
     )
     @pytest.mark.order(3)
-    async def test_app_details_from_inst_apps_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+    async def test_app_details_from_inst_apps_via_ui(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
         - DeepSeek app installed.
@@ -177,7 +177,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
         "Verify installed DeepSeek app info displayed on the app container via UI"
     )
     @pytest.mark.order(4)
-    async def test_app_container_installed_info_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+    async def test_app_container_installed_info_via_ui(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
         - DeepSeek app installed.
@@ -202,7 +202,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
     @async_title("Verify User can reach Installed apps page from app container via UI")
     @pytest.mark.order(5)
     async def test_installed_apps_from_container_via_ui(  # type: ignore[no-untyped-def]
-        self, shell_status
+        self, deep_seek_status
     ) -> None:
         """
         ### Pre-conditions:
@@ -228,7 +228,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
     @async_title("Verify Installed apps details info via UI")
     @pytest.mark.order(6)
-    async def test_app_details_info_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+    async def test_app_details_info_via_ui(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
         - DeepSeek app installed.
@@ -265,7 +265,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
     @async_title("Verify Installed apps details info via API")
     @pytest.mark.order(7)
-    async def test_app_details_info_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+    async def test_app_details_info_via_api(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
         - DeepSeek app installed.
@@ -298,7 +298,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
     @async_title("Verify User can uninstall app via UI")
     @pytest.mark.order(8)
-    async def test_app_uninstall_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+    async def test_app_uninstall_via_ui(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
         - DeepSeek app installed.
