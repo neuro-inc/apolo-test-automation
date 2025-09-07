@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 
 import allure
 import pytest
+from _pytest.fixtures import FixtureRequest
 from allure_commons.types import AttachmentType
 from playwright.async_api import async_playwright, Browser, BrowserContext, Playwright
 
@@ -116,10 +117,6 @@ def users_manager() -> UsersManager:
     return UsersManager()
 
 
-import pytest
-from _pytest.fixtures import FixtureRequest
-from collections.abc import AsyncGenerator
-
 @pytest.fixture(autouse=True)
 async def setup_cleanup(
     request: FixtureRequest,
@@ -132,7 +129,7 @@ async def setup_cleanup(
 ) -> AsyncGenerator[None, None]:
     run_once = "class_setup" in request.keywords
 
-    async def _teardown():
+    async def _teardown() -> Any:
         await _do_full_teardown_logic(request, users_manager, data_manager, api_helper)
 
     if run_once:
@@ -140,7 +137,9 @@ async def setup_cleanup(
             request.cls._class_setup_done = True
             # collect all nodeids for tests in this class
             request.cls._pending_tests = {
-                item.nodeid for item in request.session.items if item.parent == request.node.parent
+                item.nodeid
+                for item in request.session.items
+                if item.parent == request.node.parent
             }
 
             # setup once
@@ -154,16 +153,17 @@ async def setup_cleanup(
             request.cls._third_user = users_manager.third_user
         else:
             # reuse users
-            users_manager.main_user = getattr(request.cls, "_main_user", None)
-            users_manager.second_user = getattr(request.cls, "_second_user", None)
-            users_manager.third_user = getattr(request.cls, "_third_user", None)
+            users_manager.main_user = getattr(request.cls, "_main_user", None)  # type: ignore[assignment]
+            users_manager.second_user = getattr(request.cls, "_second_user", None)  # type: ignore[assignment]
+            users_manager.third_user = getattr(request.cls, "_third_user", None)  # type: ignore[assignment]
 
         # register finalizer that checks if all tests finished
-        def finalizer():
+        def finalizer() -> Any:
             # mark this test as done (even if timed out/failed)
             request.cls._pending_tests.discard(request.node.nodeid)
             if not request.cls._pending_tests:
                 import asyncio
+
                 asyncio.get_event_loop().run_until_complete(_teardown())
 
         request.addfinalizer(finalizer)
@@ -175,13 +175,13 @@ async def setup_cleanup(
             request, test_config, data_manager, users_manager, api_helper
         )
 
-        def finalizer():
+        def finalizer() -> Any:
             import asyncio
+
             asyncio.get_event_loop().run_until_complete(_teardown())
 
         request.addfinalizer(finalizer)
         yield
-
 
 
 # ------------------------------
