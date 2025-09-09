@@ -12,6 +12,8 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN_DS_1_5 }}
 
     steps:
       - name: Set destination directory
@@ -30,8 +32,9 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6
 
-      - name: Install Playwright browsers
-        run: uv run python -m playwright install --with-deps
+      - name: Install Playwright Chromium
+        run: uv run python -m playwright install chromium --with-deps
+
 
       - name: Install Allure
         run: |

@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 
 import allure
 import pytest
+from _pytest.fixtures import FixtureRequest
 from allure_commons.types import AttachmentType
 from playwright.async_api import async_playwright, Browser, BrowserContext, Playwright
 
@@ -118,26 +119,35 @@ def users_manager() -> UsersManager:
 
 @pytest.fixture(autouse=True)
 async def setup_cleanup(
-    request: pytest.FixtureRequest,
-    page_manager: PageManager,
-    test_config: ConfigManager,
-    data_manager: DataManager,
-    users_manager: UsersManager,
-    api_helper: APIHelper,
-    apolo_cli: ApoloCLI,
+    request: FixtureRequest,
+    page_manager: "PageManager",
+    test_config: "ConfigManager",
+    data_manager: "DataManager",
+    users_manager: "UsersManager",
+    api_helper: "APIHelper",
+    apolo_cli: "ApoloCLI",
 ) -> AsyncGenerator[None, None]:
     run_once = "class_setup" in request.keywords
 
-    if run_once:
-        if not hasattr(request.cls, "_class_setup_done"):
-            request.cls._class_setup_done = True
+    async def _teardown() -> Any:
+        await _do_full_teardown_logic(request, users_manager, data_manager, api_helper)
 
-            # --- setup once for this class ---
+    if run_once:
+        # first time we see this class
+        if not hasattr(request.cls, "_pending_tests"):
+            # collect all nodeids belonging to this class
+            request.cls._pending_tests = {
+                item.nodeid
+                for item in request.session.items
+                if item.parent == request.node.parent
+            }
+
+            # run setup once for this class
             await _do_full_setup_logic(
                 request, test_config, data_manager, users_manager, api_helper
             )
 
-            # store users for reuse
+            # save users for reuse
             request.cls._main_user = users_manager.main_user
             request.cls._second_user = users_manager.second_user
             request.cls._third_user = users_manager.third_user
@@ -147,31 +157,29 @@ async def setup_cleanup(
             users_manager.second_user = getattr(request.cls, "_second_user", None)  # type: ignore[assignment]
             users_manager.third_user = getattr(request.cls, "_third_user", None)  # type: ignore[assignment]
 
-        try:
-            yield
-        finally:
-            # 🔑 teardown only after the *last* test in the class
-            class_items = [
-                i for i in request.session.items if i.parent == request.node.parent
-            ]
-            if class_items and class_items[-1] == request.node:
-                await _do_full_teardown_logic(
-                    request, users_manager, data_manager, api_helper
-                )
+        def finalizer() -> None:
+            # mark this test as completed (even if failed/timed out)
+            request.cls._pending_tests.discard(request.node.nodeid)
+
+            # if no tests left in this class → run teardown once
+            if not request.cls._pending_tests:
+                asyncio.get_event_loop().run_until_complete(_teardown())
+
+        # register finalizer (always runs, even if test was cancelled)
+        request.addfinalizer(finalizer)
+        yield
 
     else:
-        # --- per-test setup ---
+        # per-test setup/teardown
         await _do_full_setup_logic(
             request, test_config, data_manager, users_manager, api_helper
         )
 
-        try:
-            yield
-        finally:
-            # --- always teardown after each test ---
-            await _do_full_teardown_logic(
-                request, users_manager, data_manager, api_helper
-            )
+        def finalizer() -> None:
+            asyncio.get_event_loop().run_until_complete(_teardown())
+
+        request.addfinalizer(finalizer)
+        yield
 
 
 # ------------------------------

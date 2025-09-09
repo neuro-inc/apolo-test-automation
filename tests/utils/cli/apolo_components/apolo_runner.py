@@ -55,7 +55,7 @@ class ApoloRunner:
                 return ""
 
             ignored_starts = [
-                "You are using Apolo Platform Client",
+                "You are using",
                 "You should consider upgrading via the following command:",
             ]
 
@@ -74,7 +74,7 @@ class ApoloRunner:
 
             return "\n".join(cleaned_lines)
 
-        self.last_command_output = clean_output(raw_output)
+        self.last_command_output = raw_output
         cleaned_error = clean_output(raw_error)
 
         if cleaned_error:
