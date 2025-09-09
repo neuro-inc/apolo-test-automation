@@ -85,7 +85,7 @@ class ConfigManager:
         return DictConfig(self._config.endpoints)
 
     def get_ds_model_token(self) -> str:
-        return str(os.getenv("HF_TOKEN_DS_1_5"))
+        return str(os.getenv("HF_TOKEN"))
 
     def get_template_url(self, organization: str, project_name: str) -> str:
         return str(self._endpoints.templates).format(
