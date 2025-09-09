@@ -33,7 +33,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
     @async_title("Install DeepSeek app via UI")
     @pytest.mark.order(1)
-    @pytest.mark.timeout(1000)
+    @pytest.mark.timeout(800)
     async def test_install_app_via_ui(self) -> None:
         """
         - Login with valid credentials.
@@ -109,7 +109,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
             app_id=app_id,
             org_name=org.org_name,
             proj_name=proj.project_name,
-            timeout=900,
+            timeout=660,
         )
         await ui_steps.ui_reload_page()
         await ui_steps.deep_seek_details_page.verify_ui_app_status_is_valid(

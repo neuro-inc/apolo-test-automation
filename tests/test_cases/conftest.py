@@ -120,12 +120,12 @@ def users_manager() -> UsersManager:
 @pytest.fixture(autouse=True)
 async def setup_cleanup(
     request: FixtureRequest,
-    page_manager: PageManager,
-    test_config: ConfigManager,
-    data_manager: DataManager,
-    users_manager: UsersManager,
-    api_helper: APIHelper,
-    apolo_cli: ApoloCLI,
+    page_manager: "PageManager",
+    test_config: "ConfigManager",
+    data_manager: "DataManager",
+    users_manager: "UsersManager",
+    api_helper: "APIHelper",
+    apolo_cli: "ApoloCLI",
 ) -> AsyncGenerator[None, None]:
     run_once = "class_setup" in request.keywords
 
@@ -133,51 +133,49 @@ async def setup_cleanup(
         await _do_full_teardown_logic(request, users_manager, data_manager, api_helper)
 
     if run_once:
-        if not hasattr(request.cls, "_class_setup_done"):
-            request.cls._class_setup_done = True
-            # collect all nodeids for tests in this class
+        # first time we see this class
+        if not hasattr(request.cls, "_pending_tests"):
+            # collect all nodeids belonging to this class
             request.cls._pending_tests = {
                 item.nodeid
                 for item in request.session.items
                 if item.parent == request.node.parent
             }
 
-            # setup once
+            # run setup once for this class
             await _do_full_setup_logic(
                 request, test_config, data_manager, users_manager, api_helper
             )
 
-            # save users
+            # save users for reuse
             request.cls._main_user = users_manager.main_user
             request.cls._second_user = users_manager.second_user
             request.cls._third_user = users_manager.third_user
         else:
-            # reuse users
+            # reuse stored users
             users_manager.main_user = getattr(request.cls, "_main_user", None)  # type: ignore[assignment]
             users_manager.second_user = getattr(request.cls, "_second_user", None)  # type: ignore[assignment]
             users_manager.third_user = getattr(request.cls, "_third_user", None)  # type: ignore[assignment]
 
-        # register finalizer that checks if all tests finished
-        def finalizer() -> Any:
-            # mark this test as done (even if timed out/failed)
+        def finalizer() -> None:
+            # mark this test as completed (even if failed/timed out)
             request.cls._pending_tests.discard(request.node.nodeid)
-            if not request.cls._pending_tests:
-                import asyncio
 
+            # if no tests left in this class → run teardown once
+            if not request.cls._pending_tests:
                 asyncio.get_event_loop().run_until_complete(_teardown())
 
+        # register finalizer (always runs, even if test was cancelled)
         request.addfinalizer(finalizer)
         yield
 
     else:
-        # per-test setup
+        # per-test setup/teardown
         await _do_full_setup_logic(
             request, test_config, data_manager, users_manager, api_helper
         )
 
-        def finalizer() -> Any:
-            import asyncio
-
+        def finalizer() -> None:
             asyncio.get_event_loop().run_until_complete(_teardown())
 
         request.addfinalizer(finalizer)
