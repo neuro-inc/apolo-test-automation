@@ -57,6 +57,8 @@ jobs:
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN_DS_1_5 }}
     steps:
       - name: Set destination directory
         id: set-destination
@@ -96,9 +98,9 @@ jobs:
         if: steps.check-no-tests.outputs.no_tests == 'false'
         uses: astral-sh/setup-uv@v6
 
-      - name: Install Playwright browsers
+      - name: Install Playwright Chromium
         if: steps.check-no-tests.outputs.no_tests == 'false'
-        run: uv run python -m playwright install --with-deps
+        run: uv run python -m playwright install chromium --with-deps
 
       - name: Install Allure
         if: steps.check-no-tests.outputs.no_tests == 'false'

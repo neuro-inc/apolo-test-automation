@@ -143,9 +143,19 @@ class MainPageSteps:
             app_name="Shell"
         ), "Shell app container should be displayed!"
 
+    @async_step("Verify DeepSeek app container displayed on the main page")
+    async def verify_ui_deep_seek_container_displayed(self) -> None:
+        assert await self._pm.main_page.verify_app_container_displayed(
+            app_name="DeepSeek"
+        ), "DeepSeek app container should be displayed!"
+
     @async_step("Click Install button on the Shell container")
     async def ui_shell_container_click_install_btn(self) -> None:
         await self._pm.main_page.click_install_btn_app_container(app_name="Shell")
+
+    @async_step("Click Install button on the DeepSeek container")
+    async def ui_deep_seek_container_click_install_btn(self) -> None:
+        await self._pm.main_page.click_install_btn_app_container(app_name="DeepSeek")
 
     @async_step("Verify 'Installed' label on Shell app container is displayed")
     async def verify_ui_installed_label_shell_container_displayed(self) -> None:
@@ -153,9 +163,11 @@ class MainPageSteps:
             app_name="shell"
         ), "'Installed' label should be displayed on the Shell app container!"
 
-    @async_step("Click `Installed` label on the Shell app container")
-    async def ui_shell_container_click_installed_label(self) -> None:
-        await self._pm.main_page.click_container_installed_label(app_name="shell")
+    @async_step("Verify 'Installed' label on DeepSeek app container is displayed")
+    async def verify_ui_installed_label_deep_seek_container_displayed(self) -> None:
+        assert await self._pm.main_page.is_container_installed_label_visible(
+            app_name="deepseek-inference"
+        ), "'Installed' label should be displayed on the DeepSeek app container!"
 
     @async_step("Verify 'Show All' button on Shell app container is displayed")
     async def verify_ui_show_all_btn_shell_container_displayed(self) -> None:
@@ -166,6 +178,18 @@ class MainPageSteps:
     @async_step("Click `Show All` button on the Shell app container")
     async def ui_shell_container_click_show_all_btn(self) -> None:
         await self._pm.main_page.click_container_show_all_btn(app_name="shell")
+
+    @async_step("Verify 'Show All' button on DeepSeek app container is displayed")
+    async def verify_ui_show_all_btn_deep_seek_container_displayed(self) -> None:
+        assert await self._pm.main_page.is_container_show_all_btn_visible(
+            app_name="deepseek-inference"
+        ), "'Show All' button should be displayed on the DeepSeek app container!"
+
+    @async_step("Click `Show All` button on the DeepSeek app container")
+    async def ui_deep_seek_container_click_show_all_btn(self) -> None:
+        await self._pm.main_page.click_container_show_all_btn(
+            app_name="deepseek-inference"
+        )
 
     @async_step("Click Installed Apps button")
     async def ui_click_installed_apps_btn(self) -> None:

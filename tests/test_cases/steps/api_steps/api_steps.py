@@ -26,8 +26,8 @@ class APISteps:
         org_name: str,
         proj_name: str,
         app_id: str,
+        timeout: int = 600,  # 10 minutes
     ) -> Any:
-        timeout = 600  # 10 minutes
         interval = 20
         start = time.monotonic()
         deadline = start + timeout
@@ -66,7 +66,7 @@ class APISteps:
 
             await asyncio.sleep(interval)
 
-        raise TimeoutError("⏳ Timed out waiting for app to reach 'healthy' state.")
+        raise AssertionError("⏳ Timed out waiting for app to reach 'healthy' state.")
 
     @async_step("Wait for app until uninstalled")
     async def wait_for_app_until_uninstalled(
@@ -136,3 +136,23 @@ class APISteps:
             expected_org_name=expected_org_name,
         )
         assert result, error_message
+
+    @async_step("Add Secret via API")
+    async def ui_add_secret_api(
+        self,
+        token: str,
+        secret_name: str,
+        secret_value: str,
+        org_name: str,
+        proj_name: str,
+    ) -> None:
+        response = await self._api_helper.add_secret(
+            token=token,
+            secret_name=secret_name,
+            secret_value=secret_value,
+            org_name=org_name,
+            proj_name=proj_name,
+        )
+        assert response.status == 201, (
+            f"Expected HTTP 201 response but got {response.status}!"
+        )

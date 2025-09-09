@@ -391,7 +391,6 @@ class UISteps(PageSteps):
             f"Expected HTTP 201 response but got {response.status_code}!"
         )
         await self.ui_reload_page()
-        await self._pm.page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
 
     # ********************   Secrets steps   ****************************
     @async_step("Create Secret via UI")

@@ -1,3 +1,4 @@
+import base64
 import logging
 import os
 
@@ -56,6 +57,7 @@ class APIHelper:
         token: Optional[str] = None,
     ) -> Any:
         assert self._session is not None, "ClientSession is not initialized"
+        logger.info(f"POST {endpoint} with data: {data}")
         async with self._session.post(
             endpoint, headers=self._headers(token), json=data
         ) as response:
@@ -260,3 +262,24 @@ class APIHelper:
         if mismatches:
             return False, "; ".join(mismatches)
         return True, "All fields matched"
+
+    async def add_secret(
+        self,
+        token: str,
+        org_name: str,
+        proj_name: str,
+        secret_name: str,
+        secret_value: str,
+    ) -> Any:
+        url = self._config.get_create_secret_url()
+        encoded_value = base64.b64encode(secret_value.encode()).decode()
+        data = {
+            "key": secret_name,
+            "value": encoded_value,
+            "org_name": org_name,
+            "project_name": proj_name,
+        }
+        response = await self._post(url, token=token, data=data)
+        logger.info(f"Add secret {secret_name} response: {response}")
+
+        return response
