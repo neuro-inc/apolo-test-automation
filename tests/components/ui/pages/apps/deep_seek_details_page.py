@@ -121,6 +121,68 @@ class DeepSeekDetailsPage(BasePage):
     async def get_resource_preset_value(self) -> str:
         return (await self._get_resource_preset_field().text_content()).strip()
 
+    def _get_output_container(self) -> BaseElement:
+        return BaseElement(
+            self.page,
+            selector="div.mt-4.flex.flex-col.gap-4",
+            has=self.page.get_by_role("heading", name="output"),
+        )
+
+    async def is_output_container_displayed(self) -> bool:
+        container_area = self.page.locator(
+            "div.min-h-0.min-w-0.overflow-auto.bg-gray-100"
+        )
+        container = self._get_output_container()
+
+        try:
+            for _ in range(3):  # limit to avoid infinite loop
+                if await container.is_element_in_viewport():
+                    return True
+
+                await container.scroll_half_window(container_locator=container_area)
+                await self.page.wait_for_timeout(300)
+
+            self.log("Output section not found after scrolling")
+            return False
+
+        except Exception as e:
+            self.log(f"Output section not found: {e}")
+            return False
+
+    async def parse_api_sections(self) -> list[dict[str, str]]:
+        # Step 1: grab top-level API containers
+        api_blocks = await BaseElement.find_all(
+            self.page, selector="div.overflow-auto:has(> h4:text-matches('API$'))"
+        )
+
+        sections: list[dict[str, str]] = []
+
+        # Step 2: iterate each API block
+        for block in api_blocks:
+            section: dict[str, str] = {}
+
+            # section title (e.g. "OpenAI Compatible Embeddings API")
+            title = await block.locator.locator("h4").first.inner_text()
+            section["title"] = title.strip()
+
+            # Step 3: collect all key-value pairs inside this block
+            kv_rows = block.locator.locator("div.overflow-auto")
+            count = await kv_rows.count()
+
+            for i in range(count):
+                row = kv_rows.nth(i)
+                try:
+                    key = (await row.locator("h4").inner_text()).strip()
+                    value = (await row.locator("span").inner_text()).strip()
+                    section[key] = value
+                except Exception:
+                    continue
+
+            sections.append(section)
+
+        self.log(f"Api sections: {sections}")
+        return sections
+
     async def verify_app_details_info(
         self, owner: str, app_id: str, app_name: str, proj_name: str, org_name: str
     ) -> tuple[bool, str]:

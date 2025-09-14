@@ -29,6 +29,9 @@ exception_manager = ExceptionManager(logger=logger)
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "tests", "test_data.yaml")
+APP_OUTPUT_SCHEMA_PATH = os.path.join(
+    PROJECT_ROOT, "tests", "components", "app_schemas"
+)
 
 STORAGE_OBJECTS_PATH = os.path.join(PROJECT_ROOT, "storage_objects")
 GENERATED_DATA_PATH = os.path.join(STORAGE_OBJECTS_PATH, "generated_objects")
@@ -88,7 +91,11 @@ def test_config() -> ConfigManager:
 @pytest.fixture(scope="function")
 def data_manager() -> DataManager:
     logger.info("Creating data manager")
-    return DataManager(gen_obj_path=GENERATED_DATA_PATH, download_path=DOWNLOAD_PATH)
+    return DataManager(
+        gen_obj_path=GENERATED_DATA_PATH,
+        download_path=DOWNLOAD_PATH,
+        output_schemas_path=APP_OUTPUT_SCHEMA_PATH,
+    )
 
 
 @pytest.fixture

@@ -3,7 +3,7 @@ import logging
 import os
 
 import aiohttp
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, Tuple
 
 from tests.utils.test_config_helper import ConfigManager
 
@@ -15,7 +15,7 @@ class APIHelper:
     Stateless API client using aiohttp, with optional per-request bearer token.
     """
 
-    def __init__(self, config: ConfigManager, timeout: int = 30) -> None:
+    def __init__(self, config: ConfigManager, timeout: int = 60) -> None:
         self._config = config
         self._timeout = timeout
         self._session: Optional[aiohttp.ClientSession] = None
@@ -36,19 +36,43 @@ class APIHelper:
         return headers
 
     async def _get(
-        self,
-        endpoint: str,
-        params: Optional[dict[str, Any]] = None,
-        token: Optional[str] = None,
-    ) -> Any:
+            self,
+            endpoint: str,
+            params: Optional[dict[str, Any]] = None,
+            token: Optional[str] = None,
+    ) -> Tuple[int, Any]:
+        """
+        Make GET request.
+        Returns (status, response_data).
+        - If JSON → returns parsed JSON dict.
+        - If HTML Swagger UI → returns {"swagger_ui": True, "content": text}.
+        - Otherwise → returns raw text.
+        """
         assert self._session is not None, "ClientSession is not initialized"
         logger.info(f"GET {endpoint}")
+
         async with self._session.get(
-            endpoint, headers=self._headers(token), params=params
+                endpoint, headers=self._headers(token), params=params
         ) as response:
             status = response.status
-            json_data = await response.json()
-            return status, json_data
+            content_type = response.headers.get("content-type", "")
+
+            # Try JSON if content type is JSON
+            if "application/json" in content_type:
+                try:
+                    json_data = await response.json()
+                    return status, json_data
+                except Exception:
+                    pass
+
+            # Fallback to text
+            text = await response.text()
+
+            # Detect Swagger UI page
+            if "swagger" in text.lower() and "<html" in text.lower():
+                return status, {"swagger_ui": True, "content": text}
+
+            return status, text
 
     async def _post(
         self,
@@ -61,7 +85,9 @@ class APIHelper:
         async with self._session.post(
             endpoint, headers=self._headers(token), json=data
         ) as response:
-            return response
+            status = response.status
+            json_data = await response.json()
+            return status, json_data
 
     async def _put(
         self,
