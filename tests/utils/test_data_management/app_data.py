@@ -14,7 +14,9 @@ class AppData:
         self._saved_schema: Optional[dict[str, Any]] = None
 
     async def load_output_ui_schema(self, app_name: str) -> None:
-        schema_path = Path(f"{self._output_schemas_path}/{app_name}_output_ui_schema.json")
+        schema_path = Path(
+            f"{self._output_schemas_path}/{app_name}_output_ui_schema.json"
+        )
 
         if not schema_path.exists():
             raise ValueError(f"Schema file not found: {schema_path}")
@@ -24,7 +26,9 @@ class AppData:
             self._saved_schema = json.loads(content)
 
     async def load_output_api_schema(self, app_name: str) -> None:
-        schema_path = Path(f"{self._output_schemas_path}/{app_name}_output_api_schema.json")
+        schema_path = Path(
+            f"{self._output_schemas_path}/{app_name}_output_api_schema.json"
+        )
 
         if not schema_path.exists():
             raise ValueError(f"Schema file not found: {schema_path}")
@@ -44,7 +48,7 @@ class AppData:
             self._saved_schema = json.loads(content)
 
     def validate_api_section_schema(
-            self, outputs: list[dict[str, Any]]
+        self, outputs: list[dict[str, Any]]
     ) -> tuple[bool, str]:
         """
         Validate a list of output dicts against the loaded schema.

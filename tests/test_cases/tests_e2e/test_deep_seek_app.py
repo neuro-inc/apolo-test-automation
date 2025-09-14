@@ -451,7 +451,8 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
         await ui_steps.ui_login(user, fresh_login=False)
         await api_steps.verify_external_chat_api_not_found(
-            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name)
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
 
     @async_title("Verfiy GET external Chat API /docs returns Swagger page")
     @pytest.mark.order(13)
@@ -477,7 +478,8 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
         await ui_steps.ui_login(user, fresh_login=False)
         await api_steps.verify_external_chat_api_docs(
-            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name)
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
 
     @async_title("Verfiy GET external Chat API /v1/models returns valid data")
     @pytest.mark.order(14)
@@ -503,9 +505,12 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
         await ui_steps.ui_login(user, fresh_login=False)
         await api_steps.verify_external_chat_api_models(
-            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name)
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
 
-    @async_title("Verfiy POST external Chat API /v1/chat/completions returns valid data")
+    @async_title(
+        "Verfiy POST external Chat API /v1/chat/completions returns valid data"
+    )
     @pytest.mark.order(15)
     async def test_ext_chat_endpoint_completions(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
         """
@@ -529,8 +534,8 @@ class TestE2EDeepSeekApp(BaseTestClass):
 
         await ui_steps.ui_login(user, fresh_login=False)
         await api_steps.verify_external_chat_api_completions(
-            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name)
-
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
 
     @async_title("Verify User can uninstall app via UI")
     @pytest.mark.order(16)

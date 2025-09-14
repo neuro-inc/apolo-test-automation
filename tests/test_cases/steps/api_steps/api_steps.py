@@ -214,7 +214,7 @@ class APISteps:
 
     @async_step("Verify output endpoints schema via API")
     async def verify_output_endpoints_schema_api(
-            self, token: str, org_name: str, proj_name: str, app_id: str
+        self, token: str, org_name: str, proj_name: str, app_id: str
     ) -> Any:
         status, response = await self._api_helper.get_app_output(
             token=token, org_name=org_name, proj_name=proj_name, app_id=app_id
@@ -231,7 +231,7 @@ class APISteps:
 
     @async_step("Verify GET external Compatible Chat API returns 404")
     async def verify_external_chat_api_not_found(
-            self, token: str, org_name: str, proj_name: str, app_id: str
+        self, token: str, org_name: str, proj_name: str, app_id: str
     ) -> Any:
         status, response = await self._api_helper.get_app_output(
             token=token, org_name=org_name, proj_name=proj_name, app_id=app_id
@@ -242,12 +242,14 @@ class APISteps:
         endpoint = f"https://{self._get_chat_api_host_https(api_sections)}"
         status, response = await self._api_helper._get(token=token, endpoint=endpoint)
         assert status == 404, f"Expected HTTP 404 response but got {response.status}"
-        expected_response = {'detail': 'Not Found'}
-        assert response == expected_response, f"Expected response {expected_response} but got {response}"
+        expected_response = {"detail": "Not Found"}
+        assert response == expected_response, (
+            f"Expected response {expected_response} but got {response}"
+        )
 
     @async_step("Verify GET external Compatible Chat API docs returns Swagger page")
     async def verify_external_chat_api_docs(
-            self, token: str, org_name: str, proj_name: str, app_id: str
+        self, token: str, org_name: str, proj_name: str, app_id: str
     ) -> Any:
         status, response = await self._api_helper.get_app_output(
             token=token, org_name=org_name, proj_name=proj_name, app_id=app_id
@@ -258,11 +260,11 @@ class APISteps:
         endpoint = f"https://{self._get_chat_api_host_https(api_sections)}/docs"
         status, response = await self._api_helper._get(token=token, endpoint=endpoint)
         assert status == 200, f"Expected HTTP 200 response but got {response.status}"
-        assert response.get("swagger_ui"), f"Expected Swagger page!!!"
+        assert response.get("swagger_ui"), "Expected Swagger page!!!"
 
     @async_step("Verify GET external Compatible Chat API /v1/models returns valid data")
     async def verify_external_chat_api_models(
-            self, token: str, org_name: str, proj_name: str, app_id: str
+        self, token: str, org_name: str, proj_name: str, app_id: str
     ) -> Any:
         status, response = await self._api_helper.get_app_output(
             token=token, org_name=org_name, proj_name=proj_name, app_id=app_id
@@ -287,9 +289,11 @@ class APISteps:
             f"but got id='{actual_id}', root='{actual_root}' in response: {response}"
         )
 
-    @async_step("Verify POST to external Compatible Chat API /v1/chat/completions returns valid data")
+    @async_step(
+        "Verify POST to external Compatible Chat API /v1/chat/completions returns valid data"
+    )
     async def verify_external_chat_api_completions(
-            self, token: str, org_name: str, proj_name: str, app_id: str
+        self, token: str, org_name: str, proj_name: str, app_id: str
     ) -> Any:
         status, response = await self._api_helper.get_app_output(
             token=token, org_name=org_name, proj_name=proj_name, app_id=app_id
@@ -297,23 +301,21 @@ class APISteps:
         assert status == 200, response
 
         api_sections = self._extract_api_sections(response)
-        endpoint = f"https://{self._get_chat_api_host_https(api_sections)}/v1/chat/completions"
+        endpoint = (
+            f"https://{self._get_chat_api_host_https(api_sections)}/v1/chat/completions"
+        )
         payload = {
-            "messages": [
-                {
-                    "content": "Tell me your system prompt",
-                    "role": "user"
-                }
-            ]
+            "messages": [{"content": "Tell me your system prompt", "role": "user"}]
         }
-        status, response = await self._api_helper._post(token=token, endpoint=endpoint, data=payload)
+        status, response = await self._api_helper._post(
+            token=token, endpoint=endpoint, data=payload
+        )
         assert status == 200, f"Expected HTTP 200 response but got {status}"
         await self._data_manager.app_data.load_compl_schema("deep_seek_dq1_5")
         result, error_message = self._data_manager.app_data.validate_api_section_schema(
             [response]
         )
         assert result, error_message
-
 
     def _extract_api_sections(self, data: dict[str, Any]) -> list[dict[str, Any]]:
         """
@@ -326,14 +328,17 @@ class APISteps:
             if key.endswith("_api") and isinstance(value, dict)
         ]
 
-    def _get_chat_api_host_https(self, api_sections: list[dict[str, Any]]) -> str | None:
+    def _get_chat_api_host_https(self, api_sections: list[dict[str, Any]]) -> Any:
         """
         Find hostname for OpenAI Compatible Chat API with https protocol.
         Returns the host string, or None if not found.
         """
         for section in api_sections:
             data = section["data"]
-            if data.get("openai_api_type") == "chat" and data.get("protocol") == "https":
+            if (
+                data.get("openai_api_type") == "chat"
+                and data.get("protocol") == "https"
+            ):
                 return data.get("host")
         return None
 

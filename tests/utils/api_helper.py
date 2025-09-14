@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import base64
 import logging
 import os
 
 import aiohttp
-from typing import Any, Optional, Union, Tuple
+from typing import Any, Optional, Union
 
 from tests.utils.test_config_helper import ConfigManager
 
@@ -36,11 +38,11 @@ class APIHelper:
         return headers
 
     async def _get(
-            self,
-            endpoint: str,
-            params: Optional[dict[str, Any]] = None,
-            token: Optional[str] = None,
-    ) -> Tuple[int, Any]:
+        self,
+        endpoint: str,
+        params: Optional[dict[str, Any]] = None,
+        token: Optional[str] = None,
+    ) -> tuple[int, Any]:
         """
         Make GET request.
         Returns (status, response_data).
@@ -52,7 +54,7 @@ class APIHelper:
         logger.info(f"GET {endpoint}")
 
         async with self._session.get(
-                endpoint, headers=self._headers(token), params=params
+            endpoint, headers=self._headers(token), params=params
         ) as response:
             status = response.status
             content_type = response.headers.get("content-type", "")
