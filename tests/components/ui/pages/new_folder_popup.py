@@ -1,3 +1,4 @@
+import re
 from typing import Any
 from playwright.async_api import Page
 from tests.components.ui.pages.base_element import BaseElement
@@ -31,7 +32,7 @@ class NewFolderPopup(BasePage):
         await self._get_folder_name_input().fill(name)
 
     def _get_create_btn(self) -> BaseElement:
-        return BaseElement(self.page, "button", has_text="Create")
+        return BaseElement(self.page, "button", has_text=re.compile(r"^Create$"))
 
     async def click_create_btn(self) -> None:
         self.log("Click Create button")
