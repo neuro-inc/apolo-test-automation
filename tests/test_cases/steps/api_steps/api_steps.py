@@ -171,16 +171,14 @@ class APISteps:
         org_name: str,
         proj_name: str,
     ) -> None:
-        response = await self._api_helper.add_secret(
+        status, response = await self._api_helper.add_secret(
             token=token,
             secret_name=secret_name,
             secret_value=secret_value,
             org_name=org_name,
             proj_name=proj_name,
         )
-        assert response.status == 201, (
-            f"Expected HTTP 201 response but got {response.status}!"
-        )
+        assert status == 201, f"Expected HTTP 201 response but got {status}!"
 
     @async_step("GET app output endpoint")
     async def get_app_output_api(

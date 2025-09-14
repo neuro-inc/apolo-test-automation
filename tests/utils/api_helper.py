@@ -178,7 +178,7 @@ class APIHelper:
     ) -> Any:
         url = self._config.get_add_user_to_org_url(org_name=org_name)
         data = {"user_name": username, "role": role}
-        response = await self._post(url, token=token, data=data)
+        status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add user {username} to org response: {response}")
 
         return response
@@ -186,10 +186,10 @@ class APIHelper:
     async def add_org(self, token: str, org_name: str) -> Any:
         url = self._config.get_add_org_url()
         data = {"name": org_name}
-        response = await self._post(url, token=token, data=data)
+        status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add org {org_name} response: {response}")
 
-        return response
+        return status, response
 
     async def add_proj(
         self,
@@ -205,10 +205,10 @@ class APIHelper:
             "default_role": default_role,
             "is_default": proj_default,
         }
-        response = await self._post(url, token=token, data=data)
+        status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add proj {org_name} response: {response}")
 
-        return response
+        return status, response
 
     async def get_app_output(
         self, token: str, org_name: str, proj_name: str, app_id: str
@@ -307,7 +307,7 @@ class APIHelper:
             "org_name": org_name,
             "project_name": proj_name,
         }
-        response = await self._post(url, token=token, data=data)
+        status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add secret {secret_name} response: {response}")
 
-        return response
+        return status, response
