@@ -340,15 +340,13 @@ class UISteps(PageSteps):
     async def ui_add_user_to_org_api(
         self, user: UserData, org_name: str, username: str, role: str = "user"
     ) -> None:
-        response = await self._api_helper.add_user_to_org(
+        status, response = await self._api_helper.add_user_to_org(
             token=user.token,
             org_name=org_name,
             username=username,
             role=role.lower(),
         )
-        assert response.status == 201, (
-            f"Expected HTTP 201 response but got {response.status_code}!"
-        )
+        assert status == 201, f"Expected HTTP 201 response but got {status}!"
         await self.ui_reload_page()
         await self.main_page.ui_click_organization_settings_button(user.email)
         await self.org_settings_popup.verify_ui_popup_displayed(
@@ -362,13 +360,11 @@ class UISteps(PageSteps):
     async def ui_add_org_api(self, token: str, gherkin_name: str) -> None:
         organization = self._data_manager.add_organization(gherkin_name=gherkin_name)
         org_name = organization.org_name
-        response = await self._api_helper.add_org(
+        status, response = await self._api_helper.add_org(
             token=token,
             org_name=org_name,
         )
-        assert response.status == 201, (
-            f"Expected HTTP 201 response but got {response.status_code}!"
-        )
+        assert status == 201, f"Expected HTTP 201 response but got {status}!"
         await self.ui_reload_page()
 
     @async_step("Add project via API and reload page")
@@ -380,16 +376,14 @@ class UISteps(PageSteps):
         default_role: str,
         proj_default: bool,
     ) -> None:
-        response = await self._api_helper.add_proj(
+        status, response = await self._api_helper.add_proj(
             token=token,
             org_name=org_name,
             proj_name=proj_name,
             default_role=default_role,
             proj_default=proj_default,
         )
-        assert response.status == 201, (
-            f"Expected HTTP 201 response but got {response.status_code}!"
-        )
+        assert status == 201, f"Expected HTTP 201 response but got {status}!"
         await self.ui_reload_page()
 
     # ********************   Secrets steps   ****************************

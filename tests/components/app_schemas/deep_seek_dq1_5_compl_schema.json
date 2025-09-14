@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "object": { "type": "string", "enum": ["chat.completion"] },
+    "created": { "type": "integer" },
+    "model": {
+      "type": "string",
+      "enum": ["deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"]
+    },
+    "choices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "finish_reason": { "type": ["string", "null"] },
+          "stop_reason": { "type": ["string", "null"] },
+          "logprobs": { "type": ["object", "null"] },
+          "message": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": ["assistant", "user", "system"]
+              },
+              "content": { "type": "string" },
+              "reasoning_content": { "type": ["string", "null"] },
+              "tool_calls": { "type": "array" }
+            },
+            "required": ["role", "content", "tool_calls"],
+            "additionalProperties": true
+          }
+        },
+        "required": ["index", "finish_reason", "message"],
+        "additionalProperties": true
+      }
+    },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "prompt_tokens": { "type": "integer" },
+        "completion_tokens": { "type": "integer" },
+        "total_tokens": { "type": "integer" },
+        "prompt_tokens_details": { "type": ["object", "null"] }
+      },
+      "required": ["prompt_tokens", "completion_tokens", "total_tokens"],
+      "additionalProperties": true
+    },
+    "kv_transfer_params": { "type": ["object", "null"] },
+    "prompt_logprobs": { "type": ["object", "null"] }
+  },
+  "required": ["id", "object", "created", "model", "choices", "usage"],
+  "additionalProperties": true
+}

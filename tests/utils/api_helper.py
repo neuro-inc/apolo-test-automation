@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import base64
 import logging
 import os
@@ -15,7 +17,7 @@ class APIHelper:
     Stateless API client using aiohttp, with optional per-request bearer token.
     """
 
-    def __init__(self, config: ConfigManager, timeout: int = 30) -> None:
+    def __init__(self, config: ConfigManager, timeout: int = 60) -> None:
         self._config = config
         self._timeout = timeout
         self._session: Optional[aiohttp.ClientSession] = None
@@ -40,15 +42,39 @@ class APIHelper:
         endpoint: str,
         params: Optional[dict[str, Any]] = None,
         token: Optional[str] = None,
-    ) -> Any:
+    ) -> tuple[int, Any]:
+        """
+        Make GET request.
+        Returns (status, response_data).
+        - If JSON → returns parsed JSON dict.
+        - If HTML Swagger UI → returns {"swagger_ui": True, "content": text}.
+        - Otherwise → returns raw text.
+        """
         assert self._session is not None, "ClientSession is not initialized"
         logger.info(f"GET {endpoint}")
+
         async with self._session.get(
             endpoint, headers=self._headers(token), params=params
         ) as response:
             status = response.status
-            json_data = await response.json()
-            return status, json_data
+            content_type = response.headers.get("content-type", "")
+
+            # Try JSON if content type is JSON
+            if "application/json" in content_type:
+                try:
+                    json_data = await response.json()
+                    return status, json_data
+                except Exception:
+                    pass
+
+            # Fallback to text
+            text = await response.text()
+
+            # Detect Swagger UI page
+            if "swagger" in text.lower() and "<html" in text.lower():
+                return status, {"swagger_ui": True, "content": text}
+
+            return status, text
 
     async def _post(
         self,
@@ -61,7 +87,9 @@ class APIHelper:
         async with self._session.post(
             endpoint, headers=self._headers(token), json=data
         ) as response:
-            return response
+            status = response.status
+            json_data = await response.json()
+            return status, json_data
 
     async def _put(
         self,
@@ -150,7 +178,7 @@ class APIHelper:
     ) -> Any:
         url = self._config.get_add_user_to_org_url(org_name=org_name)
         data = {"user_name": username, "role": role}
-        response = await self._post(url, token=token, data=data)
+        status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add user {username} to org response: {response}")
 
         return response
@@ -158,10 +186,10 @@ class APIHelper:
     async def add_org(self, token: str, org_name: str) -> Any:
         url = self._config.get_add_org_url()
         data = {"name": org_name}
-        response = await self._post(url, token=token, data=data)
+        status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add org {org_name} response: {response}")
 
-        return response
+        return status, response
 
     async def add_proj(
         self,
@@ -177,10 +205,10 @@ class APIHelper:
             "default_role": default_role,
             "is_default": proj_default,
         }
-        response = await self._post(url, token=token, data=data)
+        status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add proj {org_name} response: {response}")
 
-        return response
+        return status, response
 
     async def get_app_output(
         self, token: str, org_name: str, proj_name: str, app_id: str
@@ -279,7 +307,7 @@ class APIHelper:
             "org_name": org_name,
             "project_name": proj_name,
         }
-        response = await self._post(url, token=token, data=data)
+        status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add secret {secret_name} response: {response}")
 
-        return response
+        return status, response

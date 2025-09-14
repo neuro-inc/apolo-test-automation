@@ -66,7 +66,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
             proj_default=False,
         )
         model_token = self._test_config.get_ds_model_token()
-        await api_steps.ui_add_secret_api(
+        await api_steps.add_secret_api(
             token=user.token,
             secret_name="TestSecret",
             secret_value=model_token,
@@ -297,8 +297,248 @@ class TestE2EDeepSeekApp(BaseTestClass):
             expected_proj_name=proj_name,
         )
 
-    @async_title("Verify User can uninstall app via UI")
+    @async_title("Verify app output contains required endpoints via UI")
     @pytest.mark.order(8)
+    async def test_app_output_api_via_ui(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - DeepSeek app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Click Installed Apps.
+        - Click `Details` button on installed app container.
+        - Scroll to `Output` section.
+
+        ### Verify that `Output` section contains:
+        - Http OpenAI Compatible Chat API
+        - Https OpenAI Compatible Chat API
+        - Http OpenAI Compatible Embeddings API
+        - Https OpenAI Compatible Embeddings API
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        app_name = TestE2EDeepSeekApp.deep_seek_app_name
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.ui_click_installed_apps_btn()
+        await ui_steps.main_page.verify_ui_inst_app_details_btn_displayed(
+            app_name=app_name, owner=user.username
+        )
+
+        await ui_steps.main_page.ui_click_inst_app_details_btn(
+            app_name=app_name, owner=user.username
+        )
+        await ui_steps.deep_seek_details_page.verify_ui_page_displayed()
+        await ui_steps.deep_seek_details_page.verify_ui_app_output_displayed()
+        await ui_steps.deep_seek_details_page.verify_ui_app_output_apis()
+
+    @async_title("Verify app output API schemas is valid via UI")
+    @pytest.mark.order(9)
+    async def test_app_output_api_data_format_via_ui(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - DeepSeek app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Click Installed Apps.
+        - Click `Details` button on installed app container.
+        - Scroll to `Output` section.
+
+        ### Verify that:
+        - API sections data matching expected data format.
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        app_name = TestE2EDeepSeekApp.deep_seek_app_name
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.ui_click_installed_apps_btn()
+        await ui_steps.main_page.verify_ui_inst_app_details_btn_displayed(
+            app_name=app_name, owner=user.username
+        )
+
+        await ui_steps.main_page.ui_click_inst_app_details_btn(
+            app_name=app_name, owner=user.username
+        )
+        await ui_steps.deep_seek_details_page.verify_ui_page_displayed()
+        await ui_steps.deep_seek_details_page.verify_ui_app_output_displayed()
+        await ui_steps.deep_seek_details_page.verify_ui_app_output_apis_data_format()
+
+    @async_title("Verify app output contains required endpoints via API")
+    @pytest.mark.order(10)
+    async def test_app_output_api_via_api(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - DeepSeek app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+
+        ### Verify that `output` API response contains required endpoints:
+
+        - Http OpenAI Compatible Chat API
+        - Https OpenAI Compatible Chat API
+        - Http OpenAI Compatible Embeddings API
+        - Https OpenAI Compatible Embeddings API
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EDeepSeekApp.deep_seek_app_id
+        org_name = TestE2EDeepSeekApp.org_name
+        proj_name = TestE2EDeepSeekApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.get_app_output_api(
+            token=user.token,
+            app_id=app_id,
+            org_name=org_name,
+            proj_name=proj_name,
+        )
+        await api_steps.verify_output_endpoints(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify app output endpoints schema via API")
+    @pytest.mark.order(11)
+    async def test_app_output_api_schema_via_api(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - DeepSeek app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+
+        ### Verify that:
+
+        - API endpoints data matching expected json schema.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EDeepSeekApp.deep_seek_app_id
+        org_name = TestE2EDeepSeekApp.org_name
+        proj_name = TestE2EDeepSeekApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_output_endpoints_schema_api(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verfiy GET external Chat API returns 404")
+    @pytest.mark.order(12)
+    async def test_ext_chat_endpoint_not_found(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - DeepSeek app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - GET `external` OpenAI Compatible Chat API `hostname` link.
+
+        ### Verify that:
+
+        - API response status is 404.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EDeepSeekApp.deep_seek_app_id
+        org_name = TestE2EDeepSeekApp.org_name
+        proj_name = TestE2EDeepSeekApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_external_chat_api_not_found(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verfiy GET external Chat API /docs returns Swagger page")
+    @pytest.mark.order(13)
+    async def test_ext_chat_endpoint_docs(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - DeepSeek app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - GET `external` OpenAI Compatible Chat API `{hostname}/docs link`.
+
+        ### Verify that:
+
+        - Swagger page is returned.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EDeepSeekApp.deep_seek_app_id
+        org_name = TestE2EDeepSeekApp.org_name
+        proj_name = TestE2EDeepSeekApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_external_chat_api_docs(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verfiy GET external Chat API /v1/models returns valid data")
+    @pytest.mark.order(14)
+    async def test_ext_chat_endpoint_models(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - DeepSeek app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - GET `external` OpenAI Compatible Chat API `{hostname}/v1/models`.
+
+        ### Verify that:
+
+        - API response contains valid data.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EDeepSeekApp.deep_seek_app_id
+        org_name = TestE2EDeepSeekApp.org_name
+        proj_name = TestE2EDeepSeekApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_external_chat_api_models(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title(
+        "Verfiy POST external Chat API /v1/chat/completions returns valid data"
+    )
+    @pytest.mark.order(15)
+    async def test_ext_chat_endpoint_completions(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - DeepSeek app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - POST `external` OpenAI Compatible Chat API `{hostname}/v1/chat/completions`.
+
+        ### Verify that:
+
+        - API response matching expected json schema.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EDeepSeekApp.deep_seek_app_id
+        org_name = TestE2EDeepSeekApp.org_name
+        proj_name = TestE2EDeepSeekApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_external_chat_api_completions(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify User can uninstall app via UI")
+    @pytest.mark.order(16)
     async def test_app_uninstall_via_ui(self, deep_seek_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
