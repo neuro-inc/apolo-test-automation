@@ -186,4 +186,6 @@ class PageSteps:
         self.shell_install_page = ShellInstallPageSteps(self._pm)
         self.shell_details_page = ShellDetailsPageSteps(self._pm)
         self.deep_seek_install_page = DeepSeekInstallPageSteps(self._pm)
-        self.deep_seek_details_page = DeepSeekDetailsPageSteps(self._pm)
+        self.deep_seek_details_page = DeepSeekDetailsPageSteps(
+            self._pm, self._data_manager
+        )

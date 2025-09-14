@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "properties": {
+    "host": {
+      "type": "string",
+      "minLength": 1
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "protocol": {
+      "type": "string",
+      "enum": ["http", "https"]
+    },
+    "timeout": {
+      "type": "number",
+      "minimum": 0
+    },
+    "base_path": {
+      "type": "string",
+      "pattern": "^/"
+    },
+    "api_type": {
+      "type": "string",
+      "enum": ["rest"]
+    },
+    "api_base_path": {
+      "type": "string",
+      "pattern": "^/"
+    },
+    "openai_api_type": {
+      "type": "string",
+      "enum": ["chat", "embeddings"]
+    },
+    "endpoint_url": {
+      "type": "string",
+      "pattern": "^/v1/"
+    },
+    "hf_model": {
+      "type": "object",
+      "properties": {
+        "model_hf_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hf_token": {
+          "type": ["string", "null"]
+        }
+      },
+      "required": ["model_hf_name", "hf_token"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "host",
+    "port",
+    "protocol",
+    "timeout",
+    "base_path",
+    "api_type",
+    "api_base_path",
+    "openai_api_type",
+    "endpoint_url",
+    "hf_model"
+  ],
+  "additionalProperties": false
+}

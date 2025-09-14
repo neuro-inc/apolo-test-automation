@@ -7,6 +7,7 @@ from typing import Optional
 
 import lorem  # type: ignore
 
+from tests.utils.test_data_management.app_data import AppData
 from tests.utils.test_data_management.disk_data import DiskData
 from tests.utils.test_data_management.organization_data import OrganizationData
 from tests.utils.test_data_management.job_data import JobData
@@ -15,9 +16,12 @@ logger = logging.getLogger("[🔧DATA MANAGER]")
 
 
 class DataManager:
-    def __init__(self, gen_obj_path: str, download_path: str) -> None:
+    def __init__(
+        self, gen_obj_path: str, download_path: str, output_schemas_path: str
+    ) -> None:
         self._gen_obj_path = gen_obj_path
         self._download_path = download_path
+        self._app_data = AppData(output_schemas_path)
         self._organizations: dict[str, OrganizationData] = {}
         self._disks: dict[str, DiskData] = {}
         self._default_organization: Optional[OrganizationData] = None
@@ -31,6 +35,10 @@ class DataManager:
             return self._default_organization
         else:
             raise ValueError("Default organization not set")
+
+    @property
+    def app_data(self) -> AppData:
+        return self._app_data
 
     @property
     def download_path(self) -> str:

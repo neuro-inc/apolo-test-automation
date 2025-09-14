@@ -123,6 +123,55 @@ class BaseElement:
                 elapsed += interval
         return False
 
+    async def scroll_half_window(self, container_locator: Locator) -> None:
+        """
+        Scrolls the given container down by half of its currently displayed window (clientHeight).
+        :param container_locator: Locator for the scrollable container.
+        """
+        try:
+            await container_locator.evaluate(
+                """el => {
+                    const halfWindow = el.clientHeight / 2;
+                    el.scrollBy({ top: halfWindow, behavior: "smooth" });
+                }"""
+            )
+        except Exception as e:
+            raise e
+
+    async def is_element_in_viewport(self) -> bool:
+        """
+        Check if the element is at least partially visible
+        within the current viewport of the page.
+        """
+        try:
+            box = await self.locator.bounding_box()
+            if not box:
+                return False
+
+            # Try Playwright's viewport_size first, fallback to JS window size
+            viewport_size = self.page.viewport_size
+            if not viewport_size:
+                viewport_size = await self.page.evaluate(
+                    "() => ({ width: window.innerWidth, height: window.innerHeight })"
+                )
+
+            vp_width, vp_height = viewport_size["width"], viewport_size["height"]
+
+            # Allow partial overlap instead of full containment
+            horizontally_visible = (
+                box["x"] + box["width"] > 0  # right edge is past left viewport edge
+                and box["x"] < vp_width  # left edge is before right viewport edge
+            )
+            vertically_visible = (
+                box["y"] + box["height"] > 0  # bottom edge is past top viewport edge
+                and box["y"] < vp_height  # top edge is before bottom viewport edge
+            )
+
+            return horizontally_visible and vertically_visible
+
+        except Exception:
+            return False
+
     async def is_enabled(self) -> bool:
         return await self.locator.is_enabled()
 
@@ -175,3 +224,36 @@ class BaseElement:
             )
         elif self._resolve_method == "locator":
             self.locator = self.page.locator(self.selector, **self._resolve_args)
+
+    @classmethod
+    async def find_all(
+        cls,
+        page: Page,
+        selector: Optional[str] = None,
+        *,
+        by_label: Optional[str] = None,
+        by_role: Optional[str] = None,
+        **kwargs: Any,
+    ) -> list["BaseElement"]:
+        """
+        Return a list of BaseElement instances for all elements matching the locator.
+        """
+        if by_label:
+            locator = page.get_by_label(by_label, **kwargs)
+        elif by_role:
+            locator = page.get_by_role(cast("Any", by_role), **kwargs)
+        elif selector:
+            locator = page.locator(selector, **kwargs)
+        else:
+            raise ValueError("Provide one of: 'selector', 'by_label', or 'by_role'.")
+
+        count = await locator.count()
+        elements = []
+        for i in range(count):
+            # each BaseElement wraps the nth locator
+            el = cls(
+                page, selector=selector, by_label=by_label, by_role=by_role, **kwargs
+            )
+            el.locator = locator.nth(i)
+            elements.append(el)
+        return elements
