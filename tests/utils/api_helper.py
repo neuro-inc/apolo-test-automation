@@ -181,7 +181,7 @@ class APIHelper:
         status, response = await self._post(url, token=token, data=data)
         logger.info(f"Add user {username} to org response: {response}")
 
-        return response
+        return status, response
 
     async def add_org(self, token: str, org_name: str) -> Any:
         url = self._config.get_add_org_url()
