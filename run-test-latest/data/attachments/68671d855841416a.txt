@@ -1,0 +1,148 @@
+INFO     [🔧TEST CONFIG]:conftest.py:87 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:378 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🔧TEST CONFIG]:conftest.py:93 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:123 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:109 Creating API helper
+INFO     [🔧TEST CONFIG]:conftest.py:117 Creating Apolo CLI instance
+INFO     [🔧TEST CONFIG]:conftest.py:205 Continue using UserData(email='regression-b3ava4qwop@apolo.us', username='regression-b3ava4qwop', password='0UmOYmbvHYYl') as main test user...
+INFO     [👤UsersManager]:users_manager.py:73 Setting main user to UserData(email='regression-b3ava4qwop@apolo.us', username='regression-b3ava4qwop', password='0UmOYmbvHYYl')
+INFO     [🔧TEST CONFIG]:conftest.py:235 Continue using UserData(email='regression-dkyztxdzdt@apolo.us', username='regression-dkyztxdzdt', password='z1H#A63NIGkj') as second test user...
+INFO     [👤UsersManager]:users_manager.py:82 Setting second user to UserData(email='regression-dkyztxdzdt@apolo.us', username='regression-dkyztxdzdt', password='z1H#A63NIGkj')
+INFO     [📘TEST_INFO]:reporting.py:86 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:87 📝 TEST started: Verify Admin can demote Manager to Reader
+INFO     [📘TEST_INFO]:reporting.py:88 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click login button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_681df5.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter regression-b3ava4qwop@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Enter email
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_2aad2a.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Enter password
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_ed9889.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click Continue button
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Click continue button
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Waiting for spinner
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-b3ava4qwop/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Waiting for spinner to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-b3ava4qwop?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-b3ava4qwop", "email": "regression-b3ava4qwop@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-09-16T01:32:22.845891+00:00", "terms_accepted": true, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 500] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"error": "Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedColumnError'>: column users.email does not exist\n[SQL: SELECT users.name, users.metadata, users.email, users.version \nFROM users \nWHERE users.name = %s]\n[parameters: ('regression-b3ava4qwop',)]\n(Background on this error at: https://sqlalche.me/e/14/f405). Path with query: /apis/admin/v1/invites/incoming."}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 500] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-b3ava4qwop?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"error": "Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedColumnError'>: column users.email does not exist\n[SQL: SELECT users.name, users.metadata, users.email, users.version \nFROM users \nWHERE users.name = %s]\n[parameters: ('regression-b3ava4qwop',)]\n(Background on this error at: https://sqlalche.me/e/14/f405). Path with query: /apis/admin/v1/users/regression-b3ava4qwop?include=orgs."}
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click Continue button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_4de5f2.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Verify that Welcome new user page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Verify that Welcome new user page displayed
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_209ef6.png
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_login_success_319139.png
+INFO     [🔧TEST CONFIG]:conftest.py:378 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Get second user
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Get second user
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_get_second_user_success_d407c6.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Click login button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_2d3816.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter regression-dkyztxdzdt@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Enter email
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_d834ee.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Enter password
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_5cbb97.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Click Continue button
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Click continue button
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Waiting for spinner
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Waiting for spinner to disappear
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-dkyztxdzdt/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-dkyztxdzdt?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-dkyztxdzdt", "email": "regression-dkyztxdzdt@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-09-16T01:33:10.650005+00:00", "terms_accepted": true, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 500] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-dkyztxdzdt?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"error": "Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedColumnError'>: column users.email does not exist\n[SQL: SELECT users.name, users.metadata, users.email, users.version \nFROM users \nWHERE users.name = %s]\n[parameters: ('regression-dkyztxdzdt',)]\n(Background on this error at: https://sqlalche.me/e/14/f405). Path with query: /apis/admin/v1/users/regression-dkyztxdzdt?include=orgs."}
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Click Continue button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_00b45f.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Verify that Welcome new user page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Verify that Welcome new user page displayed
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_79850e.png
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_login_success_a563a3.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Add organization via API and reload page
+INFO     [🔧DATA MANAGER]:test_data.py:56 Added organization: org_name=regression-org-jcjosy2vbe0m, gherkin_name=Default-organization
+INFO     [🌐API_helper]:api_helper.py:86 POST https://api.dev.apolo.us/apis/admin/v1/orgs?skip_auto_add_to_clusters=false with data: {'name': 'regression-org-jcjosy2vbe0m'}
+INFO     [🌐API_helper]:api_helper.py:190 Add org regression-org-jcjosy2vbe0m response: {'error': "Unexpected exception: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedColumnError'>: column users.email does not exist\n[SQL: SELECT users.name, users.metadata, users.email, users.version \nFROM users \nWHERE users.name = %s]\n[parameters: ('regression-org-jcjosy2vbe0m',)]\n(Background on this error at: https://sqlalche.me/e/14/f405). Path with query: /apis/admin/v1/orgs?skip_auto_add_to_clusters=false."}
+ERROR    [📘TEST_INFO]:reporting.py:56 ❌ STEP failed: Add organization via API and reload page
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (fail): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_add_org_api_fail_1052fe.png
+ERROR    [📘TEST_INFO]:reporting.py:95 ❌ TEST failed: Verify Admin can demote Manager to Reader
+Exception: [AssertionError] during step: Add organization via API and reload page
+Message: Expected HTTP 201 response but got 500!
+INFO     [📘TEST_INFO]:reporting.py:98 ------------------------------------------------------------
+INFO     [🌐API_helper]:api_helper.py:54 GET https://api.dev.apolo.us/apis/admin/v1/orgs
+INFO     [🌐API_helper]:api_helper.py:165 Status: 200. Response: []
+INFO     [🔧TEST CONFIG]:conftest.py:291 Cleaning up 0 organisations
+INFO     [🔧TEST CONFIG]:conftest.py:321 Closing all browser sessions
+INFO     [🔧TEST CONFIG]:conftest.py:327 Stopped Playwright
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: BrowserContext.close: Target page, context or browser has been closed
+INFO     [🔧TEST CONFIG]:conftest.py:342 Closed browser (post-stop)
+INFO     [🔧TEST CONFIG]:conftest.py:327 Stopped Playwright
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: BrowserContext.close: Target page, context or browser has been closed
+INFO     [🔧TEST CONFIG]:conftest.py:342 Closed browser (post-stop)
+INFO     [🔧TEST CONFIG]:conftest.py:347 Browser cleanup finished
