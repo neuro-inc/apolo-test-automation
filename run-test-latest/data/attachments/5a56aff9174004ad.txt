@@ -1,0 +1,285 @@
+INFO     [🔧TEST CONFIG]:conftest.py:87 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:378 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🔧TEST CONFIG]:conftest.py:93 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:123 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:109 Creating API helper
+INFO     [🔧TEST CONFIG]:conftest.py:117 Creating Apolo CLI instance
+INFO     [👤UsersManager]:users_manager.py:73 Setting main user to UserData(email='regression-2no76j4u6q@apolo.us', username='regression-2no76j4u6q', password='eGZ53&ECinhp')
+INFO     [👤UsersManager]:users_manager.py:82 Setting second user to UserData(email='regression-u51x1df697@apolo.us', username='regression-u51x1df697', password='8iqE8*4ET#Ei')
+INFO     [👤UsersManager]:users_manager.py:91 Setting third user to UserData(email='regression-vzxqmlj446@apolo.us', username='regression-vzxqmlj446', password='@SbOEvk4G#Lj')
+INFO     [📘TEST_INFO]:reporting.py:86 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:87 📝 TEST started: Verify User can uninstall app via UI
+INFO     [📘TEST_INFO]:reporting.py:88 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click login button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_b308d8.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter regression-2no76j4u6q@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Enter email
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_a768a2.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Enter password
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_9b94bc.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click Continue button
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Click continue button
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [{"name": "regression-org-f8phpghceo8t", "role": "admin"}], "clusters": [{"name": "default", "registry_url": "https://registry.api.dev.apolo.us", "storage_url": "https://api.dev.apolo.us/api/v1/storage", "monitoring_url": "https://monitoring.api.dev.apolo.us/api/v1/jobs", "secrets_url": "https://api.dev.apolo.us/api/v1/secrets", "metrics_url": "https://grafana.dev.apolo.us", "disks_url": "https://api.dev.apolo.us/api/v1/disk", "buckets_url": "https://api.dev.apolo.us/api/v1/buckets", "resource_pool_types": [{"name": "a2-highgpu-1g", "min_size": 0, "max_size": 10, "cpu": 12.0, "available_cpu": 11.081, "memory": 89629032448, "available_memory": 80898240256, "disk_size": 523982073856, "available_disk_size": 364209683290, "nvidia_gpu": {"count": 1, "model": "NVIDIA-A100-SXM4-40GB", "memory": 42949672960}}, {"name": "a2-highgpu-2g", "min_size": 0, "max_size": 3, "cpu": 24.0, "available_cpu": 23.73, "memory": 179367243776, "available_memory": 168094003200, "disk_
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-2no76j4u6q/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"uri": "blob://default/regression-org-f8phpghceo8t", "action": "manage"}]
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-f8phpghceo8t
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-org-f8phpghceo8t", "balance": {"credits": "500", "spent_credits": "0"}, "user_default_credits": null, "notification_intervals": {"balance_projection_seconds": [604800, 259200, 86400], "balance_amount": [0], "balance_depletion_seconds": [86400, 604800]}}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[{"id":"ddf33b23-4079-4dd0-b602-0f027592c784","name":"regression-org-f8phpghceo8t-regression-proj--ddf33b23","created_at":"2025-09-22T02:33:14.077944Z","updated_at":"2025-09-22T02:34:07.231233Z","creator":"regression-2no76j4u6q","display_name":"Shell-regression-ccfmyjs0","template_name":"shell","template_version":"v25.8.0","project_name":"regression-proj-41d79g7g1m","org_name":"regression-org-f8phpghceo8t","cluster_name":"default","namespace":"platform--regression-or--regression-p--e3574e07bf3937f5ecac509b","state":"healthy","app_type":"mlops"}],"total":1,"page":1,"size":100,"pages":1}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-2no76j4u6q?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-2no76j4u6q", "email": "regression-2no76j4u6q@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-09-22T01:33:57.092475+00:00", "terms_accepted": true, "orgs": [{"org_name": "regression-org-f8phpghceo8t", "role": "admin", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-2no76j4u6q?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-2no76j4u6q", "email": "regression-2no76j4u6q@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-09-22T01:33:57.092475+00:00", "terms_accepted": true, "clusters": [{"cluster_name": "default", "role": "admin", "org_name": "regression-org-f8phpghceo8t", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/templates
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"inline","x-title":"Secret","x-type":"ApoloSecret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":["s3"],"title":"AwsS3I
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Waiting for spinner
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/templates?limit=50&offset=0
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"inline","x-title":"Secret","x-type":"ApoloSecret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":["s3"],"title":"AwsS3I
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Timeout error for spinner
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click Continue button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_e4c662.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Verify Apps page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <AppsPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Verify Apps page displayed
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_f45115.png
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_login_success_930126.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click Installed Apps button
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click Installed Apps button
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click Installed Apps button
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances/ddf33b23-4079-4dd0-b602-0f027592c784/endpoints
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"data":[{"path":"$.app_url.external_url.host","friendly_name":"App Url","url":"https://shell--ddf33b2340794dd0b6020f027592c784.apps.dev.apolo.us"}]}
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_installed_apps_btn_success_1a2a1e.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click 'Details' button on installed app container
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click App Details button in Shell-regression-ccfmyjs0 container
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click 'Details' button on installed app container
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances/ddf33b23-4079-4dd0-b602-0f027592c784/input?restore_ref=true
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"preset":{"name":"cpu-medium"},"networking":{"http_auth":true}}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v2/instances/ddf33b23-4079-4dd0-b602-0f027592c784
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"id":"ddf33b23-4079-4dd0-b602-0f027592c784","name":"regression-org-f8phpghceo8t-regression-proj--ddf33b23","created_at":"2025-09-22T02:33:14.077944Z","updated_at":"2025-09-22T02:34:07.231233Z","creator":"regression-2no76j4u6q","display_name":"Shell-regression-ccfmyjs0","template_name":"shell","template_version":"v25.8.0","project_name":"regression-proj-41d79g7g1m","org_name":"regression-org-f8phpghceo8t","cluster_name":"default","namespace":"platform--regression-or--regression-p--e3574e07bf3937f5ecac509b","state":"healthy","app_type":"mlops"}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances/ddf33b23-4079-4dd0-b602-0f027592c784/output
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"app_url":{"internal_url":{"port":7681,"protocol":"http","api_type":"webapp","base_path":"/","timeout":30.0,"host":"regression-org-f8phpghceo8t-regression-proj--ddf33b23-custom-de.platform--regression-or--regression-p--e3574e07bf3937f5ecac509b","__type__":"WebApp"},"external_url":{"protocol":"https","port":80,"__type__":"WebApp","host":"shell--ddf33b2340794dd0b6020f027592c784.apps.dev.apolo.us","base_path":"/","api_type":"webapp","timeout":30.0},"__type__":"ServiceAPI[WebApp]"}}
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_inst_app_details_btn_success_a57e2c.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Verify that Shell app Details page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <ShellDetailsPage>: Check if page loaded
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances/ddf33b23-4079-4dd0-b602-0f027592c784/endpoints
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"data":[{"path":"$.app_url.external_url.host","friendly_name":"App Url","url":"https://shell--ddf33b2340794dd0b6020f027592c784.apps.dev.apolo.us"}]}
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Verify that Shell app Details page displayed
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/templates/shell
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"shell","title":"Shell","pub_date":"2025-05-05T00:00:00Z","description":"Shell offers a powerful in-browser command-line interface with direct access to the Apolo platform. Preloaded with essential CLI tools, it enables you to manage resources, run scripts, and debug applications — all from a web-based terminal.","short_description":"A web-based remote shell instrumented with Apolo CLI, providing immediate access to dedicated compute resources","schema_version":1,"version":"v25.8.0","input":{"$defs":{"Networking":{"properties":{"http_auth":{"default":true,"description":"Whether to use HTTP authentication.","title":"HTTP Authentication","type":"boolean"}},"title":"Networking","type":"object","x-description":"Network settings","x-is-advanced-field":false,"x-meta-type":"inline","x-title":"Networking Settings","x-type":"Networking"},"Preset":{"properties":{"name":{"title":"Name","type":"string","x-description":"The name of the preset.","x-is-advanced-field":false,"x-meta-type":"in
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances/ddf33b23-4079-4dd0-b602-0f027592c784/events
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[{"created_at":"2025-09-22T02:34:07.233394Z","state":"healthy","reason":"Autoupdated"},{"created_at":"2025-09-22T02:33:37.214132Z","state":"progressing","reason":"Autoupdated"},{"created_at":"2025-09-22T02:33:14.086418Z","state":"queued","reason":"App instance created"}],"total":3,"page":1,"size":50,"pages":1}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/templates/shell
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"shell","title":"Shell","pub_date":"2025-05-05T00:00:00Z","description":"Shell offers a powerful in-browser command-line interface with direct access to the Apolo platform. Preloaded with essential CLI tools, it enables you to manage resources, run scripts, and debug applications — all from a web-based terminal.","short_description":"A web-based remote shell instrumented with Apolo CLI, providing immediate access to dedicated compute resources","schema_version":1,"version":"v25.8.0","input":{"$defs":{"Networking":{"properties":{"http_auth":{"default":true,"description":"Whether to use HTTP authentication.","title":"HTTP Authentication","type":"boolean"}},"title":"Networking","type":"object","x-description":"Network settings","x-is-advanced-field":false,"x-meta-type":"inline","x-title":"Networking Settings","x-type":"Networking"},"Preset":{"properties":{"name":{"title":"Name","type":"string","x-description":"The name of the preset.","x-is-advanced-field":false,"x-meta-type":"in
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_d0d049.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click Uninstall button
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click Uninstall button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_uninstall_btn_success_8f1445.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Wait for app until uninstalled
+INFO     [🌐API_helper]:api_helper.py:54 GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+INFO     [🌐API_helper]:api_helper.py:238 Status: 200. Response: {'items': [{'id': 'ddf33b23-4079-4dd0-b602-0f027592c784', 'name': 'regression-org-f8phpghceo8t-regression-proj--ddf33b23', 'created_at': '2025-09-22T02:33:14.077944Z', 'updated_at': '2025-09-22T02:34:07.231233Z', 'creator': 'regression-2no76j4u6q', 'display_name': 'Shell-regression-ccfmyjs0', 'template_name': 'shell', 'template_version': 'v25.8.0', 'project_name': 'regression-proj-41d79g7g1m', 'org_name': 'regression-org-f8phpghceo8t', 'cluster_name': 'default', 'namespace': 'platform--regression-or--regression-p--e3574e07bf3937f5ecac509b', 'state': 'healthy', 'app_type': 'mlops'}], 'total': 1, 'page': 1, 'size': 100, 'pages': 1}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 204] DELETE https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances/ddf33b23-4079-4dd0-b602-0f027592c784
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/templates?limit=50&offset=0
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"inline","x-title":"Secret","x-type":"ApoloSecret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":["s3"],"title":"AwsS3I
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[{"id":"ddf33b23-4079-4dd0-b602-0f027592c784","name":"regression-org-f8phpghceo8t-regression-proj--ddf33b23","created_at":"2025-09-22T02:33:14.077944Z","updated_at":"2025-09-22T02:36:54.489524Z","creator":"regression-2no76j4u6q","display_name":"Shell-regression-ccfmyjs0","template_name":"shell","template_version":"v25.8.0","project_name":"regression-proj-41d79g7g1m","org_name":"regression-org-f8phpghceo8t","cluster_name":"default","namespace":"platform--regression-or--regression-p--e3574e07bf3937f5ecac509b","state":"uninstalling","app_type":"mlops"}],"total":1,"page":1,"size":100,"pages":1}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[{"id":"ddf33b23-4079-4dd0-b602-0f027592c784","name":"regression-org-f8phpghceo8t-regression-proj--ddf33b23","created_at":"2025-09-22T02:33:14.077944Z","updated_at":"2025-09-22T02:36:54.489524Z","creator":"regression-2no76j4u6q","display_name":"Shell-regression-ccfmyjs0","template_name":"shell","template_version":"v25.8.0","project_name":"regression-proj-41d79g7g1m","org_name":"regression-org-f8phpghceo8t","cluster_name":"default","namespace":"platform--regression-or--regression-p--e3574e07bf3937f5ecac509b","state":"uninstalling","app_type":"mlops"}],"total":1,"page":1,"size":100,"pages":1}
+INFO     [🌐API_helper]:api_helper.py:54 GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+INFO     [🌐API_helper]:api_helper.py:238 Status: 200. Response: {'items': [{'id': 'ddf33b23-4079-4dd0-b602-0f027592c784', 'name': 'regression-org-f8phpghceo8t-regression-proj--ddf33b23', 'created_at': '2025-09-22T02:33:14.077944Z', 'updated_at': '2025-09-22T02:36:54.489524Z', 'creator': 'regression-2no76j4u6q', 'display_name': 'Shell-regression-ccfmyjs0', 'template_name': 'shell', 'template_version': 'v25.8.0', 'project_name': 'regression-proj-41d79g7g1m', 'org_name': 'regression-org-f8phpghceo8t', 'cluster_name': 'default', 'namespace': 'platform--regression-or--regression-p--e3574e07bf3937f5ecac509b', 'state': 'uninstalling', 'app_type': 'mlops'}], 'total': 1, 'page': 1, 'size': 100, 'pages': 1}
+INFO     [🌐API_helper]:api_helper.py:54 GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+INFO     [🌐API_helper]:api_helper.py:238 Status: 200. Response: {'items': [{'id': 'ddf33b23-4079-4dd0-b602-0f027592c784', 'name': 'regression-org-f8phpghceo8t-regression-proj--ddf33b23', 'created_at': '2025-09-22T02:33:14.077944Z', 'updated_at': '2025-09-22T02:37:07.176324Z', 'creator': 'regression-2no76j4u6q', 'display_name': 'Shell-regression-ccfmyjs0', 'template_name': 'shell', 'template_version': 'v25.8.0', 'project_name': 'regression-proj-41d79g7g1m', 'org_name': 'regression-org-f8phpghceo8t', 'cluster_name': 'default', 'namespace': 'platform--regression-or--regression-p--e3574e07bf3937f5ecac509b', 'state': 'uninstalled', 'app_type': 'mlops'}], 'total': 1, 'page': 1, 'size': 100, 'pages': 1}
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Wait for app until uninstalled
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Open product base page
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Navigate to URL
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Navigated to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"authorized": true, "orgs": [{"name": "regression-org-f8phpghceo8t", "role": "admin"}], "clusters": [{"name": "default", "registry_url": "https://registry.api.dev.apolo.us", "storage_url": "https://api.dev.apolo.us/api/v1/storage", "monitoring_url": "https://monitoring.api.dev.apolo.us/api/v1/jobs", "secrets_url": "https://api.dev.apolo.us/api/v1/secrets", "metrics_url": "https://grafana.dev.apolo.us", "disks_url": "https://api.dev.apolo.us/api/v1/disk", "buckets_url": "https://api.dev.apolo.us/api/v1/buckets", "resource_pool_types": [{"name": "a2-highgpu-1g", "min_size": 0, "max_size": 10, "cpu": 12.0, "available_cpu": 11.081, "memory": 89629032448, "available_memory": 80898240256, "disk_size": 523982073856, "available_disk_size": 364209683290, "nvidia_gpu": {"count": 1, "model": "NVIDIA-A100-SXM4-40GB", "memory": 42949672960}}, {"name": "a2-highgpu-2g", "min_size": 0, "max_size": 3, "cpu": 24.0, "available_cpu": 23.73, "memory": 179367243776, "available_memory": 168094003200, "disk_
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-2no76j4u6q/permissions?uri=blob:
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"uri": "blob://default/regression-org-f8phpghceo8t", "action": "manage"}]
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-f8phpghceo8t
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-org-f8phpghceo8t", "balance": {"credits": "500", "spent_credits": "0"}, "user_default_credits": null, "notification_intervals": {"balance_projection_seconds": [604800, 259200, 86400], "balance_amount": [0], "balance_depletion_seconds": [86400, 604800]}}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-2no76j4u6q?include=orgs
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-2no76j4u6q", "email": "regression-2no76j4u6q@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-09-22T01:33:57.092475+00:00", "terms_accepted": true, "orgs": [{"org_name": "regression-org-f8phpghceo8t", "role": "admin", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[{"id":"ddf33b23-4079-4dd0-b602-0f027592c784","name":"regression-org-f8phpghceo8t-regression-proj--ddf33b23","created_at":"2025-09-22T02:33:14.077944Z","updated_at":"2025-09-22T02:37:07.176324Z","creator":"regression-2no76j4u6q","display_name":"Shell-regression-ccfmyjs0","template_name":"shell","template_version":"v25.8.0","project_name":"regression-proj-41d79g7g1m","org_name":"regression-org-f8phpghceo8t","cluster_name":"default","namespace":"platform--regression-or--regression-p--e3574e07bf3937f5ecac509b","state":"uninstalled","app_type":"mlops"}],"total":1,"page":1,"size":100,"pages":1}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/templates
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"inline","x-title":"Secret","x-type":"ApoloSecret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":["s3"],"title":"AwsS3I
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Waiting for network idle...
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-2no76j4u6q?include=clusters&include=system_role
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"name": "regression-2no76j4u6q", "email": "regression-2no76j4u6q@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-09-22T01:33:57.092475+00:00", "terms_accepted": true, "clusters": [{"cluster_name": "default", "role": "admin", "org_name": "regression-org-f8phpghceo8t", "balance": {"spent_credits": "0"}}]}
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/templates?limit=50&offset=0
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+[{"name":"aws-s3","title":"AWS S3","pub_date":"2025-01-01T00:00:00Z","description":"AWS S3 Storage","short_description":"","schema_version":1,"version":"HEAD","input":{"$defs":{"ApoloSecret":{"properties":{"key":{"title":"Key","type":"string"}},"required":["key"],"title":"ApoloSecret","type":"object","x-description":"Apolo Secret Configuration.","x-is-advanced-field":false,"x-meta-type":"inline","x-title":"Secret","x-type":"ApoloSecret"},"S3Params":{"properties":{"port":{"title":"Port","type":"integer"},"host":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Host"},"bucket":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Bucket"},"access_key":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"title":"Access Key"},"secret_key":{"anyOf":[{"$ref":"#/$defs/ApoloSecret"},{"type":"null"}],"default":null}},"required":["port"],"title":"S3Params","type":"object"}},"properties":{"s3":{"$ref":"#/$defs/S3Params"}},"required":["s3"],"title":"AwsS3I
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Page is idle (networkidle state reached)
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Navigate to URL
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_url_in_browser_success_a6059f.png
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Open product base page
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_open_product_base_page_success_728afa.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click Installed Apps button
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Click Installed Apps button
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click Installed Apps button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_installed_apps_btn_success_4444d5.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Verify Installed application not displayed
+INFO     [🎭 Playwright]:base_page.py:16 <MainPage>: Check if installed app container Shell-regression-ccfmyjs0 displayed
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Verify Installed application not displayed
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_verify_installed_app_not_displayed_success_ee3274.png
+INFO     [📘TEST_INFO]:reporting.py:92 ✅ TEST completed: Verify User can uninstall app via UI
+INFO     [📘TEST_INFO]:reporting.py:98 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:155 ============================================================
+INFO     [📘TEST_INFO]:reporting.py:156 📊 SUITE SUMMARY: 8 passed, 0 failed
+INFO     [📘TEST_INFO]:reporting.py:159 ============================================================
+INFO     [🌐API_helper]:api_helper.py:54 GET https://api.dev.apolo.us/apis/admin/v1/orgs
+INFO     [🌐API_helper]:api_helper.py:165 Status: 200. Response: [{'name': 'regression-org-f8phpghceo8t', 'balance': {'credits': '500', 'spent_credits': '0'}, 'user_default_credits': None, 'notification_intervals': {'balance_projection_seconds': [604800, 259200, 86400], 'balance_amount': [0], 'balance_depletion_seconds': [86400, 604800]}}]
+INFO     [🔧TEST CONFIG]:conftest.py:291 Cleaning up 1 organisations
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 200] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"items":[{"id":"ddf33b23-4079-4dd0-b602-0f027592c784","name":"regression-org-f8phpghceo8t-regression-proj--ddf33b23","created_at":"2025-09-22T02:33:14.077944Z","updated_at":"2025-09-22T02:37:07.176324Z","creator":"regression-2no76j4u6q","display_name":"Shell-regression-ccfmyjs0","template_name":"shell","template_version":"v25.8.0","project_name":"regression-proj-41d79g7g1m","org_name":"regression-org-f8phpghceo8t","cluster_name":"default","namespace":"platform--regression-or--regression-p--e3574e07bf3937f5ecac509b","state":"uninstalled","app_type":"mlops"}],"total":1,"page":1,"size":100,"pages":1}
+INFO     [🌐API_helper]:api_helper.py:172 Delete organization response: <ClientResponse(https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-f8phpghceo8t) [200 OK]>
+<CIMultiDictProxy('Access-Control-Allow-Credentials': 'true', 'Content-Length': '274', 'Content-Type': 'application/json; charset=utf-8', 'Date': 'Mon, 22 Sep 2025 02:37:31 GMT', 'Server': 'Python/3.13 aiohttp/3.12.15', 'Vary': 'Origin', 'x-service-version': 'platform-admin/0.0.0.post1.dev0+4cdab15', 'Via': '1.1 google', 'Alt-Svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000')>
+
+INFO     [🔧TEST CONFIG]:conftest.py:316 Removed organisation: regression-org-f8phpghceo8t
+INFO     [🔧TEST CONFIG]:conftest.py:321 Closing all browser sessions
+WARNING  [🔧TEST CONFIG]:conftest.py:329 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:344 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:329 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:344 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:329 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 401] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"detail":{"missing":[{"uri":"app://default/regression-org-f8phpghceo8t/regression-proj-41d79g7g1m","action":"read"}]}}
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:344 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:329 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:344 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:329 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:420 [HTTP 401] GET https://api.dev.apolo.us/apis/apps/v1/cluster/default/org/regression-org-f8phpghceo8t/project/regression-proj-41d79g7g1m/instances?size=100
+Request Body:
+<not available>
+Response Body (first 1000 chars):
+{"detail":{"missing":[{"uri":"app://default/regression-org-f8phpghceo8t/regression-proj-41d79g7g1m","action":"read"}]}}
+WARNING  [🔧TEST CONFIG]:conftest.py:344 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:329 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:344 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:329 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:344 Failed to close browser: 
+INFO     [🔧TEST CONFIG]:conftest.py:327 Stopped Playwright
+WARNING  [🔧TEST CONFIG]:conftest.py:337 Failed to close context: BrowserContext.close: Target page, context or browser has been closed
+INFO     [🔧TEST CONFIG]:conftest.py:342 Closed browser (post-stop)
+INFO     [🔧TEST CONFIG]:conftest.py:347 Browser cleanup finished
