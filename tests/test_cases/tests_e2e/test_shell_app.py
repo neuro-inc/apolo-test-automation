@@ -281,8 +281,208 @@ class TestE2EShellApp(BaseTestClass):
             expected_proj_name=proj_name,
         )
 
-    @async_title("Verify User can uninstall app via UI")
+    @async_title("Verify app output contains required endpoints via UI")
     @pytest.mark.order(8)
+    async def test_app_output_api_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Click Installed Apps.
+        - Click `Details` button on installed app container.
+        - Scroll to `Output` section.
+
+        ### Verify that `Output` section contains:
+        - Http internal API
+        - Https external API
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        app_name = TestE2EShellApp.shell_app_name
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.ui_click_installed_apps_btn()
+        await ui_steps.main_page.verify_ui_inst_app_details_btn_displayed(
+            app_name=app_name, owner=user.username
+        )
+
+        await ui_steps.main_page.ui_click_inst_app_details_btn(
+            app_name=app_name, owner=user.username
+        )
+        await ui_steps.shell_details_page.verify_ui_page_displayed()
+        await ui_steps.shell_details_page.verify_ui_app_output_displayed()
+        await ui_steps.shell_details_page.verify_ui_app_output_apis()
+
+    @async_title("Verify app output API schemas is valid via UI")
+    @pytest.mark.order(9)
+    async def test_app_output_api_data_format_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Click Installed Apps.
+        - Click `Details` button on installed app container.
+        - Scroll to `Output` section.
+
+        ### Verify that:
+        - API sections data matching expected data format.
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        app_name = TestE2EShellApp.shell_app_name
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.ui_click_installed_apps_btn()
+        await ui_steps.main_page.verify_ui_inst_app_details_btn_displayed(
+            app_name=app_name, owner=user.username
+        )
+
+        await ui_steps.main_page.ui_click_inst_app_details_btn(
+            app_name=app_name, owner=user.username
+        )
+        await ui_steps.shell_details_page.verify_ui_page_displayed()
+        await ui_steps.shell_details_page.verify_ui_app_output_displayed()
+        await ui_steps.shell_details_page.verify_ui_app_output_apis_data_format()
+
+    @async_title("Verify app output contains required endpoints via API")
+    @pytest.mark.order(10)
+    async def test_app_output_api_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+
+        ### Verify that `output` API response contains required endpoints:
+
+        - Http internal API
+        - Https external API
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EShellApp.shell_app_id
+        org_name = TestE2EShellApp.org_name
+        proj_name = TestE2EShellApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.get_app_output_api(
+            token=user.token,
+            app_id=app_id,
+            org_name=org_name,
+            proj_name=proj_name,
+        )
+        await api_steps.verify_shell_output_endpoints(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify app output endpoints schema via API")
+    @pytest.mark.order(11)
+    async def test_app_output_api_schema_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+
+        ### Verify that:
+
+        - API endpoints data matching expected json schema.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EShellApp.shell_app_id
+        org_name = TestE2EShellApp.org_name
+        proj_name = TestE2EShellApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_shell_output_endpoints_schema_api(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Open Shell application via UI")
+    @pytest.mark.order(12)
+    async def test_open_shell_app_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+        - Get `external https` endpoint.
+
+        ### Verify that:
+
+        - Shell app can be launched via UI.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EShellApp.shell_app_id
+        org_name = TestE2EShellApp.org_name
+        proj_name = TestE2EShellApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        url = await api_steps.get_shell_ext_output_endpoint_api(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+        await ui_steps.shell_app_page.ui_open_shell_app_page(url=url)
+        await ui_steps.shell_app_page.verify_ui_page_displayed()
+
+    @async_title("Enter command in Shell app via UI")
+    @pytest.mark.order(13)
+    async def test_enter_command_in_shell_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+        - Get `external https` endpoint.
+        - Launch Shell app.
+        - Execute `apolo config show` command.
+
+        ### Verify that Shell app output contains:
+
+        - executed command `apolo config show`.
+        - `User configuration` section.
+        - `Resource Preset` section.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EShellApp.shell_app_id
+        org_name = TestE2EShellApp.org_name
+        proj_name = TestE2EShellApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        url = await api_steps.get_shell_ext_output_endpoint_api(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+        await ui_steps.shell_app_page.ui_open_shell_app_page(url=url)
+        await ui_steps.shell_app_page.verify_ui_page_displayed()
+
+        await ui_steps.shell_app_page.ui_enter_command_in_shell("apolo config show")
+        await ui_steps.shell_app_page.ui_open_shell_app_page(url=url)
+        await ui_steps.shell_app_page.verify_ui_executed_command_in_shell_output(
+            command="apolo config show"
+        )
+        await ui_steps.shell_app_page.verify_ui_user_config_in_shell_output(
+            org_name=org_name, proj_name=proj_name
+        )
+        await ui_steps.shell_app_page.verify_ui_res_presets_in_shell_output()
+
+    @async_title("Verify User can uninstall app via UI")
+    @pytest.mark.order(14)
     async def test_app_uninstall_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:

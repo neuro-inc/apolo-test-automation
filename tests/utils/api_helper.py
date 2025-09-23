@@ -77,19 +77,29 @@ class APIHelper:
             return status, text
 
     async def _post(
-        self,
-        endpoint: str,
-        data: Optional[Union[dict[str, Any], list[Any]]] = None,
-        token: Optional[str] = None,
-    ) -> Any:
+            self,
+            endpoint: str,
+            data: Optional[Union[dict[str, Any], list[Any]]] = None,
+            token: Optional[str] = None,
+    ) -> tuple[int, Any]:
         assert self._session is not None, "ClientSession is not initialized"
         logger.info(f"POST {endpoint} with data: {data}")
+
         async with self._session.post(
-            endpoint, headers=self._headers(token), json=data
+                endpoint, headers=self._headers(token), json=data
         ) as response:
             status = response.status
-            json_data = await response.json()
-            return status, json_data
+            content_type = response.headers.get("Content-Type", "")
+
+            try:
+                if "application/json" in content_type:
+                    result = await response.json()
+                else:
+                    result = await response.text()
+            except Exception:
+                result = await response.text()
+
+            return status, result
 
     async def _put(
         self,

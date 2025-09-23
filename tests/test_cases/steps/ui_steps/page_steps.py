@@ -14,6 +14,9 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.apps.deep_seek_install_page
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps.resource_preset_popup_steps import (
     ResourcePresetPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.shell_app_page_steps import (
+    ShellAppPageSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps.shell_install_page_steps import (
     ShellInstallPageSteps,
 )
@@ -184,7 +187,8 @@ class PageSteps:
         self.resource_preset_popup = ResourcePresetPopupSteps(self._pm)
         self.choose_secret_popup = ChooseSecretPopupSteps(self._pm)
         self.shell_install_page = ShellInstallPageSteps(self._pm)
-        self.shell_details_page = ShellDetailsPageSteps(self._pm)
+        self.shell_details_page = ShellDetailsPageSteps(self._pm, self._data_manager)
+        self.shell_app_page = ShellAppPageSteps(self._pm)
         self.deep_seek_install_page = DeepSeekInstallPageSteps(self._pm)
         self.deep_seek_details_page = DeepSeekDetailsPageSteps(
             self._pm, self._data_manager

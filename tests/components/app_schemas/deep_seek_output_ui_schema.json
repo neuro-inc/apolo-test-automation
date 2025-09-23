@@ -8,50 +8,32 @@
         "OpenAI Compatible Embeddings API"
       ]
     },
-    "Hostname": {
+    "__type__": {
       "type": "string",
-      "minLength": 5
+      "enum": [
+        "OpenAICompatChatAPI",
+        "OpenAICompatEmbeddingsAPI",
+        "HuggingFaceModel"
+      ]
     },
-    "Port": {
-      "type": "string",
-      "pattern": "^[0-9]+$"
-    },
-    "Protocol": {
-      "type": "string",
-      "enum": ["http", "https"]
-    },
-    "Connection Timeout": {
-      "type": "string",
-      "pattern": "^[0-9]+$"
-    },
-    "Base Path": {
-      "type": "string"
-    },
-    "Api Type": {
-      "type": "string",
-      "enum": ["rest"]
-    },
-    "Api Base Path": {
-      "type": "string",
-      "pattern": "^/"
-    },
-    "Openai Api Type": {
-      "type": "string",
-      "enum": ["chat", "embeddings"]
-    },
+    "Hostname": { "type": "string", "minLength": 5 },
+    "Port": { "type": "string", "pattern": "^[0-9]+$" },
+    "Protocol": { "type": "string", "enum": ["http", "https"] },
+    "Connection Timeout": { "type": "string", "pattern": "^[0-9]+$" },
+    "Base Path": { "type": "string", "pattern": "^/" },
+    "Api Type": { "type": "string", "enum": ["rest"] },
+    "Api Base Path": { "type": "string", "pattern": "^/v1" },
+    "Openai Api Type": { "type": "string", "enum": ["chat", "embeddings"] },
     "Endpoint Url": {
       "type": "string",
-      "pattern": "^/v1/"
+      "pattern": "^/v1/(chat|embeddings)"
     },
-    "Hugging Face Model Name": {
-      "type": "string"
-    },
-    "Secret": {
-      "type": "string"
-    }
+    "Hugging Face Model Name": { "type": "string", "minLength": 5 },
+    "Secret": { "type": "string" }
   },
   "required": [
     "title",
+    "__type__",
     "Hostname",
     "Port",
     "Protocol",

@@ -4,6 +4,7 @@ from tests.components.ui.pages.apps.choose_secret_popup import ChooseSecretPopup
 from tests.components.ui.pages.apps.deep_seek_details_page import DeepSeekDetailsPage
 from tests.components.ui.pages.apps.deep_seek_install_page import DeepSeekInstallPage
 from tests.components.ui.pages.apps.resource_preset_popup import ResourcePresetPopup
+from tests.components.ui.pages.apps.shell_app_page import ShellAppPage
 from tests.components.ui.pages.apps.shell_install_page import ShellInstallPage
 from tests.components.ui.pages.apps.shell_details_page import ShellDetailsPage
 from tests.components.ui.pages.apps_page import AppsPage
@@ -109,5 +110,6 @@ class PageManager:
         self.choose_secret_popup = ChooseSecretPopup(page)
         self.shell_install_page = ShellInstallPage(page)
         self.shell_details_page = ShellDetailsPage(page)
+        self.shell_app_page = ShellAppPage(page)
         self.deep_seek_install_page = DeepSeekInstallPage(page)
         self.deep_seek_details_page = DeepSeekDetailsPage(page)
