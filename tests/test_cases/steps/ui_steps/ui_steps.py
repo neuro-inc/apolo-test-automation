@@ -62,6 +62,11 @@ class UISteps(PageSteps):
         await self.main_page.ui_open_url_in_browser(base_url)
         await self._pm.page.wait_for_load_state("networkidle")
 
+    @async_step("Open url")
+    async def ui_open_url(self, url: str) -> None:
+        await self.main_page.ui_open_url_in_browser(url)
+        await self._pm.page.wait_for_load_state("networkidle")
+
     @async_step("Login via UI")
     async def ui_login(self, user: UserData, fresh_login: bool = True) -> None:
         if not user.authorized:

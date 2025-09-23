@@ -356,3 +356,4 @@ class MainPage(BasePage):
     async def click_app_details_btn(self, app_name: str, owner: str) -> None:
         self.log(f"Click App Details button in {app_name} container")
         await self._get_app_details_button(app_name, owner).click()
+        await self.wait_for_spinner()
