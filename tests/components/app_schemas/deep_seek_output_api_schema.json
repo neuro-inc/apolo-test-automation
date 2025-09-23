@@ -1,58 +1,38 @@
 {
   "type": "object",
   "properties": {
-    "host": {
+    "__type__": {
       "type": "string",
-      "minLength": 1
+      "enum": ["OpenAICompatChatAPI", "OpenAICompatEmbeddingsAPI"]
     },
-    "port": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "protocol": {
-      "type": "string",
-      "enum": ["http", "https"]
-    },
-    "timeout": {
-      "type": "number",
-      "minimum": 0
-    },
-    "base_path": {
-      "type": "string",
-      "pattern": "^/"
-    },
-    "api_type": {
-      "type": "string",
-      "enum": ["rest"]
-    },
-    "api_base_path": {
-      "type": "string",
-      "pattern": "^/"
-    },
-    "openai_api_type": {
-      "type": "string",
-      "enum": ["chat", "embeddings"]
-    },
+    "host": { "type": "string", "minLength": 5 },
+    "port": { "type": "integer" },
+    "protocol": { "type": "string", "enum": ["http", "https"] },
+    "timeout": { "type": "number" },
+    "base_path": { "type": "string", "pattern": "^/" },
+    "api_type": { "type": "string", "enum": ["rest"] },
+    "api_base_path": { "type": "string", "pattern": "^/v1" },
+    "openai_api_type": { "type": "string", "enum": ["chat", "embeddings"] },
     "endpoint_url": {
       "type": "string",
-      "pattern": "^/v1/"
+      "pattern": "^/v1/(chat|embeddings)"
     },
     "hf_model": {
       "type": "object",
       "properties": {
-        "model_hf_name": {
+        "__type__": {
           "type": "string",
-          "minLength": 1
+          "enum": ["HuggingFaceModel"]
         },
-        "hf_token": {
-          "type": ["string", "null"]
-        }
+        "model_hf_name": { "type": "string", "minLength": 5 },
+        "hf_token": { "type": ["string", "null"] }
       },
-      "required": ["model_hf_name", "hf_token"],
+      "required": ["__type__", "model_hf_name", "hf_token"],
       "additionalProperties": false
     }
   },
   "required": [
+    "__type__",
     "host",
     "port",
     "protocol",
