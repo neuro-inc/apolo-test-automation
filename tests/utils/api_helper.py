@@ -176,10 +176,24 @@ class APIHelper:
 
         return response
 
+    async def get_projects(self, token: str, org_name: str) -> Any:
+        url = self._config.get_projects_url(org_name=org_name)
+        status, response = await self._get(url, token=token)
+        logger.info(f"Status: {status}. Response: {response}")
+
+        return response
+
     async def delete_org(self, token: str, org_name: str) -> Any:
         url = self._config.get_delete_org_url(org_name=org_name)
         response = await self._delete(url, token=token)
         logger.info(f"Delete organization response: {response}")
+
+        return response
+
+    async def delete_proj(self, token: str, org_name: str, proj_name: str) -> Any:
+        url = self._config.get_delete_proj_url(org_name=org_name, proj_name=proj_name)
+        response = await self._delete(url, token=token)
+        logger.info(f"Delete project response: {response}")
 
         return response
 

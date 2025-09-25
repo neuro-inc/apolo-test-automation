@@ -11,6 +11,12 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.apps.deep_seek_details_page
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps.deep_seek_install_page_steps import (
     DeepSeekInstallPageSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.postgres_details_page_steps import (
+    PostgresDetailsPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.postgress_install_page_steps import (
+    PostgresInstallPageSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps.resource_preset_popup_steps import (
     ResourcePresetPopupSteps,
 )
@@ -191,5 +197,9 @@ class PageSteps:
         self.shell_app_page = ShellAppPageSteps(self._pm)
         self.deep_seek_install_page = DeepSeekInstallPageSteps(self._pm)
         self.deep_seek_details_page = DeepSeekDetailsPageSteps(
+            self._pm, self._data_manager
+        )
+        self.postgres_install_page = PostgresInstallPageSteps(self._pm)
+        self.postgres_details_page = PostgresDetailsPageSteps(
             self._pm, self._data_manager
         )
