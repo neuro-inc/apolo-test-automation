@@ -3,6 +3,8 @@ from playwright.async_api import Page
 from tests.components.ui.pages.apps.choose_secret_popup import ChooseSecretPopup
 from tests.components.ui.pages.apps.deep_seek_details_page import DeepSeekDetailsPage
 from tests.components.ui.pages.apps.deep_seek_install_page import DeepSeekInstallPage
+from tests.components.ui.pages.apps.postgres_details_page import PostgresDetailsPage
+from tests.components.ui.pages.apps.postgres_install_page import PostgresInstallPage
 from tests.components.ui.pages.apps.resource_preset_popup import ResourcePresetPopup
 from tests.components.ui.pages.apps.shell_app_page import ShellAppPage
 from tests.components.ui.pages.apps.shell_install_page import ShellInstallPage
@@ -113,3 +115,5 @@ class PageManager:
         self.shell_app_page = ShellAppPage(page)
         self.deep_seek_install_page = DeepSeekInstallPage(page)
         self.deep_seek_details_page = DeepSeekDetailsPage(page)
+        self.postgres_install_page = PostgresInstallPage(page)
+        self.postgres_details_page = PostgresDetailsPage(page)
