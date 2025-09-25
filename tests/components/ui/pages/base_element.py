@@ -105,6 +105,7 @@ class BaseElement:
         await self.locator.click()
         await self.locator.fill("")
         await self.locator.fill(value)
+        await self.page.wait_for_timeout(200)
 
     async def select_option(self, option_name: str) -> None:
         await self.locator.select_option(option_name)

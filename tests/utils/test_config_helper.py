@@ -105,8 +105,16 @@ class ConfigManager:
     def get_orgs_url(self) -> str:
         return str(self._endpoints.get_orgs)
 
+    def get_projects_url(self, org_name: str) -> str:
+        return str(self._endpoints.get_projects).format(org_name=org_name)
+
     def get_delete_org_url(self, org_name: str) -> str:
         return str(self._endpoints.delete_org).format(org_name=org_name)
+
+    def get_delete_proj_url(self, org_name: str, proj_name: str) -> str:
+        return str(self._endpoints.delete_proj).format(
+            org_name=org_name, proj_name=proj_name
+        )
 
     def get_add_user_to_org_url(self, org_name: str) -> str:
         return str(self._endpoints.add_user_to_org).format(org_name=org_name)

@@ -288,7 +288,7 @@ async def _cleanup_orgs(
     org_data = await api_helper.get_orgs(token=main_user.token)
     organizations = [org["name"] for org in org_data if "name" in org]
     token = main_user.token
-    logger.info("Cleaning up %d organisations", len(organizations))
+    logger.info(f"Cleaning up {len(organizations)} organisations")
 
     if not organizations:
         allure.attach(
@@ -301,6 +301,16 @@ async def _cleanup_orgs(
     for org_name in organizations:
         with allure.step(f"Delete organisation: {org_name}"):
             try:
+                proj_data = await api_helper.get_projects(
+                    token=token, org_name=org_name
+                )
+                projects = [proj["name"] for proj in proj_data if "name" in proj]
+                logger.info(f"Cleaning up {len(projects)} projects")
+                for proj_name in projects:
+                    with allure.step(f"Delete project: {proj_name}"):
+                        await api_helper.delete_proj(
+                            token=token, org_name=org_name, proj_name=proj_name
+                        )
                 await api_helper.delete_org(token=token, org_name=org_name)
                 data_manager.remove_organization(org_name)
             except Exception as exc:

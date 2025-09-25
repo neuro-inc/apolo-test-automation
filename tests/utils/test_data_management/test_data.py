@@ -170,3 +170,11 @@ class DataManager:
     def generate_app_instance_name(self, app_name: str) -> str:
         suffix = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))
         return f"{app_name}-regression-{suffix}"
+
+    def generate_postgres_user_name(self) -> str:
+        suffix = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))
+        return f"psql-regression-user-{suffix}"
+
+    def generate_postgres_user_db_name(self) -> str:
+        suffix = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))
+        return f"psql-db-regression-{suffix}"
