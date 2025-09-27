@@ -1,0 +1,49 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: 'v6.0.0'
+  hooks:
+  - id: check-added-large-files
+  - id: check-merge-conflict
+    exclude: "rst$"
+  - id: check-case-conflict
+  - id: check-json
+  - id: check-toml
+  - id: check-xml
+  - id: debug-statements
+  - id: check-added-large-files
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+  - id: check-symlinks
+    exclude: ^charts/
+- repo: https://github.com/mrtazz/checkmake.git
+  rev: 0.2.2
+  hooks:
+    - id: checkmake
+- repo: https://github.com/sondrelg/pep585-upgrade
+  rev: v1.0
+  hooks:
+  - id: upgrade-type-hints
+    args:
+    - --futures=true
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.13.2
+  hooks:
+  - id: ruff-format
+  - id: ruff
+    args: [--fix, --exit-non-zero-on-fix]
+- repo: https://github.com/sirosen/check-jsonschema
+  rev: 0.34.0
+  hooks:
+  - id: check-github-actions
+  - id: check-github-workflows
+- repo: local
+  hooks:
+    - id: assert-without-message
+      name: Detect bare assert without error message
+      entry: bash -c 'python -c "import ast, sys; [print(f\"{f}:{n.lineno} assert without message\") or exit(1) for f in sys.argv[1:] for n in ast.walk(ast.parse(open(f).read())) if isinstance(n, ast.Assert) and n.msg is None]" "$@"'
+      language: system
+      types: [python]
+ci:
+    skip:
+    - check-github-actions
+    - check-github-workflows

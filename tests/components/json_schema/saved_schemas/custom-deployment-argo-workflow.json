@@ -1,0 +1,693 @@
+{
+  "name": "custom-deployment-argo-workflow",
+  "title": "Custom Deployment Argo Workflow",
+  "pub_date": "2025-01-01T00:00:00Z",
+  "description": "Deploy scalable applications",
+  "short_description": "",
+  "schema_version": 1,
+  "version": "master",
+  "input": {
+    "$defs": {
+      "ApoloFilesMount": {
+        "properties": {
+          "storage_uri": {
+            "$ref": "#/$defs/ApoloFilesPath"
+          },
+          "mount_path": {
+            "$ref": "#/$defs/MountPath"
+          },
+          "mode": {
+            "$ref": "#/$defs/ApoloMountMode",
+            "default": {
+              "mode": "rw"
+            }
+          }
+        },
+        "required": [
+          "storage_uri",
+          "mount_path"
+        ],
+        "title": "ApoloFilesMount",
+        "type": "object",
+        "x-description": "Configure Apolo Files mount within the application workloads.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Apolo Files Mount"
+      },
+      "ApoloFilesPath": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Storage Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "ApoloFilesPath",
+        "type": "object",
+        "x-description": "Specify the path within the Apolo Files application to read from or write to.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Apolo Files Path"
+      },
+      "ApoloMountMode": {
+        "properties": {
+          "mode": {
+            "$ref": "#/$defs/ApoloMountModes",
+            "default": "rw",
+            "x-description": "Select the access mode for the mount, such as read-only or read-write.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Mount Mode"
+          }
+        },
+        "title": "ApoloMountMode",
+        "type": "object",
+        "x-description": "Configure how Apolo Files should be mounted into the application’s workload environment.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Apolo Files Mount"
+      },
+      "ApoloMountModes": {
+        "enum": [
+          "r",
+          "rw"
+        ],
+        "title": "ApoloMountModes",
+        "type": "string"
+      },
+      "ApoloSecret": {
+        "properties": {
+          "key": {
+            "title": "Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "title": "ApoloSecret",
+        "type": "object",
+        "x-description": "Apolo Secret Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Secret"
+      },
+      "AutoscalingHPA": {
+        "properties": {
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "min_replicas": {
+            "default": 1,
+            "title": "Min Replicas",
+            "type": "integer",
+            "x-description": "Set the minimum number of replicas for your deployment.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Minimum Replicas"
+          },
+          "max_replicas": {
+            "default": 5,
+            "title": "Max Replicas",
+            "type": "integer",
+            "x-description": "Limit the maximum number of replicas for your deployment.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Maximum Replicas"
+          },
+          "target_cpu_utilization_percentage": {
+            "default": 80,
+            "title": "Target Cpu Utilization Percentage",
+            "type": "integer",
+            "x-description": "Choose target CPU utilization percentage for autoscaling.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Target CPU Utilization Percentage"
+          },
+          "target_memory_utilization_percentage": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Target Memory Utilization Percentage",
+            "x-description": "Choose target memory utilization percentage for autoscaling.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Target Memory Utilization Percentage"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "title": "AutoscalingHPA",
+        "type": "object",
+        "x-description": "Autoscaling configuration for Horizontal Pod Autoscaler.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Autoscaling HPA"
+      },
+      "Container": {
+        "properties": {
+          "command": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Command",
+            "x-description": "Override the container's default entrypoint by specifying a custom command.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Container Command"
+          },
+          "args": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Args",
+            "x-description": "Provide arguments to pass to the container's entrypoint or command.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Container Arguments"
+          },
+          "env": {
+            "items": {
+              "$ref": "#/$defs/Env"
+            },
+            "title": "Env",
+            "type": "array",
+            "x-description": "Define environment variables to inject into the container.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Environment Variables"
+          }
+        },
+        "title": "Container",
+        "type": "object",
+        "x-description": "Define command, arguments, and environment variables for the Kubernetes container.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Container Configuration"
+      },
+      "ContainerImage": {
+        "properties": {
+          "repository": {
+            "title": "Repository",
+            "type": "string",
+            "x-description": "Choose a repository for the container image.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Container Image Repository"
+          },
+          "tag": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tag",
+            "x-description": "Choose a tag for the container image.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Container Image Tag"
+          },
+          "dockerconfigjson": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DockerConfigModel"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "x-description": "ImagePullSecrets for DockerHub",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "ImagePullSecrets for DockerHub"
+          }
+        },
+        "required": [
+          "repository"
+        ],
+        "title": "ContainerImage",
+        "type": "object",
+        "x-description": "Container image to be used in application",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Container Image"
+      },
+      "DockerConfigModel": {
+        "properties": {
+          "filecontents": {
+            "title": "Filecontents",
+            "type": "string",
+            "x-description": "The contents of the Docker config file.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Docker Config File Contents"
+          }
+        },
+        "required": [
+          "filecontents"
+        ],
+        "title": "DockerConfigModel",
+        "type": "object",
+        "x-description": "Docker configuration content.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Docker Config"
+      },
+      "Env": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "x-description": "Specify the name of the environment variable to inject into the container.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Variable Name"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "$ref": "#/$defs/ApoloSecret"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Value",
+            "x-description": "Specify the value of the environment variable.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Variable Value"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Env",
+        "type": "object",
+        "x-description": "K8S container env var.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Env"
+      },
+      "IngressHttp": {
+        "properties": {
+          "auth": {
+            "default": true,
+            "title": "Auth",
+            "type": "boolean",
+            "x-description": "Require authenticated user credentials with appropriate permissions for all incoming HTTPS requests to the application.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Enable Authentication and Authorization"
+          }
+        },
+        "title": "IngressHttp",
+        "type": "object",
+        "x-description": "Enable access to your application over the internet using HTTPS.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Enable HTTP Ingress"
+      },
+      "IngressPathTypeEnum": {
+        "enum": [
+          "Prefix",
+          "Exact",
+          "ImplementationSpecific"
+        ],
+        "title": "IngressPathTypeEnum",
+        "type": "string"
+      },
+      "MountPath": {
+        "properties": {
+          "path": {
+            "title": "Path",
+            "type": "string",
+            "x-description": "Specify the absolute path inside the container where the volume should be mounted.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Path"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "MountPath",
+        "type": "object",
+        "x-description": "Specify the absolute path.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Mount Path"
+      },
+      "NetworkingConfig": {
+        "properties": {
+          "service_enabled": {
+            "default": true,
+            "title": "Service Enabled",
+            "type": "boolean",
+            "x-description": "Enable or disable the internal network service for the deployment.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Service Enabled"
+          },
+          "ingress_http": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/IngressHttp"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-description": "Define HTTP ingress configuration for exposing services over the web.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "HTTP Ingress"
+          },
+          "ports": {
+            "items": {
+              "$ref": "#/$defs/Port"
+            },
+            "title": "Ports",
+            "type": "array",
+            "x-description": "Specify which ports should be exposed by the application.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Exposed Ports"
+          }
+        },
+        "title": "NetworkingConfig",
+        "type": "object",
+        "x-description": "Configure custom networking options for your deployment, including ports and ingress settings.",
+        "x-is-advanced-field": true,
+        "x-meta-type": "inline",
+        "x-title": "Network Configuration"
+      },
+      "Port": {
+        "properties": {
+          "name": {
+            "default": "http",
+            "title": "Name",
+            "type": "string",
+            "x-description": "Specify a name for the HTTP port (e.g., 'http', 'grpc') to identify it in the service.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "HTTP Port Name"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "Set the HTTP port number that will be exposed from the container. Please note: platform currently does not allow to expose multiple ports for a single app on a single domain name. Please reach us describing your use-case if you need it.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "HTTP Port"
+          },
+          "path_type": {
+            "$ref": "#/$defs/IngressPathTypeEnum",
+            "default": "Prefix",
+            "x-description": "Define how the path should be matched (e.g., 'Prefix' or 'Exact').",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Path Type"
+          },
+          "path": {
+            "default": "/",
+            "title": "Path",
+            "type": "string",
+            "x-description": "Set the URL path for routing traffic to this port.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Path"
+          }
+        },
+        "title": "Port",
+        "type": "object",
+        "x-description": "",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": ""
+      },
+      "Preset": {
+        "properties": {
+          "name": {
+            "description": "The name of the preset.",
+            "title": "Preset name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Preset",
+        "type": "object",
+        "x-description": "Select the resource preset used per service replica.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "Resource Preset"
+      },
+      "StorageMounts": {
+        "properties": {
+          "mounts": {
+            "description": "List of ApoloStorageMount objects to mount external storage paths",
+            "items": {
+              "$ref": "#/$defs/ApoloFilesMount"
+            },
+            "title": "Mounts",
+            "type": "array"
+          }
+        },
+        "title": "StorageMounts",
+        "type": "object",
+        "x-description": "Mount external storage paths",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Storage Mounts"
+      }
+    },
+    "properties": {
+      "preset": {
+        "$ref": "#/$defs/Preset"
+      },
+      "image": {
+        "$ref": "#/$defs/ContainerImage"
+      },
+      "autoscaling": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AutoscalingHPA"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Enable Autoscaling and configure it.",
+        "x-is-advanced-field": true,
+        "x-meta-type": "inline",
+        "x-title": "Autoscaling"
+      },
+      "container": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Container"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Enable Container configuration.",
+        "x-is-advanced-field": true,
+        "x-meta-type": "inline",
+        "x-title": "Container"
+      },
+      "storage_mounts": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/StorageMounts"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Enable Storage mounts configuration.",
+        "x-is-advanced-field": true,
+        "x-meta-type": "inline",
+        "x-title": "Storage Mounts"
+      },
+      "networking": {
+        "$ref": "#/$defs/NetworkingConfig"
+      }
+    },
+    "required": [
+      "preset",
+      "image"
+    ],
+    "title": "CustomDeploymentInputs",
+    "type": "object",
+    "x-description": "Configuration for Custom Deployment.",
+    "x-is-advanced-field": false,
+    "x-meta-type": "inline",
+    "x-title": "Custom Deployment"
+  },
+  "output": {
+    "$defs": {
+      "RestAPI": {
+        "properties": {
+          "host": {
+            "title": "Host",
+            "type": "string",
+            "x-description": "The hostname of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Hostname"
+          },
+          "port": {
+            "default": 80,
+            "title": "Port",
+            "type": "integer",
+            "x-description": "The port of the HTTP endpoint.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Port"
+          },
+          "protocol": {
+            "default": "http",
+            "title": "Protocol",
+            "type": "string",
+            "x-description": "The protocol to use, e.g., http or https.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Protocol"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 30.0,
+            "title": "Timeout",
+            "x-description": "Connection timeout in seconds.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Connection Timeout"
+          },
+          "base_path": {
+            "default": "/",
+            "title": "Base Path",
+            "type": "string"
+          },
+          "api_type": {
+            "const": "rest",
+            "default": "rest",
+            "title": "Api Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "host"
+        ],
+        "title": "RestAPI",
+        "type": "object",
+        "x-description": "HTTP API Configuration.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "integration",
+        "x-title": "HTTP API"
+      }
+    },
+    "properties": {
+      "internal_web_app_url": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Use this endpoint to reach out to your app via internal network within the cluster. Platform authorization is not applied here but only the workloads from the same project can access it.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "Web App inter-cluster URL"
+      },
+      "external_web_app_url": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RestAPI"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "x-description": "Use this endpoint to reach out to your app via public network from outside the cluster. Platform authorization is applied here if you enabled it during the deployment.",
+        "x-is-advanced-field": false,
+        "x-meta-type": "inline",
+        "x-title": "External Web App URL"
+      }
+    },
+    "title": "CustomDeploymentOutputs",
+    "type": "object"
+  },
+  "tags": [],
+  "git_url": "https://github.com/neuro-inc/mlops-custom-deployment-app",
+  "helm_path": "charts/custom-deployment",
+  "type": "workflow",
+  "logo": "",
+  "assets": [],
+  "documentation_urls": [],
+  "external_urls": [],
+  "mlops_app_type": "service-deployment",
+  "preprocessor_image": "ghcr.io/neuro-inc/custom-deployment-app-hook:development",
+  "postprocessor_image": "ghcr.io/neuro-inc/custom-deployment-app-hook:development"
+}

@@ -1,0 +1,205 @@
+from tests.components.ui.page_manager import PageManager
+from tests.test_cases.steps.ui_steps.page_steps_impl.Invited_to_org_page_steps import (
+    InvitedToOrgPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.choose_secret_popup_steps import (
+    ChooseSecretPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.deep_seek_details_page_steps import (
+    DeepSeekDetailsPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.deep_seek_install_page_steps import (
+    DeepSeekInstallPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.postgres_details_page_steps import (
+    PostgresDetailsPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.postgress_install_page_steps import (
+    PostgresInstallPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.resource_preset_popup_steps import (
+    ResourcePresetPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.shell_app_page_steps import (
+    ShellAppPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.shell_install_page_steps import (
+    ShellInstallPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.shell_details_page_steps import (
+    ShellDetailsPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.auth_page_steps import (
+    AuthPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps_page_steps import (
+    AppsPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.buy_credits_popup_steps import (
+    BuyCreditsPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.create_disk_popup_steps import (
+    CreateDiskPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.create_org_popup_steps import (
+    CreateOrgPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.create_proj_popup_steps import (
+    CreateProjPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.create_secret_popup_steps import (
+    CreateSecretPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.delete_disk_popup_steps import (
+    DeleteDiskPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.delete_file_popup_steps import (
+    DeleteFilePopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.delete_secret_popup_steps import (
+    DeleteSecretPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.disks_page_steps import (
+    DisksPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.edit_org_user_popup_steps import (
+    EditOrgUserPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.edit_proj_member_popup_steps import (
+    EditProjMemberPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.files_page_steps import (
+    FilesPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.invite_org_member_popup_steps import (
+    InviteOrgMemberPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.invite_proj_member_popup_steps import (
+    InviteProjMemberPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.join_org_page_steps import (
+    JoinOrgPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.login_page_steps import (
+    LoginPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.main_page_steps import (
+    MainPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.name_org_page_steps import (
+    NameOrgPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.new_folder_popup_steps import (
+    NewFolderPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.no_proj_popup_steps import (
+    NoProjPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.org_billing_page_steps import (
+    OrgBillingPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.org_people_page_steps import (
+    OrgPeoplePageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.org_settings_page_steps import (
+    OrgSettingsPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.org_settings_popup_steps import (
+    OrgSettingsPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.payment_page_steps import (
+    PaymentPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.proj_info_popup_steps import (
+    ProjInfoPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.proj_people_page_steps import (
+    ProjPeoplePageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.remove_org_user_popup_steps import (
+    RemoveOrgUserPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.remove_proj_member_popup_steps import (
+    RemoveProjMemberPopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.rename_file_popup_steps import (
+    RenameFilePopupSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.secrets_page_steps import (
+    SecretsPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.signup_page_steps import (
+    SignupPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.signup_username_page_steps import (
+    SignupUsernamePageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.thats_it_page_steps import (
+    ThatsItPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.welcome_new_user_page_steps import (
+    WelcomeNewUserPageSteps,
+)
+from tests.utils.test_data_management.test_data import DataManager
+
+
+class PageSteps:
+    def __init__(
+        self,
+        page_manager: PageManager,
+        data_manager: DataManager,
+    ) -> None:
+        self._pm = page_manager
+        self._data_manager = data_manager
+
+        self.apps_page = AppsPageSteps(self._pm)
+        self.auth_page = AuthPageSteps(self._pm)
+        self.login_page = LoginPageSteps(self._pm)
+        self.create_proj_popup = CreateProjPopupSteps(self._pm)
+        self.invite_org_member_popup = InviteOrgMemberPopupSteps(self._pm)
+        self.invite_proj_member_popup = InviteProjMemberPopupSteps(self._pm)
+        self.invited_to_org_page = InvitedToOrgPageSteps(self._pm)
+        self.join_org_page = JoinOrgPageSteps(self._pm)
+        self.main_page = MainPageSteps(self._pm, self._data_manager)
+        self.name_org_page = NameOrgPageSteps(self._pm, self._data_manager)
+        self.no_proj_popup = NoProjPopupSteps(self._pm)
+        self.org_people_page = OrgPeoplePageSteps(self._pm)
+        self.org_settings_popup = OrgSettingsPopupSteps(self._pm)
+        self.proj_info_popup = ProjInfoPopupSteps(self._pm)
+        self.proj_people_page = ProjPeoplePageSteps(self._pm)
+        self.signup_page = SignupPageSteps(self._pm)
+        self.signup_username_page = SignupUsernamePageSteps(self._pm)
+        self.thats_it_page = ThatsItPageSteps(self._pm)
+        self.welcome_new_user_page = WelcomeNewUserPageSteps(self._pm)
+        self.org_settings_page = OrgSettingsPageSteps(self._pm)
+        self.org_billing_page = OrgBillingPageSteps(self._pm)
+        self.edit_org_user_popup = EditOrgUserPopupSteps(self._pm)
+        self.remove_org_user_popup = RemoveOrgUserPopupSteps(self._pm)
+        self.remove_proj_member_popup = RemoveProjMemberPopupSteps(self._pm)
+        self.edit_proj_member_popup = EditProjMemberPopupSteps(self._pm)
+        self.files_page = FilesPageSteps(self._pm, self._data_manager)
+        self.create_org_popup = CreateOrgPopupSteps(self._pm)
+        self.new_folder_popup = NewFolderPopupSteps(self._pm)
+        self.rename_file_popup = RenameFilePopupSteps(self._pm)
+        self.delete_file_popup = DeleteFilePopupSteps(self._pm)
+        self.buy_credits_popup = BuyCreditsPopupSteps(self._pm)
+        self.payment_page = PaymentPageSteps(self._pm)
+        self.secrets_page = SecretsPageSteps(self._pm)
+        self.create_secret_popup = CreateSecretPopupSteps(self._pm)
+        self.delete_secret_popup = DeleteSecretPopupSteps(self._pm)
+        self.disks_page = DisksPageSteps(self._pm)
+        self.create_disk_popup = CreateDiskPopupSteps(self._pm)
+        self.delete_disk_popup = DeleteDiskPopupSteps(self._pm)
+        self.resource_preset_popup = ResourcePresetPopupSteps(self._pm)
+        self.choose_secret_popup = ChooseSecretPopupSteps(self._pm)
+        self.shell_install_page = ShellInstallPageSteps(self._pm)
+        self.shell_details_page = ShellDetailsPageSteps(self._pm, self._data_manager)
+        self.shell_app_page = ShellAppPageSteps(self._pm)
+        self.deep_seek_install_page = DeepSeekInstallPageSteps(self._pm)
+        self.deep_seek_details_page = DeepSeekDetailsPageSteps(
+            self._pm, self._data_manager
+        )
+        self.postgres_install_page = PostgresInstallPageSteps(self._pm)
+        self.postgres_details_page = PostgresDetailsPageSteps(
+            self._pm, self._data_manager
+        )
