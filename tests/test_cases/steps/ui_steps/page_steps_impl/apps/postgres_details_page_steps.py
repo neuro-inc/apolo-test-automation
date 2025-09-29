@@ -13,9 +13,9 @@ class PostgresDetailsPageSteps:
     ) -> None:
         self._pm = page_manager
         self._data_manager = data_manager
-        self.required_APIs = [
-            ("HTTP API", "http"),
-            ("HTTP API", "https"),
+        self.required_user_data = [
+            "Postgres User Credentials (0)",
+            "Postgres Admin User",
         ]
 
     @async_step("Verify that Postgres app Details page displayed")
@@ -30,17 +30,15 @@ class PostgresDetailsPageSteps:
             "Output container should be displayed!"
         )
 
-    @async_step("Verify App output contains required endpoints")
-    async def verify_ui_app_output_apis(self) -> None:
-        api_sections = await self._pm.deep_seek_details_page.parse_api_sections()
-        for name, protocol in self.required_APIs:
-            assert self._has_object_with_title_and_protocol(
-                api_sections, name, protocol
-            ), f"No {name} API with {protocol} protocol!"
+    @async_step("Verify App output contains required user data")
+    async def verify_ui_app_output_user_data(self) -> None:
+        user_data = await self._pm.postgres_details_page.parse_output_user_data()
+        result, error_message = self._verify_required_user_data(user_data)
+        assert result, error_message
 
     @async_step("Verify that app status is valid")
     async def verify_ui_app_status_is_valid(self, expected_status: str) -> None:
-        actual_status = await self._pm.shell_details_page.get_app_status()
+        actual_status = await self._pm.postgres_details_page.get_app_status()
         assert actual_status.lower() == expected_status.lower(), (
             f"Expected {expected_status} but got {actual_status}!"
         )
@@ -67,25 +65,101 @@ class PostgresDetailsPageSteps:
 
     @async_step("Click Uninstall button")
     async def ui_click_uninstall_btn(self) -> None:
-        await self._pm.shell_details_page.click_uninstall_btn()
+        await self._pm.postgres_details_page.click_uninstall_btn()
 
-    @async_step("Verify App endpoints sections contains valid data format")
-    async def verify_ui_app_output_apis_data_format(self) -> None:
-        api_sections = await self._pm.deep_seek_details_page.parse_api_sections()
-        await self._data_manager.app_data.load_output_ui_schema("shell")
+    @async_step("Verify Users data sections contains valid data format")
+    async def verify_ui_app_output_users_data_format(self) -> None:
+        user_data = await self._pm.postgres_details_page.parse_output_user_data()
+        await self._data_manager.app_data.load_output_ui_schema("postgres")
         result, error_message = self._data_manager.app_data.validate_api_section_schema(
-            api_sections
+            [user_data]
         )
         assert result, error_message
 
-    def _has_object_with_title_and_protocol(
-        self, data: list[dict[str, Any]], title: str, protocol: str
-    ) -> bool:
-        """
-        Check if there is at least one object in the list
-        with the given title and protocol.
-        """
-        return any(
-            obj.get("title") == title and obj.get("Protocol") == protocol
-            for obj in data
+    @async_step("Verify Users data contains valid created user info")
+    async def verify_ui_output_created_user_data(
+        self, user_name: str, user_db_name: str
+    ) -> None:
+        user_data = await self._pm.postgres_details_page.parse_output_user_data()
+        result, error_message = await self._validate_created_user_data(
+            user_data=user_data, user_name=user_name, user_db_name=user_db_name
         )
+        assert result, error_message
+
+    def _verify_required_user_data(self, user_data: dict[str, Any]) -> tuple[bool, str]:
+        """
+        Verifies that all required user data sections exist inside the PostgresUsers block.
+
+        Returns:
+            (True, "") if all checks pass
+            (False, "error message") if something is missing
+        """
+        postgres_users = user_data.get("PostgresUsers", {})
+        if not postgres_users:
+            return False, "No PostgresUsers block found in UI output"
+
+        found_keys = list(postgres_users.keys())
+
+        missing = []
+        for user_type in self.required_user_data:
+            if user_type in postgres_users:
+                # e.g. "Postgres Admin User"
+                continue
+            elif (
+                "Postgres Users" in postgres_users
+                and user_type in postgres_users["Postgres Users"]
+            ):
+                # e.g. "Postgres User Credentials (0)"
+                continue
+            else:
+                missing.append(user_type)
+
+        if missing:
+            return (
+                False,
+                f"Missing required user type(s): {', '.join(missing)}. "
+                f"Top-level keys in PostgresUsers: {found_keys}",
+            )
+
+        return True, ""
+
+    async def _validate_created_user_data(
+        self, user_data: dict[str, Any], user_name: str, user_db_name: str
+    ) -> tuple[bool, str]:
+        try:
+            # Navigate into PostgresUsers → Postgres Users → Postgres User Credentials (0)
+            postgres_users = user_data.get("PostgresUsers", {})
+            if not postgres_users:
+                return False, "No PostgresUsers block found in UI output"
+
+            postgres_users_block = postgres_users.get("Postgres Users", {})
+            if not postgres_users_block:
+                return False, "No 'Postgres Users' block found in UI output"
+
+            user_credentials = postgres_users_block.get(
+                "Postgres User Credentials (0)", {}
+            )
+            if not user_credentials:
+                return (
+                    False,
+                    "No 'Postgres User Credentials (0)' block found in UI output",
+                )
+
+            # Extract fields
+            actual_user = user_credentials.get("Postgres User")
+            actual_dbname = user_credentials.get("Dbname")
+
+            # Verify values
+            if actual_user != user_name:
+                return False, (
+                    f"Expected Postgres User '{user_name}', but got '{actual_user}'"
+                )
+            if actual_dbname != user_db_name:
+                return False, (
+                    f"Expected Dbname '{user_db_name}', but got '{actual_dbname}'"
+                )
+
+            return True, ""
+
+        except Exception as e:
+            return False, f"Validation error: {e}"

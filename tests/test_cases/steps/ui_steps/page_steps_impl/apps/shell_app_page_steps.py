@@ -29,6 +29,20 @@ class ShellAppPageSteps:
             f"No line with: {command}"
         )
 
+    @async_step("Verify package was installed in shell output")
+    async def verify_ui_package_installed_in_shell_output(self, command: str) -> None:
+        result, error_message = await self._pm.shell_app_page.check_package_installed(
+            command=command
+        )
+        assert result, error_message
+
+    @async_step("Verify psql connection was successful in shell output")
+    async def verify_ui_psql_conn_in_shell_output(self, command: str) -> None:
+        result, error_message = await self._pm.shell_app_page.check_psql_connection(
+            command=command
+        )
+        assert result, error_message
+
     @async_step("Verify User configuration displayed in shell output")
     async def verify_ui_user_config_in_shell_output(
         self, org_name: str, proj_name: str

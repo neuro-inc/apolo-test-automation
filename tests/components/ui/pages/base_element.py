@@ -12,13 +12,19 @@ class BaseElement:
         *,
         by_label: Optional[str] = None,
         by_role: Optional[str] = None,
+        locator: Optional[Locator] = None,  # 👈 new
         **kwargs: Any,
     ) -> None:
         self.page: Page = page
-        self.selector: str
+        self.selector: str = selector or ""
         self.locator: Locator
-        self._resolve_method: str
+        self._resolve_method: str = ""
         self._resolve_args: dict[str, Any] = kwargs
+
+        if locator:  # 👈 if locator is passed, use it directly
+            self.locator = locator
+            self._resolve_method = "direct"
+            return
 
         if by_label:
             self.selector = by_label
@@ -36,7 +42,9 @@ class BaseElement:
             self.locator = page.locator(selector, **kwargs)
 
         else:
-            raise ValueError("Provide one of: 'selector', 'by_label', or 'by_role'.")
+            raise ValueError(
+                "Provide one of: 'selector', 'by_label', 'by_role', or 'locator'."
+            )
 
     async def expect_to_be_loaded(self, timeout: int = 5000) -> bool:
         try:
@@ -234,27 +242,29 @@ class BaseElement:
         *,
         by_label: Optional[str] = None,
         by_role: Optional[str] = None,
+        locator: Optional[Locator] = None,  # 👈 support locators
         **kwargs: Any,
     ) -> list["BaseElement"]:
         """
         Return a list of BaseElement instances for all elements matching the locator.
         """
-        if by_label:
-            locator = page.get_by_label(by_label, **kwargs)
+        if locator:
+            base_locator = locator
+        elif by_label:
+            base_locator = page.get_by_label(by_label, **kwargs)
         elif by_role:
-            locator = page.get_by_role(cast("Any", by_role), **kwargs)
+            base_locator = page.get_by_role(cast("Any", by_role), **kwargs)
         elif selector:
-            locator = page.locator(selector, **kwargs)
+            base_locator = page.locator(selector, **kwargs)
         else:
-            raise ValueError("Provide one of: 'selector', 'by_label', or 'by_role'.")
+            raise ValueError(
+                "Provide one of: 'selector', 'by_label', 'by_role', or 'locator'."
+            )
 
-        count = await locator.count()
+        count = await base_locator.count()
         elements = []
         for i in range(count):
-            # each BaseElement wraps the nth locator
-            el = cls(
-                page, selector=selector, by_label=by_label, by_role=by_role, **kwargs
-            )
-            el.locator = locator.nth(i)
+            el = cls(page, locator=base_locator.nth(i))  # 👈 direct locator injection
             elements.append(el)
+
         return elements
