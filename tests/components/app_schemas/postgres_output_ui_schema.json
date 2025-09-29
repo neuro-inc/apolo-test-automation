@@ -1,0 +1,87 @@
+{
+  "type": "object",
+  "properties": {
+    "PostgresUsers": {
+      "type": "object",
+      "properties": {
+        "Postgres Admin User": {
+          "type": "object",
+          "properties": {
+            "PGBouncer Host": { "type": "string", "minLength": 1 },
+            "PGBouncer Port": { "type": "string", "pattern": "^[0-9]+$" },
+            "Postgres Host": { "type": "string", "minLength": 1 },
+            "Postgres Password": { "type": "string", "minLength": 1 },
+            "Postgres Port": { "type": "string", "pattern": "^[0-9]+$" },
+            "Postgres User": { "type": "string", "enum": ["postgres"] },
+            "User Type": { "type": "string", "enum": ["admin"] },
+            "__type__": { "type": "string", "enum": ["PostgresAdminUser"] }
+          },
+          "required": [
+            "PGBouncer Host",
+            "PGBouncer Port",
+            "Postgres Host",
+            "Postgres Password",
+            "Postgres Port",
+            "Postgres User",
+            "User Type",
+            "__type__"
+          ]
+        },
+        "Postgres Users": {
+          "type": "object",
+          "patternProperties": {
+            "^Postgres User Credentials \\(\\d+\\)$": {
+              "type": "object",
+              "properties": {
+                "Dbname": { "type": "string", "minLength": 1 },
+                "Jdbc Uri": { "type": "string", "minLength": 1 },
+                "PGBouncer Host": { "type": "string", "minLength": 1 },
+                "PGBouncer Port": { "type": "string", "pattern": "^[0-9]+$" },
+                "Pgbouncer Jdbc Uri": { "type": "string", "minLength": 1 },
+                "Pgbouncer Uri": { "type": "string", "minLength": 1 },
+                "Postgres Host": { "type": "string", "minLength": 1 },
+                "Postgres Password": { "type": "string", "minLength": 1 },
+                "Postgres Port": { "type": "string", "pattern": "^[0-9]+$" },
+                "Postgres URI": {
+                  "type": "object",
+                  "properties": {
+                    "URI": { "type": "string", "minLength": 1 },
+                    "__type__": { "type": "string", "enum": ["PostgresURI"] }
+                  },
+                  "required": ["URI", "__type__"]
+                },
+                "Postgres User": { "type": "string", "minLength": 1 },
+                "Uri": { "type": "string", "minLength": 1 },
+                "User Type": { "type": "string", "enum": ["user"] },
+                "__type__": {
+                  "type": "string",
+                  "enum": ["CrunchyPostgresUserCredentials"]
+                }
+              },
+              "required": [
+                "Dbname",
+                "Jdbc Uri",
+                "PGBouncer Host",
+                "PGBouncer Port",
+                "Pgbouncer Jdbc Uri",
+                "Pgbouncer Uri",
+                "Postgres Host",
+                "Postgres Password",
+                "Postgres Port",
+                "Postgres URI",
+                "Postgres User",
+                "Uri",
+                "User Type",
+                "__type__"
+              ]
+            }
+          }
+        },
+        "__type__": { "type": "string", "enum": ["PostgresUsers"] }
+      },
+      "required": ["Postgres Admin User", "Postgres Users", "__type__"]
+    },
+    "Service APIs": { "type": ["string", "null"] }
+  },
+  "required": ["PostgresUsers", "Service APIs"]
+}

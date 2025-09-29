@@ -1,5 +1,5 @@
 from typing import Any
-from playwright.async_api import Page
+from playwright.async_api import Page, Locator
 from tests.components.ui.pages.base_element import BaseElement
 from tests.components.ui.pages.base_page import BasePage
 
@@ -224,3 +224,58 @@ class PostgresDetailsPage(BasePage):
         if mismatches:
             return False, "; ".join(mismatches)
         return True, ""
+
+    async def parse_output_user_data(self) -> dict[str, Any]:
+        h3 = self.page.locator("h3:has-text('output')")
+        root = h3.locator("xpath=../div[contains(@class, 'gap-10')]")
+        return await self._parse_section(root)
+
+    async def _parse_section(self, locator: Locator) -> dict[str, Any]:
+        data: dict[str, Any] = {}
+
+        # first look for direct overflow-auto children
+        sections = locator.locator(":scope > div.overflow-auto")
+        if await sections.count() == 0:
+            # fallback: sometimes wrapped in gap-6 containers
+            sections = locator.locator(
+                ":scope > div.flex.flex-col.gap-6 > div.overflow-auto"
+            )
+
+        count = await sections.count()
+
+        for i in range(count):
+            section = sections.nth(i)
+
+            # heading = key
+            key_el = section.locator("h4").first
+            if await key_el.count() == 0:
+                continue
+            key = (await key_el.inner_text()).strip()
+            if key.startswith("0 "):
+                continue
+
+            # check for nested children
+            child_container = section.locator(
+                ":scope > .flex.flex-col.gap-4.pl-4, :scope > .flex.flex-col.gap-6.pl-4"
+            )
+            if await child_container.count() > 0:
+                value = await self._parse_section(child_container)
+            else:
+                span = section.locator(":scope > p span").first
+                if await span.count() > 0:
+                    value = (await span.inner_text()).strip()  # type: ignore[assignment]
+                    if value.lower() == "null":  # type: ignore[attr-defined]
+                        value = None
+                else:
+                    value = None
+
+            # merge duplicates
+            if key in data:
+                if not isinstance(data[key], list):
+                    data[key] = [data[key]]
+                if value not in data[key]:
+                    data[key].append(value)
+            else:
+                data[key] = value
+
+        return data

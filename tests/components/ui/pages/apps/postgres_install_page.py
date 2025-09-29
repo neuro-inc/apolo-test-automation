@@ -92,7 +92,7 @@ class PostgresInstallPage(BasePage):
         """
         return BaseElement(
             self.page,
-            "(//div[.//label[text()='Database name']]//button[normalize-space()='Add entry'])[1]",
+            "(//div[.//label[normalize-space()='Databases']]//button[normalize-space()='Add entry'])[1]",
         )
 
     async def is_add_database_name_button_displayed(self) -> bool:

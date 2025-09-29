@@ -38,6 +38,110 @@ class ShellAppPage(BasePage):
         else:
             return any(value in output_line for output_line in self._output)
 
+    async def check_package_installed(self, command: str) -> tuple[bool, str]:
+        """
+        Verify that a package (or packages) was installed successfully in Shell output.
+
+        Parameters
+        ----------
+        command : str
+            The command string (e.g., "apt update && apt install curl git -y")
+
+        Returns
+        -------
+        tuple[bool, str]
+            (success, message) where success is True if installation succeeded.
+        """
+        cmd_index = None
+        for i, line in enumerate(self._output):
+            if command in line:
+                cmd_index = i
+                break
+
+        if cmd_index is None:
+            return False, f"Command '{command}' not found in output."
+
+        sliced_output = "\n".join(self._output[cmd_index:])
+
+        match = re.search(r"apt(?:-get)?\s+install\s+(.+?)(?:\s+-y|$)", command)
+        packages = match.group(1).split() if match else []
+
+        success_indicators = [
+            "Setting up",
+            "update-alternatives:",
+            "Processing triggers for",
+        ]
+
+        fail_indicators = [
+            "E: ",
+            "dpkg: error:",
+            "Failed to fetch",
+            "Unable to locate package",
+        ]
+
+        for fail_msg in fail_indicators:
+            if fail_msg in sliced_output:
+                return False, f"Installation failed: found error '{fail_msg.strip()}'"
+
+        if any(marker in sliced_output for marker in success_indicators):
+            if packages:
+                return True, f"Package(s) installed successfully: {', '.join(packages)}"
+            return True, "Package installed successfully."
+
+        return False, "Command executed, but installation result could not be verified."
+
+    async def check_psql_connection(self, command: str) -> tuple[bool, str]:
+        """
+        Verify that a psql connection was established successfully.
+
+        Parameters
+        ----------
+        command : str
+            The executed psql command (including URI).
+
+        Returns
+        -------
+        tuple[bool, str]
+            (success, message) where success is True if connection succeeded.
+        """
+        # Find the line index of the executed command
+        cmd_index = None
+        for i, line in enumerate(self._output):
+            if command in line:
+                cmd_index = i
+                break
+
+        if cmd_index is None:
+            return False, f"Command '{command}' not found in output."
+
+        # Slice logs from command execution onward
+        sliced_output = "\n".join(self._output[cmd_index:])
+
+        success_indicators = [
+            "psql (",  # client launched
+            "server",  # server version shown
+            "SSL connection",  # SSL/TLS connection
+            'Type "help" for help.',  # interactive shell ready
+        ]
+
+        fail_indicators = [
+            "FATAL:",
+            "psql: error:",
+            "could not connect to server",
+            "no password supplied",
+        ]
+
+        # Fail fast if any error appears
+        for fail_msg in fail_indicators:
+            if fail_msg in sliced_output:
+                return False, f"Connection failed: found error '{fail_msg.strip()}'"
+
+        # Check if all success markers appear
+        if all(marker in sliced_output for marker in success_indicators):
+            return True, ""
+
+        return False, "Command executed, but connection result could not be verified."
+
     async def _capture_canvas_output(self, duration: int = 5000) -> list[str]:
         ANSI_ESCAPE = re.compile(
             r"""

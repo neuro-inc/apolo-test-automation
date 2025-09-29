@@ -257,18 +257,23 @@ class MainPage(BasePage):
         self.log("Click Installed Apps button")
         await self._get_installed_apps_btn().click()
 
-    def _get_app_container(self, app_name: str) -> BaseElement:
-        return BaseElement(
+    async def _get_app_container(self, app_name: str) -> BaseElement:
+        elements = await BaseElement.find_all(
             self.page,
-            selector="div.peer",
+            "div.peer",
             has=self.page.get_by_role("link", name=app_name),
         )
+        if not elements:
+            return BaseElement(
+                self.page, "div.peer", has=self.page.get_by_role("link", name=app_name)
+            )
+        return elements[-1]
 
     async def verify_app_container_displayed(self, app_name: str) -> bool:
         self.log(f"Verify app container {app_name} displayed")
 
         container_area = self.page.locator("div.min-h-0.min-w-0.overflow-auto")
-        container = self._get_app_container(app_name)
+        container = await self._get_app_container(app_name)
 
         try:
             for _ in range(10):  # limit to avoid infinite loop
@@ -287,15 +292,17 @@ class MainPage(BasePage):
             self.log(f"App container {app_name} not found: {e}")
             return False
 
-    def _get_app_install_btn(self, app_name: str) -> BaseElement:
-        selector = (
-            f"div.peer:has(a.text-h5:has-text('{app_name}')) a:has-text('Install')"
-        )
+    async def _get_app_install_btn(self, app_name: str) -> BaseElement:
+        container = await self._get_app_container(app_name)
+        if not container:
+            raise ValueError(f"App container not found for {app_name}")
 
-        return BaseElement(self.page, selector=selector)
+        locator = container.locator.locator("a:has-text('Install')")
+        return BaseElement(self.page, locator=locator)
 
     async def click_install_btn_app_container(self, app_name: str) -> None:
-        await self._get_app_install_btn(app_name).click()
+        element = await self._get_app_install_btn(app_name)
+        await element.click()
         await self.page.wait_for_timeout(2000)
 
     def _get_container_installed_label(self, app_name: str) -> BaseElement:
