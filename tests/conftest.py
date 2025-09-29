@@ -74,7 +74,7 @@ def pytest_configure(config: Config) -> None:
 
 @pytest.hookimpl
 def pytest_runtest_logreport(report: TestReport) -> None:
-    if report.when != "call":
+    if report.when not in {"call", "setup"}:
         return
 
     suite = getattr(getattr(report, "item", None), "cls", None)
@@ -85,12 +85,12 @@ def pytest_runtest_logreport(report: TestReport) -> None:
     if getattr(report, "rerun", False):
         _SUITE_OUTCOMES[suite_name]["rerun"] += 1
 
-    if report.passed:
+    if report.passed and report.when == "call":
         _SUITE_OUTCOMES[suite_name]["passed"] += 1
-    elif report.failed:
+    elif report.failed and report.when == "call":
         _SUITE_OUTCOMES[suite_name]["failed"] += 1
     elif report.skipped:
-        if hasattr(report, "wasxfail") and report.wasxfail:
+        if getattr(report, "wasxfail", False):
             _SUITE_OUTCOMES[suite_name]["xfail"] += 1
         else:
             _SUITE_OUTCOMES[suite_name]["skipped"] += 1

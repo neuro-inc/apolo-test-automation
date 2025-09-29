@@ -18,6 +18,9 @@ class TestE2EPostgresApp(BaseTestClass):
     postgres_user_db_name = ""
     app_install_status = False
 
+    shell_app_url = ""
+    shell_app_install_status = False
+
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
         """
@@ -33,6 +36,11 @@ class TestE2EPostgresApp(BaseTestClass):
         if not TestE2EPostgresApp.app_install_status:
             pytest.skip("PostgreSQL app was not installed successfully")
 
+    @pytest.fixture
+    def shell_status(self) -> None:
+        if not TestE2EPostgresApp.shell_app_install_status:
+            pytest.skip("Shell app was not installed successfully")
+
     @async_title("Install PostgreSQL app via UI")
     @pytest.mark.order(1)
     @pytest.mark.timeout(700)
@@ -41,6 +49,13 @@ class TestE2EPostgresApp(BaseTestClass):
         - Login with valid credentials.
         - Create new organization via **API**.
         - Create new project via **API**.
+        - Select the Preset `cpu-medium`
+        - Set PGbouncer.replicas to `1`
+        - Set Postgres Configuration.Instance replicas to `1`
+        - Click on Database Users `Add Entry`
+        - Enter Database `user name`
+        - Enter Database `name`
+        - Select PG Bouncer.Resource Preset `cpu-medium`
 
         ### Verify that:
 
@@ -323,8 +338,262 @@ class TestE2EPostgresApp(BaseTestClass):
             expected_proj_name=proj_name,
         )
 
-    @async_title("Verify User can uninstall app via UI")
+    @async_title("Verify app output contains required users data via UI")
     @pytest.mark.order(8)
+    async def test_app_output_user_data_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - PostgreSQL app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Click Installed Apps.
+        - Click `Details` button on installed app container.
+        - Scroll to `Output` section.
+
+        ### Verify that `Output` section contains:
+        - Postgres User data
+        - Postgres Admin data
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        app_name = TestE2EPostgresApp.postgres_app_name
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.ui_click_installed_apps_btn()
+        await ui_steps.main_page.verify_ui_inst_app_details_btn_displayed(
+            app_name=app_name, owner=user.username
+        )
+
+        await ui_steps.main_page.ui_click_inst_app_details_btn(
+            app_name=app_name, owner=user.username
+        )
+        await ui_steps.postgres_details_page.verify_ui_page_displayed()
+        await ui_steps.postgres_details_page.verify_ui_app_output_displayed()
+        await ui_steps.postgres_details_page.verify_ui_app_output_user_data()
+
+    @async_title("Verify app output user data schemas is valid via UI")
+    @pytest.mark.order(9)
+    async def test_app_output_user_data_format_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - PostgreSQL app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Click Installed Apps.
+        - Click `Details` button on installed app container.
+        - Scroll to `Output` section.
+
+        ### Verify that:
+        - User data sections data matching expected data format.
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        app_name = TestE2EPostgresApp.postgres_app_name
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.ui_click_installed_apps_btn()
+        await ui_steps.main_page.verify_ui_inst_app_details_btn_displayed(
+            app_name=app_name, owner=user.username
+        )
+
+        await ui_steps.main_page.ui_click_inst_app_details_btn(
+            app_name=app_name, owner=user.username
+        )
+        await ui_steps.postgres_details_page.verify_ui_page_displayed()
+        await ui_steps.postgres_details_page.verify_ui_app_output_displayed()
+        await ui_steps.postgres_details_page.verify_ui_app_output_users_data_format()
+        user_name = TestE2EPostgresApp.postgres_user_name
+        user_db_name = TestE2EPostgresApp.postgres_user_db_name
+        await ui_steps.postgres_details_page.verify_ui_output_created_user_data(
+            user_name=user_name, user_db_name=user_db_name
+        )
+
+    @async_title("Verify app output contains required endpoints via API")
+    @pytest.mark.order(10)
+    async def test_app_output_api_via_api(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - PostgreSQL app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+
+        ### Verify that `output` API response contains required endpoints:
+
+        - Postgres User data
+        - Postgres Admin data
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EPostgresApp.postgres_app_id
+        org_name = TestE2EPostgresApp.org_name
+        proj_name = TestE2EPostgresApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.get_app_output_api(
+            token=user.token,
+            app_id=app_id,
+            org_name=org_name,
+            proj_name=proj_name,
+        )
+        await api_steps.verify_postgres_output_user_data(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify app output endpoints schema via API")
+    @pytest.mark.order(11)
+    async def test_app_output_api_schema_via_api(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - PostgreSQL app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+
+        ### Verify that:
+
+        - API endpoints data matching expected json schema.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EPostgresApp.postgres_app_id
+        org_name = TestE2EPostgresApp.org_name
+        proj_name = TestE2EPostgresApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_postgres_output_users_data_schema_api(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify PostgreSQL client installation in Shell app via UI")
+    @pytest.mark.order(12)
+    @pytest.mark.timeout(700)
+    async def test_postgres_install_in_shell_vi_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - PostgreSQL app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Install Shell app.
+        - Open Shell app.
+        - Install `postgresql-client` in Shell app.
+
+        ### Verify that:
+
+        - `postgresql-client` packet is installed successfully.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        org_name = TestE2EPostgresApp.org_name
+        proj_name = TestE2EPostgresApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.verify_ui_shell_container_displayed()
+
+        await ui_steps.main_page.ui_shell_container_click_install_btn()
+        await ui_steps.shell_install_page.verify_ui_page_displayed()
+
+        await ui_steps.shell_install_page.ui_click_resource_preset_btn()
+        await ui_steps.resource_preset_popup.verify_ui_popup_displayed()
+
+        await ui_steps.resource_preset_popup.ui_select_cpu_medium_preset()
+        await ui_steps.resource_preset_popup.ui_click_apply_button()
+        await ui_steps.resource_preset_popup.ui_wait_to_disappear()
+        app_name = self._data_manager.generate_app_instance_name(app_name="Shell")
+        await ui_steps.shell_install_page.ui_enter_shell_app_name(app_name=app_name)
+
+        await ui_steps.shell_install_page.ui_click_install_btn()
+
+        await ui_steps.shell_details_page.verify_ui_page_displayed()
+        await ui_steps.shell_details_page.verify_ui_app_status_is_valid(
+            expected_status="Queued"
+        )
+
+        app_id = await ui_steps.shell_details_page.ui_get_shell_app_uuid()
+        await api_steps.wait_for_app_events_until_ready(
+            token=user.token,
+            app_id=app_id,
+            org_name=org_name,
+            proj_name=proj_name,
+        )
+        await ui_steps.ui_reload_page()
+        await ui_steps.shell_details_page.verify_ui_app_status_is_valid(
+            expected_status="Healthy"
+        )
+        TestE2EPostgresApp.shell_app_install_status = True
+
+        url = await api_steps.get_shell_ext_output_endpoint_api(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+        TestE2EPostgresApp.shell_app_url = url
+        await ui_steps.shell_app_page.ui_open_shell_app_page(url=url)
+        await ui_steps.shell_app_page.verify_ui_page_displayed()
+
+        await ui_steps.shell_app_page.ui_enter_command_in_shell(
+            "apt update && apt install postgresql-client -y"
+        )
+        await ui_steps.shell_app_page.ui_open_shell_app_page(url=url)
+        await ui_steps.shell_app_page.verify_ui_executed_command_in_shell_output(
+            command="apt update && apt install postgresql-client -y"
+        )
+
+        await ui_steps.shell_app_page.verify_ui_package_installed_in_shell_output(
+            command="apt update && apt install postgresql-client -y"
+        )
+
+    @async_title("Verify PostgreSQL client connection in Shell app via UI")
+    @pytest.mark.order(13)
+    @pytest.mark.timeout(700)
+    async def test_postgres_connection_in_shell_vi_ui(  # type: ignore[no-untyped-def]
+        self, postgres_status, shell_status
+    ) -> None:
+        """
+        ### Pre-conditions:
+        - PostgreSQL app installed.
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Get Postgres Users.Postgres User Credentials[0].Uri from `output` API.
+        - Open Shell app.
+        - Run `psql {URI}` command in Shell app.
+
+        ### Verify that:
+
+        - psql connection is successful.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EPostgresApp.postgres_app_id
+        org_name = TestE2EPostgresApp.org_name
+        proj_name = TestE2EPostgresApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        url = TestE2EPostgresApp.shell_app_url
+        postgre_uri = await api_steps.get_postgres_user_uri_endpoint_api(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+        await ui_steps.shell_app_page.ui_open_shell_app_page(url=url)
+        await ui_steps.shell_app_page.ui_enter_command_in_shell(f"psql {postgre_uri}")
+
+        await ui_steps.shell_app_page.ui_open_shell_app_page(url=url)
+        await ui_steps.shell_app_page.verify_ui_executed_command_in_shell_output(
+            command=f"psql {postgre_uri}"
+        )
+
+        await ui_steps.shell_app_page.verify_ui_psql_conn_in_shell_output(
+            command=f"psql {postgre_uri}"
+        )
+
+    @async_title("Verify User can uninstall app via UI")
+    @pytest.mark.order(14)
     async def test_app_uninstall_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:

@@ -1,0 +1,112 @@
+{
+  "title": "PostgresUsersResponse",
+  "type": "object",
+  "properties": {
+    "app_url": {
+      "type": ["string", "null"]
+    },
+    "postgres_users": {
+      "type": "object",
+      "properties": {
+        "__type__": {
+          "type": "string",
+          "const": "PostgresUsers"
+        },
+        "postgres_admin_user": {
+          "type": "object",
+          "properties": {
+            "__type__": { "type": "string", "const": "PostgresAdminUser" },
+            "host": {
+              "type": "string",
+              "minLength": 1
+            },
+            "password": { "type": "string" },
+            "pgbouncer_host": {
+              "type": "string",
+              "minLength": 1
+            },
+            "pgbouncer_port": { "type": "integer" },
+            "port": {
+              "type": "integer"
+            },
+            "user": {
+              "type": "string",
+              "enum": ["postgres"]
+            },
+            "user_type": { "type": "string", "enum": ["admin"] }
+          },
+          "required": [
+            "__type__",
+            "host",
+            "pgbouncer_host",
+            "pgbouncer_port",
+            "port",
+            "user",
+            "user_type"
+          ],
+          "additionalProperties": false
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "__type__": { "type": "string", "const": "CrunchyPostgresUserCredentials" },
+              "dbname": { "type": "string" },
+              "host": {
+                "type": "string",
+                "minLength": 1
+              },
+              "jdbc_uri": { "type": "string" },
+              "password": { "type": "string" },
+              "pgbouncer_host": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pgbouncer_jdbc_uri": { "type": "string" },
+              "pgbouncer_port": { "type": "integer" },
+              "pgbouncer_uri": { "type": "string" },
+              "port": {
+                "type": "integer",
+                "minLength": 1
+              },
+              "postgres_uri": {
+                "type": "object",
+                "properties": {
+                  "__type__": { "type": "string", "const": "PostgresURI" },
+                  "uri": { "type": "string" }
+                },
+                "required": ["__type__", "uri"],
+                "additionalProperties": false
+              },
+              "uri": { "type": "string" },
+              "user": { "type": "string" },
+              "user_type": { "type": "string", "enum": ["user"] }
+            },
+            "required": [
+              "__type__",
+              "dbname",
+              "host",
+              "jdbc_uri",
+              "password",
+              "pgbouncer_host",
+              "pgbouncer_jdbc_uri",
+              "pgbouncer_port",
+              "pgbouncer_uri",
+              "port",
+              "postgres_uri",
+              "uri",
+              "user",
+              "user_type"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["__type__", "postgres_admin_user", "users"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["app_url", "postgres_users"],
+  "additionalProperties": false
+}
