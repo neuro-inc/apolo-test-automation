@@ -1,0 +1,102 @@
+{
+  "title": "Postgres App Config Schema",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "description": "Human-readable name of the app"
+    },
+    "template_name": {
+      "type": "string",
+      "enum": ["postgres"],
+      "description": "Template identifier (fixed: postgres)"
+    },
+    "template_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Template version (semantic version prefixed with v)"
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "postgres_config": {
+          "type": "object",
+          "properties": {
+            "postgres_version": {
+              "type": "string",
+              "pattern": "^[0-9]+$",
+              "description": "Postgres major version (stringified int, e.g., '16')"
+            },
+            "instance_replicas": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Number of Postgres replicas"
+            },
+            "instance_size": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Size of each instance"
+            },
+            "db_users": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "db_names": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                },
+                "required": ["name", "db_names"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "postgres_version",
+            "instance_replicas",
+            "instance_size",
+            "db_users"
+          ],
+          "additionalProperties": false
+        },
+        "pg_bouncer": {
+          "type": "object",
+          "properties": {
+            "replicas": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "preset": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" }
+              },
+              "required": ["name"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["replicas", "preset"],
+          "additionalProperties": false
+        },
+        "backup": {
+          "type": ["object", "null"],
+          "description": "Backup configuration (null if not enabled)"
+        },
+        "preset": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" }
+          },
+          "required": ["name"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["postgres_config", "pg_bouncer", "backup", "preset"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["display_name", "template_name", "template_version", "input"],
+  "additionalProperties": false
+}

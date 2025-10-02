@@ -1,0 +1,54 @@
+{
+  "title": "DeepSeek Inference Config Schema",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "description": "Human-readable name of the app."
+    },
+    "template_name": {
+      "type": "string",
+      "enum": ["deepseek-inference", "deepseek-inference-argocd"],
+      "description": "Template identifier (fixed: deepseek-inference)."
+    },
+    "template_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version of the template (semantic version prefixed with 'v')."
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "autoscaling_enabled": {
+          "type": "boolean",
+          "description": "Whether autoscaling is enabled."
+        },
+        "llm_class": {
+          "type": "string",
+          "enum": ["deepseek_r1"],
+          "description": "DeepSeek model class."
+        },
+        "hf_token": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "Hugging Face access token identifier."
+            }
+          },
+          "required": ["key"],
+          "additionalProperties": false
+        },
+        "size": {
+          "type": "string",
+          "enum": ["R1-Zero", "R1-Distill-Qwen-1.5B"],
+          "description": "Resource preset size."
+        }
+      },
+      "required": ["autoscaling_enabled", "llm_class", "hf_token", "size"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["display_name", "template_name", "template_version", "input"],
+  "additionalProperties": false
+}
