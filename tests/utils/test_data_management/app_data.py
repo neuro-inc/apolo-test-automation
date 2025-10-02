@@ -37,6 +37,21 @@ class AppData:
             content = await f.read()
             self._saved_schema = json.loads(content)
 
+    async def load_app_config_schema(self, app_name: str) -> None:
+        schema_path = Path(
+            f"{self._output_schemas_path}/{app_name}_config_file_schema.json"
+        )
+
+        if not schema_path.exists():
+            raise ValueError(f"Schema file not found: {schema_path}")
+
+        async with aiofiles.open(schema_path, mode="r") as f:
+            content = await f.read()
+            self._saved_schema = json.loads(content)
+
+    async def get_app_import_config_file_path(self, app_name: str) -> str:
+        return f"{self._output_schemas_path}/{app_name}_import_config_file.yaml"
+
     async def load_compl_schema(self, app_name: str) -> None:
         schema_path = Path(f"{self._output_schemas_path}/{app_name}_compl_schema.json")
 

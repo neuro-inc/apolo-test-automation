@@ -157,8 +157,34 @@ class TestE2EPostgresApp(BaseTestClass):
 
         TestE2EPostgresApp.app_install_status = True
 
-    @async_title("Verify installed PostgreSQL app listed in Installed apps via UI")
+    @async_title("Verify event list of installed PostgreSQL app via API")
     @pytest.mark.order(2)
+    async def test_app_event_list_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - PostgreSQL app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - GET '/events' endpoint.
+
+        ### Verify that:
+
+        - App events list contains states queued, progressing and healthy.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EPostgresApp.postgres_app_id
+        org_name = TestE2EPostgresApp.org_name
+        proj_name = TestE2EPostgresApp.proj_name
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_api_app_events_list(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify installed PostgreSQL app listed in Installed apps via UI")
+    @pytest.mark.order(3)
     async def test_app_listed_in_installed_apps_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -184,7 +210,7 @@ class TestE2EPostgresApp(BaseTestClass):
     @async_title(
         "Verify User can reach PostgreSQL app Details page from Installed Apps page"
     )
-    @pytest.mark.order(3)
+    @pytest.mark.order(4)
     async def test_app_details_from_inst_apps_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -216,7 +242,7 @@ class TestE2EPostgresApp(BaseTestClass):
     @async_title(
         "Verify installed PostgreSQL app info displayed on the app container via UI"
     )
-    @pytest.mark.order(4)
+    @pytest.mark.order(5)
     async def test_postgres_container_installed_info_via_ui(  # type: ignore[no-untyped-def]
         self, postgres_status
     ) -> None:
@@ -242,7 +268,7 @@ class TestE2EPostgresApp(BaseTestClass):
         await ui_steps.main_page.verify_ui_show_all_btn_postgres_container_displayed()
 
     @async_title("Verify User can reach Installed apps page from app container via UI")
-    @pytest.mark.order(5)
+    @pytest.mark.order(6)
     async def test_postgres_installed_apps_from_container_via_ui(  # type: ignore[no-untyped-def]
         self, postgres_status
     ) -> None:
@@ -269,7 +295,7 @@ class TestE2EPostgresApp(BaseTestClass):
         )
 
     @async_title("Verify PostgreSQL app details info via UI")
-    @pytest.mark.order(6)
+    @pytest.mark.order(7)
     async def test_app_details_info_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -306,7 +332,7 @@ class TestE2EPostgresApp(BaseTestClass):
         )
 
     @async_title("Verify Installed apps details info via API")
-    @pytest.mark.order(7)
+    @pytest.mark.order(8)
     async def test_app_details_info_via_api(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -339,7 +365,7 @@ class TestE2EPostgresApp(BaseTestClass):
         )
 
     @async_title("Verify app output contains required users data via UI")
-    @pytest.mark.order(8)
+    @pytest.mark.order(9)
     async def test_app_output_user_data_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -372,7 +398,7 @@ class TestE2EPostgresApp(BaseTestClass):
         await ui_steps.postgres_details_page.verify_ui_app_output_user_data()
 
     @async_title("Verify app output user data schemas is valid via UI")
-    @pytest.mark.order(9)
+    @pytest.mark.order(10)
     async def test_app_output_user_data_format_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -409,7 +435,7 @@ class TestE2EPostgresApp(BaseTestClass):
         )
 
     @async_title("Verify app output contains required endpoints via API")
-    @pytest.mark.order(10)
+    @pytest.mark.order(11)
     async def test_app_output_api_via_api(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -443,7 +469,7 @@ class TestE2EPostgresApp(BaseTestClass):
         )
 
     @async_title("Verify app output endpoints schema via API")
-    @pytest.mark.order(11)
+    @pytest.mark.order(12)
     async def test_app_output_api_schema_via_api(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -470,7 +496,7 @@ class TestE2EPostgresApp(BaseTestClass):
         )
 
     @async_title("Verify PostgreSQL client installation in Shell app via UI")
-    @pytest.mark.order(12)
+    @pytest.mark.order(13)
     @pytest.mark.timeout(700)
     async def test_postgres_install_in_shell_vi_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
@@ -548,7 +574,7 @@ class TestE2EPostgresApp(BaseTestClass):
         )
 
     @async_title("Verify PostgreSQL client connection in Shell app via UI")
-    @pytest.mark.order(13)
+    @pytest.mark.order(14)
     @pytest.mark.timeout(700)
     async def test_postgres_connection_in_shell_vi_ui(  # type: ignore[no-untyped-def]
         self, postgres_status, shell_status
@@ -593,7 +619,7 @@ class TestE2EPostgresApp(BaseTestClass):
         )
 
     @async_title("Verify User can uninstall app via UI")
-    @pytest.mark.order(14)
+    @pytest.mark.order(15)
     async def test_app_uninstall_via_ui(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -632,4 +658,151 @@ class TestE2EPostgresApp(BaseTestClass):
         await ui_steps.main_page.ui_click_installed_apps_btn()
         await ui_steps.main_page.ui_verify_installed_app_not_displayed(
             app_name=app_name, owner=user.username
+        )
+
+    @async_title("Export PostgreSQL app config via UI")
+    @pytest.mark.order(16)
+    async def test_export_app_config_via_ui(self) -> None:
+        """
+         Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Select the Preset `cpu-medium`
+        - Set PGbouncer.replicas to `1`
+        - Set Postgres Configuration.Instance replicas to `1`
+        - Click on Database Users `Add Entry`
+        - Enter Database `user name`
+        - Enter Database `name`
+        - Select PG Bouncer.Resource Preset `cpu-medium`
+        - Click `Export config` button.
+
+        ### Verify that:
+
+        - Config downloaded as `yaml` file matches expected schema.
+        - Exported config contains valid data.
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.verify_ui_postgres_container_displayed()
+
+        await ui_steps.main_page.ui_postgres_container_click_install_btn()
+        await ui_steps.postgres_install_page.verify_ui_page_displayed()
+
+        await ui_steps.postgres_install_page.ui_click_resource_preset_btn()
+        await ui_steps.resource_preset_popup.verify_ui_popup_displayed()
+
+        await ui_steps.resource_preset_popup.ui_select_cpu_medium_preset()
+        await ui_steps.resource_preset_popup.ui_click_apply_button()
+        await ui_steps.resource_preset_popup.ui_wait_to_disappear()
+
+        await ui_steps.postgres_install_page.ui_enter_postgres_replicas_count(value="1")
+        await ui_steps.postgres_install_page.ui_click_add_database_user_btn()
+        await (
+            ui_steps.postgres_install_page.verify_ui_postgres_username_input_displayed()
+        )
+        await ui_steps.postgres_install_page.verify_ui_add_postgres_user_db_btn_displayed()
+
+        ps_user_name = self._data_manager.generate_postgres_user_name()
+        TestE2EPostgresApp.postgres_user_name = ps_user_name
+        await ui_steps.postgres_install_page.ui_enter_postgres_username(
+            value=ps_user_name
+        )
+        await ui_steps.postgres_install_page.ui_click_add_postgres_user_db_btn()
+        await (
+            ui_steps.postgres_install_page.verify_ui_postgres_user_db_input_displayed()
+        )
+
+        ps_user_db_name = self._data_manager.generate_postgres_user_db_name()
+        TestE2EPostgresApp.postgres_user_db_name = ps_user_db_name
+        await ui_steps.postgres_install_page.ui_enter_postgres_user_db_name(
+            value=ps_user_db_name
+        )
+        await ui_steps.postgres_install_page.ui_click_pg_bouncer_resource_preset_btn()
+        await ui_steps.resource_preset_popup.verify_ui_popup_displayed()
+
+        await ui_steps.resource_preset_popup.ui_select_cpu_medium_preset()
+        await ui_steps.resource_preset_popup.ui_click_apply_button()
+        await ui_steps.resource_preset_popup.ui_wait_to_disappear()
+
+        await ui_steps.postgres_install_page.ui_enter_pg_bouncer_replicas_count(
+            value="1"
+        )
+
+        app_name = self._data_manager.generate_app_instance_name(app_name="PostgreSQL")
+        TestE2EPostgresApp.postgres_app_name = app_name
+        await ui_steps.postgres_install_page.ui_enter_postgres_display_name(
+            value=app_name
+        )
+
+        await ui_steps.postgres_install_page.verify_ui_export_config_btn_enabled()
+        downloaded_config = await ui_steps.postgres_install_page.ui_export_config()
+        await ui_steps.postgres_install_page.verify_exported_config_schema(
+            config_file_path=downloaded_config
+        )
+        await ui_steps.postgres_install_page.verify_exported_config_data(
+            config_file_path=downloaded_config,
+            display_name=app_name,
+            res_preset="cpu-medium",
+            postgres_repl="1",
+            postgres_user=ps_user_name,
+            postgres_db=ps_user_db_name,
+            pg_res_preset="cpu-medium",
+            pg_repl="1",
+        )
+
+    @async_title("Import PostgreSQL app config via UI")
+    @pytest.mark.order(17)
+    async def test_import_app_config_via_ui(self) -> None:
+        """
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Import PostgreSQL app config via UI.
+
+        ### Verify that:
+
+        - Install required data is the same as in imported config.
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.verify_ui_postgres_container_displayed()
+
+        await ui_steps.main_page.ui_postgres_container_click_install_btn()
+        await ui_steps.postgres_install_page.verify_ui_page_displayed()
+
+        await ui_steps.postgres_install_page.ui_click_import_config_btn()
+        await ui_steps.import_app_config_popup.verify_ui_popup_displayed()
+
+        config_file_path = (
+            await ui_steps.postgres_install_page.get_import_config_file_path()
+        )
+        await ui_steps.import_app_config_popup.ui_import_yaml_config(
+            config_path=config_file_path
+        )
+        await ui_steps.import_app_config_popup.ui_click_apply_config_btn()
+        await ui_steps.import_app_config_popup.ui_wait_to_disappear()
+        await ui_steps.postgres_install_page.verify_ui_page_displayed()
+
+        await ui_steps.postgres_install_page.verify_ui_resource_preset_value(
+            expected_value="cpu-large"
+        )
+        await ui_steps.postgres_install_page.verify_ui_postgres_replicas_value(
+            expected_value="5"
+        )
+        await ui_steps.postgres_install_page.verify_ui_postgres_username_value(
+            expected_value="test-user"
+        )
+        await ui_steps.postgres_install_page.verify_ui_postgres_user_db_name_value(
+            expected_value="test-db"
+        )
+        await ui_steps.postgres_install_page.verify_pg_bouncer_resource_preset_value(
+            expected_value="cpu-small"
+        )
+        await ui_steps.postgres_install_page.verify_ui_pg_bouncer_replicas_count(
+            expected_value="2"
+        )
+        await ui_steps.postgres_install_page.verify_ui_postgres_display_name_value(
+            expected_value="test-postgres"
         )
