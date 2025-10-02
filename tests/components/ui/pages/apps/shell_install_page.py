@@ -43,6 +43,11 @@ class ShellInstallPage(BasePage):
         self.log("Click resource Preset button")
         await self._get_resource_preset_btn().click()
 
+    async def get_resource_preset_value(self) -> str:
+        btn = self._get_resource_preset_btn()
+        text = await btn.text_content()
+        return text.splitlines()[-1].strip()
+
     def _get_networking_settings_label(self) -> BaseElement:
         return BaseElement(self.page, "p", has_text="Networking Settings")
 
@@ -53,6 +58,10 @@ class ShellInstallPage(BasePage):
         self.log("Click HTTP Authentication checkbox")
         await self._get_http_auth_checkbox().click()
 
+    async def is_http_auth_enabled(self) -> bool:
+        checkbox = self._get_http_auth_checkbox()
+        return await checkbox.locator.is_checked()
+
     def _get_metadata_label(self) -> BaseElement:
         return BaseElement(self.page, "p", has_text="Metadata")
 
@@ -62,6 +71,10 @@ class ShellInstallPage(BasePage):
     async def enter_app_name(self, app_name: str) -> None:
         self.log(f"Entering {app_name} app name")
         await self._get_display_name_input().fill(app_name)
+
+    async def get_display_name_value(self) -> str:
+        element = self._get_display_name_input()
+        return await element.locator.input_value()
 
     def _get_install_btn(self) -> BaseElement:
         return BaseElement(self.page, "button", has_text="Install")

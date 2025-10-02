@@ -3,6 +3,7 @@ from playwright.async_api import Page
 from tests.components.ui.pages.apps.choose_secret_popup import ChooseSecretPopup
 from tests.components.ui.pages.apps.deep_seek_details_page import DeepSeekDetailsPage
 from tests.components.ui.pages.apps.deep_seek_install_page import DeepSeekInstallPage
+from tests.components.ui.pages.apps.import_app_config_popup import ImportAppConfigPopup
 from tests.components.ui.pages.apps.postgres_details_page import PostgresDetailsPage
 from tests.components.ui.pages.apps.postgres_install_page import PostgresInstallPage
 from tests.components.ui.pages.apps.resource_preset_popup import ResourcePresetPopup
@@ -110,6 +111,7 @@ class PageManager:
         self.delete_disk_popup = DeleteDiskPopup(page)
         self.resource_preset_popup = ResourcePresetPopup(page)
         self.choose_secret_popup = ChooseSecretPopup(page)
+        self.import_app_config_popup = ImportAppConfigPopup(page)
         self.shell_install_page = ShellInstallPage(page)
         self.shell_details_page = ShellDetailsPage(page)
         self.shell_app_page = ShellAppPage(page)

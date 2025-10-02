@@ -1,0 +1,51 @@
+{
+  "title": "Template Configuration Schema",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "description": "Human-readable name of the instance."
+    },
+    "template_name": {
+      "type": "string",
+      "description": "Identifier of the template to use."
+    },
+    "template_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version of the template, prefixed with 'v'."
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "networking": {
+          "type": "object",
+          "properties": {
+            "http_auth": {
+              "type": "boolean",
+              "description": "Enable or disable HTTP authentication."
+            }
+          },
+          "required": ["http_auth"],
+          "additionalProperties": false
+        },
+        "preset": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "enum": ["cpu-small", "cpu-medium", "cpu-large"],
+              "description": "Resource preset name."
+            }
+          },
+          "required": ["name"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["networking", "preset"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["display_name", "template_name", "template_version", "input"],
+  "additionalProperties": false
+}

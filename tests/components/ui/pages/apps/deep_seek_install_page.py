@@ -35,6 +35,13 @@ class DeepSeekInstallPage(BasePage):
     def _get_hf_token_label(self) -> BaseElement:
         return BaseElement(self.page, "p.text-h4", has_text="Hugging Face Token")
 
+    def _get_secret_key_input(self) -> BaseElement:
+        return BaseElement(self.page, selector='input[name="hf_token.key"]')
+
+    async def get_secret_key_value(self) -> str:
+        secret_input = self._get_secret_key_input()
+        return await secret_input.locator.input_value()
+
     def _get_choose_secret_btn(self) -> BaseElement:
         return BaseElement(self.page, "button", has_text="Choose secret")
 
@@ -56,6 +63,11 @@ class DeepSeekInstallPage(BasePage):
         self.log(f"Select {model_name} model")
         await self._get_model_dropdown().select_option(model_name)
 
+    async def get_model_dropdown_value(self) -> str:
+        dropdown = self._get_model_dropdown()
+        selected = dropdown.locator.locator("option:checked")
+        return await selected.inner_text()
+
     def _get_metadata_label(self) -> BaseElement:
         return BaseElement(self.page, "p", has_text="Metadata")
 
@@ -65,6 +77,10 @@ class DeepSeekInstallPage(BasePage):
     async def enter_app_name(self, app_name: str) -> None:
         self.log(f"Entering {app_name} app name")
         await self._get_display_name_input().fill(app_name)
+
+    async def get_display_name_value(self) -> str:
+        display_name_input = self._get_display_name_input()
+        return await display_name_input.locator.input_value()
 
     def _get_install_btn(self) -> BaseElement:
         return BaseElement(self.page, "button", has_text="Install")

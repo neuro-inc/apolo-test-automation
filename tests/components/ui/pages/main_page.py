@@ -1,3 +1,4 @@
+import re
 from typing import Any
 from playwright.async_api import Page
 from tests.components.ui.pages.base_element import BaseElement
@@ -297,7 +298,7 @@ class MainPage(BasePage):
         if not container:
             raise ValueError(f"App container not found for {app_name}")
 
-        locator = container.locator.locator("a:has-text('Install')")
+        locator = container.locator.locator("a", has_text=re.compile(r"^Install$"))
         return BaseElement(self.page, locator=locator)
 
     async def click_install_btn_app_container(self, app_name: str) -> None:

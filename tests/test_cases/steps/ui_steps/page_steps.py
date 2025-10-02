@@ -2,6 +2,9 @@ from tests.components.ui.page_manager import PageManager
 from tests.test_cases.steps.ui_steps.page_steps_impl.Invited_to_org_page_steps import (
     InvitedToOrgPageSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.app_import_config_popup_steps import (
+    ImportAppConfigPopupSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps.choose_secret_popup_steps import (
     ChooseSecretPopupSteps,
 )
@@ -192,14 +195,19 @@ class PageSteps:
         self.delete_disk_popup = DeleteDiskPopupSteps(self._pm)
         self.resource_preset_popup = ResourcePresetPopupSteps(self._pm)
         self.choose_secret_popup = ChooseSecretPopupSteps(self._pm)
-        self.shell_install_page = ShellInstallPageSteps(self._pm)
+        self.import_app_config_popup = ImportAppConfigPopupSteps(self._pm)
+        self.shell_install_page = ShellInstallPageSteps(self._pm, self._data_manager)
         self.shell_details_page = ShellDetailsPageSteps(self._pm, self._data_manager)
         self.shell_app_page = ShellAppPageSteps(self._pm)
-        self.deep_seek_install_page = DeepSeekInstallPageSteps(self._pm)
+        self.deep_seek_install_page = DeepSeekInstallPageSteps(
+            self._pm, self._data_manager
+        )
         self.deep_seek_details_page = DeepSeekDetailsPageSteps(
             self._pm, self._data_manager
         )
-        self.postgres_install_page = PostgresInstallPageSteps(self._pm)
+        self.postgres_install_page = PostgresInstallPageSteps(
+            self._pm, self._data_manager
+        )
         self.postgres_details_page = PostgresDetailsPageSteps(
             self._pm, self._data_manager
         )

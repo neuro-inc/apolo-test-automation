@@ -23,6 +23,39 @@ class APISteps:
         self._data_manager = data_manager
         self._logger = logging.getLogger(type(self).__name__)
 
+    @async_step("Verify app events list is valid")
+    async def verify_api_app_events_list(
+        self, token: str, org_name: str, proj_name: str, app_id: str
+    ) -> None:
+        status, response = await self._api_helper.get_app_events(
+            token=token,
+            org_name=org_name,
+            proj_name=proj_name,
+            app_id=app_id,
+        )
+
+        if status != 200:
+            raise AssertionError(
+                f"Failed to fetch app events. Status: {status}, Response: {response}"
+            )
+
+        items = response.get("items", [])
+        if not items:
+            raise AssertionError("No events returned in app events list.")
+
+        expected_sequence = ["queued", "progressing", "healthy"]
+
+        sorted_items = sorted(items, key=lambda x: x["created_at"])
+        actual_sequence = [item["state"] for item in sorted_items]
+
+        # Validate sequence matches
+        if actual_sequence != expected_sequence:
+            raise AssertionError(
+                f"Invalid event state sequence.\n"
+                f"Expected: {expected_sequence}\n"
+                f"Got:      {actual_sequence}"
+            )
+
     @async_step("Wait for app events until healthy or degraded")
     async def wait_for_app_events_until_ready(
         self,
@@ -61,9 +94,7 @@ class APISteps:
                     return latest_event
 
                 if state == "degraded":
-                    raise AssertionError(
-                        f"❌ App entered degraded state: {latest_event}"
-                    )
+                    raise AssertionError(f"App entered degraded state: {latest_event}")
 
             if time.monotonic() >= deadline:
                 break

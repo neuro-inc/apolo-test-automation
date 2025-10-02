@@ -1,0 +1,17 @@
+display_name: test-postgres
+template_name: postgres
+template_version: v25.9.1
+input:
+    postgres_config:
+        postgres_version: '16'
+        instance_replicas: 5
+        instance_size: 1
+        db_users:
+            - {name: test-user, db_names: [test-db]}
+    pg_bouncer:
+        replicas: 2
+        preset:
+            name: cpu-small
+    backup: null
+    preset:
+        name: cpu-large

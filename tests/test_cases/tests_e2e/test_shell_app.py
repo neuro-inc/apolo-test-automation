@@ -104,8 +104,34 @@ class TestE2EShellApp(BaseTestClass):
 
         TestE2EShellApp.app_install_status = True
 
-    @async_title("Verify installed Shell app listed in Installed apps via UI")
+    @async_title("Verify event list of installed Shell app via API")
     @pytest.mark.order(2)
+    async def test_app_event_list_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Shell app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - GET '/events' endpoint.
+
+        ### Verify that:
+
+        - App events list contains states queued, progressing and healthy.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EShellApp.shell_app_id
+        org_name = TestE2EShellApp.org_name
+        proj_name = TestE2EShellApp.proj_name
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_api_app_events_list(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify installed Shell app listed in Installed apps via UI")
+    @pytest.mark.order(3)
     async def test_app_listed_in_installed_apps_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -131,7 +157,7 @@ class TestE2EShellApp(BaseTestClass):
     @async_title(
         "Verify User can reach Shell app Details page from Installed Apps page"
     )
-    @pytest.mark.order(3)
+    @pytest.mark.order(4)
     async def test_app_details_from_inst_apps_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -163,7 +189,7 @@ class TestE2EShellApp(BaseTestClass):
     @async_title(
         "Verify installed Shell app info displayed on the app container via UI"
     )
-    @pytest.mark.order(4)
+    @pytest.mark.order(5)
     async def test_shell_container_installed_info_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -185,7 +211,7 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.main_page.verify_ui_show_all_btn_shell_container_displayed()
 
     @async_title("Verify User can reach Installed apps page from app container via UI")
-    @pytest.mark.order(5)
+    @pytest.mark.order(6)
     async def test_shell_installed_apps_from_container_via_ui(  # type: ignore[no-untyped-def]
         self, shell_status
     ) -> None:
@@ -212,7 +238,7 @@ class TestE2EShellApp(BaseTestClass):
         )
 
     @async_title("Verify Installed apps details info via UI")
-    @pytest.mark.order(6)
+    @pytest.mark.order(7)
     async def test_app_details_info_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -249,7 +275,7 @@ class TestE2EShellApp(BaseTestClass):
         )
 
     @async_title("Verify Installed apps details info via API")
-    @pytest.mark.order(7)
+    @pytest.mark.order(8)
     async def test_app_details_info_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -282,7 +308,7 @@ class TestE2EShellApp(BaseTestClass):
         )
 
     @async_title("Verify app output contains required endpoints via UI")
-    @pytest.mark.order(8)
+    @pytest.mark.order(9)
     async def test_app_output_api_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -315,7 +341,7 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.shell_details_page.verify_ui_app_output_apis()
 
     @async_title("Verify app output API schemas is valid via UI")
-    @pytest.mark.order(9)
+    @pytest.mark.order(10)
     async def test_app_output_api_data_format_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -347,7 +373,7 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.shell_details_page.verify_ui_app_output_apis_data_format()
 
     @async_title("Verify app output contains required endpoints via API")
-    @pytest.mark.order(10)
+    @pytest.mark.order(11)
     async def test_app_output_api_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -381,7 +407,7 @@ class TestE2EShellApp(BaseTestClass):
         )
 
     @async_title("Verify app output endpoints schema via API")
-    @pytest.mark.order(11)
+    @pytest.mark.order(12)
     async def test_app_output_api_schema_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -408,7 +434,7 @@ class TestE2EShellApp(BaseTestClass):
         )
 
     @async_title("Open Shell application via UI")
-    @pytest.mark.order(12)
+    @pytest.mark.order(13)
     async def test_open_shell_app_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -438,7 +464,7 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.shell_app_page.verify_ui_page_displayed()
 
     @async_title("Enter command in Shell app via UI")
-    @pytest.mark.order(13)
+    @pytest.mark.order(14)
     async def test_enter_command_in_shell_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -482,7 +508,7 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.shell_app_page.verify_ui_res_presets_in_shell_output()
 
     @async_title("Verify User can uninstall app via UI")
-    @pytest.mark.order(14)
+    @pytest.mark.order(15)
     async def test_app_uninstall_via_ui(self, shell_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
@@ -521,4 +547,92 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.main_page.ui_click_installed_apps_btn()
         await ui_steps.main_page.ui_verify_installed_app_not_displayed(
             app_name=app_name, owner=user.username
+        )
+
+    @async_title("Export Shell app config via UI")
+    @pytest.mark.order(16)
+    async def test_export_shell_app_config_via_ui(self) -> None:
+        """
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Select `cpu-medium` Resource Preset.
+        - Set app Display name.
+        - Click `Export config` button.
+
+        ### Verify that:
+
+        - Config downloaded as `yaml` file matches expected schema.
+        - Exported config contains valid data.
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        await ui_steps.ui_login(user, fresh_login=False)
+
+        await ui_steps.main_page.verify_ui_shell_container_displayed()
+
+        await ui_steps.main_page.ui_shell_container_click_install_btn()
+        await ui_steps.shell_install_page.verify_ui_page_displayed()
+
+        await ui_steps.shell_install_page.ui_click_resource_preset_btn()
+        await ui_steps.resource_preset_popup.verify_ui_popup_displayed()
+
+        await ui_steps.resource_preset_popup.ui_select_cpu_medium_preset()
+        await ui_steps.resource_preset_popup.ui_click_apply_button()
+        await ui_steps.resource_preset_popup.ui_wait_to_disappear()
+        app_name = self._data_manager.generate_app_instance_name(app_name="Shell")
+        await ui_steps.shell_install_page.ui_enter_shell_app_name(app_name=app_name)
+        await ui_steps.shell_install_page.verify_ui_export_config_btn_enabled()
+        downloaded_config = await ui_steps.shell_install_page.ui_export_config()
+        await ui_steps.shell_install_page.verify_exported_config_schema(
+            config_file_path=downloaded_config
+        )
+        await ui_steps.shell_install_page.verify_exported_config_data(
+            config_file_path=downloaded_config,
+            display_name=app_name,
+            preset="cpu-medium",
+            http_auth=True,
+        )
+
+    @async_title("Import Shell app config via UI")
+    @pytest.mark.order(17)
+    async def test_import_shell_app_config_via_ui(self) -> None:
+        """
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Import Shell app config via UI.
+
+        ### Verify that:
+
+        - Install required data is the same as in imported config.
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.verify_ui_shell_container_displayed()
+
+        await ui_steps.main_page.ui_shell_container_click_install_btn()
+        await ui_steps.shell_install_page.verify_ui_page_displayed()
+
+        await ui_steps.shell_install_page.ui_click_import_config_btn()
+        await ui_steps.import_app_config_popup.verify_ui_popup_displayed()
+
+        config_file_path = (
+            await ui_steps.shell_install_page.get_import_config_file_path()
+        )
+        await ui_steps.import_app_config_popup.ui_import_yaml_config(
+            config_path=config_file_path
+        )
+        await ui_steps.import_app_config_popup.ui_click_apply_config_btn()
+        await ui_steps.import_app_config_popup.ui_wait_to_disappear()
+        await ui_steps.shell_install_page.verify_ui_page_displayed()
+        await ui_steps.shell_install_page.verify_ui_resource_preset_btn_value(
+            expected_value="cpu-large"
+        )
+        await ui_steps.shell_install_page.verify_ui_http_auth_checkbox_state(
+            expected_state=False
+        )
+        await ui_steps.shell_install_page.verify_ui_display_name_value(
+            expected_value="shell-testing"
         )
