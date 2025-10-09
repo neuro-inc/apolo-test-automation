@@ -1,0 +1,144 @@
+{
+  "title": "Service Deployment Configuration Schema",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "description": "Unique display name for the deployment."
+    },
+    "template_name": {
+      "type": "string",
+      "enum": ["service-deployment", "service-deployment-argocd"],
+      "description": "The name of the deployment template."
+    },
+    "template_version": {
+      "type": "string",
+      "pattern": "^v\\d{1,2}\\.\\d{1,2}\\.\\d+$",
+      "description": "Version of the deployment template."
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "object",
+          "properties": {
+            "tag": {"type": "string"},
+            "dockerconfigjson": {"type": ["string", "null"]},
+            "pull_policy": {"type": "string"},
+            "repository": {"type": "string"}
+          },
+          "required": ["repository", "tag"]
+        },
+        "autoscaling": {"type": ["object", "null"]},
+        "container": {
+          "type": "object",
+          "properties": {
+            "command": {"type": ["array", "null"], "items": {"type": "string"}},
+            "args": {"type": ["array", "null"], "items": {"type": "string"}},
+            "env": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "value": {"type": "string"}
+                },
+                "required": ["name", "value"]
+              }
+            }
+          }
+        },
+        "config_map": {"type": ["object", "null"]},
+        "storage_mounts": {"type": ["array", "null"]},
+        "networking": {
+          "type": "object",
+          "properties": {
+            "service_enabled": {"type": "boolean"},
+            "ingress_http": {
+              "type": "object",
+              "properties": {
+                "auth": {
+                  "anyOf": [
+                    { "type": "boolean" },
+                    { "type": "string", "enum": ["apolo"] },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string", "enum": ["apolo_auth"] }
+                      },
+                      "required": ["type"]
+                    }
+                  ],
+                  "description": "Enable auth (true/false), 'apolo', or structured type {type: 'apolo_auth'}"
+                }
+              }
+            },
+            "ports": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "port": {"type": "integer"},
+                  "path_type": {"type": "string"},
+                  "path": {"type": "string"}
+                },
+                "required": ["name", "port", "path"]
+              }
+            }
+          },
+          "required": ["service_enabled"]
+        },
+        "health_checks": {
+          "type": "object",
+          "properties": {
+            "startup": {"$ref": "#/$defs/healthCheck"},
+            "liveness": {"anyOf": [{"$ref": "#/$defs/healthCheck"}, {"type": "null"}]},
+            "readiness": {"$ref": "#/$defs/healthCheck"}
+          }
+        },
+        "preset": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "enum": ["cpu-micro", "cpu-medium", "cpu-large"],
+              "description": "Resource preset selection for deployment."
+            }
+          },
+          "required": ["name"]
+        }
+      },
+      "required": ["image", "container", "networking", "health_checks", "preset"]
+    }
+  },
+  "required": ["display_name", "template_name", "template_version", "input"],
+  "$defs": {
+    "healthCheck": {
+      "type": "object",
+      "properties": {
+        "initial_delay": {"type": "integer"},
+        "period": {"type": "integer"},
+        "failure_threshold": {"type": "integer"},
+        "timeout": {"type": "integer"},
+        "health_check_config": {
+          "type": "object",
+          "properties": {
+            "port": {"type": "integer"},
+            "probe_type": {"type": "string", "enum": ["HTTP", "TCP", "COMMAND"]},
+            "path": {"type": ["string", "null"]},
+            "http_headers": {"type": ["array", "null"]}
+          },
+          "required": ["port", "probe_type"]
+        }
+      },
+      "required": [
+        "initial_delay",
+        "period",
+        "failure_threshold",
+        "timeout",
+        "health_check_config"
+      ]
+    }
+  }
+}

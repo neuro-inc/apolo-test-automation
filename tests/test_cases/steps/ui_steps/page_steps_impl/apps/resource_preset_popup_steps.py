@@ -23,6 +23,10 @@ class ResourcePresetPopupSteps:
     async def ui_select_cpu_medium_preset(self) -> None:
         await self._pm.resource_preset_popup.click_cpu_medium_preset()
 
+    @async_step("Select cpu-micro preset")
+    async def ui_select_cpu_micro_preset(self) -> None:
+        await self._pm.resource_preset_popup.click_cpu_micro_preset()
+
     @async_step("Click Apply button")
     async def ui_click_apply_button(self) -> None:
         await self._pm.resource_preset_popup.click_apply_button()
