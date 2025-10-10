@@ -39,30 +39,27 @@ class DisksPageSteps:
     async def ui_enter_disk_name_into_search_input(self, disk_name: str) -> None:
         await self._pm.disks_page.enter_search_disk_name(disk_name)
 
-    @async_step("Verify Disk button displayed")
-    async def verify_ui_disk_btn_displayed(self, disk_name: str) -> None:
+    @async_step("Verify Disk row displayed")
+    async def verify_ui_disk_row_displayed(self, disk_name: str) -> None:
         assert await self._pm.disks_page.is_disk_btn_displayed(disk_name), (
             f"Disk {disk_name} button should be displayed!"
         )
 
-    @async_step("Verify Disk button not displayed")
-    async def verify_ui_disk_btn_not_displayed(self, disk_name: str) -> None:
+    @async_step("Verify Disk row not displayed")
+    async def verify_ui_disk_row_not_displayed(self, disk_name: str) -> None:
         assert not await self._pm.disks_page.is_disk_btn_displayed(disk_name), (
             f"Disk {disk_name} button should not be displayed!"
         )
 
-    @async_step("Click Disk button")
-    async def ui_click_disk_btn(self, disk_name: str) -> None:
-        await self._pm.disks_page.click_disk_btn(disk_name)
-
-    @async_step("Verify Disk info view displayed")
-    async def verify_ui_disk_info_view_displayed(
-        self, disk_name: str, owner: str, storage_value: str, lifespan_value: str
+    @async_step("Verify valid Disk info displayed")
+    async def verify_ui_valid_disk_info_displayed(
+        self, disk_name: str, owner: str, storage_value: str
     ) -> None:
-        assert await self._pm.disks_page.is_disk_info_view_displayed(
-            disk_name, owner, storage_value, lifespan_value
-        ), f"Disk {disk_name} info view should be displayed!"
+        result, error_message = await self._pm.disks_page.is_valid_disk_row_displayed(
+            disk_name, owner, storage_value
+        )
+        assert result, error_message
 
     @async_step("Click Delete Disk button")
-    async def ui_click_delete_disk_btn(self) -> None:
-        await self._pm.disks_page.click_delete_disk_btn()
+    async def ui_click_delete_disk_btn(self, disk_name: str) -> None:
+        await self._pm.disks_page.click_delete_disk_btn(disk_name)

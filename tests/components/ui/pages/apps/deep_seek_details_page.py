@@ -150,37 +150,44 @@ class DeepSeekDetailsPage(BasePage):
             return False
 
     async def parse_api_sections(self) -> list[dict[str, str]]:
-        # Step 1: grab top-level API containers
-        api_blocks = await BaseElement.find_all(
-            self.page, selector="div.overflow-auto:has(> h4:text-matches('API$'))"
-        )
-
+        """
+        Parses nested API sections from the UI into structured dictionaries.
+        Supports nested 'Service APIs' → 'HTTP API' → key-value structure.
+        """
         sections: list[dict[str, str]] = []
 
-        # Step 2: iterate each API block
-        for block in api_blocks:
+        # Step 1: find all HTTP API sections
+        api_sections = await BaseElement.find_all(
+            self.page, selector="button:has(h4:text-is('HTTP API'))"
+        )
+
+        for api_section in api_sections:
             section: dict[str, str] = {}
 
-            # section title (e.g. "OpenAI Compatible Embeddings API")
-            title = await block.locator.locator("h4").first.inner_text()
-            section["title"] = title.strip()
+            # Extract section title
+            title_el = api_section.locator.locator("h4")
+            section["title"] = (await title_el.inner_text()).strip()
 
-            # Step 3: collect all key-value pairs inside this block
-            kv_rows = block.locator.locator("div.overflow-auto")
-            count = await kv_rows.count()
+            # Step 2: Find all key-value pairs below this section
+            # Each pair has <h4>Key</h4> and <span>Value</span> inside nested divs
+            kv_blocks = api_section.locator.locator(
+                "xpath=following-sibling::div[contains(@class, 'overflow-hidden')]//div[.//button[@disabled]]"
+            )
 
+            count = await kv_blocks.count()
             for i in range(count):
-                row = kv_rows.nth(i)
                 try:
-                    key = (await row.locator("h4").inner_text()).strip()
-                    value = (await row.locator("span").inner_text()).strip()
+                    block = kv_blocks.nth(i)
+                    key = (await block.locator("h4").inner_text()).strip()
+                    value_span = block.locator("span.text-lime-800, span.text-cyan-800")
+                    value = (await value_span.inner_text()).strip()
                     section[key] = value
                 except Exception:
                     continue
 
             sections.append(section)
 
-        self.log(f"Api sections: {sections}")
+        self.log(f"Parsed API sections: {sections}")
         return sections
 
     async def verify_app_details_info(

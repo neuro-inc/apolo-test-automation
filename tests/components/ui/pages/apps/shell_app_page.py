@@ -22,7 +22,7 @@ class ShellAppPage(BasePage):
         )
 
     async def open_app(self, url: str) -> None:
-        output_future = asyncio.create_task(self._capture_canvas_output(5000))
+        output_future = asyncio.create_task(self._capture_canvas_output())
         await self.page.goto(url)
 
         self._output = await output_future
@@ -142,7 +142,14 @@ class ShellAppPage(BasePage):
 
         return False, "Command executed, but connection result could not be verified."
 
-    async def _capture_canvas_output(self, duration: int = 5000) -> list[str]:
+    async def _capture_canvas_output(
+        self, max_wait: int = 120_000, quiet_timeout: int = 2000
+    ) -> list[str]:
+        """
+        Capture WebSocket text output until:
+          - no new frames for `quiet_timeout` ms (after first frame), OR
+          - total time exceeds `max_wait` ms (default: 120 seconds).
+        """
         ANSI_ESCAPE = re.compile(
             r"""
             (?:\x1B[@-Z\\-_])              |  # ESC + single char
@@ -156,31 +163,67 @@ class ShellAppPage(BasePage):
             return ANSI_ESCAPE.sub("", text)
 
         messages: list[str] = []
+        frame_event = asyncio.Event()
 
         def _on_frame(payload: Any) -> None:
-            if isinstance(payload, bytes):
-                try:
-                    payload = payload.decode("utf-8", errors="ignore")
-                except Exception:
-                    return
-            else:
+            if not isinstance(payload, bytes):
+                return
+            try:
+                payload = payload.decode("utf-8", errors="ignore")
+            except Exception:
                 return
 
             cleaned = _strip_ansi(payload).strip()
-            print("[DEBUG] Cleaned frame:", repr(cleaned))
-
             if cleaned:
                 messages.append(cleaned)
-            else:
-                print("[DEBUG] Frame discarded (empty after cleaning)")
+                frame_event.set()
 
         def _on_websocket(ws: WebSocket) -> None:
-            print("[DEBUG] WebSocket opened:", ws.url)
             ws.on("framereceived", _on_frame)
 
         self.page.on("websocket", _on_websocket)
 
-        await self.page.wait_for_timeout(duration)
+        # --- async helpers ---
+        async def _wait_for_quiet_period() -> None:
+            """Waits until no new frames arrive for quiet_timeout ms after first frame."""
+            print("[DEBUG] Waiting for first frame...")
+            try:
+                # Wait indefinitely for first frame (until max_wait hits)
+                await asyncio.wait_for(frame_event.wait(), timeout=max_wait / 1000)
+                frame_event.clear()
+                print("[DEBUG] First frame received, starting quiet-period timer...")
+            except asyncio.TimeoutError:
+                print("[DEBUG] No frames received within max_wait window.")
+                return
+
+            # Now repeatedly wait for quiet periods
+            while True:
+                try:
+                    await asyncio.wait_for(
+                        frame_event.wait(), timeout=quiet_timeout / 1000
+                    )
+                    frame_event.clear()
+                except asyncio.TimeoutError:
+                    print("[DEBUG] Quiet period reached — no new frames.")
+                    return
+
+        async def _max_duration() -> None:
+            await asyncio.sleep(max_wait / 1000)
+            print(
+                f"[DEBUG] Max wait ({max_wait / 1000:.0f}s) reached — stopping capture."
+            )
+
+        # --- Race both tasks ---
+        quiet_task = asyncio.create_task(_wait_for_quiet_period())
+        max_task = asyncio.create_task(_max_duration())
+
+        done, pending = await asyncio.wait(
+            {quiet_task, max_task},
+            return_when=asyncio.FIRST_COMPLETED,
+        )
+
+        for task in pending:
+            task.cancel()
 
         raw_output = "\n".join(messages)
         return self._filter_ascii_part(raw_output)

@@ -159,7 +159,7 @@ class TestE2EPostgresApp(BaseTestClass):
 
     @async_title("Verify event list of installed PostgreSQL app via API")
     @pytest.mark.order(2)
-    async def test_app_event_list_via_api(self, shell_status) -> None:  # type: ignore[no-untyped-def]
+    async def test_app_event_list_via_api(self, postgres_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
         - PostgreSQL app installed.

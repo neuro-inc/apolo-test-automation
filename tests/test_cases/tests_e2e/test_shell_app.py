@@ -591,7 +591,7 @@ class TestE2EShellApp(BaseTestClass):
             config_file_path=downloaded_config,
             display_name=app_name,
             preset="cpu-medium",
-            http_auth=True,
+            http_auth="apolo_auth",
         )
 
     @async_title("Import Shell app config via UI")
@@ -630,7 +630,9 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.shell_install_page.verify_ui_resource_preset_btn_value(
             expected_value="cpu-large"
         )
-        await ui_steps.shell_install_page.verify_ui_auth_type(expected_value="False")
+        await ui_steps.shell_install_page.verify_ui_auth_type(
+            expected_value="No Authentication"
+        )
         await ui_steps.shell_install_page.verify_ui_display_name_value(
             expected_value="shell-testing"
         )
