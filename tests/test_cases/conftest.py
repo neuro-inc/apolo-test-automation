@@ -40,7 +40,11 @@ DOWNLOAD_PATH = os.path.join(STORAGE_OBJECTS_PATH, "downloads")
 # Track per-test browser/context/playwright triples
 _browser_context_triples: list[tuple[Browser, BrowserContext, Playwright]] = []
 
-main_user: UserData | None = None
+main_user: UserData | None = UserData(
+    email="regression-rn2l10000y@apolo.us",
+    username="regression-rn2l10000y",
+    password="*Z75bCJOn461",
+)
 second_user: UserData | None = None
 third_user: UserData | None = None
 
@@ -311,7 +315,9 @@ async def _cleanup_orgs(
                         await api_helper.delete_proj(
                             token=token, org_name=org_name, proj_name=proj_name
                         )
+                        logger.info(f"Deleted project: {proj_name}")
                 await api_helper.delete_org(token=token, org_name=org_name)
+                logger.info(f"Deleted organisation {org_name}")
                 data_manager.remove_organization(org_name)
             except Exception as exc:
                 formatted_msg = exception_manager.handle(
@@ -412,7 +418,7 @@ async def _log_failed_requests(test_config: ConfigManager, response: Any) -> Non
     if status >= 200:
         method = request.method
         try:
-            request_body = await request.post_data()
+            request_body = request.post_data or "<not available>"
         except Exception:
             request_body = "<not available>"
 
@@ -423,8 +429,8 @@ async def _log_failed_requests(test_config: ConfigManager, response: Any) -> Non
 
         log_msg = (
             f"[HTTP {status}] {method} {url}\n"
-            f"Request Body:\n{request_body}\n"
-            f"Response Body (first 1000 chars):\n{response_body[:1000]}"
+            f"Request Body (first 2000 chars):\n{request_body[:2000]}\n"
+            f"Response Body (first 2000 chars):\n{response_body[:2000]}"
         )
 
         logger.warning(log_msg)

@@ -155,6 +155,12 @@ class MainPageSteps:
             app_name="PostgreSQL"
         ), "PostgreSQL app container should be displayed!"
 
+    @async_step("Verify Service Deployment app container displayed on the main page")
+    async def verify_ui_serv_depl_container_displayed(self) -> None:
+        assert await self._pm.main_page.verify_app_container_displayed(
+            app_name="Service Deployment"
+        ), "Service Deployment app container should be displayed!"
+
     @async_step("Click Install button on the Shell container")
     async def ui_shell_container_click_install_btn(self) -> None:
         await self._pm.main_page.click_install_btn_app_container(app_name="Shell")
@@ -166,6 +172,12 @@ class MainPageSteps:
     @async_step("Click Install button on the PostgreSQL container")
     async def ui_postgres_container_click_install_btn(self) -> None:
         await self._pm.main_page.click_install_btn_app_container(app_name="PostgreSQL")
+
+    @async_step("Click Install button on the Service Deployment container")
+    async def ui_serv_depl_container_click_install_btn(self) -> None:
+        await self._pm.main_page.click_install_btn_app_container(
+            app_name="Service Deployment"
+        )
 
     @async_step("Verify 'Installed' label on Shell app container is displayed")
     async def verify_ui_installed_label_shell_container_displayed(self) -> None:
@@ -184,6 +196,16 @@ class MainPageSteps:
         assert await self._pm.main_page.is_container_installed_label_visible(
             app_name="postgres"
         ), "'Installed' label should be displayed on the PostgreSQL app container!"
+
+    @async_step(
+        "Verify 'Installed' label on Service Deployment app container is displayed"
+    )
+    async def verify_ui_installed_label_serv_depl_container_displayed(self) -> None:
+        assert await self._pm.main_page.is_container_installed_label_visible(
+            app_name="service-deployment-argocd"
+        ), (
+            "'Installed' label should be displayed on the Service Deployment app container!"
+        )
 
     @async_step("Verify 'Show All' button on Shell app container is displayed")
     async def verify_ui_show_all_btn_shell_container_displayed(self) -> None:
@@ -216,6 +238,22 @@ class MainPageSteps:
     @async_step("Click `Show All` button on the PostgreSQL app container")
     async def ui_postgres_container_click_show_all_btn(self) -> None:
         await self._pm.main_page.click_container_show_all_btn(app_name="postgres")
+
+    @async_step(
+        "Verify 'Show All' button on Service Deployment app container is displayed"
+    )
+    async def verify_ui_show_all_btn_serv_depl_container_displayed(self) -> None:
+        assert await self._pm.main_page.is_container_show_all_btn_visible(
+            app_name="service-deployment-argocd"
+        ), (
+            "'Show All' button should be displayed on the Service Deployment app container!"
+        )
+
+    @async_step("Click `Show All` button on the Service Deployment app container")
+    async def ui_serv_depl_container_click_show_all_btn(self) -> None:
+        await self._pm.main_page.click_container_show_all_btn(
+            app_name="service-deployment-argocd"
+        )
 
     @async_step("Click Installed Apps button")
     async def ui_click_installed_apps_btn(self) -> None:

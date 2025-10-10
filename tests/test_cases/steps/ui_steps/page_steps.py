@@ -23,6 +23,12 @@ from tests.test_cases.steps.ui_steps.page_steps_impl.apps.postgress_install_page
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps.resource_preset_popup_steps import (
     ResourcePresetPopupSteps,
 )
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.service_deployment_details_page_steps import (
+    ServiceDeploymentDetailsPageSteps,
+)
+from tests.test_cases.steps.ui_steps.page_steps_impl.apps.service_deployment_install_page_steps import (
+    ServiceDeploymentInstallPageSteps,
+)
 from tests.test_cases.steps.ui_steps.page_steps_impl.apps.shell_app_page_steps import (
     ShellAppPageSteps,
 )
@@ -209,5 +215,11 @@ class PageSteps:
             self._pm, self._data_manager
         )
         self.postgres_details_page = PostgresDetailsPageSteps(
+            self._pm, self._data_manager
+        )
+        self.service_deployment_install_page = ServiceDeploymentInstallPageSteps(
+            self._pm, self._data_manager
+        )
+        self.service_deployment_details_page = ServiceDeploymentDetailsPageSteps(
             self._pm, self._data_manager
         )

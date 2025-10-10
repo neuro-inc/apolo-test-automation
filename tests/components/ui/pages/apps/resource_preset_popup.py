@@ -23,15 +23,21 @@ class ResourcePresetPopup(BasePage):
         return BaseElement(self.page, "h2", has_text="Choose Resource Preset")
 
     def _get_preset_row(self, name: str) -> BaseElement:
-        return BaseElement(self.page, f'tr:has(td span:has-text("{name}"))')
+        return BaseElement(self.page, f'tr:has(:text("{name}"))')
 
     async def click_cpu_large_preset(self) -> None:
         self.log("Click cpu-large preset")
         await self._get_preset_row("cpu-large").click()
+        await self.page.wait_for_timeout(2000)
 
     async def click_cpu_medium_preset(self) -> None:
         self.log("Click cpu-medium preset")
         await self._get_preset_row("cpu-medium").click()
+        await self.page.wait_for_timeout(2000)
+
+    async def click_cpu_micro_preset(self) -> None:
+        self.log("Click cpu-micro preset")
+        await self._get_preset_row("cpu-micro").click()
         await self.page.wait_for_timeout(2000)
 
     def _get_apply_button(self) -> BaseElement:

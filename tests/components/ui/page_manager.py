@@ -7,6 +7,12 @@ from tests.components.ui.pages.apps.import_app_config_popup import ImportAppConf
 from tests.components.ui.pages.apps.postgres_details_page import PostgresDetailsPage
 from tests.components.ui.pages.apps.postgres_install_page import PostgresInstallPage
 from tests.components.ui.pages.apps.resource_preset_popup import ResourcePresetPopup
+from tests.components.ui.pages.apps.service_deployment_details_page import (
+    ServiceDeploymentDetailsPage,
+)
+from tests.components.ui.pages.apps.service_deployment_install_page import (
+    ServiceDeploymentInstallPage,
+)
 from tests.components.ui.pages.apps.shell_app_page import ShellAppPage
 from tests.components.ui.pages.apps.shell_install_page import ShellInstallPage
 from tests.components.ui.pages.apps.shell_details_page import ShellDetailsPage
@@ -119,3 +125,5 @@ class PageManager:
         self.deep_seek_details_page = DeepSeekDetailsPage(page)
         self.postgres_install_page = PostgresInstallPage(page)
         self.postgres_details_page = PostgresDetailsPage(page)
+        self.service_deployment_install_page = ServiceDeploymentInstallPage(page)
+        self.service_deployment_details_page = ServiceDeploymentDetailsPage(page)

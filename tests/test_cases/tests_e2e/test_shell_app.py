@@ -630,9 +630,7 @@ class TestE2EShellApp(BaseTestClass):
         await ui_steps.shell_install_page.verify_ui_resource_preset_btn_value(
             expected_value="cpu-large"
         )
-        await ui_steps.shell_install_page.verify_ui_http_auth_checkbox_state(
-            expected_state=False
-        )
+        await ui_steps.shell_install_page.verify_ui_auth_type(expected_value="False")
         await ui_steps.shell_install_page.verify_ui_display_name_value(
             expected_value="shell-testing"
         )

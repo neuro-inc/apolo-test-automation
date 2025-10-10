@@ -96,6 +96,9 @@ class APISteps:
                 if state == "degraded":
                     raise AssertionError(f"App entered degraded state: {latest_event}")
 
+                if state == "errored":
+                    raise AssertionError(f"App entered errored state: {latest_event}")
+
             if time.monotonic() >= deadline:
                 break
 
