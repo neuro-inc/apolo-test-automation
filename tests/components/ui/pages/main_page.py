@@ -274,17 +274,17 @@ class MainPage(BasePage):
         self.log(f"Verify app container {app_name} displayed")
 
         container_area = self.page.locator("div.min-h-0.min-w-0.overflow-auto")
-        container = await self._get_app_container(app_name)
 
         try:
             for _ in range(10):  # limit to avoid infinite loop
+                container = await self._get_app_container(app_name)
                 if await container.is_visible():
                     return True
 
                 # scroll a bit down
                 await container_area.evaluate("el => el.scrollBy(0, 300)")
                 self.log(f"Scroll to {app_name} container...")
-                await self.page.wait_for_timeout(300)  # give UI some time to render
+                await self.page.wait_for_timeout(100)  # give UI some time to render
 
             self.log(f"App container {app_name} not found after scrolling")
             return False

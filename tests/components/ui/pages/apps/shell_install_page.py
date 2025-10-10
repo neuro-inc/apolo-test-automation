@@ -19,7 +19,7 @@ class ShellInstallPage(BasePage):
             and await self._get_resource_preset_label().is_visible()
             and await self._get_resource_preset_btn().is_visible()
             and await self._get_networking_settings_label().is_visible()
-            and await self._get_http_auth_checkbox().is_visible()
+            and await self._get_auth_dropdown().is_visible()
             and await self._get_metadata_label().is_visible()
             and await self._get_display_name_input().is_visible()
             and await self._get_install_btn().is_visible()
@@ -51,16 +51,19 @@ class ShellInstallPage(BasePage):
     def _get_networking_settings_label(self) -> BaseElement:
         return BaseElement(self.page, "p", has_text="Networking Settings")
 
-    def _get_http_auth_checkbox(self) -> BaseElement:
-        return BaseElement(self.page, by_label="HTTP Authentication")
+    def _get_auth_dropdown(self) -> BaseElement:
+        return BaseElement(
+            self.page,
+            selector='select:has(option:text("Apolo Platform Authentication"))',
+        )
 
-    async def click_http_auth_checkbox(self) -> None:
-        self.log("Click HTTP Authentication checkbox")
-        await self._get_http_auth_checkbox().click()
+    async def select_auth_type(self, value: str) -> None:
+        self.log(f"Select Auth type: {value}")
+        await self._get_auth_dropdown().select_option(value)
 
-    async def is_http_auth_enabled(self) -> bool:
-        checkbox = self._get_http_auth_checkbox()
-        return await checkbox.locator.is_checked()
+    async def get_auth_type_value(self) -> str:
+        checkbox = self._get_auth_dropdown()
+        return await checkbox.locator.input_value()
 
     def _get_metadata_label(self) -> BaseElement:
         return BaseElement(self.page, "p", has_text="Metadata")

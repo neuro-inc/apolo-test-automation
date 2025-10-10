@@ -35,15 +35,15 @@ class ShellInstallPageSteps:
             f"Expected Resource preset value to be '{expected_value}' but got '{actual_value}'"
         )
 
-    @async_step("Click Http Authentication checkbox")
-    async def ui_click_http_auth_checkbox(self) -> None:
-        await self._pm.shell_install_page.click_http_auth_checkbox()
+    @async_step("Select Auth type")
+    async def ui_select_auth_type(self, value: str) -> None:
+        await self._pm.shell_install_page.select_auth_type(value=value)
 
-    @async_step("Verify state of Http Auth checkbox")
-    async def verify_ui_http_auth_checkbox_state(self, expected_state: bool) -> None:
-        actual_state = await self._pm.shell_install_page.is_http_auth_enabled()
-        assert actual_state == expected_state, (
-            f"Expected Http Auth state to be '{expected_state}' but got '{actual_state}'"
+    @async_step("Verify value of Auth type")
+    async def verify_ui_auth_type(self, expected_value: str) -> None:
+        actual_value = await self._pm.shell_install_page.get_auth_type_value()
+        assert actual_value == expected_value, (
+            f"Expected Auth type to be '{expected_value}' but got '{actual_value}'"
         )
 
     @async_step("Enter Shell instance display name")
