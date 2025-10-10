@@ -40,11 +40,7 @@ DOWNLOAD_PATH = os.path.join(STORAGE_OBJECTS_PATH, "downloads")
 # Track per-test browser/context/playwright triples
 _browser_context_triples: list[tuple[Browser, BrowserContext, Playwright]] = []
 
-main_user: UserData | None = UserData(
-    email="regression-rn2l10000y@apolo.us",
-    username="regression-rn2l10000y",
-    password="*Z75bCJOn461",
-)
+main_user: UserData | None = None
 second_user: UserData | None = None
 third_user: UserData | None = None
 
