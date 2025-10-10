@@ -30,32 +30,74 @@ class DisksPage(BasePage):
     def _get_no_disks_message(self) -> BaseElement:
         return BaseElement(self.page, "p", has_text="No disks found")
 
-    def _get_disk_btn(self, disk_name: str) -> BaseElement:
-        return BaseElement(self.page, "button", has_text=disk_name)
+    def _get_disk_row(self, disk_name: str) -> BaseElement:
+        """
+        Returns the entire <tr> row for a given disk name.
+        """
+        return BaseElement(
+            self.page,
+            selector=f"tr.contents:has(td p.truncate:text-is('{disk_name}'))",
+        )
 
-    def _get_disk_info_view_title(self, disk_name: str) -> BaseElement:
-        return BaseElement(self.page, "p.truncate.text-h5", has_text=disk_name)
+    def _get_disk_name_field(self, disk_name: str) -> BaseElement:
+        """
+        Returns the disk name <p> element within its cell.
+        """
+        return BaseElement(
+            self.page,
+            selector=f"tr.contents:has(td p.truncate:text-is('{disk_name}')) td:nth-child(2) p.truncate",
+        )
 
-    def _get_disk_info_owner_label(self) -> BaseElement:
-        return BaseElement(self.page, "p.text-h6", has_text="Owner")
+    def _get_disk_storage_field(self, disk_name: str) -> BaseElement:
+        """
+        Returns the 'Used / Storage' cell value.
+        """
+        return BaseElement(
+            self.page,
+            selector=f"tr.contents:has(td p.truncate:text-is('{disk_name}')) td:nth-child(3)",
+        )
 
-    def _get_disk_info_owner_value(self, owner: str) -> BaseElement:
-        return BaseElement(self.page, "p.text-neural-04", has_text=owner)
+    async def get_disk_storage_value(self, disk_name: str) -> str:
+        return await self._get_disk_storage_field(disk_name).text_content()
 
-    def _get_disk_info_storage_label(self) -> BaseElement:
-        return BaseElement(self.page, "p.text-h6", has_text="Storage")
+    def _get_disk_owner_field(self, disk_name: str) -> BaseElement:
+        """
+        Returns the 'Owner' cell value.
+        """
+        return BaseElement(
+            self.page,
+            selector=f"tr.contents:has(td p.truncate:text-is('{disk_name}')) td:nth-child(4)",
+        )
 
-    def _get_disk_info_storage_value(self, storage_value: str) -> BaseElement:
-        return BaseElement(self.page, "p.text-neural-04", has_text=storage_value)
+    async def get_disk_owner_value(self, disk_name: str) -> str:
+        return await self._get_disk_owner_field(disk_name).text_content()
 
-    def _get_disk_info_lifespan_label(self) -> BaseElement:
-        return BaseElement(self.page, "p.text-h6", has_text="Lifespan")
+    def _get_disk_status_field(self, disk_name: str) -> BaseElement:
+        """
+        Returns the 'Status' cell value.
+        """
+        return BaseElement(
+            self.page,
+            selector=f"tr.contents:has(td p.truncate:text-is('{disk_name}')) td:nth-child(5)",
+        )
 
-    def _get_disk_info_lifespan_value(self, lifespan_value: str) -> BaseElement:
-        return BaseElement(self.page, "p.text-neural-04", has_text=lifespan_value)
+    def _get_disk_created_field(self, disk_name: str) -> BaseElement:
+        """
+        Returns the 'Created' cell value.
+        """
+        return BaseElement(
+            self.page,
+            selector=f"tr.contents:has(td p.truncate:text-is('{disk_name}')) td:nth-child(6)",
+        )
 
-    def _get_disk_info_delete_btn(self) -> BaseElement:
-        return BaseElement(self.page, "button", has_text="Delete disk")
+    def _get_disk_delete_btn(self, disk_name: str) -> BaseElement:
+        """
+        Returns the delete button element (trash icon) for a given disk row.
+        """
+        return BaseElement(
+            self.page,
+            selector=f"tr.contents:has(td p.truncate:text-is('{disk_name}')) td:nth-child(7) button:has(svg[data-icon='trash-xmark'])",
+        )
 
     async def is_no_disks_message_displayed(self) -> bool:
         self.log("Check if No disks message displayed")
@@ -71,27 +113,49 @@ class DisksPage(BasePage):
 
     async def is_disk_btn_displayed(self, disk_name: str) -> bool:
         self.log(f"Check if Disk {disk_name} row displayed")
-        return await self._get_disk_btn(disk_name).is_visible()
+        return await self._get_disk_row(disk_name).is_visible()
 
     async def click_disk_btn(self, disk_name: str) -> None:
         self.log(f"Click Disk {disk_name} button")
-        await self._get_disk_btn(disk_name).click()
+        await self._get_disk_row(disk_name).click()
 
-    async def is_disk_info_view_displayed(
-        self, disk_name: str, owner: str, storage_value: str, lifespan_value: str
-    ) -> bool:
-        self.log(f"Check if Disk {disk_name} info view displayed")
-        return (
-            await self._get_disk_info_view_title(disk_name).is_visible()
-            and await self._get_disk_info_owner_label().is_visible()
-            and await self._get_disk_info_owner_value(owner).is_visible()
-            and await self._get_disk_info_storage_label().is_visible()
-            and await self._get_disk_info_storage_value(storage_value).is_visible()
-            and await self._get_disk_info_lifespan_label().is_visible()
-            and await self._get_disk_info_lifespan_value(lifespan_value).is_visible()
-            and await self._get_disk_info_delete_btn().is_visible()
-        )
+    async def is_valid_disk_row_displayed(
+        self,
+        disk_name: str,
+        owner: str,
+        storage_value: str,
+    ) -> tuple[bool, str]:
+        errors = []
 
-    async def click_delete_disk_btn(self) -> None:
+        disk_row = self._get_disk_row(disk_name)
+        if not await disk_row.is_visible():
+            return False, f"Disk '{disk_name}' row not found"
+
+        actual_storage = (await self.get_disk_storage_value(disk_name) or "").strip()
+        actual_owner = (await self.get_disk_owner_value(disk_name) or "").strip()
+
+        # --- normalize storage (split on '/')
+        parts = actual_storage.split("/")
+        total_storage = parts[1].strip() if len(parts) == 2 else actual_storage
+
+        if total_storage != storage_value:
+            errors.append(
+                f"Storage mismatch for '{disk_name}': expected total '{storage_value}', got '{total_storage}' (raw: '{actual_storage}')"
+            )
+
+        if actual_owner != owner:
+            errors.append(
+                f"Owner mismatch for '{disk_name}': expected '{owner}', got '{actual_owner}'"
+            )
+
+        delete_btn = self._get_disk_delete_btn(disk_name)
+        if not await delete_btn.is_visible():
+            errors.append(f"Delete button not visible for '{disk_name}'")
+
+        if errors:
+            return False, "; ".join(errors)
+        return True, ""
+
+    async def click_delete_disk_btn(self, disk_name: str) -> None:
         self.log("Click Delete Disk button")
-        await self._get_disk_info_delete_btn().click()
+        await self._get_disk_delete_btn(disk_name).click()

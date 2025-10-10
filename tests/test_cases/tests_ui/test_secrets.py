@@ -46,7 +46,7 @@ class TestUISecrets(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
 
         ### Verify that:
 
@@ -61,15 +61,13 @@ class TestUISecrets(BaseTestClass):
 
         org = self._data_manager.default_organization
         proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_secret(
@@ -84,7 +82,7 @@ class TestUISecrets(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Create Secret.
 
         ### Verify that:
@@ -100,15 +98,13 @@ class TestUISecrets(BaseTestClass):
 
         org = self._data_manager.default_organization
         proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_secret(
@@ -131,7 +127,7 @@ class TestUISecrets(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Create Secret.
 
         ### Verify that:
@@ -147,15 +143,13 @@ class TestUISecrets(BaseTestClass):
 
         org = self._data_manager.default_organization
         proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_secret(
@@ -188,7 +182,7 @@ class TestUISecrets(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Create Secret.
 
         ### Verify that:
@@ -204,15 +198,13 @@ class TestUISecrets(BaseTestClass):
 
         org = self._data_manager.default_organization
         proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_secret(

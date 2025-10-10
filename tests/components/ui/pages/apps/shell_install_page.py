@@ -62,8 +62,9 @@ class ShellInstallPage(BasePage):
         await self._get_auth_dropdown().select_option(value)
 
     async def get_auth_type_value(self) -> str:
-        checkbox = self._get_auth_dropdown()
-        return await checkbox.locator.input_value()
+        dropdown = self._get_auth_dropdown()
+        selected_option = dropdown.locator.locator("option:checked")
+        return (await selected_option.text_content() or "").strip()
 
     def _get_metadata_label(self) -> BaseElement:
         return BaseElement(self.page, "p", has_text="Metadata")
