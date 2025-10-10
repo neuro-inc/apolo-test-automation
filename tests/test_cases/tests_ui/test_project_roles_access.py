@@ -20,7 +20,7 @@ class TestUIProjectRolesAccess(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Signup `second user`.
         - Invite `second user` to organization via **API**.
         - Invite `second user` to project with `Reader` role.
@@ -58,8 +58,12 @@ class TestUIProjectRolesAccess(BaseTestClass):
         )
 
         proj = org.add_project("Project-1")
-        await steps.ui_create_first_proj_from_top_pane(
-            org_name=org.org_name, proj_name=proj.project_name
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
         )
         await steps.ui_invite_user_to_proj(
             org_name=org.org_name,
@@ -82,7 +86,7 @@ class TestUIProjectRolesAccess(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Signup `second user`.
         - Invite `second user` to organization via **API**.
         - Invite `second user` to project with `Writer` role.
@@ -120,8 +124,12 @@ class TestUIProjectRolesAccess(BaseTestClass):
         )
 
         proj = org.add_project("Project-1")
-        await steps.ui_create_first_proj_from_top_pane(
-            org_name=org.org_name, proj_name=proj.project_name
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
         )
         await steps.ui_invite_user_to_proj(
             org_name=org.org_name,
@@ -144,7 +152,7 @@ class TestUIProjectRolesAccess(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Signup `second user`.
         - Invite `second user` to organization via **API**.
         - Invite `second user` to project with `Manager` role.
@@ -182,8 +190,12 @@ class TestUIProjectRolesAccess(BaseTestClass):
         )
 
         proj = org.add_project("Project-1")
-        await steps.ui_create_first_proj_from_top_pane(
-            org_name=org.org_name, proj_name=proj.project_name
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
         )
         await steps.ui_invite_user_to_proj(
             org_name=org.org_name,
@@ -206,7 +218,7 @@ class TestUIProjectRolesAccess(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Signup `second user`.
         - Invite `second user` to organization via **API**.
         - Invite `second user` to project with `Manager` role.
@@ -260,8 +272,12 @@ class TestUIProjectRolesAccess(BaseTestClass):
         )
 
         proj = org.add_project("Project-1")
-        await steps.ui_create_first_proj_from_top_pane(
-            org_name=org.org_name, proj_name=proj.project_name
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
         )
         await steps.ui_invite_user_to_proj(
             org_name=org.org_name,
@@ -288,7 +304,7 @@ class TestUIProjectRolesAccess(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Signup `second user`.
         - Invite `second user` to organization via **API**.
         - Invite `second user` to project with `Manager` role.
@@ -342,8 +358,12 @@ class TestUIProjectRolesAccess(BaseTestClass):
         )
 
         proj = org.add_project("Project-1")
-        await steps.ui_create_first_proj_from_top_pane(
-            org_name=org.org_name, proj_name=proj.project_name
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
         )
         await steps.ui_invite_user_to_proj(
             org_name=org.org_name,
@@ -370,7 +390,7 @@ class TestUIProjectRolesAccess(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Signup `second user`.
         - Invite `second user` to organization via **API**.
         - Invite `second user` to project with `Manager` role.
@@ -424,8 +444,12 @@ class TestUIProjectRolesAccess(BaseTestClass):
         )
 
         proj = org.add_project("Project-1")
-        await steps.ui_create_first_proj_from_top_pane(
-            org_name=org.org_name, proj_name=proj.project_name
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
         )
         await steps.ui_invite_user_to_proj(
             org_name=org.org_name,
@@ -452,7 +476,7 @@ class TestUIProjectRolesAccess(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Signup `second user`.
         - Invite `second user` to organization via **API**.
         - Invite `second user` to project with `Manager` role.
@@ -506,8 +530,12 @@ class TestUIProjectRolesAccess(BaseTestClass):
         )
 
         proj = org.add_project("Project-1")
-        await steps.ui_create_first_proj_from_top_pane(
-            org_name=org.org_name, proj_name=proj.project_name
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
         )
         await steps.ui_invite_user_to_proj(
             org_name=org.org_name,

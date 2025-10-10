@@ -40,11 +40,7 @@ DOWNLOAD_PATH = os.path.join(STORAGE_OBJECTS_PATH, "downloads")
 # Track per-test browser/context/playwright triples
 _browser_context_triples: list[tuple[Browser, BrowserContext, Playwright]] = []
 
-main_user: UserData | None = UserData(
-    email="regression-rn2l10000y@apolo.us",
-    username="regression-rn2l10000y",
-    password="*Z75bCJOn461",
-)
+main_user: UserData | None = None
 second_user: UserData | None = None
 third_user: UserData | None = None
 
@@ -224,13 +220,13 @@ async def _do_full_setup_logic(
                 users_manager.main_user.authorized = False
                 break
             except Exception as e:
-                logger.warning(f"⚠️ Signup attempt {attempt} failed: {e}")
+                logger.warning(f"Signup attempt {attempt} failed: {e}")
                 await _cleanup_browsers()
 
                 if attempt == max_attempts:
-                    logger.error("❌ Failed to sign up default user after all retries.")
+                    logger.error("Failed to sign up default user after all retries.")
                     raise RuntimeError(
-                        "🚫 Aborting test session: default user signup failed."
+                        "Aborting test session: default user signup failed."
                     )
                 else:
                     logger.info("🔁 Retrying with fresh browser context...")
@@ -272,7 +268,7 @@ async def _do_full_teardown_logic(
                     "Test cleanup failed. See log file for details!\n"
                 )
             formatted_msg = exception_manager.handle(exc, context="Post-test cleanup")
-            logger.exception("Post-test cleanup failed: %s", formatted_msg)
+            logger.exception(f"Post-test cleanup failed: {formatted_msg}")
             allure.attach(
                 formatted_msg,
                 name="Cleanup exception",
@@ -317,19 +313,18 @@ async def _cleanup_orgs(
                         )
                         logger.info(f"Deleted project: {proj_name}")
                 await api_helper.delete_org(token=token, org_name=org_name)
-                logger.info(f"Deleted organisation {org_name}")
                 data_manager.remove_organization(org_name)
             except Exception as exc:
                 formatted_msg = exception_manager.handle(
                     exc, context="Post-test cleanup"
                 )
-                logger.warning("Can not delete org: %s", formatted_msg)
+                logger.warning(f"Can not delete org: {formatted_msg}")
                 logger.warning("Need to setup new test users due to cleanup issues...")
                 main_user = None
                 second_user = None
                 third_user = None
             else:
-                logger.info("Removed organisation: %s", org_name)
+                logger.info(f"Deleted organisation: {org_name}")
 
 
 async def _cleanup_browsers() -> None:
@@ -337,14 +332,21 @@ async def _cleanup_browsers() -> None:
     logger.info("Closing all browser sessions")
 
     for browser, context, playwright in list(_browser_context_triples):
-        # 1. Stop Playwright first (kills browsers/contexts)
+        try:
+            for page in context.pages:
+                listener = getattr(page, "_response_listener", None)
+                if listener:
+                    page.remove_listener("response", listener)
+                    logger.info("Detached response listener from page")
+        except Exception as e:
+            logger.warning(f"Failed to remove listeners: {e}")
+
         try:
             await asyncio.wait_for(playwright.stop(), timeout=5)
             logger.info("Stopped Playwright")
         except Exception as e:
             logger.warning(f"Failed to stop Playwright: {e}")
 
-        # 2. Defensive cleanup in case stop() didn't kill everything
         try:
             if context:
                 await asyncio.wait_for(context.close(), timeout=3)

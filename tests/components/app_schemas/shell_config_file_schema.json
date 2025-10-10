@@ -1,19 +1,20 @@
 {
-  "title": "Template Configuration Schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shell Template Configuration Schema",
   "type": "object",
   "properties": {
     "display_name": {
       "type": "string",
-      "description": "Human-readable name of the instance."
+      "description": "Human-readable name of the deployment."
     },
     "template_name": {
       "type": "string",
-      "description": "Identifier of the template to use."
+      "description": "Name of the deployment template, e.g. 'shell'."
     },
     "template_version": {
       "type": "string",
-      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$",
-      "description": "Version of the template, prefixed with 'v'."
+      "pattern": "^v\\d+\\.\\d+\\.\\d+$",
+      "description": "Template version, e.g. v25.8.0."
     },
     "input": {
       "type": "object",
@@ -21,12 +22,35 @@
         "networking": {
           "type": "object",
           "properties": {
-            "http_auth": {
-              "type": "boolean",
-              "description": "Enable or disable HTTP authentication."
+            "ingress_http": {
+              "type": "object",
+              "properties": {
+                "auth": {
+                  "anyOf": [
+                    {
+                      "type": "boolean",
+                      "description": "Enable/disable HTTP authentication."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["apolo_auth", "no_auth"],
+                          "description": "Apolo platform authentication type."
+                        }
+                      },
+                      "required": ["type"],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "required": ["auth"],
+              "additionalProperties": false
             }
           },
-          "required": ["http_auth"],
+          "required": ["ingress_http"],
           "additionalProperties": false
         },
         "preset": {
@@ -34,8 +58,8 @@
           "properties": {
             "name": {
               "type": "string",
-              "enum": ["cpu-small", "cpu-medium", "cpu-large"],
-              "description": "Resource preset name."
+              "enum": ["cpu-micro", "cpu-medium", "cpu-large"],
+              "description": "Resource preset configuration."
             }
           },
           "required": ["name"],

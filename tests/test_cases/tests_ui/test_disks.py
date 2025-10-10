@@ -46,7 +46,7 @@ class TestUIDisks(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
 
         ### Verify that:
 
@@ -60,16 +60,14 @@ class TestUIDisks(BaseTestClass):
         )
 
         org = self._data_manager.default_organization
-        proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        proj = org.add_project(gherkin_name="Default-project")
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_disk(
@@ -78,14 +76,14 @@ class TestUIDisks(BaseTestClass):
             storage_units="GB",
             lifespan_value="1d",
         )
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="first-disk")
 
     @async_title("Create Second Disk via UI")
     async def test_create_second_disk_via_ui(self) -> None:
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Create new Disk.
 
         ### Verify that:
@@ -101,15 +99,13 @@ class TestUIDisks(BaseTestClass):
 
         org = self._data_manager.default_organization
         proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_disk(
@@ -118,7 +114,7 @@ class TestUIDisks(BaseTestClass):
             storage_units="GB",
             lifespan_value="1d",
         )
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="first-disk")
 
         await steps.ui_create_disk(
             disk_name="second-disk",
@@ -127,15 +123,15 @@ class TestUIDisks(BaseTestClass):
             lifespan_value="1d",
             first_disk=False,
         )
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="first-disk")
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="second-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="second-disk")
 
     @async_title("Search Disk via UI")
     async def test_search_disk_via_ui(self) -> None:
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Create new Disk.
         - Create second Disk.
 
@@ -152,15 +148,13 @@ class TestUIDisks(BaseTestClass):
 
         org = self._data_manager.default_organization
         proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_disk(
@@ -169,7 +163,7 @@ class TestUIDisks(BaseTestClass):
             storage_units="GB",
             lifespan_value="1d",
         )
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="first-disk")
 
         await steps.ui_create_disk(
             disk_name="second-disk",
@@ -178,21 +172,21 @@ class TestUIDisks(BaseTestClass):
             lifespan_value="1d",
             first_disk=False,
         )
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="first-disk")
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="second-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="second-disk")
 
         await steps.disks_page.ui_enter_disk_name_into_search_input(
             disk_name="second-disk"
         )
-        await steps.disks_page.verify_ui_disk_btn_not_displayed(disk_name="first-disk")
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="second-disk")
+        await steps.disks_page.verify_ui_disk_row_not_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="second-disk")
 
     @async_title("Open Disk info view by click on disk button")
     async def test_disk_info_view_via_ui(self) -> None:
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Create new Disk.
 
         ### Verify that:
@@ -208,15 +202,13 @@ class TestUIDisks(BaseTestClass):
 
         org = self._data_manager.default_organization
         proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_disk(
@@ -225,14 +217,12 @@ class TestUIDisks(BaseTestClass):
             storage_units="GB",
             lifespan_value="1d",
         )
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="first-disk")
 
-        await steps.disks_page.ui_click_disk_btn(disk_name="first-disk")
-        await steps.disks_page.verify_ui_disk_info_view_displayed(
+        await steps.disks_page.verify_ui_valid_disk_info_displayed(
             disk_name="first-disk",
             owner=user.username,
             storage_value="1GB",
-            lifespan_value="1d",
         )
 
     @async_title("Delete Disk via UI")
@@ -240,7 +230,7 @@ class TestUIDisks(BaseTestClass):
         """
         - Login with valid credentials.
         - Create new organization via **API**.
-        - Create new project.
+        - Create new project via **API**.
         - Create new Disk.
 
         ### Verify that:
@@ -256,15 +246,13 @@ class TestUIDisks(BaseTestClass):
 
         org = self._data_manager.default_organization
         proj = org.add_project("Default-project")
-
-        await steps.main_page.ui_click_create_proj_button_main_page()
-        await steps.create_proj_popup.verify_ui_popup_displayed(org.org_name)
-
-        await steps.create_proj_popup.ui_enter_proj_name(proj.project_name)
-        await steps.create_proj_popup.ui_select_role("Reader")
-        await steps.create_proj_popup.ui_click_create_button()
-        await steps.create_proj_popup.ui_wait_to_disappear(org_name=org.org_name)
-
+        await steps.ui_add_proj_api(
+            token=user.token,
+            org_name=org.org_name,
+            proj_name=proj.project_name,
+            default_role="reader",
+            proj_default=False,
+        )
         await steps.apps_page.verify_ui_page_displayed()
 
         await steps.ui_create_disk(
@@ -273,20 +261,18 @@ class TestUIDisks(BaseTestClass):
             storage_units="GB",
             lifespan_value="1d",
         )
-        await steps.disks_page.verify_ui_disk_btn_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_displayed(disk_name="first-disk")
 
-        await steps.disks_page.ui_click_disk_btn(disk_name="first-disk")
-        await steps.disks_page.verify_ui_disk_info_view_displayed(
+        await steps.disks_page.verify_ui_valid_disk_info_displayed(
             disk_name="first-disk",
             owner=user.username,
             storage_value="1GB",
-            lifespan_value="1d",
         )
 
-        await steps.disks_page.ui_click_delete_disk_btn()
+        await steps.disks_page.ui_click_delete_disk_btn(disk_name="first-disk")
         await steps.delete_disk_popup.verify_ui_popup_displayed(disk_name="first-disk")
 
         await steps.delete_disk_popup.ui_click_delete_btn()
         await steps.delete_disk_popup.ui_wait_to_disappear(disk_name="first-disk")
-        await steps.disks_page.verify_ui_disk_btn_not_displayed(disk_name="first-disk")
+        await steps.disks_page.verify_ui_disk_row_not_displayed(disk_name="first-disk")
         await steps.disks_page.verify_ui_no_disks_message_displayed()

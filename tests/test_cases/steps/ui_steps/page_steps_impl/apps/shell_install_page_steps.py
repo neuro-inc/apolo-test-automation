@@ -116,7 +116,7 @@ class ShellInstallPageSteps:
 
     @async_step("Verify exported config file data")
     async def verify_exported_config_data(
-        self, display_name: str, preset: str, http_auth: bool, config_file_path: str
+        self, display_name: str, preset: str, http_auth: str, config_file_path: str
     ) -> None:
         config_file = Path(config_file_path)
         if not config_file.exists():
@@ -146,7 +146,11 @@ class ShellInstallPageSteps:
             errors.append(f"preset mismatch: expected '{preset}', got '{preset_val}'")
 
         http_auth_val = (
-            config_data.get("input", {}).get("networking", {}).get("http_auth")
+            config_data.get("input", {})
+            .get("networking", {})
+            .get("ingress_http", {})
+            .get("auth", {})
+            .get("type")
         )
         if http_auth_val != http_auth:
             errors.append(
