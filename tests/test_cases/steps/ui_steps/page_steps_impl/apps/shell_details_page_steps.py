@@ -71,7 +71,7 @@ class ShellDetailsPageSteps:
 
     @async_step("Verify App endpoints sections contains valid data format")
     async def verify_ui_app_output_apis_data_format(self) -> None:
-        api_sections = await self._pm.deep_seek_details_page.parse_api_sections()
+        api_sections = await self._pm.shell_details_page.parse_api_sections()
         await self._data_manager.app_data.load_output_ui_schema("shell")
         result, error_message = self._data_manager.app_data.validate_api_section_schema(
             api_sections

@@ -283,6 +283,25 @@ class APISteps:
         )
         assert result, error_message
 
+    @async_step("Verify Service Deployment /output response contains required endpoints")
+    async def verify_serv_depl_output_endpoints(
+            self, token: str, org_name: str, proj_name: str, app_id: str
+    ) -> Any:
+        required_APIs = [
+            ("external_url", "https"),
+            ("internal_url", "http"),
+        ]
+        status, response = await self._api_helper.get_app_output(
+            token=token, org_name=org_name, proj_name=proj_name, app_id=app_id
+        )
+        assert status == 200, response
+
+        api_sections = self._extract_shell_api_sections(response)
+        result, error_message = self._verify_serv_depl_required_endpoints(
+            api_sections, required_APIs
+        )
+        assert result, error_message
+
     @async_step("Verify output endpoints schema via API")
     async def verify_output_endpoints_schema_api(
         self, token: str, org_name: str, proj_name: str, app_id: str
@@ -310,6 +329,23 @@ class APISteps:
         assert status == 200, response
 
         api_sections = self._extract_shell_api_sections(response)
+        sections_data = [section["data"] for section in api_sections]
+        await self._data_manager.app_data.load_output_api_schema("service_deployment")
+        result, error_message = self._data_manager.app_data.validate_api_section_schema(
+            sections_data
+        )
+        assert result, error_message
+
+    @async_step("Verify Service Deployment /output endpoints schema via API")
+    async def verify_serv_depl_output_endpoints_schema_api(
+            self, token: str, org_name: str, proj_name: str, app_id: str
+    ) -> Any:
+        status, response = await self._api_helper.get_app_output(
+            token=token, org_name=org_name, proj_name=proj_name, app_id=app_id
+        )
+        assert status == 200, response
+
+        api_sections = self._extract_api_sections(response)
         sections_data = [section["data"] for section in api_sections]
         await self._data_manager.app_data.load_output_api_schema("shell")
         result, error_message = self._data_manager.app_data.validate_api_section_schema(
@@ -551,6 +587,31 @@ class APISteps:
         return True, ""
 
     def _verify_shell_required_endpoints(
+        self, parsed_sections: list[dict[str, Any]], required: list[tuple[str, str]]
+    ) -> tuple[bool, str]:
+        """
+        Verify that parsed sections contain required (name, protocol) pairs.
+        Example required: [("external_url", "https"), ("internal_url", "http")].
+        """
+        missing: list[str] = []
+
+        for name, protocol in required:
+            found = False
+            for section in parsed_sections:
+                if (
+                    section["name"] == name
+                    and section["data"].get("protocol") == protocol
+                ):
+                    found = True
+                    break
+            if not found:
+                missing.append(f"{name} ({protocol})")
+
+        if missing:
+            return False, "Missing required URLs: " + ", ".join(missing)
+        return True, ""
+
+    def _verify_serv_depl_required_endpoints(
         self, parsed_sections: list[dict[str, Any]], required: list[tuple[str, str]]
     ) -> tuple[bool, str]:
         """

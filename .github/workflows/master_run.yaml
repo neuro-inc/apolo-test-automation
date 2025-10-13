@@ -3,24 +3,27 @@ name: Nightly Tests Run Workflow
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 1 * * *'  # every day at 01:00 UTC
+
 permissions:
   contents: write
   pages: write
 
 jobs:
   test:
-    name: Run Tests
+    name: Run Tests (Shard ${{ matrix.shard }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]  # number of parallel test runners (adjust as needed)
+
     env:
       HF_TOKEN: ${{ secrets.HF_TOKEN_DS_1_5 }}
+      SHARDS_TOTAL: 3
+      SHARD_INDEX: ${{ matrix.shard }}
 
     steps:
-      - name: Set destination directory
-        id: set-destination
-        run: |
-            echo "DEST=run-test-latest" >> "$GITHUB_ENV"
-
       - name: Checkout code
         uses: actions/checkout@v5
 
@@ -35,69 +38,113 @@ jobs:
       - name: Install Playwright Chromium
         run: uv run python -m playwright install chromium --with-deps
 
+      - name: Install pytest dependencies
+        run: |
+          uv run pip install pytest pytest-shard pytest-timeout allure-pytest
 
-      - name: Install Allure
+      - name: Install Allure CLI
         run: |
           mkdir -p allure-bin
           curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
           unzip -q allure.zip -d allure-bin
           echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
-          export PATH="$PWD/allure-bin/allure-2.27.0/bin:$PATH"
           allure --version
 
-      - name: Copy Allure history from qa-regression-history branch
+      - name: Prepare Allure history
         run: |
-            git fetch origin qa-regression-history
-            mkdir -p reports/allure-results/history
-            git clone --depth 1 --branch qa-regression-history https://github.com/${{ github.repository }} history-temp
-            cp -r history-temp/history/* reports/allure-results/history/ || echo "No history found"
-            ls -l reports/allure-results/history
-            rm -rf history-temp
+          git fetch origin qa-regression-history || true
+          mkdir -p reports/allure-results/history
+          git clone --depth 1 --branch qa-regression-history https://github.com/${{ github.repository }} history-temp || true
+          cp -r history-temp/history/* reports/allure-results/history/ || echo "No history found"
+          rm -rf history-temp
 
-      - name: Run tests
+      - name: Run tests (Shard ${{ matrix.shard }})
         id: run_tests
         run: |
-          uv run pytest tests -n 3 --dist loadfile --timeout=180 --timeout-method=signal --tb=short --capture=tee-sys
+          echo "🧪 Running shard $SHARD_INDEX of $SHARDS_TOTAL..."
+          uv run pytest tests \
+            --shard-id=$SHARD_INDEX \
+            --shard-count=$SHARDS_TOTAL \
+            --maxfail=1 \
+            --disable-warnings \
+            --tb=short \
+            --timeout=240 \
+            --timeout-method=signal \
+            --capture=tee-sys
 
-      - name: Read test summary
+      - name: Upload Allure results for this shard
         if: always()
-        id: summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.shard }}
+          path: reports/allure-results/**
+          retention-days: 7
+
+      - name: Upload test logs for this shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ matrix.shard }}
+          path: reports/logs/**
+          retention-days: 7
+
+  merge-report:
+    name: Merge Allure Reports & Deploy
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Download all shard artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-*
+          path: merged-results
+
+      - name: Merge Allure results
         run: |
-          echo "summary_text<<EOF" >> $GITHUB_OUTPUT
-          cat reports/logs/summary.log >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          mkdir -p reports/allure-results
+          find merged-results -type f -exec cp {} reports/allure-results/ \;
 
-      - name: Install jq
-        if: always()
-        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Install Allure CLI
+        run: |
+          mkdir -p allure-bin
+          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+          unzip -q allure.zip -d allure-bin
+          echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
+          allure --version
+
+      - name: Generate Allure report
+        run: |
+          mkdir -p reports/allure-report
+          allure generate reports/allure-results -o reports/allure-report --clean
 
       - name: Deploy to GitHub Pages
-        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./reports/allure-report
-            publish_branch: gh-pages
-            destination_dir: ${{ env.DEST }}
-            force: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports/allure-report
+          publish_branch: gh-pages
+          destination_dir: run-test-latest
+          force: true
 
       - name: Wait for GitHub Pages to become available
-        if: always()
         run: |
-            REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
-
-            echo "Waiting for GitHub Pages to become available at: $REPORT_URL"
-
-            for i in {1..20}; do
-              status=$(curl -o /dev/null -s -w "%{http_code}" "$REPORT_URL")
-              if [[ "$status" == "200" ]]; then
-                echo "✅ GitHub Pages is available!"
-                break
-              else
-                echo "Waiting... (attempt $i/20), status: $status"
-                sleep 30
-              fi
-            done
+          REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
+          echo "Waiting for GitHub Pages to become available at: $REPORT_URL"
+          for i in {1..20}; do
+            status=$(curl -o /dev/null -s -w "%{http_code}" "$REPORT_URL")
+            if [[ "$status" == "200" ]]; then
+              echo "✅ GitHub Pages is available!"
+              break
+            else
+              echo "Waiting... (attempt $i/20), status: $status"
+              sleep 30
+            fi
+          done
 
       - name: Notify Slack
         if: always()
@@ -107,24 +154,23 @@ jobs:
           REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
 
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
-            TRIGGER="🕒 Scheduled run (by GitHub Actions)"
+            TRIGGER="🕒 Scheduled nightly run"
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            TRIGGER="👤 Manually triggered by ${{ github.actor }}"
+            TRIGGER="👤 Manual trigger by ${{ github.actor }}"
           else
-            TRIGGER="🔁 Triggered by event: ${{ github.event_name }} (actor: ${{ github.actor }})"
+            TRIGGER="🔁 Triggered by ${{ github.event_name }}"
           fi
 
           {
             echo "*📊 Regression Test Report* :: $TRIGGER"
             echo '```'
-            cat reports/logs/summary.log || echo "No summary found"
+            find reports/allure-results -name summary.log -exec cat {} \; || echo "No summary found"
             echo '```'
-            echo "<$REPORT_URL|View Report>"
+            echo "<$REPORT_URL|View Full Allure Report>"
           } > slack_message.txt
 
           jq -Rs '{text: .}' < slack_message.txt > slack_payload.json
           curl -X POST -H 'Content-type: application/json' --data @slack_payload.json "$SLACK_WEBHOOK_URL"
-
 
       - name: Push Allure history to qa-regression-history branch
         if: always()
@@ -142,22 +188,12 @@ jobs:
           git commit -m "Update Allure history from nightly run" || echo "No changes to commit"
           git push origin qa-regression-history --force
 
-      - name: Upload logs
+      - name: Upload final merged logs and report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: logs
-          path: reports/logs/**
+          name: final-report
+          path: |
+            reports/allure-report/**
+            reports/logs/**
           retention-days: 7
-
-      - name: Upload Allure report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: reports/allure-report/**
-          retention-days: 7
-
-      - name: Clean test artifacts to save space
-        if: always()
-        run: rm -rf reports/logs reports/screenshots reports/allure-results

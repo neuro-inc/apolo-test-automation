@@ -342,27 +342,28 @@ async def _cleanup_browsers() -> None:
             logger.warning(f"Failed to remove listeners: {e}")
 
         try:
-            await asyncio.wait_for(playwright.stop(), timeout=5)
-            logger.info("Stopped Playwright")
-        except Exception as e:
-            logger.warning(f"Failed to stop Playwright: {e}")
-
-        try:
             if context:
                 await asyncio.wait_for(context.close(), timeout=3)
-                logger.info("Closed context (post-stop)")
+                logger.info("Closed context")
         except Exception as e:
             logger.warning(f"Failed to close context: {e}")
 
         try:
             if browser and browser.is_connected():
                 await asyncio.wait_for(browser.close(), timeout=3)
-                logger.info("Closed browser (post-stop)")
+                logger.info("Closed browser")
         except Exception as e:
             logger.warning(f"Failed to close browser: {e}")
 
+        try:
+            await asyncio.wait_for(playwright.stop(), timeout=3)
+            logger.info("Stopped Playwright")
+        except Exception as e:
+            logger.warning(f"Failed to stop Playwright: {e}")
+
     _browser_context_triples.clear()
     logger.info("Browser cleanup finished")
+
 
 
 async def _start_browser() -> tuple[Browser, Playwright]:
