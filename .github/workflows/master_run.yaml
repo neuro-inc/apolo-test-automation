@@ -42,13 +42,8 @@ jobs:
         run: |
           uv run pip install pytest pytest-shard pytest-timeout allure-pytest
 
-      - name: Install Allure CLI
-        run: |
-          mkdir -p allure-bin
-          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
-          unzip -q allure.zip -d allure-bin
-          echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
-          allure --version
+      - name: Set up Allure CLI
+        uses: simple-elf/allure-report-action@v1.7
 
       - name: Prepare Allure history
         run: |
@@ -109,15 +104,8 @@ jobs:
           mkdir -p reports/allure-results
           find merged-results -type f -exec cp {} reports/allure-results/ \;
 
-      - name: Install Allure
-        run: |
-          mkdir -p allure-bin
-          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
-          unzip -q allure.zip -d allure-bin
-          echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
-
-      - name: Verify Allure
-        run: allure --version
+      - name: Set up Allure CLI
+        uses: simple-elf/allure-report-action@v1.7
 
       - name: Generate Allure report
         run: |
