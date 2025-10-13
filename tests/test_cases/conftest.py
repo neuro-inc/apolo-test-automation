@@ -365,7 +365,6 @@ async def _cleanup_browsers() -> None:
     logger.info("Browser cleanup finished")
 
 
-
 async def _start_browser() -> tuple[Browser, Playwright]:
     """
     Start Playwright + Chromium browser (per test).

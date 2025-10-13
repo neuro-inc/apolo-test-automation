@@ -85,7 +85,11 @@ class CreateProjectPopup(BasePage):
             state="detached"
         )
         await self._get_proj_name_input().locator.wait_for(state="detached", timeout=60)
-        await self._get_is_proj_default_checkbox().locator.wait_for(state="detached", timeout=60)
-        await self._get_default_role_dropdown().locator.wait_for(state="detached", timeout=60)
+        await self._get_is_proj_default_checkbox().locator.wait_for(
+            state="detached", timeout=60
+        )
+        await self._get_default_role_dropdown().locator.wait_for(
+            state="detached", timeout=60
+        )
         await self._get_cancel_button().locator.wait_for(state="detached", timeout=60)
         await self._get_create_button().locator.wait_for(state="detached", timeout=60)

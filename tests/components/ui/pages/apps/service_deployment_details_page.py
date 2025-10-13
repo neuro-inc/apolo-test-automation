@@ -104,7 +104,9 @@ class ServiceDeploymentDetailsPage(BasePage):
         return BaseElement(self.page, by_role="heading", name="output")
 
     async def is_output_container_displayed(self) -> bool:
-        container_area = self.page.locator("div.min-h-0.min-w-0.overflow-auto.bg-gray-100")
+        container_area = self.page.locator(
+            "div.min-h-0.min-w-0.overflow-auto.bg-gray-100"
+        )
         container = self._get_output_container()
 
         try:

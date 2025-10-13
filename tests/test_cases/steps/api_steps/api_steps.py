@@ -283,9 +283,11 @@ class APISteps:
         )
         assert result, error_message
 
-    @async_step("Verify Service Deployment /output response contains required endpoints")
+    @async_step(
+        "Verify Service Deployment /output response contains required endpoints"
+    )
     async def verify_serv_depl_output_endpoints(
-            self, token: str, org_name: str, proj_name: str, app_id: str
+        self, token: str, org_name: str, proj_name: str, app_id: str
     ) -> Any:
         required_APIs = [
             ("external_url", "https"),
@@ -338,7 +340,7 @@ class APISteps:
 
     @async_step("Verify Service Deployment /output endpoints schema via API")
     async def verify_serv_depl_output_endpoints_schema_api(
-            self, token: str, org_name: str, proj_name: str, app_id: str
+        self, token: str, org_name: str, proj_name: str, app_id: str
     ) -> Any:
         status, response = await self._api_helper.get_app_output(
             token=token, org_name=org_name, proj_name=proj_name, app_id=app_id
