@@ -109,14 +109,15 @@ jobs:
           mkdir -p reports/allure-results
           find merged-results -type f -exec cp {} reports/allure-results/ \;
 
-      - name: Install Allure CLI
+      - name: Install Allure
         run: |
           mkdir -p allure-bin
           curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
           unzip -q allure.zip -d allure-bin
           echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
-          allure --version || ./allure-bin/allure-2.27.0/bin/allure --version
 
+      - name: Verify Allure
+        run: allure --version
 
       - name: Generate Allure report
         run: |
