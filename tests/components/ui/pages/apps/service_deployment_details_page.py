@@ -104,11 +104,13 @@ class ServiceDeploymentDetailsPage(BasePage):
         return BaseElement(self.page, by_role="heading", name="output")
 
     async def is_output_container_displayed(self) -> bool:
-        container_area = self.page.locator("div.flex.flex-col.gap-10.font-roboto")
+        container_area = self.page.locator(
+            "div.min-h-0.min-w-0.overflow-auto.bg-gray-100"
+        )
         container = self._get_output_container()
 
         try:
-            for _ in range(3):  # limit to avoid infinite loop
+            for _ in range(10):  # limit to avoid infinite loop
                 if await container.is_element_in_viewport():
                     return True
 
@@ -157,48 +159,41 @@ class ServiceDeploymentDetailsPage(BasePage):
 
     async def parse_api_sections(self) -> list[dict[str, str]]:
         """
-        Parses all visible 'HTTP API' sections (including nested ones)
-        and returns a flat list of dictionaries with their key/value data.
+        Parses nested API sections from the UI into structured dictionaries.
+        Supports nested 'Service APIs' → 'HTTP API' → key-value structure.
         """
-
         sections: list[dict[str, str]] = []
 
-        # Find all "HTTP API" header buttons (case-insensitive)
-        http_api_buttons = await BaseElement.find_all(
-            self.page, selector="button:has(> h4:text-matches('^HTTP API$', 'i'))"
+        # Step 1: find all HTTP API sections
+        api_sections = await BaseElement.find_all(
+            self.page, selector="button:has(h4:text-is('HTTP API'))"
         )
 
-        for http_btn in http_api_buttons:
-            try:
-                await http_btn.locator.click()
-                await self.page.wait_for_timeout(200)
-            except Exception:
-                pass  # in case already expanded or disabled
+        for api_section in api_sections:
+            section: dict[str, str] = {}
 
-            # Find container immediately following the button
-            content = http_btn.locator.locator(
-                "xpath=following-sibling::div[contains(@class, 'contents')]"
-            ).first
+            # Extract section title
+            title_el = api_section.locator.locator("h4")
+            section["title"] = (await title_el.inner_text()).strip()
 
-            # Inside each section, parse key/value pairs
-            kv_blocks = content.locator("div:has(> button[disabled] > h4)")
+            # Step 2: Find all key-value pairs below this section
+            # Each pair has <h4>Key</h4> and <span>Value</span> inside nested divs
+            kv_blocks = api_section.locator.locator(
+                "xpath=following-sibling::div[contains(@class, 'overflow-hidden')]//div[.//button[@disabled]]"
+            )
+
             count = await kv_blocks.count()
-
-            section: dict[str, str] = {"title": "HTTP API"}
-
             for i in range(count):
-                block = kv_blocks.nth(i)
                 try:
+                    block = kv_blocks.nth(i)
                     key = (await block.locator("h4").inner_text()).strip()
-                    # Value inside nested colored spans
-                    value = (
-                        await block.locator("span span:not(:has(svg))").inner_text()
-                    ).strip()
+                    value_span = block.locator("span.text-lime-800, span.text-cyan-800")
+                    value = (await value_span.inner_text()).strip()
                     section[key] = value
                 except Exception:
                     continue
 
             sections.append(section)
 
-        self.log(f"Parsed HTTP API sections: {sections}")
+        self.log(f"Parsed API sections: {sections}")
         return sections

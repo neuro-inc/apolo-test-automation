@@ -182,3 +182,44 @@ class ShellDetailsPage(BasePage):
         if mismatches:
             return False, "; ".join(mismatches)
         return True, ""
+
+    async def parse_api_sections(self) -> list[dict[str, str]]:
+        """
+        Parses nested API sections from the UI into structured dictionaries.
+        Supports nested 'Service APIs' → 'HTTP API' → key-value structure.
+        """
+        sections: list[dict[str, str]] = []
+
+        # Step 1: find all HTTP API sections
+        api_sections = await BaseElement.find_all(
+            self.page, selector="button:has(h4:text-is('HTTP API'))"
+        )
+
+        for api_section in api_sections:
+            section: dict[str, str] = {}
+
+            # Extract section title
+            title_el = api_section.locator.locator("h4")
+            section["title"] = (await title_el.inner_text()).strip()
+
+            # Step 2: Find all key-value pairs below this section
+            # Each pair has <h4>Key</h4> and <span>Value</span> inside nested divs
+            kv_blocks = api_section.locator.locator(
+                "xpath=following-sibling::div[contains(@class, 'overflow-hidden')]//div[.//button[@disabled]]"
+            )
+
+            count = await kv_blocks.count()
+            for i in range(count):
+                try:
+                    block = kv_blocks.nth(i)
+                    key = (await block.locator("h4").inner_text()).strip()
+                    value_span = block.locator("span.text-lime-800, span.text-cyan-800")
+                    value = (await value_span.inner_text()).strip()
+                    section[key] = value
+                except Exception:
+                    continue
+
+            sections.append(section)
+
+        self.log(f"Parsed API sections: {sections}")
+        return sections
