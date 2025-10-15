@@ -32,7 +32,7 @@ class ShellDetailsPageSteps:
 
     @async_step("Verify App output contains required endpoints")
     async def verify_ui_app_output_apis(self) -> None:
-        api_sections = await self._pm.deep_seek_details_page.parse_api_sections()
+        api_sections = await self._pm.deep_seek_details_page.parse_output_sections()
         for name, protocol in self.required_APIs:
             assert self._has_object_with_title_and_protocol(
                 api_sections, name, protocol
