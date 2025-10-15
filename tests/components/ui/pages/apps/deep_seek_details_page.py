@@ -1,5 +1,5 @@
 from typing import Any
-from playwright.async_api import Page
+from playwright.async_api import Page, Locator
 from tests.components.ui.pages.base_element import BaseElement
 from tests.components.ui.pages.base_page import BasePage
 
@@ -149,47 +149,6 @@ class DeepSeekDetailsPage(BasePage):
             self.log(f"Output section not found: {e}")
             return False
 
-    async def parse_api_sections(self) -> list[dict[str, str]]:
-        """
-        Parses nested API sections from the UI into structured dictionaries.
-        Supports nested 'Service APIs' → 'HTTP API' → key-value structure.
-        """
-        sections: list[dict[str, str]] = []
-
-        # Step 1: find all HTTP API sections
-        api_sections = await BaseElement.find_all(
-            self.page, selector="button:has(h4:text-is('HTTP API'))"
-        )
-
-        for api_section in api_sections:
-            section: dict[str, str] = {}
-
-            # Extract section title
-            title_el = api_section.locator.locator("h4")
-            section["title"] = (await title_el.inner_text()).strip()
-
-            # Step 2: Find all key-value pairs below this section
-            # Each pair has <h4>Key</h4> and <span>Value</span> inside nested divs
-            kv_blocks = api_section.locator.locator(
-                "xpath=following-sibling::div[contains(@class, 'overflow-hidden')]//div[.//button[@disabled]]"
-            )
-
-            count = await kv_blocks.count()
-            for i in range(count):
-                try:
-                    block = kv_blocks.nth(i)
-                    key = (await block.locator("h4").inner_text()).strip()
-                    value_span = block.locator("span.text-lime-800, span.text-cyan-800")
-                    value = (await value_span.inner_text()).strip()
-                    section[key] = value
-                except Exception:
-                    continue
-
-            sections.append(section)
-
-        self.log(f"Parsed API sections: {sections}")
-        return sections
-
     async def verify_app_details_info(
         self, owner: str, app_id: str, app_name: str, proj_name: str, org_name: str
     ) -> tuple[bool, str]:
@@ -223,3 +182,103 @@ class DeepSeekDetailsPage(BasePage):
         if mismatches:
             return False, "; ".join(mismatches)
         return True, ""
+
+    async def parse_output_sections(self) -> list[dict[str, str]]:
+        """
+        Parse the 'Output' section and return structured API dictionaries.
+        Rules:
+          - <button disabled> → key/value pair
+          - <button not disabled> → nested dict (collapsible)
+          - Only sections ending with 'API' are kept.
+          - Duplicates between parent and nested dicts are safely removed.
+        """
+        results: list[dict[str, str]] = []
+
+        # Locate the 'Output' section container
+        output_section = self.page.locator(
+            "xpath=//h3[translate(normalize-space(), 'OUTPUT', 'output')='output']/following-sibling::div"
+        )
+
+        # Top-level API sections (font-bold buttons)
+        api_buttons = output_section.locator(
+            "xpath=.//button[contains(@class,'font-bold') and .//h4]"
+        )
+        total = await api_buttons.count()
+
+        for i in range(total):
+            api_button = api_buttons.nth(i)
+            title_el = api_button.locator("xpath=.//h4")
+            title = (await title_el.inner_text()).strip()
+
+            # Skip non-API sections early
+            if not title.lower().endswith("api"):
+                continue
+
+            # Parse this API section recursively
+            section_data = await self._parse_api_section(api_button)
+            section_data["title"] = title
+
+            # --- Deduplicate safely ---
+            keys_to_delete: list[str] = []
+            for k, v in list(section_data.items()):
+                if isinstance(v, dict):
+                    for nested_key in v.keys():
+                        if nested_key in section_data and nested_key != k:
+                            keys_to_delete.append(nested_key)
+
+            # Delete outside the iteration
+            for k in keys_to_delete:
+                del section_data[k]
+
+            results.append(section_data)
+
+        return results
+
+    async def _parse_api_section(self, button: Locator) -> dict[str, str]:
+        """
+        Recursively parses collapsible API sections.
+        Disabled <button> → key/value pair
+        Enabled <button>  → nested dict (subsection)
+        Avoids duplicate fields across nested levels.
+        """
+        data: dict[str, str] = {}
+
+        # The container directly following this button
+        container = button.locator(
+            "xpath=following-sibling::div[contains(@class,'overflow-hidden') or contains(@class,'contents')]"
+        )
+
+        # Get all nested buttons with <h4>
+        sub_buttons = container.locator("xpath=.//button[h4]")
+        total = await sub_buttons.count()
+
+        for i in range(total):
+            sub_button = sub_buttons.nth(i)
+            key_el = sub_button.locator("xpath=.//h4")
+            key = (await key_el.inner_text()).strip()
+            is_disabled = await sub_button.get_attribute("disabled")
+
+            if is_disabled is not None:
+                # --- Simple key/value pair ---
+                value_span = sub_button.locator(
+                    "xpath=following-sibling::div[contains(@class,'overflow-hidden') or contains(@class,'contents')]"
+                    "//span[contains(@class,'text-lime-800') or "
+                    "contains(@class,'text-cyan-800') or "
+                    "contains(@class,'text-neural-06')]"
+                )
+                if await value_span.count() > 0:
+                    value = (await value_span.first.inner_text()).strip()
+                    data[key] = value
+            else:
+                # --- Nested collapsible dict ---
+                nested_dict = await self._parse_api_section(sub_button)
+                data[key] = nested_dict  # type: ignore[assignment]
+
+                # Dedup nested keys safely
+                keys_to_delete = [
+                    nk for nk in nested_dict.keys() if nk in data and nk != key
+                ]
+                for k_del in keys_to_delete:
+                    del data[k_del]
+
+        return data

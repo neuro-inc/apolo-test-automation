@@ -80,12 +80,18 @@ class CreateProjectPopup(BasePage):
         """
         self.log("Wait for Create project popup to disappear")
 
-        await self._get_create_proj_title().locator.wait_for(state="detached")
-        await self._get_create_proj_text_field(org_name).locator.wait_for(
-            state="detached"
+        await self._get_create_proj_title().locator.wait_for(
+            state="detached", timeout=60
         )
-        await self._get_proj_name_input().locator.wait_for(state="detached")
-        await self._get_is_proj_default_checkbox().locator.wait_for(state="detached")
-        await self._get_default_role_dropdown().locator.wait_for(state="detached")
-        await self._get_cancel_button().locator.wait_for(state="detached")
-        await self._get_create_button().locator.wait_for(state="detached")
+        await self._get_create_proj_text_field(org_name).locator.wait_for(
+            state="detached", timeout=60
+        )
+        await self._get_proj_name_input().locator.wait_for(state="detached", timeout=60)
+        await self._get_is_proj_default_checkbox().locator.wait_for(
+            state="detached", timeout=60
+        )
+        await self._get_default_role_dropdown().locator.wait_for(
+            state="detached", timeout=60
+        )
+        await self._get_cancel_button().locator.wait_for(state="detached", timeout=60)
+        await self._get_create_button().locator.wait_for(state="detached", timeout=60)

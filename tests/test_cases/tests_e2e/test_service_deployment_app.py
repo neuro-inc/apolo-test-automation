@@ -10,11 +10,11 @@ from tests.test_cases.base_test_class import BaseTestClass
 @pytest.mark.flaky(reruns=0)
 @pytest.mark.class_setup
 class TestE2EServiceDeploymentApp(BaseTestClass):
-    serv_depl_app_name = ""
-    serv_depl_app_id = ""
-    org_name = ""
-    proj_name = ""
-    app_install_status = False
+    serv_depl_app_name = "service-deployment-regression-3i5hu1uo"
+    serv_depl_app_id = "1380e929-5e0d-4e21-a0a9-da751082b468"
+    org_name = "regression-org-bo4chooo8zll"
+    proj_name = "regression-proj-uf0nlspit7"
+    app_install_status = True
 
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:
@@ -443,7 +443,7 @@ class TestE2EServiceDeploymentApp(BaseTestClass):
 
         ### Verify that `Output` section contains:
         - Http internal API
-        - Https external API
+        - Http external API
         """
         ui_steps = self._ui_steps
         user = self._users_manager.main_user
@@ -493,12 +493,101 @@ class TestE2EServiceDeploymentApp(BaseTestClass):
         await ui_steps.service_deployment_details_page.verify_ui_app_output_displayed()
         await ui_steps.service_deployment_details_page.verify_ui_app_output_apis_data_format()
 
+    @async_title("Verify app output contains required endpoints via API")
+    @pytest.mark.order(11)
+    async def test_app_output_api_via_api(self, serv_depl_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Service Deployment app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+
+        ### Verify that `output` API response contains required endpoints:
+
+        - Http internal API
+        - Https external API
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EServiceDeploymentApp.serv_depl_app_id
+        org_name = TestE2EServiceDeploymentApp.org_name
+        proj_name = TestE2EServiceDeploymentApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.get_app_output_api(
+            token=user.token,
+            app_id=app_id,
+            org_name=org_name,
+            proj_name=proj_name,
+        )
+        await api_steps.verify_serv_depl_output_endpoints(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify GET custom-deployment–<id> without auth header")
+    @pytest.mark.order(12)
+    async def test_get_cust_depl_no_auth_via_api(self, serv_depl_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Service Deployment app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `custom-deployment–<id>` API without auth header.
+
+        ### Verify that:
+
+        - Http internal API
+        - Https external API
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EServiceDeploymentApp.serv_depl_app_id
+        org_name = TestE2EServiceDeploymentApp.org_name
+        proj_name = TestE2EServiceDeploymentApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_serv_depl_output_endpoints(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
+    @async_title("Verify app output endpoints schema via API")
+    @pytest.mark.order(12)
+    async def test_app_output_api_schema_via_api(self, serv_depl_status) -> None:  # type: ignore[no-untyped-def]
+        """
+        ### Pre-conditions:
+        - Service Deployment app installed.
+
+        ### Steps:
+        - Login with valid credentials.
+        - Call `output` API.
+
+        ### Verify that:
+
+        - API endpoints data matching expected json schema.
+        """
+        ui_steps = self._ui_steps
+        api_steps = self._api_steps
+        user = self._users_manager.main_user
+        app_id = TestE2EServiceDeploymentApp.serv_depl_app_id
+        org_name = TestE2EServiceDeploymentApp.org_name
+        proj_name = TestE2EServiceDeploymentApp.proj_name
+
+        await ui_steps.ui_login(user, fresh_login=False)
+        await api_steps.verify_shell_output_endpoints_schema_api(
+            token=user.token, app_id=app_id, org_name=org_name, proj_name=proj_name
+        )
+
     @async_title("Verify User can uninstall app via UI")
     @pytest.mark.order(15)
     async def test_app_uninstall_via_ui(self, serv_depl_status) -> None:  # type: ignore[no-untyped-def]
         """
         ### Pre-conditions:
-        - Shell app installed.
+        - Service Deployment app installed.
 
         ### Steps:
         - Login with valid credentials.
@@ -697,3 +786,46 @@ class TestE2EServiceDeploymentApp(BaseTestClass):
         #     preset="cpu-medium",
         #     http_auth=True,
         # )
+
+    @async_title("Import Service Deployment app config via UI")
+    @pytest.mark.order(17)
+    async def test_import_app_config_via_ui(self) -> None:
+        """
+        - Login with valid credentials.
+        - Create new organization via **API**.
+        - Create new project via **API**.
+        - Import Service Deployment app config via UI.
+
+        ### Verify that:
+
+        - Install required data is the same as in imported config.
+        """
+        ui_steps = self._ui_steps
+        user = self._users_manager.main_user
+        await ui_steps.ui_login(user, fresh_login=False)
+        await ui_steps.main_page.verify_ui_shell_container_displayed()
+
+        await ui_steps.main_page.ui_shell_container_click_install_btn()
+        await ui_steps.shell_install_page.verify_ui_page_displayed()
+
+        await ui_steps.shell_install_page.ui_click_import_config_btn()
+        await ui_steps.import_app_config_popup.verify_ui_popup_displayed()
+
+        config_file_path = (
+            await ui_steps.shell_install_page.get_import_config_file_path()
+        )
+        await ui_steps.import_app_config_popup.ui_import_yaml_config(
+            config_path=config_file_path
+        )
+        await ui_steps.import_app_config_popup.ui_click_apply_config_btn()
+        await ui_steps.import_app_config_popup.ui_wait_to_disappear()
+        await ui_steps.shell_install_page.verify_ui_page_displayed()
+        await ui_steps.shell_install_page.verify_ui_resource_preset_btn_value(
+            expected_value="cpu-large"
+        )
+        await ui_steps.shell_install_page.verify_ui_auth_type(
+            expected_value="No Authentication"
+        )
+        await ui_steps.shell_install_page.verify_ui_display_name_value(
+            expected_value="shell-testing"
+        )
