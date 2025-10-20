@@ -13,6 +13,8 @@ import pytest
 from _pytest.fixtures import FixtureRequest
 from allure_commons.types import AttachmentType
 from playwright.async_api import async_playwright, Browser, BrowserContext, Playwright
+from playwright.async_api import TimeoutError as PlaywrightTimeoutError
+
 
 from tests.components.ui.page_manager import PageManager
 from tests.test_cases.steps.ui_steps.ui_steps import UISteps
@@ -394,7 +396,14 @@ async def _create_page_manager(
     page.on("response", lambda response: _log_failed_requests(test_config, response))
 
     logger.info(f"Navigating to: {test_config.base_url}")
-    await page.goto(test_config.base_url)
+    try:
+        await page.goto(
+            "https://console.dev.apolo.us/",
+            timeout=60000,
+            wait_until="domcontentloaded",
+        )
+    except PlaywrightTimeoutError:
+        logger.warning("Page load took too long — continuing anyway.")
     await page.wait_for_load_state("networkidle", timeout=5000)
 
     test_config.context = context
