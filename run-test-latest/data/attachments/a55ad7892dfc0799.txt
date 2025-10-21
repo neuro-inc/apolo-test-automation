@@ -1,0 +1,195 @@
+INFO     [🔧TEST CONFIG]:conftest.py:89 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:398 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:406 Page load took too long — continuing anyway.
+INFO     [🔧TEST CONFIG]:conftest.py:95 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:125 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:111 Creating API helper
+INFO     [🔧TEST CONFIG]:conftest.py:119 Creating Apolo CLI instance
+INFO     [🔧TEST CONFIG]:conftest.py:207 Continue using UserData(email='regression-4no9dzr6zb@apolo.us', username='regression-4no9dzr6zb', password='VF@#@0z60zCk') as main test user...
+INFO     [👤UsersManager]:users_manager.py:73 Setting main user to UserData(email='regression-4no9dzr6zb@apolo.us', username='regression-4no9dzr6zb', password='VF@#@0z60zCk')
+INFO     [🔧TEST CONFIG]:conftest.py:237 Continue using UserData(email='regression-3anix9z8yo@apolo.us', username='regression-3anix9z8yo', password='4qV3@nq63TOQ') as second test user...
+INFO     [👤UsersManager]:users_manager.py:82 Setting second user to UserData(email='regression-3anix9z8yo@apolo.us', username='regression-3anix9z8yo', password='4qV3@nq63TOQ')
+INFO     [🔧TEST CONFIG]:conftest.py:242 Continue using UserData(email='regression-cwi57dbth2@apolo.us', username='regression-cwi57dbth2', password='yJJ5GQz*Pllh') as third test user...
+INFO     [👤UsersManager]:users_manager.py:91 Setting third user to UserData(email='regression-cwi57dbth2@apolo.us', username='regression-cwi57dbth2', password='yJJ5GQz*Pllh')
+INFO     [📘TEST_INFO]:reporting.py:86 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:87 📝 TEST started: Verify Manager cannot remove Admin from organization
+INFO     [📘TEST_INFO]:reporting.py:88 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click login button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_eebb7b.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter regression-4no9dzr6zb@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Enter email
+ERROR    asyncio:base_events.py:1879 Task exception was never retrieved
+future: <Task finished name='Task-14363' coro=<TestUIOrganizationRemoveMembers.test_manager_remove_user_from_org() done, defined at /home/runner/work/apolo-test-automation/apolo-test-automation/tests/reporting_hooks/reporting.py:138> exception=AssertionError('[AssertionError] during step: Add organization via API and reload page\nMessage: [TimeoutError] during step: Reload page\nMessage: Page.reload: Timeout 30000ms exceeded.\nCall log:\n  - waiting for navigation until "load"\n\nNote: Playwright Timeout. Element not found or action took too long.')>
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/reporting_hooks/reporting.py", line 49, in wrapper
+    result = await func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/steps/ui_steps/ui_steps.py", line 31, in ui_reload_page
+    await self._pm.page.reload()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/async_api/_generated.py", line 9033, in reload
+    await self._impl_obj.reload(timeout=timeout, waitUntil=wait_until)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_page.py", line 564, in reload
+    await self._channel.send(
+    ...<3 lines>...
+    )
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/playwright/_impl/_connection.py", line 558, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.reload: Timeout 30000ms exceeded.
+Call log:
+  - waiting for navigation until "load"
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/reporting_hooks/reporting.py", line 49, in wrapper
+    result = await func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/steps/ui_steps/ui_steps.py", line 373, in ui_add_org_api
+    await self.ui_reload_page()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/reporting_hooks/reporting.py", line 58, in wrapper
+    raise AssertionError(formatted_msg) from e
+AssertionError: [TimeoutError] during step: Reload page
+Message: Page.reload: Timeout 30000ms exceeded.
+Call log:
+  - waiting for navigation until "load"
+
+Note: Playwright Timeout. Element not found or action took too long.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/reporting_hooks/reporting.py", line 146, in wrapped
+    result = await method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/reporting_hooks/reporting.py", line 91, in wrapper
+    result = await func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/tests_ui/test_organization_remove_members.py", line 293, in test_manager_remove_user_from_org
+    await steps.ui_add_org_api(
+        token=user.token, gherkin_name="Default-organization"
+    )
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/reporting_hooks/reporting.py", line 58, in wrapper
+    raise AssertionError(formatted_msg) from e
+AssertionError: [AssertionError] during step: Add organization via API and reload page
+Message: [TimeoutError] during step: Reload page
+Message: Page.reload: Timeout 30000ms exceeded.
+Call log:
+  - waiting for navigation until "load"
+
+Note: Playwright Timeout. Element not found or action took too long.
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_7ac11e.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Enter password
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_47db70.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click Continue button
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Click continue button
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+{"authorized": true, "orgs": [], "clusters": [], "projects": [], "admin_url": "https://api.dev.apolo.us/apis/admin/v1", "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/api/v1/users/regression-4no9dzr6zb/permissions?uri=blob:
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+[]
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-4no9dzr6zb?include=orgs
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+{"name": "regression-4no9dzr6zb", "email": "regression-4no9dzr6zb@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-10-21T12:32:00.518461+00:00", "terms_accepted": true, "orgs": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/users/regression-4no9dzr6zb?include=clusters&include=system_role
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+{"name": "regression-4no9dzr6zb", "email": "regression-4no9dzr6zb@apolo.us", "first_name": null, "last_name": null, "created_at": "2025-10-21T12:32:00.518461+00:00", "terms_accepted": true, "clusters": []}
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/apis/admin/v1/invites/incoming
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+[]
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Waiting for spinner
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Timeout error for spinner
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Click Continue button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_continue_button_success_1c924c.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Verify that Welcome new user page displayed
+INFO     [🎭 Playwright]:base_page.py:16 <WelcomeNewUserPage>: Check if page loaded
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Verify that Welcome new user page displayed
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/verify_ui_page_displayed_success_84c6bf.png
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_login_success_f8160f.png
+INFO     [🔧TEST CONFIG]:conftest.py:398 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:406 Page load took too long — continuing anyway.
+INFO     [🔧TEST CONFIG]:conftest.py:398 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+WARNING  [🔧TEST CONFIG]:conftest.py:406 Page load took too long — continuing anyway.
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Get second user
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Get second user
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_get_second_user_success_d0b77a.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Click login button
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_click_login_button_success_c887a4.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Enter email
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter regression-3anix9z8yo@apolo.us email
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Enter email
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_email_success_4e21b0.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Enter password
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Enter ********* password
+INFO     [📘TEST_INFO]:reporting.py:51 ✅ STEP completed: <<User2>> :: Enter password
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (success): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_enter_password_success_b7da16.png
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: <<User2>> :: Click Continue button
+INFO     [🎭 Playwright]:base_page.py:16 <LoginPage>: Click continue button
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🌐API_helper]:api_helper.py:54 GET https://api.dev.apolo.us/apis/admin/v1/orgs
+INFO     [🌐API_helper]:api_helper.py:175 Status: 200. Response: []
+INFO     [🔧TEST CONFIG]:conftest.py:293 Cleaning up 0 organisations
+INFO     [🔧TEST CONFIG]:conftest.py:334 Closing all browser sessions
+INFO     [🔧TEST CONFIG]:conftest.py:349 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:356 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:362 Stopped Playwright
+ERROR    [📘TEST_INFO]:reporting.py:56 ❌ STEP failed: <<User2>> :: Click Continue button
+INFO     [🔧TEST CONFIG]:conftest.py:349 Closed context
+WARNING  [📘TEST_INFO]:reporting.py:229 ⚠️ Could not capture screenshot (fail): Page.screenshot: Target page, context or browser has been closed
+ERROR    [📘TEST_INFO]:reporting.py:56 ❌ STEP failed: <<User2>> :: Login via UI
+WARNING  [📘TEST_INFO]:reporting.py:229 ⚠️ Could not capture screenshot (fail): Page.screenshot: Target page, context or browser has been closed
+ERROR    [📘TEST_INFO]:reporting.py:95 ❌ TEST failed: Verify Manager cannot remove Admin from organization
+Exception: [AssertionError] during step: <<User2>> :: Login via UI
+Message: [TargetClosedError] during step: <<User2>> :: Click Continue button
+Message: Locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for locator("button[type='submit'][name='action'][value='default']")
+
+INFO     [📘TEST_INFO]:reporting.py:98 ------------------------------------------------------------
+INFO     [🔧TEST CONFIG]:conftest.py:356 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:362 Stopped Playwright
+INFO     [🔧TEST CONFIG]:conftest.py:349 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:356 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:362 Stopped Playwright
+INFO     [🔧TEST CONFIG]:conftest.py:367 Browser cleanup finished
