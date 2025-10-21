@@ -1,0 +1,105 @@
+INFO     [🔧TEST CONFIG]:conftest.py:89 Loading test configuration
+INFO     [🔧TEST CONFIG]:conftest.py:398 Navigating to: https://console.dev.apolo.us/
+WARNING  [🔧TEST CONFIG]:conftest.py:406 Page load took too long — continuing anyway.
+INFO     [🔧TEST CONFIG]:conftest.py:95 Creating data manager
+INFO     [🔧TEST CONFIG]:conftest.py:125 Creating users manager
+INFO     [🔧TEST CONFIG]:conftest.py:111 Creating API helper
+INFO     [🔧TEST CONFIG]:conftest.py:119 Creating Apolo CLI instance
+INFO     [👤UsersManager]:users_manager.py:73 Setting main user to UserData(email='regression-vu25zf2tpb@apolo.us', username='regression-vu25zf2tpb', password='49nyszLvU706')
+INFO     [👤UsersManager]:users_manager.py:82 Setting second user to None
+INFO     [👤UsersManager]:users_manager.py:91 Setting third user to None
+INFO     [📘TEST_INFO]:reporting.py:86 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:87 📝 TEST started: Import Service Deployment app config via UI
+INFO     [📘TEST_INFO]:reporting.py:88 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:37 ▶️ STEP started: Click login button
+INFO     [🎭 Playwright]:base_page.py:16 <AuthPage>: Click log in button
+ERROR    [📘TEST_INFO]:reporting.py:56 ❌ STEP failed: Click login button
+WARNING  [📘TEST_INFO]:reporting.py:229 ⚠️ Could not capture screenshot (fail): Page.screenshot: Timeout 30000ms exceeded.
+Call log:
+  - taking page screenshot
+
+ERROR    [📘TEST_INFO]:reporting.py:56 ❌ STEP failed: Login via UI
+INFO     [📘TEST_INFO]:reporting.py:225 📸 Screenshot captured and attached (fail): /home/runner/work/apolo-test-automation/apolo-test-automation/reports/screenshots/ui_login_fail_809a5b.png
+ERROR    [📘TEST_INFO]:reporting.py:95 ❌ TEST failed: Import Service Deployment app config via UI
+Exception: [AssertionError] during step: Login via UI
+Message: [TimeoutError] during step: Click login button
+Message: Element not ready for click after 10000ms: <Locator frame=<Frame name= url='about:blank'> selector="button:text('Log in')">
+Last error: Locator.wait_for: Timeout 500ms exceeded.
+Call log:
+  - waiting for locator("button:text('Log in')")
+    - waiting for" https://console.dev.apolo.us/" navigation to finish...
+
+INFO     [📘TEST_INFO]:reporting.py:98 ------------------------------------------------------------
+INFO     [📘TEST_INFO]:reporting.py:155 ============================================================
+INFO     [📘TEST_INFO]:reporting.py:156 📊 SUITE SUMMARY: 15 passed, 1 failed
+INFO     [📘TEST_INFO]:reporting.py:159 ============================================================
+INFO     [🌐API_helper]:api_helper.py:54 GET https://api.dev.apolo.us/apis/admin/v1/orgs
+WARNING  [🔧TEST CONFIG]:conftest.py:446 [HTTP 200] GET https://api.dev.apolo.us/api/v1/config
+Request Body (first 2000 chars):
+<not available>
+Response Body (first 2000 chars):
+{"authorized": false, "auth_url": "https://auth.dev.apolo.us/authorize", "token_url": "https://auth.dev.apolo.us/oauth/token", "logout_url": "https://auth.dev.apolo.us/v2/logout?returnTo=https://console.dev.apolo.us", "client_id": "q3I0OzzGnTDkhRmpeJ7WWgaTCucmVxTL", "audience": "https://api.dev.apolo.us", "callback_urls": ["http://127.0.0.1:54540", "http://127.0.0.1:54541", "http://127.0.0.1:54542"], "headless_callback_url": "https://api.dev.apolo.us/oauth/show-code", "success_redirect_url": "https://api.dev.apolo.us/oauth/login"}
+INFO     [🌐API_helper]:api_helper.py:175 Status: 200. Response: [{'name': 'regression-org-ur3ehv16ueop', 'balance': {'credits': '499.7599880533333333333333334', 'spent_credits': '0.2400119466666666666666666666'}, 'user_default_credits': None, 'notification_intervals': {'balance_projection_seconds': [604800, 259200, 86400], 'balance_amount': [0], 'balance_depletion_seconds': [86400, 604800]}}]
+INFO     [🔧TEST CONFIG]:conftest.py:293 Cleaning up 1 organisations
+INFO     [🌐API_helper]:api_helper.py:54 GET https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-ur3ehv16ueop/projects
+INFO     [🌐API_helper]:api_helper.py:182 Status: 200. Response: [{'name': 'regression-proj-puucnip4lq', 'cluster_name': 'default', 'org_name': 'regression-org-ur3ehv16ueop', 'is_default': False, 'default_role': 'reader', 'has_virtual_kube': False}]
+INFO     [🔧TEST CONFIG]:conftest.py:310 Cleaning up 1 projects
+INFO     [🌐API_helper]:api_helper.py:196 Delete project response: <ClientResponse(https://api.dev.apolo.us/apis/admin/v1/clusters/default/orgs/regression-org-ur3ehv16ueop/projects/regression-proj-puucnip4lq) [204 No Content]>
+<CIMultiDictProxy('Access-Control-Allow-Credentials': 'true', 'Date': 'Tue, 21 Oct 2025 13:26:35 GMT', 'Server': 'Python/3.13 aiohttp/3.12.15', 'Vary': 'Origin', 'x-service-version': 'platform-admin/0.0.0.post1.dev0+4cdab15', 'Via': '1.1 google', 'Alt-Svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000')>
+
+INFO     [🔧TEST CONFIG]:conftest.py:316 Deleted project: regression-proj-puucnip4lq
+INFO     [🌐API_helper]:api_helper.py:189 Delete organization response: <ClientResponse(https://api.dev.apolo.us/apis/admin/v1/orgs/regression-org-ur3ehv16ueop) [200 OK]>
+<CIMultiDictProxy('Access-Control-Allow-Credentials': 'true', 'Content-Length': '329', 'Content-Type': 'application/json; charset=utf-8', 'Date': 'Tue, 21 Oct 2025 13:26:35 GMT', 'Server': 'Python/3.13 aiohttp/3.12.15', 'Vary': 'Origin', 'x-service-version': 'platform-admin/0.0.0.post1.dev0+4cdab15', 'Via': '1.1 google', 'Alt-Svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000')>
+
+INFO     [🔧TEST CONFIG]:conftest.py:329 Deleted organisation: regression-org-ur3ehv16ueop
+INFO     [🔧TEST CONFIG]:conftest.py:334 Closing all browser sessions
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+WARNING  [🔧TEST CONFIG]:conftest.py:351 Failed to close context: 
+WARNING  [🔧TEST CONFIG]:conftest.py:358 Failed to close browser: 
+WARNING  [🔧TEST CONFIG]:conftest.py:364 Failed to stop Playwright: Event loop is closed
+INFO     [🔧TEST CONFIG]:conftest.py:349 Closed context
+INFO     [🔧TEST CONFIG]:conftest.py:356 Closed browser
+INFO     [🔧TEST CONFIG]:conftest.py:362 Stopped Playwright
+INFO     [🔧TEST CONFIG]:conftest.py:367 Browser cleanup finished
