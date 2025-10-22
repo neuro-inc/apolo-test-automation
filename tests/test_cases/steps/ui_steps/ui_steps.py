@@ -28,9 +28,7 @@ class UISteps(PageSteps):
 
     @async_step("Reload page")
     async def ui_reload_page(self) -> None:
-        await self._pm.page.reload()
-        await self._pm.page.wait_for_timeout(1000)
-        await self._pm.main_page.wait_for_spinner()
+        await self.main_page.reload()
 
     @async_step("Wait for timeout")
     async def ui_wait_for_timeout(self, timeout: int) -> None:
