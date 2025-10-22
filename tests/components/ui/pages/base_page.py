@@ -31,12 +31,14 @@ class BasePage(ABC):
             self.log("Timeout error for spinner")
             pass
 
-    async def reload(self):
+    async def reload(self) -> None:
         try:
             await self.page.reload(timeout=60000, wait_until="domcontentloaded")
             await self.wait_for_spinner()
         except PlaywrightTimeoutError:
-            self.log("Page reload took too long — continuing anyway.", level=logging.WARNING)
+            self.log(
+                "Page reload took too long — continuing anyway.", level=logging.WARNING
+            )
 
     @property
     async def current_url(self) -> str:
