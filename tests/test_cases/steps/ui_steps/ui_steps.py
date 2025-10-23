@@ -68,7 +68,11 @@ class UISteps(PageSteps):
     @async_step("Login via UI")
     async def ui_login(self, user: UserData, fresh_login: bool = True) -> None:
         if not user.authorized:
+            await self.auth_page.verify_ui_page_displayed()
+
             await self.auth_page.ui_click_login_button()
+            await self.login_page.verify_ui_page_displayed()
+
             await self.login_page.ui_enter_email(email=user.email)
             await self.login_page.ui_enter_password(password=user.password)
             await self.login_page.ui_click_continue_button()
