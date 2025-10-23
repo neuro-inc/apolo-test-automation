@@ -404,7 +404,6 @@ async def _create_page_manager(
         )
     except PlaywrightTimeoutError:
         logger.warning("Page load took too long — continuing anyway.")
-    await page.wait_for_load_state("networkidle", timeout=5000)
 
     test_config.context = context
     request.node.page = page

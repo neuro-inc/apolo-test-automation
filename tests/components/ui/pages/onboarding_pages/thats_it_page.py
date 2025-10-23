@@ -34,6 +34,5 @@ class ThatsItPage(BasePage):
         await self._lets_do_it_button.click()
         await self.page.wait_for_timeout(2000)
         await self.page.wait_for_load_state("networkidle", timeout=10000)
-        await self.page.reload()
+        await self.reload()
         await self.page.wait_for_timeout(500)
-        await self.wait_for_spinner()
