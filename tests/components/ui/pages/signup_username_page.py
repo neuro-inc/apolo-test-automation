@@ -33,5 +33,4 @@ class SignupUsernamePage(BasePage):
         self.log("Click signup button")
         await self._signup_button.click()
         await self.page.wait_for_timeout(1000)
-        await self.page.reload()
-        await self.wait_for_spinner()
+        await self.reload()

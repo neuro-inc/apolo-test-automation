@@ -10,11 +10,11 @@ from tests.test_cases.base_test_class import BaseTestClass
 @pytest.mark.flaky(reruns=0)
 @pytest.mark.class_setup
 class TestE2EServiceDeploymentApp(BaseTestClass):
-    serv_depl_app_name = "service-deployment-regression-3i5hu1uo"
-    serv_depl_app_id = "1380e929-5e0d-4e21-a0a9-da751082b468"
-    org_name = "regression-org-bo4chooo8zll"
-    proj_name = "regression-proj-uf0nlspit7"
-    app_install_status = True
+    serv_depl_app_name = ""
+    serv_depl_app_id = ""
+    org_name = ""
+    proj_name = ""
+    app_install_status = False
 
     @pytest.fixture(autouse=True)
     async def setup(self) -> None:

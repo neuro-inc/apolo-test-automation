@@ -51,6 +51,5 @@ class InvitedToOrgPage(BasePage):
         self.log("Wait for network idle")
         await self.page.wait_for_load_state("networkidle", timeout=10000)
         self.log("Network idle done")
-        await self.page.reload()
+        await self.reload()
         await self.page.wait_for_timeout(300)
-        await self.wait_for_spinner()
