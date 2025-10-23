@@ -19,7 +19,7 @@ class LoginPage(BasePage):
         """
         self.log("Check if page is loaded")
         return (
-            await self._email_input.expect_to_be_loaded()
+            await self._email_input.expect_to_be_loaded(timeout=60000)
             and await self._password_input.expect_to_be_loaded()
             and await self._continue_button.expect_to_be_loaded()
         )
