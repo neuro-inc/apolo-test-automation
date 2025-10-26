@@ -21,10 +21,31 @@ jobs:
       HF_TOKEN: ${{ secrets.HF_TOKEN_DS_1_5 }}
 
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: UI_Tests
             path: tests/test_cases/tests_ui
+          - name: UI_Tests_Part1
+            path: >
+              tests/test_cases/tests_ui/test_credits_purchase.py
+              tests/test_cases/tests_ui/test_disks.py
+              tests/test_cases/tests_ui/test_files.py
+              tests/test_cases/tests_ui/test_organization_change_member_roles.py
+              tests/test_cases/tests_ui/test_organization_remove_members.py
+              tests/test_cases/tests_ui/test_organization_roles_access.py
+              tests/test_cases/tests_ui/test_organization_structure_setup.py
+
+          - name: UI_Tests_Part2
+            path: >
+              tests/test_cases/tests_ui/test_project_change_member_roles.py
+              tests/test_cases/tests_ui/test_project_remove_members.py
+              tests/test_cases/tests_ui/test_project_roles_access.py
+              tests/test_cases/tests_ui/test_project_structure_setup.py
+              tests/test_cases/tests_ui/test_secrets.py
+              tests/test_cases/tests_ui/test_ui_login.py
+              tests/test_cases/tests_ui/test_ui_signup.py
+
           - name: E2E_Tests_CLI_Tests
             path: "tests/test_cases/tests_cli tests/test_cases/tests_e2e"
 
