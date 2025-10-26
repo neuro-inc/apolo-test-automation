@@ -72,8 +72,11 @@ jobs:
       - name: Run ${{ matrix.name }}
         run: |
           mkdir -p reports/allure-results
-          uv run pytest ${{ matrix.path }} \
-            -v --tb=short --disable-warnings \
+          echo "Running ${{ matrix.name }} with:"
+          echo "${{ matrix.path }}"
+          uv run pytest $(echo "${{ matrix.path }}" | tr '\n' ' ') \
+            -v --tb=short \
+            --disable-warnings \
             --timeout=240 --timeout-method=signal \
             --log-cli-level=CRITICAL \
             --alluredir=reports/allure-results
