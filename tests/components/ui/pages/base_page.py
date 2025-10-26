@@ -16,7 +16,7 @@ class BasePage(ABC):
         self.logger.log(level, full_message)
 
     async def wait_for_spinner(
-        self, spinner_selector: str = ".chase-spinner", timeout: int = 6000
+        self, spinner_selector: str = ".chase-spinner", timeout: int = 10000
     ) -> None:
         try:
             self.log("Waiting for spinner")
@@ -33,7 +33,7 @@ class BasePage(ABC):
 
     async def reload(self) -> None:
         try:
-            await self.page.reload(timeout=60000, wait_until="domcontentloaded")
+            await self.page.reload()
             await self.wait_for_spinner()
         except PlaywrightTimeoutError:
             self.log(
