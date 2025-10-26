@@ -397,11 +397,7 @@ async def _create_page_manager(
 
     logger.info(f"Navigating to: {test_config.base_url}")
     try:
-        await page.goto(
-            "https://console.dev.apolo.us/",
-            timeout=60000,
-            wait_until="domcontentloaded",
-        )
+        await page.goto("https://console.dev.apolo.us/")
     except PlaywrightTimeoutError:
         logger.warning("Page load took too long — continuing anyway.")
 
