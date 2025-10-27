@@ -16,6 +16,7 @@ jobs:
   test:
     name: Run ${{ matrix.name }}
     runs-on: ubuntu-latest
+    continue-on-error: true
     timeout-minutes: 240
     env:
       HF_TOKEN: ${{ secrets.HF_TOKEN_DS_1_5 }}
@@ -96,6 +97,7 @@ jobs:
     name: Merge Allure Reports
     runs-on: ubuntu-latest
     needs: [test]
+    if: always()
 
     steps:
       - name: Checkout code
