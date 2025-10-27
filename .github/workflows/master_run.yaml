@@ -82,6 +82,13 @@ jobs:
             --log-cli-level=CRITICAL \
             --alluredir=reports/allure-results
 
+      - name: Trim Allure results to save space
+        if: always()
+        run: |
+          find reports/allure-results -type f -name "*.png" -delete || true
+          find reports/allure-results -type f -name "*.mp4" -delete || true
+          df -h
+
       - name: Upload Allure results for ${{ matrix.name }}
         if: always()
         uses: actions/upload-artifact@v4
@@ -89,6 +96,13 @@ jobs:
           name: ${{ matrix.name }}-allure-results
           path: reports/allure-results
           retention-days: 3
+
+      - name: Clean job workspace
+        if: always()
+        run: |
+          rm -rf ~/.cache ~/.npm ~/.local/share/Playwright reports || true
+          df -h
+
 
   # ============================================================
   # 🧩 2️⃣ Merge results + generate + deploy Allure report
@@ -110,6 +124,9 @@ jobs:
           unzip -q allure.zip -d allure-bin
           echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
 
+      - name: Check disk before merge
+        run: df -h
+
       - name: Download Allure results from all jobs
         uses: actions/download-artifact@v4
         with:
@@ -118,10 +135,11 @@ jobs:
       - name: Merge results
         run: |
           mkdir -p reports/allure-results
-          cp -r merged-results/UI_Tests-allure-results/* reports/allure-results/ || true
+          cp -r merged-results/UI_Tests_Part1-allure-results/* reports/allure-results/ || true
+          cp -r merged-results/UI_Tests_Part2-allure-results/* reports/allure-results/ || true
           cp -r merged-results/E2E_Tests_CLI_Tests-allure-results/* reports/allure-results/ || true
           echo "Merged Allure results:"
-          ls -l reports/allure-results
+          ls -l reports/allure-results || true
 
       - name: Copy Allure history from qa-regression-history branch
         run: |
@@ -165,3 +183,9 @@ jobs:
           name: allure-report
           path: reports/allure-report
           retention-days: 7
+
+      - name: Clean workspace
+        if: always()
+        run: |
+          rm -rf allure-bin merged-results history-temp reports || true
+          df -h
