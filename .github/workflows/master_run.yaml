@@ -16,15 +16,35 @@ jobs:
   test:
     name: Run ${{ matrix.name }}
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    continue-on-error: true
+    timeout-minutes: 240
     env:
       HF_TOKEN: ${{ secrets.HF_TOKEN_DS_1_5 }}
 
     strategy:
+      fail-fast: false
       matrix:
         include:
-          - name: UI_Tests
-            path: tests/test_cases/tests_ui
+          - name: UI_Tests_Part1
+            path: >
+              tests/test_cases/tests_ui/test_credits_purchase.py
+              tests/test_cases/tests_ui/test_disks.py
+              tests/test_cases/tests_ui/test_files.py
+              tests/test_cases/tests_ui/test_organization_change_member_roles.py
+              tests/test_cases/tests_ui/test_organization_remove_members.py
+              tests/test_cases/tests_ui/test_organization_roles_access.py
+              tests/test_cases/tests_ui/test_organization_structure_setup.py
+              tests/test_cases/tests_ui/test_project_change_member_roles.py
+
+          - name: UI_Tests_Part2
+            path: >
+              tests/test_cases/tests_ui/test_project_remove_members.py
+              tests/test_cases/tests_ui/test_project_roles_access.py
+              tests/test_cases/tests_ui/test_project_structure_setup.py
+              tests/test_cases/tests_ui/test_secrets.py
+              tests/test_cases/tests_ui/test_ui_login.py
+              tests/test_cases/tests_ui/test_ui_signup.py
+
           - name: E2E_Tests_CLI_Tests
             path: "tests/test_cases/tests_cli tests/test_cases/tests_e2e"
 
@@ -53,8 +73,11 @@ jobs:
       - name: Run ${{ matrix.name }}
         run: |
           mkdir -p reports/allure-results
-          uv run pytest ${{ matrix.path }} \
-            -v --tb=short --disable-warnings \
+          echo "Running ${{ matrix.name }} with:"
+          echo "${{ matrix.path }}"
+          uv run pytest $(echo "${{ matrix.path }}" | tr '\n' ' ') \
+            -v --tb=short \
+            --disable-warnings \
             --timeout=240 --timeout-method=signal \
             --log-cli-level=CRITICAL \
             --alluredir=reports/allure-results
@@ -67,13 +90,21 @@ jobs:
           path: reports/allure-results
           retention-days: 3
 
+      - name: Clean job workspace
+        if: always()
+        run: |
+          rm -rf ~/.cache ~/.npm ~/.local/share/Playwright reports || true
+          df -h
+
+
   # ============================================================
   # 🧩 2️⃣ Merge results + generate + deploy Allure report
   # ============================================================
   merge:
     name: Merge Allure Reports
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m
     needs: [test]
+    if: always()
 
     steps:
       - name: Checkout code
@@ -86,6 +117,9 @@ jobs:
           unzip -q allure.zip -d allure-bin
           echo "$PWD/allure-bin/allure-2.27.0/bin" >> $GITHUB_PATH
 
+      - name: Check disk before merge
+        run: df -h
+
       - name: Download Allure results from all jobs
         uses: actions/download-artifact@v4
         with:
@@ -94,10 +128,11 @@ jobs:
       - name: Merge results
         run: |
           mkdir -p reports/allure-results
-          cp -r merged-results/UI_Tests-allure-results/* reports/allure-results/ || true
+          cp -r merged-results/UI_Tests_Part1-allure-results/* reports/allure-results/ || true
+          cp -r merged-results/UI_Tests_Part2-allure-results/* reports/allure-results/ || true
           cp -r merged-results/E2E_Tests_CLI_Tests-allure-results/* reports/allure-results/ || true
           echo "Merged Allure results:"
-          ls -l reports/allure-results
+          ls -l reports/allure-results || true
 
       - name: Copy Allure history from qa-regression-history branch
         run: |
@@ -141,3 +176,48 @@ jobs:
           name: allure-report
           path: reports/allure-report
           retention-days: 7
+
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          REPORT_URL="https://neuro-inc.github.io/${{ github.event.repository.name }}/run-test-latest/index.html"
+          SUMMARY_FILE="reports/allure-report/widgets/summary.json"
+
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            TRIGGER="🕒 Scheduled run (by GitHub Actions)"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            TRIGGER="👤 Manually triggered by ${{ github.actor }}"
+          else
+            TRIGGER="🔁 Triggered by event: ${{ github.event_name }} (actor: ${{ github.actor }})"
+          fi
+
+          if [[ -f "$SUMMARY_FILE" ]]; then
+            TOTAL=$(jq '.statistic.total // 0' "$SUMMARY_FILE")
+            PASSED=$(jq '.statistic.passed // 0' "$SUMMARY_FILE")
+            FAILED=$(jq '.statistic.failed // 0' "$SUMMARY_FILE")
+            BROKEN=$(jq '.statistic.broken // 0' "$SUMMARY_FILE")
+            SKIPPED=$(jq '.statistic.skipped // 0' "$SUMMARY_FILE")
+
+            # Detect reruns count if available
+            RERUNS=$(jq '.statistic.retries // .statistic.flaky // 0' "$SUMMARY_FILE")
+
+            MESSAGE="*📊 Regression Test Report* :: $TRIGGER\n✅ Passed: $PASSED | ❌ Failed: $FAILED | ⚠️ Broken: $BROKEN | 🔁 Reruns: $RERUNS | ⏭ Skipped: $SKIPPED | Total: $TOTAL"
+          else
+            MESSAGE="*📊 Regression Test Report* :: $TRIGGER\n⚠️ No summary file found."
+          fi
+
+          {
+            echo -e "$MESSAGE"
+            echo "<$REPORT_URL|View Full Allure Report>"
+          } > slack_message.txt
+
+          jq -Rs '{text: .}' < slack_message.txt > slack_payload.json
+          curl -X POST -H 'Content-type: application/json' --data @slack_payload.json "$SLACK_WEBHOOK_URL"
+
+      - name: Clean workspace
+        if: always()
+        run: |
+          rm -rf allure-bin merged-results history-temp reports || true
+          df -h
