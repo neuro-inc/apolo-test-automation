@@ -1,0 +1,140 @@
+--- Logging error ---
+Traceback (most recent call last):
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 265, in _do_full_teardown_logic
+    await _cleanup_orgs(data_manager, api_helper)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 290, in _cleanup_orgs
+    org_data = await api_helper.get_orgs(token=main_user.token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/utils/api_helper.py", line 174, in get_orgs
+    status, response = await self._get(url, token=token)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/utils/api_helper.py", line 56, in _get
+    async with self._session.get(
+               ~~~~~~~~~~~~~~~~~^
+        endpoint, headers=self._headers(token), params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as response:
+    ^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/client.py", line 1510, in __aenter__
+    self._resp: _RetType = await self._coro
+                           ^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/client.py", line 734, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/connector.py", line 642, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/connector.py", line 1209, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/connector.py", line 1532, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/connector.py", line 1148, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/connector.py", line 1179, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/aiohttp/resolver.py", line 117, in resolve
+    resp = await self._resolver.getaddrinfo(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'getaddrinfo'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/logging/__init__.py", line 1151, in emit
+    msg = self.format(record)
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/logging/__init__.py", line 999, in format
+    return fmt.format(record)
+           ~~~~~~~~~~^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/logging/__init__.py", line 712, in format
+    record.message = record.getMessage()
+                     ~~~~~~~~~~~~~~~~~^^
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/logging/__init__.py", line 400, in getMessage
+    msg = msg % self.args
+          ~~~~^~~~~~~~~~~
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/bin/pytest", line 10, in <module>
+    sys.exit(console_main())
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py", line 223, in console_main
+    code = main()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py", line 199, in main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/main.py", line 365, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/main.py", line 318, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/main.py", line 372, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/main.py", line 396, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pytest_rerunfailures.py", line 565, in pytest_runtest_protocol
+    reports = runtestprotocol(item, nextitem=nextitem, log=False)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 142, in runtestprotocol
+    reports.append(call_and_report(item, "teardown", log, nextitem=nextitem))
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 244, in call_and_report
+    call = CallInfo.from_call(
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 353, in from_call
+    result: TResult | None = func()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 245, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_hooks.py", line 512, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pluggy/_callers.py", line 121, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 194, in pytest_runtest_teardown
+    item.session._setupstate.teardown_exact(nextitem)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/runner.py", line 555, in teardown_exact
+    fin()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/_pytest/fixtures.py", line 1042, in finish
+    fin()
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/allure_commons/_allure.py", line 231, in __call__
+    return self._fixture_function(*args, **kwargs)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/.venv/lib/python3.13/site-packages/pytest_asyncio/plugin.py", line 330, in finalizer
+    runner.run(async_finalizer(), context=context)
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/asyncio/base_events.py", line 712, in run_until_complete
+    self.run_forever()
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/asyncio/base_events.py", line 683, in run_forever
+    self._run_once()
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/asyncio/base_events.py", line 2050, in _run_once
+    handle._run()
+  File "/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/asyncio/events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 142, in _teardown
+    await _do_full_teardown_logic(request, users_manager, data_manager, api_helper)
+  File "/home/runner/work/apolo-test-automation/apolo-test-automation/tests/test_cases/conftest.py", line 279, in _do_full_teardown_logic
+    logger.warning(f"Post-test cleanup failed: {formatted_msg}", RuntimeWarning)
+Message: "Post-test cleanup failed: [AttributeError] during step: Post-test cleanup\nMessage: 'NoneType' object has no attribute 'getaddrinfo'"
+Arguments: (<class 'RuntimeWarning'>,)
