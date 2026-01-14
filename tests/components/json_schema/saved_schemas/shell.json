@@ -1,164 +1,371 @@
 {
-  "name": "shell",
-  "title": "Shell",
-  "pub_date": "2025-05-05T00:00:00Z",
-  "description": "A web-based remote shell instrumented with Apolo CLI, providing immediate access to dedicated compute resources",
-  "short_description": "",
-  "schema_version": 1,
-  "version": "master",
-  "input": {
-    "$defs": {
-      "Networking": {
-        "properties": {
-          "http_auth": {
-            "default": true,
-            "title": "Http Auth",
-            "type": "boolean",
-            "x-description": "Enable platform provided HTTP authentication.",
-            "x-is-advanced-field": false,
-            "x-meta-type": "inline",
-            "x-title": "HTTP Authentication"
-          }
-        },
-        "title": "Networking",
-        "type": "object",
-        "x-description": "Network settings",
-        "x-is-advanced-field": false,
-        "x-meta-type": "inline",
-        "x-title": "Networking Settings"
-      },
-      "Preset": {
-        "properties": {
-          "name": {
-            "description": "The name of the preset.",
-            "title": "Preset name",
-            "type": "string"
-          }
-        },
-        "required": [
-          "name"
-        ],
-        "title": "Preset",
-        "type": "object",
-        "x-description": "Select the resource preset used per service replica.",
-        "x-is-advanced-field": false,
-        "x-meta-type": "integration",
-        "x-title": "Resource Preset"
-      }
-    },
-    "properties": {
-      "preset": {
-        "$ref": "#/$defs/Preset"
-      },
-      "networking": {
-        "$ref": "#/$defs/Networking",
-        "default": {
-          "http_auth": true
-        },
-        "x-description": "Configure network access, HTTP authentication, and related connectivity options."
-      }
-    },
-    "required": [
-      "preset"
-    ],
-    "title": "ShellAppInputs",
-    "type": "object"
-  },
-  "output": {
-    "$defs": {
-      "RestAPI": {
-        "properties": {
-          "host": {
-            "title": "Host",
-            "type": "string",
-            "x-description": "The hostname of the HTTP endpoint.",
-            "x-is-advanced-field": false,
-            "x-meta-type": "inline",
-            "x-title": "Hostname"
-          },
-          "port": {
-            "default": 80,
-            "title": "Port",
-            "type": "integer",
-            "x-description": "The port of the HTTP endpoint.",
-            "x-is-advanced-field": false,
-            "x-meta-type": "inline",
-            "x-title": "Port"
-          },
-          "protocol": {
-            "default": "http",
-            "title": "Protocol",
-            "type": "string",
-            "x-description": "The protocol to use, e.g., http or https.",
-            "x-is-advanced-field": false,
-            "x-meta-type": "inline",
-            "x-title": "Protocol"
-          },
-          "timeout": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": 30.0,
-            "title": "Timeout",
-            "x-description": "Connection timeout in seconds.",
-            "x-is-advanced-field": false,
-            "x-meta-type": "inline",
-            "x-title": "Connection Timeout"
-          },
-          "base_path": {
-            "default": "/",
-            "title": "Base Path",
-            "type": "string"
-          },
-          "api_type": {
-            "const": "rest",
-            "default": "rest",
-            "title": "Api Type",
-            "type": "string"
-          }
-        },
-        "required": [
-          "host"
-        ],
-        "title": "RestAPI",
-        "type": "object",
-        "x-description": "HTTP API Configuration.",
-        "x-is-advanced-field": false,
-        "x-meta-type": "integration",
-        "x-title": "HTTP API"
-      }
-    },
-    "properties": {
-      "internal_web_app_url": {
-        "$ref": "#/$defs/RestAPI"
-      },
-      "external_web_app_url": {
-        "$ref": "#/$defs/RestAPI"
-      }
-    },
-    "required": [
-      "internal_web_app_url",
-      "external_web_app_url"
-    ],
-    "title": "ShellAppOutputs",
-    "type": "object"
-  },
-  "tags": [
-    "shell"
-  ],
-  "git_url": "https://github.com/neuro-inc/mlops-custom-deployment-app",
-  "helm_path": "charts/custom-deployment",
-  "type": "mlops",
-  "logo": "",
-  "assets": [],
-  "documentation_urls": [],
-  "external_urls": [],
-  "mlops_app_type": "shell",
-  "preprocessor_image": null,
-  "postprocessor_image": null
-}
+		"name": "shell",
+		"title": "Shell",
+		"pub_date": "2026-01-07T17:44:26+02:00",
+		"description": "Shell offers a powerful in-browser command-line interface with direct access to the Apolo platform.\nPreloaded with essential CLI tools, it enables you to manage resources, run scripts,\nand debug applications — all from a web-based terminal.\n",
+		"short_description": "A web-based remote shell instrumented with Apolo CLI, providing immediate access to dedicated compute resources.\n",
+		"schema_version": 1,
+		"version": "v26.1.0",
+		"input": {
+			"$defs": {
+				"ApoloAuth": {
+					"properties": {
+						"type": {
+							"const": "apolo_auth",
+							"default": "apolo_auth",
+							"description": "Authentication type identifier",
+							"title": "Type",
+							"type": "string"
+						}
+					},
+					"title": "ApoloAuth",
+					"type": "object",
+					"x-description": "Use Apolo platform's built-in authentication and authorization. Requires authenticated user credentials with appropriate permissions.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "inline",
+					"x-title": "Apolo Platform Authentication",
+					"x-type": "ApoloAuth"
+				},
+				"AuthIngressMiddleware": {
+					"properties": {
+						"name": {
+							"pattern": "^platform",
+							"title": "Name",
+							"type": "string",
+							"x-description": "Name of the authentication middleware (with namespace) to apply to ingress traffic.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "Middleware Name"
+						}
+					},
+					"required": [
+						"name"
+					],
+					"title": "AuthIngressMiddleware",
+					"type": "object",
+					"x-description": "Configure authentication middleware for ingress traffic.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "integration",
+					"x-title": "Authentication Ingress Middleware",
+					"x-type": "AuthIngressMiddleware"
+				},
+				"BasicNetworkingConfig": {
+					"description": "Common networking configuration for applications.",
+					"properties": {
+						"ingress_http": {
+							"$ref": "#/$defs/IngressHttp",
+							"x-description": "Configure HTTP ingress and authentication settings.",
+							"x-title": "HTTP Ingress"
+						}
+					},
+					"title": "BasicNetworkingConfig",
+					"type": "object",
+					"x-description": "Configure network access and authentication settings.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "inline",
+					"x-title": "Networking Settings",
+					"x-type": "BasicNetworkingConfig"
+				},
+				"CustomAuth": {
+					"properties": {
+						"type": {
+							"const": "custom_auth",
+							"default": "custom_auth",
+							"description": "Authentication type identifier",
+							"title": "Type",
+							"type": "string"
+						},
+						"middleware": {
+							"$ref": "#/$defs/AuthIngressMiddleware",
+							"x-description": "Custom authentication middleware configuration.",
+							"x-title": "Authentication Middleware"
+						}
+					},
+					"required": [
+						"middleware"
+					],
+					"title": "CustomAuth",
+					"type": "object",
+					"x-description": "Use a custom authentication middleware for this ingress. Allows integration with custom authentication providers.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "inline",
+					"x-title": "Custom Authentication",
+					"x-type": "CustomAuth"
+				},
+				"IngressHttp": {
+					"properties": {
+						"auth": {
+							"anyOf": [
+								{
+									"$ref": "#/$defs/ApoloAuth"
+								},
+								{
+									"$ref": "#/$defs/NoAuth"
+								},
+								{
+									"$ref": "#/$defs/CustomAuth"
+								}
+							],
+							"title": "Auth",
+							"x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "Authentication"
+						}
+					},
+					"title": "IngressHttp",
+					"type": "object",
+					"x-description": "Enable access to your application over the internet using HTTPS.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "inline",
+					"x-title": "Enable HTTP Ingress",
+					"x-type": "IngressHttp"
+				},
+				"NoAuth": {
+					"properties": {
+						"type": {
+							"const": "no_auth",
+							"default": "no_auth",
+							"description": "Authentication type identifier",
+							"title": "Type",
+							"type": "string"
+						}
+					},
+					"title": "NoAuth",
+					"type": "object",
+					"x-description": "Disable authentication for this ingress. The application will be publicly accessible without any authentication.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "inline",
+					"x-title": "No Authentication",
+					"x-type": "NoAuth"
+				},
+				"Preset": {
+					"properties": {
+						"name": {
+							"title": "Name",
+							"type": "string",
+							"x-description": "The name of the preset.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "Resource Preset"
+						}
+					},
+					"required": [
+						"name"
+					],
+					"title": "Preset",
+					"type": "object",
+					"x-description": "Select the resource preset used per service replica.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "inline",
+					"x-title": "Resource Preset",
+					"x-type": "Preset"
+				}
+			},
+			"properties": {
+				"preset": {
+					"$ref": "#/$defs/Preset"
+				},
+				"networking": {
+					"$ref": "#/$defs/BasicNetworkingConfig",
+					"x-description": "Configure network access, HTTP authentication, and related connectivity options."
+				}
+			},
+			"required": [
+				"preset"
+			],
+			"title": "ShellAppInputs",
+			"type": "object"
+		},
+		"output": {
+			"$defs": {
+				"ServiceAPI_WebApp_": {
+					"properties": {
+						"internal_url": {
+							"anyOf": [
+								{
+									"$ref": "#/$defs/WebApp"
+								},
+								{
+									"type": "null"
+								}
+							],
+							"default": null,
+							"x-description": "Internal URL to access the service. This route is not protected by platform authorization and only workloads from the same project can access it.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "Internal URL"
+						},
+						"external_url": {
+							"anyOf": [
+								{
+									"$ref": "#/$defs/WebApp"
+								},
+								{
+									"type": "null"
+								}
+							],
+							"default": null,
+							"x-description": "External URL for accessing the service from outside the cluster. This route might be secured by platform authorization and is accessible from any network with a valid platform authorization token that has appropriate permissions.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "External URL"
+						}
+					},
+					"title": "ServiceAPI[WebApp]",
+					"type": "object",
+					"x-description": "Service APIs URLs.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "inline",
+					"x-title": "Service APIs",
+					"x-type": "ServiceAPI[GrpcAPI]"
+				},
+				"WebApp": {
+					"properties": {
+						"host": {
+							"title": "Host",
+							"type": "string",
+							"x-description": "The hostname of the HTTP endpoint.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "Hostname"
+						},
+						"port": {
+							"default": 80,
+							"exclusiveMinimum": 0,
+							"title": "Port",
+							"type": "integer",
+							"x-description": "The port of the HTTP endpoint.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "Port"
+						},
+						"protocol": {
+							"default": "http",
+							"title": "Protocol",
+							"type": "string",
+							"x-description": "The protocol to use, e.g., http or https.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "Protocol"
+						},
+						"timeout": {
+							"anyOf": [
+								{
+									"type": "number"
+								},
+								{
+									"type": "null"
+								}
+							],
+							"default": {
+								"source": "30.0",
+								"parsedValue": 30
+							},
+							"title": "Timeout",
+							"x-description": "Connection timeout in seconds.",
+							"x-is-advanced-field": false,
+							"x-is-configurable": true,
+							"x-meta-type": "inline",
+							"x-title": "Connection Timeout"
+						},
+						"base_path": {
+							"default": "/",
+							"title": "Base Path",
+							"type": "string"
+						},
+						"api_type": {
+							"const": "webapp",
+							"default": "webapp",
+							"title": "Api Type",
+							"type": "string"
+						}
+					},
+					"required": [
+						"host"
+					],
+					"title": "WebApp",
+					"type": "object",
+					"x-description": "HTTP API Configuration.",
+					"x-is-advanced-field": false,
+					"x-is-configurable": true,
+					"x-meta-type": "inline",
+					"x-title": "HTTP API",
+					"x-type": "OpenAICompatibleEmbeddingsRestAPI"
+				}
+			},
+			"properties": {
+				"app_url": {
+					"anyOf": [
+						{
+							"$ref": "#/$defs/ServiceAPI_WebApp_"
+						},
+						{
+							"type": "null"
+						}
+					],
+					"default": null,
+					"description": "The main application URL for accessing the service. This is the primary endpoint users should use to access the application.",
+					"title": "Application URL"
+				}
+			},
+			"title": "ShellAppOutputs",
+			"type": "object"
+		},
+		"tags": [
+			"Apolo",
+			"Shell",
+			"CLI"
+		],
+		"git_url": "https://github.com/neuro-inc/mlops-custom-deployment-app.git",
+		"helm_path": "charts/custom-deployment",
+		"type": "workflow",
+		"logo": "https://storage.googleapis.com/development-421920-assets/app-logos/bash.svg",
+		"changelog": "",
+		"assets": [
+			{
+				"type": "image",
+				"url": "https://storage.googleapis.com/development-421920-assets/app-logos/bash.svg"
+			}
+		],
+		"documentation_urls": [
+			{
+				"text": "Apolo documentation",
+				"url": "https://docs.apolo.us/index"
+			},
+			{
+				"text": "Apolo CLI reference",
+				"url": "https://docs.apolo.us/index/apolo-cli"
+			}
+		],
+		"external_urls": [],
+		"mlops_app_type": "shell",
+		"requires_token": true,
+		"preprocessor": {
+			"types_name": "ShellAppInputs",
+			"processor_name": "ShellAppChartValueProcessor",
+			"image": "ghcr.io/neuro-inc/mlops-custom-deployment-app:v26.1.0"
+		},
+		"postprocessor": {
+			"types_name": "ShellAppOutputs",
+			"processor_name": "ShellAppOutputProcessor",
+			"image": "ghcr.io/neuro-inc/mlops-custom-deployment-app:v26.1.0"
+		},
+		"app_package_name": "apolo_apps_shell"
+	}
