@@ -106,6 +106,10 @@ class DeepSeekInstallPageSteps:
     async def ui_click_import_config_btn(self) -> None:
         await self._pm.deep_seek_install_page.click_import_config_btn()
 
+    @async_step("Get template version from UI")
+    async def ui_get_template_version(self) -> str:
+        return await self._pm.deep_seek_install_page.get_template_version()
+
     @async_step("Verify exported config file schema")
     async def verify_exported_config_schema(self, config_file_path: str) -> None:
         config_file = Path(config_file_path)
