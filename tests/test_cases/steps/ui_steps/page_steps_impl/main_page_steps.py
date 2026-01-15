@@ -192,7 +192,7 @@ class MainPageSteps:
     @async_step("Verify 'Installed' label on DeepSeek app container is displayed")
     async def verify_ui_installed_label_deep_seek_container_displayed(self) -> None:
         assert await self._pm.main_page.is_container_installed_label_visible(
-            app_name="deepseek-inference-argocd"
+            app_name="deepseek-inference"
         ), "'Installed' label should be displayed on the DeepSeek app container!"
 
     @async_step("Verify 'Installed' label on PostgreSQL app container is displayed")
@@ -206,7 +206,7 @@ class MainPageSteps:
     )
     async def verify_ui_installed_label_serv_depl_container_displayed(self) -> None:
         assert await self._pm.main_page.is_container_installed_label_visible(
-            app_name="service-deployment-argocd"
+            app_name="service-deployment"
         ), (
             "'Installed' label should be displayed on the Service Deployment app container!"
         )
@@ -224,13 +224,13 @@ class MainPageSteps:
     @async_step("Verify 'Show All' button on DeepSeek app container is displayed")
     async def verify_ui_show_all_btn_deep_seek_container_displayed(self) -> None:
         assert await self._pm.main_page.is_container_show_all_btn_visible(
-            app_name="deepseek-inference-argocd"
+            app_name="deepseek-inference"
         ), "'Show All' button should be displayed on the DeepSeek app container!"
 
     @async_step("Click `Show All` button on the DeepSeek app container")
     async def ui_deep_seek_container_click_show_all_btn(self) -> None:
         await self._pm.main_page.click_container_show_all_btn(
-            app_name="deepseek-inference-argocd"
+            app_name="deepseek-inference"
         )
 
     @async_step("Verify 'Show All' button on PostgreSQL app container is displayed")
@@ -248,7 +248,7 @@ class MainPageSteps:
     )
     async def verify_ui_show_all_btn_serv_depl_container_displayed(self) -> None:
         assert await self._pm.main_page.is_container_show_all_btn_visible(
-            app_name="service-deployment-argocd"
+            app_name="service-deployment"
         ), (
             "'Show All' button should be displayed on the Service Deployment app container!"
         )
@@ -256,7 +256,7 @@ class MainPageSteps:
     @async_step("Click `Show All` button on the Service Deployment app container")
     async def ui_serv_depl_container_click_show_all_btn(self) -> None:
         await self._pm.main_page.click_container_show_all_btn(
-            app_name="service-deployment-argocd"
+            app_name="service-deployment"
         )
 
     @async_step("Click Installed Apps button")
