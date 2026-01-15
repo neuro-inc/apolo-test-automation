@@ -679,6 +679,10 @@ class TestE2EDeepSeekApp(BaseTestClass):
         await ui_steps.main_page.ui_deep_seek_container_click_install_btn()
         await ui_steps.deep_seek_install_page.verify_ui_page_displayed()
 
+        template_version = (
+            await ui_steps.deep_seek_install_page.ui_get_template_version()
+        )
+
         await ui_steps.deep_seek_install_page.ui_click_import_config_btn()
         await ui_steps.import_app_config_popup.verify_ui_popup_displayed()
 
@@ -686,7 +690,7 @@ class TestE2EDeepSeekApp(BaseTestClass):
             await ui_steps.deep_seek_install_page.get_import_config_file_path()
         )
         await ui_steps.import_app_config_popup.ui_import_yaml_config(
-            config_path=config_file_path
+            config_path=config_file_path, template_version=template_version
         )
         await ui_steps.import_app_config_popup.ui_click_apply_config_btn()
         await ui_steps.import_app_config_popup.ui_wait_to_disappear()
