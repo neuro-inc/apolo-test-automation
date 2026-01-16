@@ -321,3 +321,17 @@ class ServiceDeploymentInstallPageSteps:
         )
 
         assert result, f"Schema validation failed: {error_message}"
+
+    @async_step("Get Service Deployment app import config file path")
+    async def get_import_config_file_path(self) -> str:
+        return await self._data_manager.app_data.get_app_import_config_file_path(
+            app_name="service_deployment"
+        )
+
+    @async_step("Click Import config button")
+    async def ui_click_import_config_btn(self) -> None:
+        await self._pm.service_deployment_install_page.click_import_config_btn()
+
+    @async_step("Get template version from UI")
+    async def ui_get_template_version(self) -> str:
+        return await self._pm.service_deployment_install_page.get_template_version()

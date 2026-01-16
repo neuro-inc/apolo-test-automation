@@ -175,3 +175,7 @@ class ShellInstallPageSteps:
     @async_step("Click Import config button")
     async def ui_click_import_config_btn(self) -> None:
         await self._pm.shell_install_page.click_import_config_btn()
+
+    @async_step("Get template version from UI")
+    async def ui_get_template_version(self) -> str:
+        return await self._pm.shell_install_page.get_template_version()
