@@ -972,3 +972,13 @@ class ServiceDeploymentInstallPage(BasePage):
     async def click_import_config_btn(self) -> None:
         self.log("Click Import config button")
         await self._get_import_config_btn().click()
+
+    def _get_version_text(self) -> BaseElement:
+        return BaseElement(self.page, "p.text-neural-04", has_text="Version:")
+
+    async def get_template_version(self) -> str:
+        """Get template version from UI (e.g., 'v26.1.2')"""
+        self.log("Get template version from UI")
+        text = await self._get_version_text().locator.inner_text()
+        # Parse "Version: v26.1.2" -> "v26.1.2"
+        return text.replace("Version:", "").strip()
