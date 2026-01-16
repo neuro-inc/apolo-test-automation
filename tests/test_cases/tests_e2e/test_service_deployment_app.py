@@ -803,29 +803,30 @@ class TestE2EServiceDeploymentApp(BaseTestClass):
         ui_steps = self._ui_steps
         user = self._users_manager.main_user
         await ui_steps.ui_login(user, fresh_login=False)
-        await ui_steps.main_page.verify_ui_shell_container_displayed()
+        await ui_steps.main_page.verify_ui_serv_depl_container_displayed()
 
-        await ui_steps.main_page.ui_shell_container_click_install_btn()
-        await ui_steps.shell_install_page.verify_ui_page_displayed()
+        await ui_steps.main_page.ui_serv_depl_container_click_install_btn()
+        await ui_steps.service_deployment_install_page.verify_ui_page_displayed()
 
-        await ui_steps.shell_install_page.ui_click_import_config_btn()
+        template_version = (
+            await ui_steps.service_deployment_install_page.ui_get_template_version()
+        )
+
+        await ui_steps.service_deployment_install_page.ui_click_import_config_btn()
         await ui_steps.import_app_config_popup.verify_ui_popup_displayed()
 
         config_file_path = (
-            await ui_steps.shell_install_page.get_import_config_file_path()
+            await ui_steps.service_deployment_install_page.get_import_config_file_path()
         )
         await ui_steps.import_app_config_popup.ui_import_yaml_config(
-            config_path=config_file_path
+            config_path=config_file_path, template_version=template_version
         )
         await ui_steps.import_app_config_popup.ui_click_apply_config_btn()
         await ui_steps.import_app_config_popup.ui_wait_to_disappear()
-        await ui_steps.shell_install_page.verify_ui_page_displayed()
-        await ui_steps.shell_install_page.verify_ui_resource_preset_btn_value(
-            expected_value="cpu-large"
+        await ui_steps.service_deployment_install_page.verify_ui_page_displayed()
+        await ui_steps.service_deployment_install_page.verify_ui_resource_preset_btn_value(
+            expected_value="cpu-micro"
         )
-        await ui_steps.shell_install_page.verify_ui_auth_type(
-            expected_value="No Authentication"
-        )
-        await ui_steps.shell_install_page.verify_ui_display_name_value(
-            expected_value="shell-testing"
+        await ui_steps.service_deployment_install_page.verify_ui_container_image_repository_value(
+            expected_value="hashicorp/http-echo"
         )
