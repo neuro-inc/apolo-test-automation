@@ -614,7 +614,7 @@ class TestE2EServiceDeploymentApp(BaseTestClass):
         )
         await ui_steps.service_deployment_details_page.verify_ui_page_displayed()
 
-        await ui_steps.service_deployment_details_page.ui_click_uninstall_btn()
+        await ui_steps.service_deployment_details_page.ui_click_uninstall_and_confirm()
         await api_steps.wait_for_app_until_uninstalled(
             token=user.token, org_name=org_name, proj_name=proj_name, app_id=app_id
         )
