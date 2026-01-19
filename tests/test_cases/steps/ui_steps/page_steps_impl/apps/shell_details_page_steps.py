@@ -32,7 +32,7 @@ class ShellDetailsPageSteps:
 
     @async_step("Verify App output contains required endpoints")
     async def verify_ui_app_output_apis(self) -> None:
-        api_sections = await self._pm.deep_seek_details_page.parse_output_sections()
+        api_sections = await self._pm.shell_details_page.parse_api_sections()
         for name, protocol in self.required_APIs:
             assert self._has_object_with_title_and_protocol(
                 api_sections, name, protocol
@@ -68,6 +68,15 @@ class ShellDetailsPageSteps:
     @async_step("Click Uninstall button")
     async def ui_click_uninstall_btn(self) -> None:
         await self._pm.shell_details_page.click_uninstall_btn()
+
+    @async_step("Click Uninstall button and confirm")
+    async def ui_click_uninstall_and_confirm(self) -> None:
+        await self._pm.shell_details_page.click_uninstall_btn()
+        assert await self._pm.uninstall_app_popup.is_loaded(), (
+            "Uninstall confirmation popup should appear!"
+        )
+        await self._pm.uninstall_app_popup.click_uninstall_btn()
+        await self._pm.uninstall_app_popup.wait_to_disappear()
 
     @async_step("Verify App endpoints sections contains valid data format")
     async def verify_ui_app_output_apis_data_format(self) -> None:

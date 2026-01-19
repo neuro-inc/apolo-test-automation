@@ -67,6 +67,7 @@ from tests.components.ui.pages.rename_file_popup import RenameFilePopup
 from tests.components.ui.pages.secrets_page import SecretsPage
 from tests.components.ui.pages.signup_page import SignupPage
 from tests.components.ui.pages.signup_username_page import SignupUsernamePage
+from tests.components.ui.pages.uninstall_app_popup import UninstallAppPopup
 
 
 class PageManager:
@@ -127,3 +128,4 @@ class PageManager:
         self.postgres_details_page = PostgresDetailsPage(page)
         self.service_deployment_install_page = ServiceDeploymentInstallPage(page)
         self.service_deployment_details_page = ServiceDeploymentDetailsPage(page)
+        self.uninstall_app_popup = UninstallAppPopup(page)

@@ -80,6 +80,15 @@ class ServiceDeploymentDetailsPageSteps:
     async def ui_click_uninstall_btn(self) -> None:
         await self._pm.service_deployment_details_page.click_uninstall_btn()
 
+    @async_step("Click Uninstall button and confirm")
+    async def ui_click_uninstall_and_confirm(self) -> None:
+        await self._pm.service_deployment_details_page.click_uninstall_btn()
+        assert await self._pm.uninstall_app_popup.is_loaded(), (
+            "Uninstall confirmation popup should appear!"
+        )
+        await self._pm.uninstall_app_popup.click_uninstall_btn()
+        await self._pm.uninstall_app_popup.wait_to_disappear()
+
     def _has_object_with_title_and_protocol(
         self, data: list[dict[str, Any]], title: str, protocol: str
     ) -> bool:
