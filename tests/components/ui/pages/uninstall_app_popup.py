@@ -11,6 +11,12 @@ class UninstallAppPopup(BasePage):
 
     async def is_loaded(self, **kwargs: Any) -> bool:
         self.log("Check if popup loaded")
+        try:
+            await self._get_uninstall_title().locator.wait_for(
+                state="visible", timeout=5000
+            )
+        except Exception:
+            return False
         return (
             await self._get_uninstall_title().is_visible()
             and await self._get_cancel_btn().is_visible()
@@ -18,7 +24,7 @@ class UninstallAppPopup(BasePage):
         )
 
     def _get_uninstall_title(self) -> BaseElement:
-        return BaseElement(self.page, "h2", has_text="Uninstall")
+        return BaseElement(self.page, "h2", has_text="Uninstall App")
 
     def _get_cancel_btn(self) -> BaseElement:
         return BaseElement(self.page, "button", has_text="Cancel")
