@@ -553,11 +553,13 @@ class APISteps:
         """
         for section in api_sections:
             data = section["data"]
+            # Check nested external_url structure
+            external_url = data.get("external_url", {})
             if (
-                data.get("openai_api_type") == "chat"
-                and data.get("protocol") == "https"
+                external_url.get("openai_api_type") == "chat"
+                and external_url.get("protocol") == "https"
             ):
-                return data.get("host")
+                return external_url.get("host")
         return None
 
     def _verify_required_endpoints(
@@ -569,15 +571,18 @@ class APISteps:
             found = False
             for section in parsed_sections:
                 data = section["data"]
+                # Check nested external_url/internal_url structure
+                url_key = "external_url" if protocol == "https" else "internal_url"
+                url_data = data.get(url_key, {})
 
-                if data.get("openai_api_type") == "chat":
+                if url_data.get("openai_api_type") == "chat":
                     section_title = "OpenAI Compatible Chat API"
-                elif data.get("openai_api_type") == "embeddings":
+                elif url_data.get("openai_api_type") == "embeddings":
                     section_title = "OpenAI Compatible Embeddings API"
                 else:
                     continue
 
-                if section_title == title and data.get("protocol") == protocol:
+                if section_title == title and url_data.get("protocol") == protocol:
                     found = True
                     break
 
