@@ -314,7 +314,13 @@ class APISteps:
         assert status == 200, response
 
         api_sections = self._extract_api_sections(response)
-        sections_data = [section["data"] for section in api_sections]
+        # Extract nested external_url/internal_url objects for schema validation
+        sections_data = []
+        for section in api_sections:
+            data = section["data"]
+            for url_key in ("external_url", "internal_url"):
+                if url_key in data and isinstance(data[url_key], dict):
+                    sections_data.append(data[url_key])
         await self._data_manager.app_data.load_output_api_schema("deep_seek")
         result, error_message = self._data_manager.app_data.validate_api_section_schema(
             sections_data
@@ -553,11 +559,13 @@ class APISteps:
         """
         for section in api_sections:
             data = section["data"]
+            # Check nested external_url structure
+            external_url = data.get("external_url", {})
             if (
-                data.get("openai_api_type") == "chat"
-                and data.get("protocol") == "https"
+                external_url.get("openai_api_type") == "chat"
+                and external_url.get("protocol") == "https"
             ):
-                return data.get("host")
+                return external_url.get("host")
         return None
 
     def _verify_required_endpoints(
@@ -569,15 +577,18 @@ class APISteps:
             found = False
             for section in parsed_sections:
                 data = section["data"]
+                # Check nested external_url/internal_url structure
+                url_key = "external_url" if protocol == "https" else "internal_url"
+                url_data = data.get(url_key, {})
 
-                if data.get("openai_api_type") == "chat":
+                if url_data.get("openai_api_type") == "chat":
                     section_title = "OpenAI Compatible Chat API"
-                elif data.get("openai_api_type") == "embeddings":
+                elif url_data.get("openai_api_type") == "embeddings":
                     section_title = "OpenAI Compatible Embeddings API"
                 else:
                     continue
 
-                if section_title == title and data.get("protocol") == protocol:
+                if section_title == title and url_data.get("protocol") == protocol:
                     found = True
                     break
 

@@ -93,8 +93,17 @@ class DeepSeekDetailsPageSteps:
         """
         Check if there is at least one object in the list
         with the given title and protocol.
+        Handles nested external_url/internal_url structure.
         """
-        return any(
-            obj.get("title") == title and obj.get("Protocol") == protocol
-            for obj in data
-        )
+        for obj in data:
+            if obj.get("title") != title:
+                continue
+            # Check for Protocol at the top level (legacy structure)
+            if obj.get("Protocol") == protocol:
+                return True
+            # Check for Protocol in nested external_url/internal_url (new structure)
+            url_key = "external_url" if protocol == "https" else "internal_url"
+            nested = obj.get(url_key, {})
+            if isinstance(nested, dict) and nested.get("Protocol") == protocol:
+                return True
+        return False
