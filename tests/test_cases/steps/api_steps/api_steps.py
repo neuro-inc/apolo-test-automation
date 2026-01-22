@@ -314,7 +314,13 @@ class APISteps:
         assert status == 200, response
 
         api_sections = self._extract_api_sections(response)
-        sections_data = [section["data"] for section in api_sections]
+        # Extract nested external_url/internal_url objects for schema validation
+        sections_data = []
+        for section in api_sections:
+            data = section["data"]
+            for url_key in ("external_url", "internal_url"):
+                if url_key in data and isinstance(data[url_key], dict):
+                    sections_data.append(data[url_key])
         await self._data_manager.app_data.load_output_api_schema("deep_seek")
         result, error_message = self._data_manager.app_data.validate_api_section_schema(
             sections_data
