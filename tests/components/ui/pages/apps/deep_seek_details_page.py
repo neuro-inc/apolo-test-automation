@@ -213,9 +213,7 @@ class DeepSeekDetailsPage(BasePage):
             title = (await title_el.inner_text()).strip()
 
             # Skip non-API sections early
-            if not (
-                title.lower().endswith("api") or title.lower() == "service apis"
-            ):
+            if not (title.lower().endswith("api") or title.lower() == "service apis"):
                 continue
 
             # Handle 'Service APIs' wrapper: extract nested API subsections
