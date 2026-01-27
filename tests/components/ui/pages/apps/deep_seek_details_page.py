@@ -190,6 +190,8 @@ class DeepSeekDetailsPage(BasePage):
           - <button disabled> → key/value pair
           - <button not disabled> → nested dict (collapsible)
           - Only sections ending with 'API' are kept.
+          - 'Service APIs' wrapper sections are unwrapped: nested API
+            subsections are extracted individually.
           - Duplicates between parent and nested dicts are safely removed.
         """
         results: list[dict[str, str]] = []
@@ -211,7 +213,27 @@ class DeepSeekDetailsPage(BasePage):
             title = (await title_el.inner_text()).strip()
 
             # Skip non-API sections early
-            if not title.lower().endswith("api"):
+            if not (title.lower().endswith("api") or title.lower() == "service apis"):
+                continue
+
+            # Handle 'Service APIs' wrapper: extract nested API subsections
+            if title.lower() == "service apis":
+                container = api_button.locator(
+                    "xpath=following-sibling::div[contains(@class,'overflow-hidden')"
+                    " or contains(@class,'contents')]"
+                )
+                nested_api_buttons = container.locator("xpath=.//button[h4]")
+                nested_count = await nested_api_buttons.count()
+                for j in range(nested_count):
+                    nested_btn = nested_api_buttons.nth(j)
+                    nested_title = (
+                        await nested_btn.locator("xpath=.//h4").inner_text()
+                    ).strip()
+                    if not nested_title.lower().endswith("api"):
+                        continue
+                    nested_data = await self._parse_api_section(nested_btn)
+                    nested_data["title"] = nested_title
+                    results.append(nested_data)
                 continue
 
             # Parse this API section recursively
